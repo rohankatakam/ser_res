@@ -100,8 +100,8 @@ Three structured search modalities that query the entity graph.
 
 | Column | Icon/Format | Description |
 |--------|-------------|-------------|
-| Trend | Incline graph icon (↗) | Unknown meaning — likely popularity trend |
-| Relevance Icon | Gem icon | Unknown meaning — possibly quality indicator |
+| Relevance | Incline graph icon (↗) | Relevance indicator for the entity in this episode |
+| Score | Gem icon (💎) | Quality/importance score |
 | Mentions (n) | Integer (1-5) | Number of mentions in episode |
 | Relevance Score | Decimal (0.0–1.0) | Displayed as percentage in some views |
 | Published | ISO timestamp | When the episode was released |
@@ -151,7 +151,6 @@ Top 50 matches for "OpenAI" (organizations)
 - ❌ Relevance score seems volume-weighted, not insight-weighted
 - ❌ Context snippets are episode-level, not claim-level
 - ⚠️ No fallback to transcript search if org not in dropdown
-- ⚠️ First two column icons (trend, gem) have unclear meaning
 
 ---
 
