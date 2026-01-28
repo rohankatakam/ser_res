@@ -20,9 +20,9 @@ This document is structured for a **30-minute decision meeting**. Each section h
 |--------|-------|--------------|
 | **A. 2 weeks** | Quality Framework only | Spec, Evaluation Dataset, Baseline Report |
 | **B. 4 weeks** | Framework + Quick Wins | Above + 2-3 targeted improvements |
-| **C. 4 weeks** | Framework + Rating Engine | Above + Bullish/Bearish rating prototype |
+| **C. 4 weeks** | Framework + Rating Engine | Above + Bullish/Bearish rating prototype (see Appendix) |
 
-**Context:** Option C builds toward the Robinhood/Webull integration you mentioned. The rating engine depends on validated quality signals (credibility, recency weighting).
+**Context:** Option C builds toward the Robinhood/Webull integration you mentioned. The rating engine depends on validated quality signals — see Appendix for details.
 
 **Our Decision:** _______________________________________________________
 
@@ -132,7 +132,7 @@ For institutional products (Robinhood, TipRanks), recency is key. TipRanks uses 
 | Org/Person Search | < 2 seconds | P0 |
 | Ask AI (RAG) | < 5 seconds | P0 |
 | Episode Detail Load | < 1 second | P1 |
-| Rating Engine (future) | < 500ms (pre-computed) | P2 |
+| Rating Engine (future, see Appendix) | < 500ms (pre-computed) | P2 |
 
 **Key Question:** Are there current speed issues? _______ 
 
@@ -182,7 +182,7 @@ For institutional products (Robinhood, TipRanks), recency is key. TipRanks uses 
 | Evaluation Dataset (30 queries) | ⬜ Yes / ⬜ No | Benchmark queries with expected outcomes |
 | Baseline Report | ⬜ Yes / ⬜ No | Current quality scores documented |
 | Quick Wins (2-3 fixes) | ⬜ Yes / ⬜ No | Targeted improvements based on gaps |
-| Rating Engine Prototype | ⬜ Yes / ⬜ No | Only if 4-week Option C selected |
+| Rating Engine Prototype | ⬜ Yes / ⬜ No | Only if Option C selected (see Appendix) |
 
 **Our Decision:** _______________________________________________________
 
@@ -217,7 +217,7 @@ For institutional products (Robinhood, TipRanks), recency is key. TipRanks uses 
 | 5.1 | Trial Deliverables | ⬜ |
 | 5.2 | Quality Targets | ⬜ |
 
-**Total:** 11 decision points (down from 27)
+**Total:** 11 decision points
 
 ---
 
@@ -225,3 +225,20 @@ For institutional products (Robinhood, TipRanks), recency is key. TipRanks uses 
 
 _Space for live notes during the meeting_
 
+---
+
+## Appendix: Rating Engine (Option C Context)
+
+The **Bullish/Bearish Rating Engine** is a potential Phase 2 feature that aggregates podcast sentiment into actionable ratings — similar to TipRanks or Robinhood's "Buy/Hold/Sell" analyst consensus section.
+
+**How it connects to the Quality Framework:**
+
+| Framework Signal | Rating Engine Use |
+|------------------|-------------------|
+| Credibility weighting | Weight ratings by speaker authority (CEO > analyst > commentator) |
+| Recency scoring | Time-decay for prediction relevance (recent opinions weighted higher) |
+| Non-consensus detection | Surface contrarian signals that may indicate alpha |
+
+**Why it's Option C (not default):** The Rating Engine depends on validated quality signals. Building the Framework first de-risks this feature by ensuring the underlying data quality meets institutional standards.
+
+*This is included to show roadmap connection, but is not required for the trial.*
