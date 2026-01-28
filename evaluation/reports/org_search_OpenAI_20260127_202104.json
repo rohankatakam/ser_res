@@ -1,0 +1,83 @@
+{
+  "type": "org_search",
+  "query": "OpenAI",
+  "timestamp": "2026-01-27T20:20:32.589292",
+  "current_date": "2026-01-27",
+  "grades": [
+    {
+      "relevance": 5,
+      "credibility": 3,
+      "signal_quality": 4,
+      "recency_value": 5,
+      "context_quality": 5,
+      "overall_score": 4,
+      "is_high_signal": true,
+      "rationale": "This result is extremely recent and primarily focuses on OpenAI, offering deep analysis of strategic and financial developments from an informed investor perspective. The context summary is highly detailed and useful.",
+      "rank": 1,
+      "system_score": "0.9",
+      "episode_title": "20VC: Sam Altman vs Elon Musk: The $100BN Battle | The Implosion of Thinking Machines | Can VC Survive Public Market Pricing Today? | ClickHouse and Replit's New Rounds: Analysed",
+      "published": "2026-01-22T07:07:00+00:00"
+    },
+    {
+      "relevance": 5,
+      "credibility": 5,
+      "signal_quality": 5,
+      "recency_value": 5,
+      "context_quality": 5,
+      "overall_score": 5,
+      "is_high_signal": true,
+      "rationale": "This result is exceptionally high-signal, featuring OpenAI's CFO discussing the company's core strategy and operations in a very recent podcast where OpenAI is the primary focus. The context clearly highlights its relevance and the speaker's expertise.",
+      "rank": 2,
+      "system_score": "0.9",
+      "episode_title": "Episode 12 - State of the AI Industry",
+      "published": "2026-01-19T17:50:00+00:00"
+    },
+    {
+      "relevance": 5,
+      "credibility": 5,
+      "signal_quality": 5,
+      "recency_value": 5,
+      "context_quality": 5,
+      "overall_score": 5,
+      "is_high_signal": true,
+      "rationale": "This result is highly relevant, featuring an OpenAI operator discussing core research on future GPT models. It is extremely recent, published less than a month ago, and the context summary is excellent.",
+      "rank": 3,
+      "system_score": "0.9",
+      "episode_title": "[State of Post-Training] From GPT-4.1 to 5.1: RLVR, Agent & Token Efficiency \ufffd Josh McGrath, OpenAI",
+      "published": "2025-12-31T07:12:00+00:00"
+    },
+    {
+      "relevance": 5,
+      "credibility": 5,
+      "signal_quality": 4,
+      "recency_value": 4,
+      "context_quality": 5,
+      "overall_score": 5,
+      "is_high_signal": true,
+      "rationale": "This result is highly relevant as OpenAI is the primary focus, with internal operators discussing their core product development and internal strategies. It is very recent and the context promises deep insights into their work on GPT-5 and Codex.",
+      "rank": 4,
+      "system_score": "0.9",
+      "episode_title": "__GPT5-Codex-Max: Training Agents with Personality, Tools & Trust \ufffd Brian Fioca + Bill Chen, OpenAI",
+      "published": "2025-12-26T22:18:00+00:00"
+    },
+    {
+      "relevance": 5,
+      "credibility": 4,
+      "signal_quality": 5,
+      "recency_value": 5,
+      "context_quality": 5,
+      "overall_score": 5,
+      "is_high_signal": true,
+      "rationale": "This result is extremely recent (<1 month old) and features an OpenAI insider discussing core technical and strategic aspects, including internal dynamics and future developments. The context summary is highly detailed and useful.",
+      "rank": 5,
+      "system_score": "0.85",
+      "episode_title": "[State of RL/Reasoning] IMO/IOI Gold, OpenAI o3/GPT-5, and Cursor Composer \ufffd Ashvin Nair, Cursor",
+      "published": "2025-12-30T15:59:00+00:00"
+    }
+  ],
+  "metrics": {
+    "avg_overall_score": 4.8,
+    "precision_at_5": 100.0,
+    "results_graded": 5
+  }
+}

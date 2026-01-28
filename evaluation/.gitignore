@@ -1,0 +1,19 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+
+# Reports (optional - uncomment if you don't want to commit reports)
+# evaluation/reports/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/

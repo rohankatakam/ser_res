@@ -1,0 +1,26 @@
+{
+  "type": "ask_ai",
+  "query": "What is the bearish consensus on OpenAI into 2026?",
+  "timestamp": "2026-01-27T20:01:02.271214",
+  "grades": [
+    {
+      "citation_accuracy": 3,
+      "groundedness": 4,
+      "speaker_attribution": 2,
+      "completeness": 4,
+      "non_consensus_detection": 2,
+      "overall_score": 3,
+      "is_institutional_grade": false,
+      "rationale": "The response provides relevant bearish points for OpenAI, well-grounded by one strong citation. However, speaker attribution is weak, using vague phrases instead of naming individuals, and one citation is not directly relevant to the claim it supports. It also doesn't explicitly identify non-consensus views."
+    }
+  ],
+  "metrics": {
+    "citation_accuracy": 3,
+    "groundedness": 4,
+    "speaker_attribution": 2,
+    "completeness": 4,
+    "non_consensus_detection": 2,
+    "overall_score": 3,
+    "is_institutional_grade": false
+  }
+}

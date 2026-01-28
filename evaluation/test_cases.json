@@ -1,0 +1,44 @@
+{
+  "test_cases": [
+    {
+      "id": "org_search_001",
+      "type": "org_search",
+      "query": "OpenAI",
+      "description": "Search for OpenAI - expect operator interviews and high-signal episodes ranked high",
+      "expected_criteria": {
+        "top_results_should_include": ["Sam Altman interview", "OpenAI executive/employee", "Deep analysis episode"],
+        "top_results_should_avoid": ["Passing mentions", "Brief references"],
+        "credibility_expectation": "High-credibility speakers (operators, domain experts) should rank higher",
+        "relevance_expectation": "Episodes focused on OpenAI strategy should outrank brief mentions"
+      },
+      "data_file": "data/openai_org_search.csv"
+    },
+    {
+      "id": "ask_ai_001",
+      "type": "ask_ai",
+      "query": "What is the bearish consensus on OpenAI into 2026?",
+      "description": "Ask AI bearish consensus query - expect grounded answer with accurate citations",
+      "expected_criteria": {
+        "answer_should_include": ["Specific bearish arguments", "Speaker attributions", "Revenue/cost concerns"],
+        "citations_should_be": "Accurate and verifiable from transcript",
+        "groundedness": "Each claim should be backed by cited source",
+        "non_consensus_detection": "Should surface contrarian views if present"
+      },
+      "data_file": "data/openai_bearish_askia.csv"
+    }
+  ],
+  "grading_dimensions": {
+    "org_search": {
+      "relevance": "Is the result actually about the queried entity?",
+      "credibility": "Is the speaker an operator/expert on this topic?",
+      "signal_quality": "Is this a substantive discussion or passing mention?",
+      "recency": "How recent is the episode?"
+    },
+    "ask_ai": {
+      "citation_accuracy": "Do citations match the actual quoted content?",
+      "groundedness": "Are claims backed by cited sources?",
+      "speaker_attribution": "Are speakers identified in the answer?",
+      "completeness": "Does the answer address the question fully?"
+    }
+  }
+}
