@@ -1,0 +1,59 @@
+[
+  {
+    "id": "user_prosumer_ai",
+    "name": "AI Prosumer",
+    "category_interests": [
+      "Technology & AI",
+      "Startups, Growth & Founder Journeys"
+    ],
+    "subscribed_series": [
+      "dwarkesh-podcast-6fptkm",
+      "training-data-by-m3369e",
+      "invest-like-the--j397bp"
+    ],
+    "seen_episode_ids": [],
+    "bookmarked_episode_ids": [],
+    "not_interested_ids": []
+  },
+  {
+    "id": "user_prosumer_crypto",
+    "name": "Crypto Prosumer",
+    "category_interests": [
+      "Crypto & Web3",
+      "Technology & AI"
+    ],
+    "subscribed_series": [
+      "all-in-with-cham-jegter",
+      "bg2-with-brad-ge-z8macx",
+      "the-twenty-minut-rpn37e"
+    ],
+    "seen_episode_ids": [],
+    "bookmarked_episode_ids": [],
+    "not_interested_ids": []
+  },
+  {
+    "id": "user_prosumer_markets",
+    "name": "Markets Prosumer",
+    "category_interests": [
+      "Public Markets",
+      "Macroeconomics"
+    ],
+    "subscribed_series": [
+      "the-full-ratchet-6odpur",
+      "no-priors-artifi-dlfv4f",
+      "lex-fridman-7mv783i7"
+    ],
+    "seen_episode_ids": [],
+    "bookmarked_episode_ids": [],
+    "not_interested_ids": []
+  },
+  {
+    "id": "user_cold_start",
+    "name": "New User (Cold Start)",
+    "category_interests": [],
+    "subscribed_series": [],
+    "seen_episode_ids": [],
+    "bookmarked_episode_ids": [],
+    "not_interested_ids": []
+  }
+]

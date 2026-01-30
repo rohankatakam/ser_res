@@ -1,0 +1,93 @@
+{
+  "total_episodes": 561,
+  "total_series": 67,
+  "curated_series": 44,
+  "episodes_with_aggregate_score": 128,
+  "episodes_with_critical_views": 6,
+  "non_consensus_levels": {
+    "highly_non_consensus": 6,
+    "somewhat_insightful": 5
+  },
+  "avg_insight_score": 2.6042780748663104,
+  "avg_credibility_score": 3.199643493761141,
+  "major_categories": {
+    "Technology & AI": 108,
+    "Startups, Growth and Founder Journeys": 95,
+    "Macro, Investing & Market Trends": 86,
+    "Crypto & Web3": 64,
+    "Regulation & Policy": 44,
+    "Venture & Private Markets": 36,
+    "Culture, Society & Wellbeing": 30
+  },
+  "subcategories": {},
+  "category_taxonomy_count": 7,
+  "top_entities": {
+    "Google": 50,
+    "OpenAI": 50,
+    "Anthropic": 50,
+    "Meta": 50,
+    "Microsoft": 50,
+    "Tesla": 50,
+    "Nvidia": 43,
+    "NVIDIA": 7
+  },
+  "top_people": {
+    "Elon Musk": 50,
+    "Sam Altman": 50,
+    "Chamath Palihapitiya": 45,
+    "Jensen Huang": 31
+  },
+  "top_series_by_serafis_score": [
+    {
+      "name": "Dwarkesh Podcast",
+      "serafis_score": 98,
+      "tier": "Top 5%"
+    },
+    {
+      "name": "Training Data",
+      "serafis_score": 95,
+      "tier": "Top 20%"
+    },
+    {
+      "name": "Invest Like the Best with Patrick O'Shaughnessy",
+      "serafis_score": 93,
+      "tier": "Top 0.3%"
+    },
+    {
+      "name": "All-In with Chamath, Jason, Sacks & Friedberg",
+      "serafis_score": 92,
+      "tier": "Top 0.1%"
+    },
+    {
+      "name": "BG2Pod with Brad Gerstner and Bill Gurley ",
+      "serafis_score": 86,
+      "tier": "Top 5%"
+    },
+    {
+      "name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+      "serafis_score": 83,
+      "tier": "Top 5%"
+    },
+    {
+      "name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+      "serafis_score": 82,
+      "tier": "Top 5%"
+    },
+    {
+      "name": "No Priors: Artificial Intelligence | Technology | Startups",
+      "serafis_score": 80,
+      "tier": "Top 5%"
+    },
+    {
+      "name": "Lex Fridman Podcast",
+      "serafis_score": 80,
+      "tier": "Top 0.1%"
+    },
+    {
+      "name": "Grit",
+      "serafis_score": 79,
+      "tier": "Top 5%"
+    }
+  ],
+  "extraction_date": "2026-01-29T15:51:51.980292"
+}

@@ -1,0 +1,1317 @@
+{
+    "execution": "019c0bec-1cf2-72ca-b5c3-9e1f8475dec9",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "categories",
+                "tag_value": "Crypto & Web3"
+            },
+            "res": [
+                {
+                    "content_id": "crypto-sentiment-j622hg-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Crypto Sentiment Is Down Bad. The Reality Is Far Different, Says Ryan Watkins",
+                    "content_type": "podcast_episodes",
+                    "id": "Ay3Zf2NDuuuSa2WB74nK",
+                    "publish_date": "2026-01-29T18:47:00+00:00",
+                    "query_doc_id": "asmb-05e44c9b-18e9-4c84-8464-fe3cb50764fb",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is clearly the primary focus of the entire conversation, covering crypto market dynamics, Bitcoin vs altcoins performance, DeFi evolution, tokenomics, NFTs, and the overall state of the crypto industry. The discussion spans market cycles, institutional adoption, and various crypto sectors throughout the episode.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-daos-unclaim-jsstb5-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The DAO’s Unclaimed ETH Becomes a $250M Ethereum Security Fund",
+                    "content_type": "podcast_episodes",
+                    "id": "2LUSympdKXMYYXxtGwe6",
+                    "publish_date": "2026-01-29T17:00:00+00:00",
+                    "query_doc_id": "asmb-e12c8bab-feb2-494b-8a5d-e903f179271b",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the entire conversation, covering the DAO Security Fund announcement, Ethereum security initiatives, the original DAO hack and recovery efforts, crypto wallet security, and the broader crypto ecosystem. The discussion centers entirely around cryptocurrency, blockchain technology, and Web3 infrastructure throughout the episode.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-chopping-blo-jd84uq-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Chopping Block: RWA Perps Go Parabolic, ClawdBot, & Superstate's $82M Raise",
+                    "content_type": "podcast_episodes",
+                    "id": "plvTOAY4g9XNGPpz6EqJ",
+                    "publish_date": "2026-01-29T15:16:00+00:00",
+                    "query_doc_id": "asmb-5c2304d3-06b4-440b-a716-2afd21f4b1e8",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the conversation, covering tokenization models, RWA perps trading on hyperliquid, crypto trader behavior shifts, and meme coins around AI tools. The discussion extensively explores how crypto markets are evolving and adapting to new technologies and trading patterns.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-most-underra-fc0aqp-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Most Underrated Chain: Celo’s Surprising Traction Around the World | Marek Olszewski",
+                    "content_type": "podcast_episodes",
+                    "id": "5F8L96HDRCjfKKTMSvHq",
+                    "publish_date": "2026-01-29T11:30:00+00:00",
+                    "query_doc_id": "asmb-7ae720bc-afdb-4593-8e0e-e775f51142b2",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Celo's blockchain technology, stablecoin payments, P2P transactions, DeFi protocols, and the broader crypto ecosystem. The discussion extensively covers technical aspects like EVM compatibility, L2 transitions, ZK proofs, and crypto adoption metrics.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "gold-to-12000-or-t7hs23-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Gold to $12,000 or “Sell Gold Today”? – Bits + Bips",
+                    "content_type": "podcast_episodes",
+                    "id": "hSAaHzBoMtqWVE2IsiSN",
+                    "publish_date": "2026-01-28T13:07:00+00:00",
+                    "query_doc_id": "asmb-3ad705e3-4eb8-4720-9ed6-f39120263259",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Bitcoin and cryptocurrency are integral to several major discussion points, particularly around Bitcoin's performance as a risk asset, its comparison to gold as 'digital gold,' and the significant quantum computing threat to Bitcoin's encryption. The quantum risk discussion alone represents a substantial portion of the conversation and is treated as a major factor capping Bitcoin's price appreciation.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "ben-horowitz-and-moep3h-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz and Balaji Srinivasan on Netscape and Network States",
+                    "content_type": "podcast_episodes",
+                    "id": "ncmKUOV6Ldg9tjt4kOvm",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-dd9c05a4-2808-4609-bfea-643c5bd6593d",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Crypto and blockchain technology is the primary focus throughout the conversation, with extensive discussion of Bitcoin, smart contracts, stablecoins, and how crypto enables new forms of governance and economic coordination. The speakers explore crypto's role in network states, its regulatory challenges, and its potential to replace traditional financial and legal systems.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "standard-charter-9afwmh-iujaza",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Standard Chartered CEO: Global Banking, Geopolitical Shifts and the Future of Blockchain",
+                    "content_type": "podcast_episodes",
+                    "id": "LETlAm8dSHDENIbwlLAs",
+                    "publish_date": "2026-01-28T04:00:00+00:00",
+                    "query_doc_id": "asmb-25d65ce8-0378-4002-83f1-af42eabede4c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "in-good-company--iujaza",
+                    "series_name": "In Good Company with Nicolai Tangen",
+                    "tag_context": "Winters discusses Standard Chartered's leadership in digital assets and blockchain technology, explaining their view that all assets will eventually settle on blockchains. He covers the benefits of blockchain-based settlement, regulatory challenges, and the bank's seven-year investment in institutional-grade platforms for digital payments and stablecoins.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "bitgo-ipo-hip-3--e2ue43-plezme",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "BITGO IPO, HIP-3, KNTQ | Livestream",
+                    "content_type": "podcast_episodes",
+                    "id": "iwPd7N0IJ3InfAR7XPex",
+                    "publish_date": "2026-01-27T19:55:00+00:00",
+                    "query_doc_id": "asmb-c30d4b80-55ef-4cdc-8833-ceffe72cf038",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "0xresearch-ljplezme",
+                    "series_name": "0xResearch",
+                    "tag_context": "This is the primary focus of the conversation, covering crypto market dynamics, specific projects like Hyperliquid and Kinetic, staking mechanisms, and the broader crypto ecosystem. The discussion extensively covers crypto trading platforms, tokenomics, and various crypto assets throughout the entire episode.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "zcash-founder-on-tk6pxk-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Zcash Founder on Privacy, AI, and How ZEC is 'Encrypted Bitcoin' | Zooko Wilcox-O'Hearn",
+                    "content_type": "podcast_episodes",
+                    "id": "sk78ZlyYk5IMbNrk0HBK",
+                    "publish_date": "2026-01-26T11:56:00+00:00",
+                    "query_doc_id": "asmb-fe41866a-3a08-48c6-ab87-ccee5f2b3b95",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Zcash, privacy coins, blockchain technology, DeFi, and the broader crypto ecosystem. The entire interview centers around Zcash's development, the crypto movement's goals, and technical aspects of privacy-focused cryptocurrencies.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "why-the-future-o-wnqvjc-fw7dbr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why the Future of Finance Runs in Software | Jeremy Allaire",
+                    "content_type": "podcast_episodes",
+                    "id": "99RHagV9Wcf5Qb8T69pe",
+                    "publish_date": "2026-01-26T10:29:06+00:00",
+                    "query_doc_id": "asmb-9d85737f-8796-468e-b10d-dba2388058e2",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "grit-by-kleiner--fw7dbr",
+                    "series_name": "Grit",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of USDC stablecoin, blockchain networks as economic operating systems, and the vision of companies becoming 'on-chain' entities. The entire conversation revolves around Circle's role in building Internet financial infrastructure using blockchain technology.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-future-of-ev-kbxha1-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Future of Everything: What CEOs of Circle, CrowdStrike & More See Coming in 2026",
+                    "content_type": "podcast_episodes",
+                    "id": "wYbWvpefWYwTy6Qvjyft",
+                    "publish_date": "2026-01-25T19:52:00+00:00",
+                    "query_doc_id": "asmb-0e58a123-610d-45bc-a407-ac1109ab42b5",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "A substantial portion focuses on stablecoins, cryptocurrency regulation, and the digital asset ecosystem through the Circle interview. The discussion covers USDC's growth, regulatory compliance, the competitive landscape with Tether, and the infrastructure for digital payments and programmable money.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "bits-bips-why-go-jwomau-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Bits + Bips: Why Gold Still Dominates — And What Bitcoin Must Prove",
+                    "content_type": "podcast_episodes",
+                    "id": "40oGfZWBYbBAEv7i9xDP",
+                    "publish_date": "2026-01-24T02:53:00+00:00",
+                    "query_doc_id": "asmb-097e3c1d-6c41-4c08-ae68-d5d0ecd11da9",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Bitcoin's performance as a store of value versus gold is the central theme throughout the conversation. The discussion extensively covers Bitcoin's volatility, its failure to act as a safe haven during market stress, the impact of ETFs on Bitcoin adoption, and comparisons with stablecoins and tokenized gold.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "coinbase-ceo-bri-fcz1ia-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Coinbase CEO Brian Armstrong Breaks Down the Three Biggest Trends in Crypto + More from Davos!",
+                    "content_type": "podcast_episodes",
+                    "id": "VTwstVuAeLcy042SeKeu",
+                    "publish_date": "2026-01-23T18:37:00+00:00",
+                    "query_doc_id": "asmb-0d9b65e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of cryptocurrency regulation, stablecoins, banking partnerships, and the future of digital assets. Brian Armstrong's interview dominates the content, covering Coinbase's business model, regulatory challenges, and crypto adoption trends.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "from-oculus-to-a-mo7d5g-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "From Oculus to Anduril: Palmer Luckey on Power, Technology, and the Future",
+                    "content_type": "podcast_episodes",
+                    "id": "0a3AiPO5PU2QXefV29RZ",
+                    "publish_date": "2026-01-23T13:00:00+00:00",
+                    "query_doc_id": "asmb-ab52d53e-0fd8-45a3-8b48-a04460545768",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "Multiple segments discuss Luckey's early Bitcoin involvement, the planned Bitcoin integration at Oculus, his new banking venture Erebor with stablecoin support, and broader crypto adoption themes. While not central to the main narrative, it represents a meaningful thread connecting his various ventures and forward-looking financial infrastructure views.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "uneasy-money-why-c6xoeb-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uneasy Money: Why Crypto Still Can't Overcome Its ICO Struggles",
+                    "content_type": "podcast_episodes",
+                    "id": "dqFJeWwYNNtdUIpknKik",
+                    "publish_date": "2026-01-23T11:19:00+00:00",
+                    "query_doc_id": "asmb-4313f988-9431-4af9-8e6e-a46c98b6bd8c",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is clearly the primary focus of the entire conversation, covering crypto token launches, ICO failures, blockchain infrastructure, DeFi protocols, NFTs, and various crypto projects like Trove, Farcaster, and Ethereum ecosystem developments. The discussion spans over 80% of the content with deep technical and strategic analysis of the crypto space.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "rollup-trump-eye-o0npg2-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "ROLLUP: Trump Eyes Greenland | Davos Goes Crypto | NYSE Goes Onchain | Quantum Spooks Bitcoin | Farcaster + Lens Acquired",
+                    "content_type": "podcast_episodes",
+                    "id": "5tHIqFUhfZ0gJt4r016P",
+                    "publish_date": "2026-01-23T06:30:00+00:00",
+                    "query_doc_id": "asmb-90ce1455-db25-4f9e-a8a4-7af74f9a2c65",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is clearly the primary focus of the conversation, covering Bitcoin price movements, Ethereum developments, decentralized social platforms (Farcaster and Lens acquisitions), tokenization platforms, quantum computing threats to Bitcoin, and various crypto market dynamics. The entire discussion revolves around cryptocurrency and blockchain technology developments.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-chopping-blo-obuy0h-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Chopping Block: Crypto Clarity Act Drama + Stablecoin Yield Wars + Developer Liability Fights",
+                    "content_type": "podcast_episodes",
+                    "id": "V71yArdcbLBspaXOD6xq",
+                    "publish_date": "2026-01-22T04:07:00+00:00",
+                    "query_doc_id": "asmb-a2951298-af24-4e86-a028-fe9010938da2",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "The discussion is deeply embedded in crypto-specific topics including DeFi protocols, stablecoins, tokenized securities, developer liability, and blockchain technology. All regulatory discussions are specifically about how they impact the crypto ecosystem and various crypto business models.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "dex-in-the-city--37kdty-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DEX in the City: When NYSE Goes Onchain, What Happens to Financial Intermediaries?",
+                    "content_type": "podcast_episodes",
+                    "id": "qJIjE0z1HSP5UiV6XeCN",
+                    "publish_date": "2026-01-22T03:11:00+00:00",
+                    "query_doc_id": "asmb-79b3e564-f266-43e4-90a0-016411c2f734",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the entire conversation, with extensive discussion of tokenization, blockchain technology, on-chain securities, DeFi capabilities, and the intersection of traditional finance with crypto. The entire episode revolves around how blockchain technology is transforming securities markets.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "how-nansens-new--vywfyf-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Nansen’s New Trading Agent Makes It Easier to Follow the Smart Money Onchain",
+                    "content_type": "podcast_episodes",
+                    "id": "D9VIP54kRlwJpYXs83TI",
+                    "publish_date": "2026-01-21T20:00:00+00:00",
+                    "query_doc_id": "asmb-964e1298-af24-4e86-a028-fe9010938da2",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "The entire conversation centers around crypto trading, on-chain analytics, DeFi protocols, and blockchain infrastructure. Alex discusses Nansen's evolution from on-chain analytics to integrated trading, covers multiple blockchain ecosystems (Solana, Base, Ethereum), and explores how crypto market structure will evolve with AI-powered tools.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "why-bitcoin-isn--tnm95z-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why Bitcoin Isn't Acting as Digital Gold & International Stocks Are Winning - Bits + Bips",
+                    "content_type": "podcast_episodes",
+                    "id": "NVqLIXxufIdtHnsjjXxi",
+                    "publish_date": "2026-01-21T05:11:00+00:00",
+                    "query_doc_id": "asmb-bed45fc6-adfb-43fd-bb54-74955ea3dac4",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the conversation, covering Bitcoin's performance relative to gold, stablecoin adoption, tokenization of traditional assets by NYSE, and the broader crypto market dynamics. The discussion extensively covers crypto market structure, digital assets, and blockchain technology applications throughout the episode.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "megaeth-pump-nys-mbqe8u-plezme",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "MegaETH, Pump, NYSE | Livestream",
+                    "content_type": "podcast_episodes",
+                    "id": "0nJbYuaUOdxqT1K5wMYb",
+                    "publish_date": "2026-01-19T19:37:00+00:00",
+                    "query_doc_id": "asmb-74399fda-387e-4546-a174-c74b2fa1f620",
+                    "rel_icon": "stars",
+                    "score": 0.65,
+                    "series_id": "0xresearch-ljplezme",
+                    "series_name": "0xResearch",
+                    "tag_context": "This is clearly the primary focus of the entire conversation, covering crypto trading platforms, DeFi protocols, blockchain infrastructure, token economics, and various crypto projects like Pump, Axiom, MegaETH, and others. The discussion spans trading bots, wallet applications, tokenization, and the broader crypto ecosystem throughout the entire transcript.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "bits-bips-why-gr-8a627f-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Bits + Bips: Why Grayscale Sees ATHs Before Q3, With ETH Outperforming",
+                    "content_type": "podcast_episodes",
+                    "id": "IQU4WYRXQAnJuA306cdf",
+                    "publish_date": "2026-01-19T18:41:00+00:00",
+                    "query_doc_id": "asmb-87119fda-387e-4546-a174-c74b2fa1f620",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is clearly the primary focus of the conversation, with extensive discussion of Bitcoin and Ethereum price movements, crypto ETFs, DeFi, stablecoins, and blockchain platforms. The entire interview centers around cryptocurrency markets, adoption, and ecosystem developments.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "clay-robbins-bui-nbcbk4-kl1x3i",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Clay Robbins: Building Colosseum, Solana’s Largest Hackathon & Accelerator with 80,000 Participants",
+                    "content_type": "podcast_episodes",
+                    "id": "Ot9iIfXnPdqEXsMeB67z",
+                    "publish_date": "2026-01-19T14:13:10+00:00",
+                    "query_doc_id": "asmb-ecaca5c6-0d83-4dd5-9178-50137f0d2f32",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "the-delphi-podca-kl1x3i",
+                    "series_name": "The Delphi Podcast",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Solana ecosystem development, blockchain infrastructure, DeFi applications, stablecoins, and crypto-native products. The entire conversation revolves around building in the crypto space and Solana's technical advantages.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-duopolies-of-xiummw-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Duopolies of 2026: Ethereum & Solana, Coinbase & Robinhood, Polymarket & Kalshi | Ryan, David & Arnav Pagidyala",
+                    "content_type": "podcast_episodes",
+                    "id": "iQsqKWaROlCNrgKMExGR",
+                    "publish_date": "2026-01-19T11:30:00+00:00",
+                    "query_doc_id": "asmb-e94e3ec2-978c-443f-a28f-56b719fca014",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is clearly the primary focus of the conversation, with extensive discussion of blockchain ecosystems (Ethereum vs Solana), DeFi protocols (Morpho, AAVE), crypto exchanges, prediction markets, and the overall crypto infrastructure landscape. The entire conversation revolves around crypto market dynamics and Web3 technologies.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "q-day-is-imminen-x4nb26-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Q-Day Is Imminent. Can Bitcoin Survive the Quantum Threat?",
+                    "content_type": "podcast_episodes",
+                    "id": "j3dpaG9wRVR4gBYojHzl",
+                    "publish_date": "2026-01-18T22:23:00+00:00",
+                    "query_doc_id": "asmb-b6f71cd5-e692-4986-ad0d-3c8e5859ce18",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "The entire conversation revolves around the existential threat quantum computing poses to Bitcoin and other cryptocurrencies, examining cryptographic vulnerabilities, blockchain security, and the massive migration effort required across all crypto networks. This is equally central to the discussion as the quantum computing technology itself, representing the other primary focus of the conversation.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "uneasy-money-in--pmbirg-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Uneasy Money: In a World of AI, Are Dino Privacy Coins a Good Bet?",
+                    "content_type": "podcast_episodes",
+                    "id": "uwz5qYx5jH3Efq4DtMzZ",
+                    "publish_date": "2026-01-18T07:15:00+00:00",
+                    "query_doc_id": "asmb-ff961724-8561-4327-9082-374ad69b60d5",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is clearly the primary focus of the conversation, covering cryptocurrency market trends, privacy coins like Monero and Zcash, Ethereum's technical roadmap, meme coins and scams, blockchain competition, and social media integration with crypto trading. The entire discussion revolves around crypto and Web3 topics.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "polygon-s-big-pi-k3yplm-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Polygon's Big Pivot: Why the Network Is Pivoting to Payments and What It Means for POL",
+                    "content_type": "podcast_episodes",
+                    "id": "UHvS45JtRvhLqG2U0Tgo",
+                    "publish_date": "2026-01-17T05:27:00+00:00",
+                    "query_doc_id": "asmb-8be34954-0db6-432c-9d80-494633ffe392",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Polygon's strategic pivot to become a payments-focused blockchain, stablecoin infrastructure, Web3 wallet services, and the broader crypto ecosystem. The discussion centers on blockchain technology, cryptocurrency payments, and Web3 infrastructure throughout over 80% of the content.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "why-bitcoin-has--3kjxrn-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why Bitcoin Has Fallen Behind Gold & What Could Come Next",
+                    "content_type": "podcast_episodes",
+                    "id": "uZcy4YbB5XDln9iGlQHb",
+                    "publish_date": "2026-01-17T05:22:00+00:00",
+                    "query_doc_id": "asmb-702da06e-21f6-47c0-adaa-a5db2bdfc0c5",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Significant discussion about Bitcoin's evolution from digital cash to store of value, its limitations for large-scale adoption, privacy concerns, quantum computing threats, and the introduction of Zash as a gold-backed stablecoin. While important, it's positioned within the broader investment and macro context.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "kaito-lighter-an-yfn1no-plezme",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Kaito, Lighter, and Prediction Markets | Livestream",
+                    "content_type": "podcast_episodes",
+                    "id": "EKyQxXvKcMvzpMZkscPE",
+                    "publish_date": "2026-01-16T22:20:00+00:00",
+                    "query_doc_id": "asmb-a98b2d6e-2e93-43d9-9dbd-61415b278f8f",
+                    "rel_icon": "stars",
+                    "score": 0.7,
+                    "series_id": "0xresearch-ljplezme",
+                    "series_name": "0xResearch",
+                    "tag_context": "This is the primary focus of the entire conversation, covering multiple crypto protocols including Lighter, Hyperliquid, Kaito, and Pump.fun. The hosts discuss trading volumes, token performance, market share analysis, and various DeFi protocols throughout the episode.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "why-bitcoin-has--8a3i9t-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why Bitcoin Has Fallen Behind Gold & What Could Come Next",
+                    "content_type": "podcast_episodes",
+                    "id": "Ti11kybMl5ObmrRswka1",
+                    "publish_date": "2026-01-16T09:10:00+00:00",
+                    "query_doc_id": "asmb-9171b7f2-1ebb-4ec3-a17f-a66fcfd85a3b",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Bitcoin and cryptocurrency are central to the discussion, including analysis of bitcoin's limitations as a reserve asset, the announcement of Zash (a gold-backed stablecoin), and debates about bitcoin's future prospects. This theme is integral to understanding the main investment thesis being presented.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "bits-bips-how-ai-cc51aw-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Bits + Bips: How AI and Energy Prices Will Force the Fed’s Hand",
+                    "content_type": "podcast_episodes",
+                    "id": "ZQa3HbIlS8QEqw1XtXjk",
+                    "publish_date": "2026-01-15T07:39:00+00:00",
+                    "query_doc_id": "asmb-f798483e-2464-44aa-bed9-29396603f0b1",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Crypto is covered in multiple segments including Bitcoin's role as digital gold, stablecoin freeze capabilities in Venezuela, the Market Structure Act challenges, and crypto's intersection with AI. While not the core focus, it supports important secondary themes about monetary policy and regulatory frameworks.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "dex-in-the-city--zzaea7-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DEX in the City: Why the Market Structure Bill May Not Be Good for DeFi",
+                    "content_type": "podcast_episodes",
+                    "id": "MZXl1ZgPxktrQ70I3qI4",
+                    "publish_date": "2026-01-15T03:58:00+00:00",
+                    "query_doc_id": "asmb-681fc55d-38ef-427e-b2ba-9b6f31a1d7ae",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "The discussion is fundamentally about crypto and Web3 technologies, covering DeFi protocols, stablecoins like Tether, blockchain governance, smart contracts, and the technical aspects of decentralized systems. This theme is integral to understanding all the regulatory discussions.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-chopping-blo-ywzw7b-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Chopping Block: Venezuela Sanctions Drama + Polymarket Insider Trading + Zcash Foundation Exodus",
+                    "content_type": "podcast_episodes",
+                    "id": "QOhzLGDgSzGSFVUhyb4E",
+                    "publish_date": "2026-01-14T19:13:00+00:00",
+                    "query_doc_id": "asmb-ef1c2b81-8ca2-4a31-b3c7-defcb0f33e56",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the entire conversation, covering multiple crypto-related topics including Venezuela's use of stablecoins and Tether, the Contigo fintech company's crypto operations, Polymarket prediction markets, and the Zcash foundation governance drama. The discussion extensively explores stablecoin adoption, crypto wallets, and blockchain governance structures.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "nobody-s-gonna-t-duxftp-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Nobody's Gonna Trust Your Corp Chain",
+                    "content_type": "podcast_episodes",
+                    "id": "zi1aQ6ke1b3hGaXWMNYV",
+                    "publish_date": "2026-01-14T10:00:00+00:00",
+                    "query_doc_id": "asmb-3914e698-77b3-4d62-8a47-33739d62f7fd",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Bitcoin's role as both store of value and medium of exchange, the failure of Facebook's Libra project, corporate chains vs. decentralized networks, stablecoins, and the future of digital payments. The discussion centers entirely around cryptocurrency infrastructure and Web3 concepts.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "how-venezuela-sh-xfrzg1-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Venezuela Shows Why Bitcoin, Crypto and Stablecoins Help Everyday People",
+                    "content_type": "podcast_episodes",
+                    "id": "ddMBO16lyRBpE3c5WwJj",
+                    "publish_date": "2026-01-13T12:14:00+00:00",
+                    "query_doc_id": "asmb-f0395c50-f43e-4f1c-8d2b-7656672b6e98",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Bitcoin mining in Venezuela, stablecoin adoption for daily transactions and remittances, the failed Petro cryptocurrency, and how crypto assets serve as financial infrastructure for Venezuelans. The discussion extensively explores how Bitcoin and stablecoins provide financial freedom and stability in a hyperinflationary economy.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "hip-3-market-des-1uvlr8-plezme",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "HIP-3 Market Design and Felix’s Role | Charlie, Felix Protocol",
+                    "content_type": "podcast_episodes",
+                    "id": "UL0JGvU1TrFZwKBMPJiG",
+                    "publish_date": "2026-01-12T14:00:00+00:00",
+                    "query_doc_id": "asmb-0d2ff874-a1a0-4e31-abde-45e19e3ad516",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "0xresearch-ljplezme",
+                    "series_name": "0xResearch",
+                    "tag_context": "This is clearly the primary focus of the conversation, with extensive discussion of Hyperliquid's ecosystem, spot trading markets, HIP-3 protocols, decentralized exchanges, and various DeFi protocols like Felix, Unit, and others. The entire conversation revolves around crypto trading infrastructure, tokenomics, and blockchain-based financial products.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "is-canton-a-real-dax0wf-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Is Canton a Real Blockchain? | Canton Founder Yuval Rooz",
+                    "content_type": "podcast_episodes",
+                    "id": "rtv7Hgc614tEijLXpAP1",
+                    "publish_date": "2026-01-12T11:30:00+00:00",
+                    "query_doc_id": "asmb-d1bb77be-d07c-483a-a97a-18ffb9604c29",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is the primary focus of the entire conversation, with extensive discussion of Canton Network's blockchain architecture, comparison to Ethereum and Bitcoin, real-world asset tokenization, decentralization vs. privacy trade-offs, and the philosophical differences between various blockchain approaches. The conversation centers on blockchain technology, tokenomics, and crypto-native values throughout.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "how-aave-labs-an-ea8phk-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Aave Labs and the DAO Should Split Ownership of the Brand - Uneasy Money",
+                    "content_type": "podcast_episodes",
+                    "id": "AdtaFRPFsrV2HqBUv3au",
+                    "publish_date": "2026-01-12T07:00:00+00:00",
+                    "query_doc_id": "asmb-2b94db52-b37d-40fd-841e-2fc299e32ac4",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of AAVE's governance war, DAO structures, protocol ownership, brand asset control, and the broader question of who controls DeFi protocols. The conversation also covers prediction markets, insider trading in crypto contexts, and various Web3 governance mechanisms throughout the episode.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "ceo-vlad-tenev-o-fdxbcv-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "CEO Vlad Tenev on Robinhood's Record Year (+200%, ~$100B Market Cap)",
+                    "content_type": "podcast_episodes",
+                    "id": "n6dxVdY5u4hL4nmLdFdl",
+                    "publish_date": "2026-01-10T14:00:00+00:00",
+                    "query_doc_id": "asmb-778934cc-dcbf-4d53-81e8-ba461d86e22d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Extensive discussion of tokenization of stocks, with 1,500 stocks now tokenized for European trading, stablecoins as examples of tokenized assets, and the potential for tokenizing private companies and other assets. The conversation explores how crypto infrastructure can solve traditional finance liquidity problems and enable 24/7 trading.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "dex-in-the-city--4uumhj-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DEX in the City: Why Prediction Market 'Insider Trading' Isn't Illegal — Yet",
+                    "content_type": "podcast_episodes",
+                    "id": "jByoPLLWgOcX7x3KAynF",
+                    "publish_date": "2026-01-10T02:03:00+00:00",
+                    "query_doc_id": "asmb-258a44f7-9822-4bc7-befd-cd6f4085dd9b",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the conversation, covering Canton Network's permissioned blockchain for TradFi, NASDAQ's role as a super validator, AI agents using stablecoins for micropayments, and prediction markets like Polymarket. The entire discussion is anchored around crypto infrastructure and Web3 applications.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "aerodromes-big-u-g3fual-plezme",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Aerodrome’s Big Upgrade | Alexander Cutler",
+                    "content_type": "podcast_episodes",
+                    "id": "Ksq7uI7TAvOG9eYUv5y4",
+                    "publish_date": "2026-01-09T21:45:00+00:00",
+                    "query_doc_id": "asmb-2d38fd52-214a-4fdf-b943-a76a70a102ff",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "0xresearch-ljplezme",
+                    "series_name": "0xResearch",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Arrow's (formerly Aerodrome) protocol upgrades, tokenomics, cross-chain expansion, DEX competition, and technical features like Slipstream v3 and Metaswaps. The discussion centers entirely on DeFi protocols, AMM mechanics, and blockchain infrastructure.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "why-2026-is-too--2ijx9h-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why 2026 Is 'Too Chaotic' to Make Crypto Predictions",
+                    "content_type": "podcast_episodes",
+                    "id": "8Sv97Q0wX5mKVZJQClu1",
+                    "publish_date": "2026-01-09T17:18:00+00:00",
+                    "query_doc_id": "asmb-4f547484-4818-4015-90f7-ab01f271b917",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is clearly the primary focus of the conversation, with extensive discussion of Bitcoin, Ethereum, Solana, stablecoins, prediction markets, privacy coins, and various crypto protocols and applications. The entire episode is dedicated to 2026 crypto predictions and market analysis.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "nic-carter-quant-tlq3kk-kl1x3i",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Nic Carter: Quantum Threatens $600B of Bitcoin",
+                    "content_type": "podcast_episodes",
+                    "id": "OlvUakVlGTEj0qE1Emwj",
+                    "publish_date": "2026-01-09T16:04:45+00:00",
+                    "query_doc_id": "asmb-ba207584-4818-4015-90f7-ab01f271b917",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "the-delphi-podca-kl1x3i",
+                    "series_name": "The Delphi Podcast",
+                    "tag_context": "Bitcoin's vulnerability to quantum computing attacks is the core premise of the entire discussion. The conversation deeply explores Bitcoin's cryptographic foundations, address types, the risks to Satoshi's coins and other vulnerable wallets, potential solutions like post-quantum cryptography, and the challenges of upgrading Bitcoin's protocol.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "ceo-vlad-tenev-o-r6380s-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "CEO Vlad Tenev on Robinhood's Record Year (+200%, ~$100B Market Cap)",
+                    "content_type": "podcast_episodes",
+                    "id": "u1jZ4WbU6SYSyAq21myr",
+                    "publish_date": "2026-01-09T14:35:56+00:00",
+                    "query_doc_id": "asmb-f31a33dc-9fe3-435d-a1db-6c30a58b027d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Meaningful discussion of tokenization technology for stocks, the mechanics of creating tradeable tokens backed by real assets, and how crypto infrastructure can solve liquidity problems in traditional finance. While not the main focus, it's integral to understanding Robinhood's expansion strategy.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "rollup-predictio-66unoo-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "ROLLUP: Prediction Market Bill | Solana DEX ATH | ETH Stablecoins ATH | Zcash Implodes | Vitalik “Trilemma Solved”",
+                    "content_type": "podcast_episodes",
+                    "id": "K0QEozXSReURZYVyu5UK",
+                    "publish_date": "2026-01-09T11:30:00+00:00",
+                    "query_doc_id": "asmb-b279e399-f51f-49d6-854e-1dde10f33121",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is clearly the primary focus of the conversation, covering multiple crypto topics including Solana DEX volumes, Ethereum stablecoin transfers, Zcash governance issues, token airdrops, blockchain trilemma solutions, and various crypto market developments. The entire episode is structured around crypto industry updates and analysis.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-chopping-blo-9mnlt2-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Chopping Block: 2025 Winners & Losers + 2026 Predictions - Ep. 998",
+                    "content_type": "podcast_episodes",
+                    "id": "Y4nda9wje6oH8VmiLbCb",
+                    "publish_date": "2026-01-08T17:00:00+00:00",
+                    "query_doc_id": "asmb-af0cde9b-6a3a-40c4-bab0-a570a2607c17",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is clearly the primary focus of the entire conversation, with the hosts conducting a comprehensive year-end review of crypto markets, discussing winners and losers across various crypto sectors, analyzing specific protocols and tokens, and making predictions for 2026. The entire episode revolves around crypto industry analysis and commentary.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "how-maduro-s-cap-57s1xe-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Maduro's Capture and a 'Pre-War World' Affects Bitcoin: Bits + Bips",
+                    "content_type": "podcast_episodes",
+                    "id": "gIqCemecMHMICxVihrdA",
+                    "publish_date": "2026-01-07T18:30:00+00:00",
+                    "query_doc_id": "asmb-649cfc93-fe97-435b-b9a4-ac5389388cdd",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Bitcoin's price movements and market dynamics are discussed extensively throughout, including its correlation with Trump's political success, the potential for Venezuelan crypto assets to seed a US strategic reserve, and the adoption of US dollar stablecoins in Latin America. The crypto discussion is integral to understanding the geopolitical implications being analyzed.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-obsession-th-zmujqh-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Obsession That Destroys Startups (with LayerZero CEO)",
+                    "content_type": "podcast_episodes",
+                    "id": "XLvl3ToAUEFTbp13PIRy",
+                    "publish_date": "2026-01-07T10:00:00+00:00",
+                    "query_doc_id": "asmb-321280f0-d601-47e0-a5bc-61d87ae594b2",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of blockchain interoperability, LayerZero's role in enabling cross-chain communication, the multi-chain future, and crypto's competition with traditional financial systems. The technical aspects of crypto infrastructure and its adoption by institutions permeates the majority of the content.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "how-the-stableco-1qrlot-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How the Stablecoin Milkshake will Redollarize the World | Brent Johnson",
+                    "content_type": "podcast_episodes",
+                    "id": "MpTnU5evv40jTNRNWIIE",
+                    "publish_date": "2026-01-05T11:30:00+00:00",
+                    "query_doc_id": "asmb-cdcb536d-1dde-4ce6-b9e1-f428d99025fc",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "Stablecoins are discussed as a major component of the 'redollarization' thesis, with significant coverage of how they extend dollar dominance globally and serve as economic weapons. The conversation explores stablecoin adoption in developing countries and their role in the broader monetary system.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                },
+                {
+                    "content_id": "the-crypto-marke-qrrzjw-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Crypto Market Structure Has Changed and Rising Tides May No Longer Lift All Boats",
+                    "content_type": "podcast_episodes",
+                    "id": "QmhpphmdSaX5eViaNFjP",
+                    "publish_date": "2026-01-03T01:21:00+00:00",
+                    "query_doc_id": "asmb-389175c7-f977-4b1a-b939-99f9e811feb4",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "This is the primary focus of the entire conversation, covering crypto market cycles, specific cryptocurrencies like Bitcoin and Ethereum, DeFi protocols, crypto exchanges, and the evolution of the crypto ecosystem. The discussion spans market structure changes, specific projects like Hyperliquid, and the future of crypto applications.",
+                    "tag_meta": {
+                        "id": 2
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Crypto & Web3",
+                    "tag_value_lower": "crypto & web3"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

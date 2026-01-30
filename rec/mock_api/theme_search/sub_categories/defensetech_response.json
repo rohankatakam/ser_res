@@ -1,0 +1,1367 @@
+{
+    "execution": "019c0bed-1aa9-79be-ab05-6126ee6da2db",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "subcategories",
+                "tag_value": "Defense Tech & National Security"
+            },
+            "res": [
+                {
+                    "content_id": "avs-hutton-says--6o4vau-0lioo3",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "AV’s Hutton Says Cost Per Effect Key in Drones",
+                    "content_type": "podcast_episodes",
+                    "id": "MRRxAlpgvvRQTvwkG8xN",
+                    "publish_date": "2026-01-29T13:37:00+00:00",
+                    "query_doc_id": "asmb-e40004d3-06b4-440b-a716-2afd21f4b1e8",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "tech-disruptors-0lioo3",
+                    "series_name": "Tech Disruptors",
+                    "tag_context": "This is the primary focus of the entire conversation, covering drone technology, loitering munitions, counter-drone capabilities, electronic warfare systems, and defense procurement. The discussion extensively covers AV's defense technology offerings, lessons learned from Ukraine, and the evolution of military drone systems across multiple theaters of operation.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "cracking-the-bla-8nulr6-kjave4",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Cracking the Black Box: Real-Time Neuron Monitoring & Causality Traces",
+                    "content_type": "podcast_episodes",
+                    "id": "mOoxPfB6waqpEN8L5vl4",
+                    "publish_date": "2026-01-27T19:02:31+00:00",
+                    "query_doc_id": "asmb-9ef489b8-72d7-4177-91e8-3ede1be9f30c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "mlops-community-kjave4",
+                    "series_name": "MLOps.community ",
+                    "tag_context": "Defense is mentioned as a primary target market, with a detailed example of an autonomous surface vessel project requiring compliance with maritime regulations, MOD requirements, and safety standards. The discussion covers how defense applications require higher levels of AI system transparency and control.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "autonomous-wildf-5bcwr6-0sz3if",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Autonomous Wildfire Suppression with Seneca",
+                    "content_type": "podcast_episodes",
+                    "id": "VpufgAHYqOXbSkaRJGbP",
+                    "publish_date": "2026-01-27T10:00:00+00:00",
+                    "query_doc_id": "asmb-c3afe285-b0c8-4a1a-8c35-9b17a62ad9b8",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "inevitable-d20sz3if",
+                    "series_name": "Inevitable",
+                    "tag_context": "The conversation touches on dual-use applications, American manufacturing for national security, and comparisons to companies like Anduril. Stu emphasizes building American-made technology and discusses how fire poses a greater threat to American cities than foreign adversaries in recent decades.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "the-hidden-econo-onz11w-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Hidden Economics Powering AI",
+                    "content_type": "podcast_episodes",
+                    "id": "b6CzUlbZZK9NvNJJLO0E",
+                    "publish_date": "2026-01-26T17:33:24+00:00",
+                    "query_doc_id": "asmb-0dfc719a-13ea-47f6-a29d-51eae1c17be0",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Referenced as part of A16Z's 'American Dynamism' investment thesis, with discussion of talent from companies like Palantir starting new ventures and the market opportunity in defense and national security applications.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "a-five-alarm-fir-qxzyvd-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "A five-alarm fire for the grid? (Live)",
+                    "content_type": "podcast_episodes",
+                    "id": "wUgwyiuyXPEhZilVSYre",
+                    "publish_date": "2026-01-26T12:44:00+00:00",
+                    "query_doc_id": "asmb-00ce1755-db25-4f9e-a8a4-7af74f9a2c65",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "A significant portion of the discussion focuses on the intersection of power grid resilience and national security, featuring Wilson Rickerson's analysis of how military operations depend on civilian power infrastructure. The conversation explores historical wartime grid challenges and current conflicts between defense installations and new large loads like data centers.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "how-ai-is-reachi-k4olgt-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How AI is Reaching the Most Extreme Parts of the World",
+                    "content_type": "podcast_episodes",
+                    "id": "SjiYhLcYuluYfqDLdVaP",
+                    "publish_date": "2026-01-26T11:00:00+00:00",
+                    "query_doc_id": "asmb-3cf81f71-9a69-421a-8538-8d75db7e1f13",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Significant discussion of military applications including Navy partnerships, offshore edge computing on aircraft carriers, and Arctic deployments. Wright emphasizes the strategic importance of US AI infrastructure dominance versus China, and participation in the AI Action Plan with government partnerships.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "from-oculus-to-a-mo7d5g-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "From Oculus to Anduril: Palmer Luckey on Power, Technology, and the Future",
+                    "content_type": "podcast_episodes",
+                    "id": "Yj6gh5f9yzVDI6bJH8ba",
+                    "publish_date": "2026-01-23T13:00:00+00:00",
+                    "query_doc_id": "asmb-a13e65e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "A primary focus is Anduril's defense technology work and the US-China technological rivalry. Luckey discusses building defense systems, supporting Ukraine with military technology, and the importance of maintaining technological superiority against geopolitical adversaries like China and Russia.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "inside-america-s-65i1g8-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Inside America's AI Strategy: Infrastructure, Regulation, and Global Competition",
+                    "content_type": "podcast_episodes",
+                    "id": "WbmLDvhjd6Iq7NQzVrNT",
+                    "publish_date": "2026-01-23T04:38:00+00:00",
+                    "query_doc_id": "asmb-f3c6502b-1a21-4d7e-9d60-c314cc76e5a0",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "National security implications of AI leadership are discussed, including the strategic importance of winning the AI race and the role of national labs in AI development. The Genesis mission and Department of Energy research are mentioned as part of national AI strategy.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "the-state-of-ai--ub9h3u-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The State of AI: Rise of Reasoning, Surge in Chinese Open Source, Sovereign AI , Investing in AI Today | Nathan Benaich, Air Street Capital",
+                    "content_type": "podcast_episodes",
+                    "id": "znBMlipuidwav17S4ca4",
+                    "publish_date": "2026-01-22T11:00:00+00:00",
+                    "query_doc_id": "asmb-a31d3441-e253-4324-8cbd-0bdb5b5bb452",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "A significant portion discusses European defense spending, sovereign AI initiatives, and the geopolitical implications of AI development. Nathan explains the massive defense spending commitments across Europe, the concept of AI sovereignty, and investment opportunities in autonomous defense systems and anti-drone technologies.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "uncapped-40-vino-lzcic8-7hzkh1",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uncapped #40 | Vinod Khosla and Keith Rabois from Khosla Ventures",
+                    "content_type": "podcast_episodes",
+                    "id": "MKTGiCN7fGzcBf5SVZ9V",
+                    "publish_date": "2026-01-21T17:26:00+00:00",
+                    "query_doc_id": "asmb-048cef35-8839-41a5-9ab2-db374c2b7ef7",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "uncapped-with-ja-7hzkh1",
+                    "series_name": "Uncapped with Jack Altman",
+                    "tag_context": "Defense technology is discussed as a major investment area, with mentions of companies like Anduril, Varda, and Hermeus. The conversation touches on the geopolitical competition with China and the need for technological superiority.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "ionq-ceo-on-taki-agnzxd-0lioo3",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "IonQ CEO on Taking Quantum Computing Mainstream",
+                    "content_type": "podcast_episodes",
+                    "id": "6fHlbSXJzuA5m8FuRKAT",
+                    "publish_date": "2026-01-21T14:51:00+00:00",
+                    "query_doc_id": "asmb-c600e564-f266-43e4-90a0-016411c2f734",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "tech-disruptors-0lioo3",
+                    "series_name": "Tech Disruptors",
+                    "tag_context": "The conversation covers IonQ's $100 million Air Force Research Lab contract, their quantum networking solutions for defense applications, and mentions of their team including General Jay Raymond who founded the Space Force.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "i-tried-flying-a-hcyopy-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "I Tried Flying an Air Taxi With Archer’s CEO (Midnight Simulator)",
+                    "content_type": "podcast_episodes",
+                    "id": "iFvoy4pJn5Xz324arNco",
+                    "publish_date": "2026-01-17T19:29:04+00:00",
+                    "query_doc_id": "asmb-775902c2-f573-4163-9e5e-789541ce41df",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Discussion of Archer's partnership with Anduril for defense applications, including unmanned systems and collaborative combat aircraft. The CEO explains how the defense industry is shifting toward autonomous, scalable systems and how Archer's technology can serve both civil and military markets.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "ai-and-the-futur-t78a9f-dlfv4f",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "AI and the Future of Warfare with US Under Secretary of War Emil Michael",
+                    "content_type": "podcast_episodes",
+                    "id": "adRPgZLJ16ndq0kpbYYh",
+                    "publish_date": "2026-01-15T11:21:00+00:00",
+                    "query_doc_id": "asmb-d9dcc2b7-58a1-4c4b-ac81-8f229d2aed29",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "no-priors-artifi-dlfv4f",
+                    "series_name": "No Priors: Artificial Intelligence | Technology | Startups",
+                    "tag_context": "This is the primary focus of the entire conversation. Emil Michael discusses his role as CTO of the Department of War, defense industrial base transformation, hypersonic weapons, autonomous systems, and the military buildup in China. The discussion extensively covers defense technology priorities, procurement reform, and national security challenges.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "ben-horowitz-on--k39tvv-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz on Investing in AI: AI Bubbles, Economic Impact, and VC Acceleration",
+                    "content_type": "podcast_episodes",
+                    "id": "zgVF6FftZRPZFRtQcSpZ",
+                    "publish_date": "2026-01-13T11:00:00+00:00",
+                    "query_doc_id": "asmb-d6257897-c1de-4fc6-adab-45145e1fc762",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Horowitz discusses American Dynamism vertical and the importance of America winning technologically for national security. He mentions defense modernization, intelligence, public safety, and energy as key areas where technology can help America maintain its competitive position globally.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "nic-carter-quant-tlq3kk-kl1x3i",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Nic Carter: Quantum Threatens $600B of Bitcoin",
+                    "content_type": "podcast_episodes",
+                    "id": "WKltvZXQ5tFRKQqEZ81L",
+                    "publish_date": "2026-01-09T16:04:45+00:00",
+                    "query_doc_id": "asmb-a65d5e6d-1dde-4ce6-b9e1-f428d99025fc",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "the-delphi-podca-kl1x3i",
+                    "series_name": "The Delphi Podcast",
+                    "tag_context": "National security implications of quantum computing are discussed, including government quantum programs, DARPA initiatives, and the potential for quantum computers to break military encryption. The conversation covers how quantum development is driven by intelligence and defense applications.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "kevin-hartz-back-surel9-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Kevin Hartz | Backing Teen Founders, Lessons from the PayPal Mafia",
+                    "content_type": "podcast_episodes",
+                    "id": "1dNZK17oSSVCEMc6ieO1",
+                    "publish_date": "2026-01-08T11:00:00+00:00",
+                    "query_doc_id": "asmb-18e532af-5a79-4889-b3e1-295447eb54ca",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "Discussion of Palantir's origins from PayPal's fraud detection, Anduril's founding inside Founders Fund, and Kevin's investments in defense companies like Mock Industries and Neros. He explains the contrarian nature of defense tech investing when it started.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "big-ideas-2026-p-ivy44d-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Big Ideas 2026: Physical AI and the Industrial Stack",
+                    "content_type": "podcast_episodes",
+                    "id": "q5b2f8XL522cZGgFon2b",
+                    "publish_date": "2025-12-25T11:00:00+00:00",
+                    "query_doc_id": "asmb-360794e7-8516-405b-afc1-094074f07458",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Defense applications are discussed throughout, including Anduril's success in physical observability, the importance of securing national security assets like data centers, and the strategic importance of owning supply chains for future economic and military power.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "palmer-luckey-on-byy1mo-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Palmer Luckey on UFOs, Anduril, Invisibility Tech, & Moon Wars",
+                    "content_type": "podcast_episodes",
+                    "id": "0fccUA0n4wLrxanC9CUF",
+                    "publish_date": "2025-12-22T13:18:36+00:00",
+                    "query_doc_id": "asmb-aaaed17b-3538-4895-871e-60749c26e393",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the conversation, covering Anduril's autonomous fighter jets, defense products, competition with traditional defense contractors, and strategic approaches to national security. Palmer discusses the FQ44 Fury fighter, various weapon systems, and the company's philosophy of being a defense product company rather than contractor.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "the-2026-ai-fore-jmrefj-dlfv4f",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The 2026 AI Forecast: Foundation Models, IPOs, and Robotics with Sarah Guo and Elad Gil",
+                    "content_type": "podcast_episodes",
+                    "id": "uU99WFkTJGCb1y8aAgQF",
+                    "publish_date": "2025-12-19T21:00:00+00:00",
+                    "query_doc_id": "asmb-149e431d-d043-4576-aa06-d84311623d15",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "no-priors-artifi-dlfv4f",
+                    "series_name": "No Priors: Artificial Intelligence | Technology | Startups",
+                    "tag_context": "The hosts predict acceleration in defense tech and drone-based autonomous systems in 2026, discussing how AI is reshaping warfare and defense strategies. They mention the Trump administration's approach and the growing density of defense startups.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "inside-anduril-h-k2s9y7-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Inside Anduril HQ: Trae Stephens on Anduril’s Origin, Peter Thiel, & Palantir DNA",
+                    "content_type": "podcast_episodes",
+                    "id": "RhZrrrvGNOUZX2SG5XcI",
+                    "publish_date": "2025-12-18T12:34:50+00:00",
+                    "query_doc_id": "asmb-56743817-3e76-47e1-ba7a-77a41d0aa8df",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Anduril's defense technology development, autonomous weapons systems, multi-domain defense strategy, and the broader defense tech wave. The discussion extensively covers Anduril's products, manufacturing strategy, and role in national security.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "full-anduril-r-d-xevbki-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Full Anduril R&D Tour: Matt Grimm, Co-Founder & COO ",
+                    "content_type": "podcast_episodes",
+                    "id": "LpSpWHCwHnuqo0MqIBWh",
+                    "publish_date": "2025-12-17T14:14:00+00:00",
+                    "query_doc_id": "asmb-8e72240a-1726-40ee-9af6-bbc013a713cf",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Anduril's defense technology products including autonomous submarines (Ghost Sharks/XLUUVs), electronic warfare systems, AI-enabled battlefield command and control platforms, and various military robotics. The discussion extensively covers their R&D processes, manufacturing capabilities, and defense contracts.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "building-the-see-7w30jw-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Building the “See Something, Say Something” AI for Every Camera",
+                    "content_type": "podcast_episodes",
+                    "id": "ZSLs8oNJEwICiuBi0i0U",
+                    "publish_date": "2025-12-16T11:00:00+00:00",
+                    "query_doc_id": "asmb-abe83543-9ca2-48e2-a297-50f923d03c06",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "Physical security using AI for threat detection and prevention is extensively discussed, including protecting critical infrastructure, corporate campuses, and high-profile individuals. Multiple real-world security incidents are described, including break-ins, fires, and armed robberies, demonstrating the national security implications of automated physical security systems.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "full-interview-a-mbakrh-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Full Interview: Anduril CEO Brian Schimpf on $1B+ Revenue & Still Doubling",
+                    "content_type": "podcast_episodes",
+                    "id": "Zi8ZXnyO0PFUAQlqC5r8",
+                    "publish_date": "2025-12-16T09:21:39+00:00",
+                    "query_doc_id": "asmb-0b1e11d8-3eef-4740-861e-59e2e0ee9963",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Anduril's defense technology products including autonomous fighter jets, drones, cruise missiles, and underwater vehicles. The discussion extensively covers the future of warfare, autonomous battlefield systems, and how defense technology is evolving to meet modern geopolitical challenges.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "inside-anduril-e-9o795o-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Inside Anduril: Exclusive HQ Tour w/ Palmer Luckey, Brian Schimpf, Matt Grimm & Trae Stephens",
+                    "content_type": "podcast_episodes",
+                    "id": "Gs95PS5uERzMu4wXkFsG",
+                    "publish_date": "2025-12-15T14:15:51+00:00",
+                    "query_doc_id": "asmb-8c2b0973-41c1-4d91-8145-398e0cd15d8b",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Anduril's defense technology products including autonomous fighter jets (Fury), submarines (Ghost Shark), border security systems, and manufacturing capabilities. The discussion extensively covers defense innovation, military modernization, and national security challenges across multiple segments with all four speakers.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "misunderstood-po-6w4mbp-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Misunderstood Power: Emil Michael on the Truth About the DoW & Defense Tech",
+                    "content_type": "podcast_episodes",
+                    "id": "yPjxeFCBzAeike9MbaS9",
+                    "publish_date": "2025-12-13T13:21:37+00:00",
+                    "query_doc_id": "asmb-f91e5c4d-fdac-4fc3-a7ec-b2eb084832aa",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the entire conversation. Emil Michael discusses his role as Under Secretary of War, the six critical technology areas, defense industrial base challenges, competition with China, and the need to modernize military capabilities. The discussion extensively covers defense tech companies, weapons systems, and national security strategy.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "the-ai-that-foun-6stui2-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The AI That Found A Bug In The World’s Most Audited Code",
+                    "content_type": "podcast_episodes",
+                    "id": "qg6jHTo24KEHTFMeLbf2",
+                    "publish_date": "2025-12-10T11:00:00+00:00",
+                    "query_doc_id": "asmb-1c6be51d-55e7-4270-923a-ec1ffc276bfb",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "The discussion includes nation-state actors using AI tools for cyber operations, threat intelligence analysis of cybercriminal groups, and the broader implications of AI in cybersecurity for national security. Matt mentions OpenAI's threat reports covering adversaries from China, Russia, Iran, and North Korea.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "the-ai-energy-wa-2bcerp-t8lspa",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The AI energy war is here",
+                    "content_type": "podcast_episodes",
+                    "id": "Vm3BZowaXae5YPrG0JTy",
+                    "publish_date": "2025-12-10T08:01:00+00:00",
+                    "query_doc_id": "asmb-57b415b4-c4e6-4852-ad1f-0763fb01d073",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "possible-by-reid-t8lspa",
+                    "series_name": "Possible",
+                    "tag_context": "National security implications of data center location are discussed, including protecting IP from cyber espionage, keeping AI capabilities onshore, and concerns about Middle Eastern countries trying to attract data center investment away from the US.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "josh-wolfe-brett-ivqo64-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Josh Wolfe & Brett McGurk – Venture, Geopolitics, and the Next Frontier (EP.476)",
+                    "content_type": "podcast_episodes",
+                    "id": "MHd0tHKInntaJdqwBsyd",
+                    "publish_date": "2025-12-08T09:00:00+00:00",
+                    "query_doc_id": "asmb-4bd8d01a-c0d4-409d-9e9b-67b913feebe1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "Substantial coverage of defense technology investments, including Anduril's success, missile defense systems, and the intersection of venture capital with national security needs. Brett's experience provides unique perspective on defense tech requirements and geopolitical applications.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "ep-78-jordan-sch-gduipw-gahfcc",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ep 78: Jordan Schneider, Host of China Talk, on AI Race, Key Policy Decisions & Unpacking Geopolitical Chip Tension",
+                    "content_type": "podcast_episodes",
+                    "id": "JjrcVWQQ3jyASnLMpC8X",
+                    "publish_date": "2025-12-05T18:52:26+00:00",
+                    "query_doc_id": "asmb-a44406dc-6c3a-469e-8faf-55497b73b305",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "unsupervised-lea-gahfcc",
+                    "series_name": "Unsupervised Learning",
+                    "tag_context": "The conversation includes discussion of military applications of AI, historical parallels with military technology adoption (machine guns, precision weapons), and how technological changes affect military doctrine and capabilities.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "uncapped-35-trae-tromhr-7hzkh1",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uncapped #35 | Trae Stephens from Founders Fund",
+                    "content_type": "podcast_episodes",
+                    "id": "YNhzvyrDo8AGUl6Yvx0E",
+                    "publish_date": "2025-12-03T10:00:00+00:00",
+                    "query_doc_id": "asmb-a8288f31-e067-495f-adff-90e17c0cfbfe",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "uncapped-with-ja-7hzkh1",
+                    "series_name": "Uncapped with Jack Altman",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Anduril's defense technology work, military procurement processes, and the future of warfare. Stephens discusses everything from autonomous weapons systems to manufacturing defense equipment at scale, representing over 50% of the content.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "how-to-lead-ben--3358jd-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How To Lead | Ben Horowitz on My First Million",
+                    "content_type": "podcast_episodes",
+                    "id": "sMtrHubwvi2aiZ0UqXM0",
+                    "publish_date": "2025-12-02T11:00:00+00:00",
+                    "query_doc_id": "asmb-4492380d-b1f9-4170-8ca0-16901f584b7d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Ben expressed excitement about startups solving America's defense manufacturing and rare earth mineral challenges. He mentioned investments in companies using AI for novel material science to enable better design of rockets and missiles.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "weird-ways-ben-h-cy83o8-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Weird ways Ben Horowitz makes Founders more confident",
+                    "content_type": "podcast_episodes",
+                    "id": "bzJFAlZfxaabV1lDfpJR",
+                    "publish_date": "2025-12-01T12:39:00+00:00",
+                    "query_doc_id": "asmb-ce8f165f-5a8c-44e4-9a3a-2dc98a01fd93",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The conversation touches on defense manufacturing and national security, with Horowitz discussing investments in companies solving America's defense manufacturing challenges. He mentions Periodic Labs for materials science and the broader trend of startups addressing national security needs.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "buying-for-600k--oax5tn-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Buying for $600k, Selling for $35m",
+                    "content_type": "podcast_episodes",
+                    "id": "8oMuP1rFGR3vKMcCELhr",
+                    "publish_date": "2025-12-01T08:00:00+00:00",
+                    "query_doc_id": "asmb-54676538-8ec1-4db0-9338-37e61764b6a0",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "Jake advocates strongly for the GovTech space as an investment opportunity, discussing government contracting dynamics, security clearances, GSA schedules, and the unique advantages of serving government clients. He emphasizes the mission impact and long-term contract nature of government work.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "palmer-luckey-in-g16z9d-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Palmer Luckey - Inventing the Future of Defense - [Invest Like the Best, CLASSICS]",
+                    "content_type": "podcast_episodes",
+                    "id": "H3wQzGecGtlZTL4iPJxc",
+                    "publish_date": "2025-11-28T09:00:00+00:00",
+                    "query_doc_id": "asmb-a878ed6d-f167-4d39-b3d1-98f06ac9f682",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Palmer's defense company Anduril, military technologies, weapons systems, AI-powered defense platforms, and national security strategy. The conversation covers defense industry problems, government contracting, and the future of warfare technology.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "how-marc-andrees-jtyuzq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Marc Andreessen Actually Uses AI",
+                    "content_type": "podcast_episodes",
+                    "id": "azcjy2HqnbPneTMU5Ylp",
+                    "publish_date": "2025-11-25T11:00:00+00:00",
+                    "query_doc_id": "asmb-af0afb79-c42d-4261-918c-1f7cac98d90b",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Discussion touches on national security implications of AI competition with China, manufacturing capabilities for defense applications, and how drones represent the intersection of AI and defense technology. The conversation addresses strategic technology advantages in a geopolitical context.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "julia-dewahl-of--3osmmw-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Julia DeWahl of Antares on building nuclear reactors for the US military",
+                    "content_type": "podcast_episodes",
+                    "id": "JhGYtWr15FBSwiDWMVhB",
+                    "publish_date": "2025-11-25T09:10:59+00:00",
+                    "query_doc_id": "asmb-d3aed38a-5c14-47fa-b02c-c6815a99e47e",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "A major theme is building nuclear reactors specifically for military applications and critical infrastructure. Julia extensively discusses the military as their primary customer, defense contracting processes, energy resilience for national security, and replacing diesel generators at military bases.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "635m-exit-600m-f-tm2fbv-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "$635M Exit → $600M Fund: David Ulevitch on Building a16z’s Hottest New Fund",
+                    "content_type": "podcast_episodes",
+                    "id": "w2y2phlXqZFSaFeT83Re",
+                    "publish_date": "2025-11-21T11:26:18+00:00",
+                    "query_doc_id": "asmb-2b5f635f-f1ee-4350-9cc5-30b0b807c93b",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Anduril, defense manufacturing, military capabilities, and national security concerns. The speaker details multiple defense portfolio companies including Anduril, Saronic, and Castellan, discussing their technologies and strategic importance.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "ben-horowitz-mar-dx11ro-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz & Marc Andreessen: Why Silicon Valley Turned Against Defense (And How We’re Fixing It)",
+                    "content_type": "podcast_episodes",
+                    "id": "iniiDNdPMurxHnIVfYPj",
+                    "publish_date": "2025-11-19T11:00:00+00:00",
+                    "query_doc_id": "asmb-7050c396-5f8d-41fd-9c31-62830bdde584",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "This is the primary focus of the entire conversation, covering the history of Silicon Valley's relationship with defense, the creation of American Dynamism as an investment category, and extensive discussion of defense technology companies like Anduril, Palantir, and SpaceX. The speakers discuss procurement reform, defense industrial base modernization, and the strategic importance of defense tech innovation.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "new-mexico-prove-tuhn5i-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "New Mexico proves America can still build [partner content]",
+                    "content_type": "podcast_episodes",
+                    "id": "WZy2Z72gCctkeYxzltTG",
+                    "publish_date": "2025-11-18T13:00:00+00:00",
+                    "query_doc_id": "asmb-050b29b1-b52a-489c-a648-67cbbb0bc1fc",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "Defense technology is discussed as one of New Mexico's strategic advantages, building on Sandia National Labs, Los Alamos National Labs, and Air Force Research Lab presence. The state leverages this defense research infrastructure for broader technology development and economic growth.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "why-marc-andrees-fi2asq-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why Marc Andreessen, Ben Horowitz, & David Ulevitch Launched American Dynamism",
+                    "content_type": "podcast_episodes",
+                    "id": "jH9K5Ocyt2FtfzgWmcXY",
+                    "publish_date": "2025-11-18T10:28:13+00:00",
+                    "query_doc_id": "asmb-85842e56-bde6-41a0-93c8-ec85eca34d1b",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the conversation, covering the American Dynamism Fund's investment in defense companies like Anduril, defense procurement reform, and the broader national security technology ecosystem. The discussion extensively covers how private capital and advanced technology are transforming defense capabilities and government contracting.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "alex-karp-ceo-of-o1uovj-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Alex Karp, CEO of Palantir: Exclusive Interview Inside PLTR Office",
+                    "content_type": "podcast_episodes",
+                    "id": "ohlxhwPFixHKYyO2vgo5",
+                    "publish_date": "2025-11-11T10:37:24+00:00",
+                    "query_doc_id": "asmb-88259ee7-849b-4b28-be4f-c4f7cd9405b7",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Palantir's defense products (PGA, Gaia, Maven), military applications, and Alex Karp's philosophy on giving America an 'unfair advantage' in national security. The conversation repeatedly returns to themes of protecting soldiers, military superiority, and defense technology throughout.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "gtc-live-washing-285lu5-pg5y3t",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "GTC Live Washington, D.C. - Chapter 3: AI Infrastructure Ecosystem",
+                    "content_type": "podcast_episodes",
+                    "id": "2pZOXTktkWaNh64v5jyd",
+                    "publish_date": "2025-11-11T00:46:00+00:00",
+                    "query_doc_id": "asmb-d6dd501c-90a6-45a2-8aff-008ddfe444d4",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "nvidia-ai-podcas-pg5y3t",
+                    "series_name": "NVIDIA AI Podcast",
+                    "tag_context": "The conversation frames AI infrastructure development as a national security issue, comparing the current $4 trillion investment to the Manhattan Project. There's discussion of America's AI leadership and the need to compete with China's infrastructure development speed.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "reid-riffs-on-nv-l0d39o-t8lspa",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Reid riffs on NVIDIA's chips, China’s AI ambitions, and the push to pause AI",
+                    "content_type": "podcast_episodes",
+                    "id": "wdTNQMsguQBvBFEPVzh7",
+                    "publish_date": "2025-11-05T09:00:00+00:00",
+                    "query_doc_id": "asmb-2b93ed7f-f969-41fa-b321-9301c3a44c6d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "possible-by-reid-t8lspa",
+                    "series_name": "Possible",
+                    "tag_context": "The discussion extensively covers US-China technology competition, export restrictions for national security, and maintaining competitive edges in AI development. The conversation addresses geopolitical implications of technology sovereignty and digital bifurcation.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "why-speed-not-si-2ltfr0-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why Speed, Not Size, Will Define the Next War",
+                    "content_type": "podcast_episodes",
+                    "id": "FbvqvzFEsniwkH1881ir",
+                    "publish_date": "2025-11-01T14:09:20+00:00",
+                    "query_doc_id": "asmb-edba5b06-e8ac-436b-814e-253c047e2c0d",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "This is the primary focus of the entire conversation, covering US-China military readiness, Taiwan defense capabilities, autonomous weapons systems, and the transformation of modern warfare. The discussion extensively covers defense technology partnerships, procurement challenges, and how companies like Booz Allen and SHIELD AI are reshaping America's defense strategy.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "ukraines-energy--2upize-nt143q",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Ukraine’s energy security and the coming winter",
+                    "content_type": "podcast_episodes",
+                    "id": "jibtxBgTuCqR8vcBBhx1",
+                    "publish_date": "2025-10-30T19:30:00+00:00",
+                    "query_doc_id": "asmb-dc5f48a1-18c7-48db-b24e-e6ef381e300e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "everything-energ-nt143q",
+                    "series_name": "Everything Energy",
+                    "tag_context": "The conversation covers air defense systems, drone technology evolution, and protective infrastructure measures like anti-drone netting and radar systems. Discussion includes how Russia has improved its drone capabilities and how Ukraine is adapting its defense technologies to protect critical energy infrastructure.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "mike-trigg-and-s-0mni77-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Mike Trigg and Sanjay Ayer – The Discipline of Getting Better at WCM (EP.467)",
+                    "content_type": "podcast_episodes",
+                    "id": "n9yUCNUX4ABglBodNcPs",
+                    "publish_date": "2025-10-27T08:00:00+00:00",
+                    "query_doc_id": "asmb-03db91b8-5f04-415e-ad9e-a343d2c0b0fa",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "WCM discusses their early investment in Anduril at an $8 billion valuation and how this led to broader insights about defense spending tailwinds. They mention defense as a key thematic that has become a significant part of their portfolios.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "20vc-sequoia-s-d-8rxgi7-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: Sequoia's David Cahn on The Winners and Losers in AI | The $0-$100M Revenue Club: Is Triple, Triple, Double, Double Dead? | The Future of Defence: Who Wins and Who Loses | How to Analyse Margins and Growth Rates in a World of AI",
+                    "content_type": "podcast_episodes",
+                    "id": "mbuESVZ0N3HOJC4Cs6he",
+                    "publish_date": "2025-10-27T07:07:00+00:00",
+                    "query_doc_id": "asmb-fbefe138-90c7-4e11-a2aa-aa1dad1b8dab",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Substantial discussion about defense technology as 'the next AI,' covering companies like Anduril, Helsing, and Sequoia's investments in Keller and Stark. David discusses defense as undergoing digital transformation and the importance of national champions in each country.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "california-forev-1urqi1-jegter",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "California Forever: The Startup Building America's Next Great City",
+                    "content_type": "podcast_episodes",
+                    "id": "YQbrv6kNWIf6YzgSXEB7",
+                    "publish_date": "2025-10-21T19:43:00+00:00",
+                    "query_doc_id": "asmb-6da9aa11-a504-488b-80f6-3900d3286eee",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "A major portion discusses national security through shipbuilding capabilities, comparing Chinese shipyard capacity to U.S. capabilities. Sramek argues for building new West Coast shipyards to address strategic vulnerabilities, especially regarding Pacific conflicts and Panama Canal risks.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "frontier-forum-t-1a8z9k-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Frontier Forum: The new power map for AI infrastructure",
+                    "content_type": "podcast_episodes",
+                    "id": "dH7lRYqhGtSYPH0JunYD",
+                    "publish_date": "2025-10-21T11:00:00+00:00",
+                    "query_doc_id": "asmb-272a0809-d6d3-4e6f-84ca-058cf4c709c3",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "Sridhar emphasizes the national security implications of the AI race, stating that wars will be fought and won by AI superiority rather than boots on the ground. He discusses the importance of US technological dominance and the consequences of falling behind in AI infrastructure development, framing it as critical for maintaining economic and military superiority.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                },
+                {
+                    "content_id": "securing-the-ai--p1p2ax-m3369e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Securing the AI Frontier: Irregular Co-founder Dan Lahav",
+                    "content_type": "podcast_episodes",
+                    "id": "QmTA2JPrHS05AH7anOTm",
+                    "publish_date": "2025-10-21T09:00:00+00:00",
+                    "query_doc_id": "asmb-2a41a7ed-982e-4dfa-afb4-20ccbc37584c",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "training-data-by-m3369e",
+                    "series_name": "Training Data",
+                    "tag_context": "A significant portion discusses government and sovereign AI security, including work with the UK government and Department of Defense. The conversation covers how AI elevates security risks to national security issues and the need for countries to secure critical infrastructure against AI-powered attacks.",
+                    "tag_meta": {
+                        "parent_id": 1,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Defense Tech & National Security",
+                    "tag_value_lower": "defense tech & national security"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

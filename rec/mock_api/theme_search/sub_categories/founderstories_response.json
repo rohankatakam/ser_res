@@ -1,0 +1,1367 @@
+{
+    "execution": "019c0c0c-11b7-7267-aed7-94b74372c799",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "subcategories",
+                "tag_value": "Founder Stories & Mental Models"
+            },
+            "res": [
+                {
+                    "content_id": "the-daos-unclaim-jsstb5-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The DAO’s Unclaimed ETH Becomes a $250M Ethereum Security Fund",
+                    "content_type": "podcast_episodes",
+                    "id": "eIWV2Z7g1Rl3NZyAMiRI",
+                    "publish_date": "2026-01-29T17:00:00+00:00",
+                    "query_doc_id": "asmb-f28160c2-4015-4a10-b6ec-955bb03f5415",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Griff shares extensive personal reflections on his decade-long journey from the original DAO hack through becoming a white hat rescuer to now launching the security fund. He discusses lessons learned about reputation being more valuable than money and doing the right thing even when difficult.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "ep-81-ex-openai--600fna-gahfcc",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ep 81: Ex-OpenAI Researcher On Why He Left, His Honest AGI Timeline, & The Limits of Scaling RL",
+                    "content_type": "podcast_episodes",
+                    "id": "zW0BrFu4Ao4FxGbFXNDv",
+                    "publish_date": "2026-01-29T15:13:20+00:00",
+                    "query_doc_id": "asmb-f8f4ab56-3ca9-41a5-a10e-cb2dd684ab77",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "unsupervised-lea-gahfcc",
+                    "series_name": "Unsupervised Learning",
+                    "tag_context": "Jerry shares his personal journey and decision-making process for leaving OpenAI after seven years, discussing the mental models behind major decisions like releasing ChatGPT and betting on reasoning models. He reflects on pivotal moments and the evolution of his thinking about AGI timelines.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-i-went-from--tvrcf2-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How I went from $0 to $1M in 12 months",
+                    "content_type": "podcast_episodes",
+                    "id": "bwHtnZu82JNcxZ2G6SGm",
+                    "publish_date": "2026-01-29T13:57:00+00:00",
+                    "query_doc_id": "asmb-8976653a-82de-4786-a962-83a94eec90ee",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The entire conversation centers on Tyler's founder journey from zero to $30M revenue, sharing specific mental models like 'founder-market fit,' the importance of credibility stories, and tactical approaches to building startups. He extensively discusses his experience at Morning Brew and how he leveraged that into building Beehive.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "marc-andreessen--1gmgch-jifdtv",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Marc Andreessen: The real AI boom hasn’t even started yet",
+                    "content_type": "podcast_episodes",
+                    "id": "eJV4y8KMlfZcHxnff71W",
+                    "publish_date": "2026-01-29T13:32:06+00:00",
+                    "query_doc_id": "asmb-5dcc831e-cb50-4689-bb9c-b9d65d13754b",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "lenny-s-podcast--jifdtv",
+                    "series_name": "Lenny's Podcast: Product | Growth | Career",
+                    "tag_context": "Significant discussion about how AI-forward founders are rethinking company structures, with some exploring the concept of one-person billion-dollar companies. Andreessen shares insights about the most cutting-edge founders who are leveraging AI to do everything themselves, fundamentally reconceptualizing what it means to have a company.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "the-most-underra-fc0aqp-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Most Underrated Chain: Celo’s Surprising Traction Around the World | Marek Olszewski",
+                    "content_type": "podcast_episodes",
+                    "id": "h8bUchDCs5gTlmAu5sXz",
+                    "publish_date": "2026-01-29T11:30:00+00:00",
+                    "query_doc_id": "asmb-a4c1b045-d5c7-4b63-8d13-401d085792ba",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "Marek shares Celo's eight-year journey, the decision to stay laser-focused on P2P payments despite crypto trends, and lessons learned from building both platform and application simultaneously. Includes the origin story of meeting Brian Armstrong at a music festival in 2013.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "marc-andreessen--p7g382-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Marc Andreessen on Why This Is the Most Important Moment in Tech History",
+                    "content_type": "podcast_episodes",
+                    "id": "XkaiBGgEETmZzaLYmAFC",
+                    "publish_date": "2026-01-29T11:00:00+00:00",
+                    "query_doc_id": "asmb-417d276e-3278-4de0-a12d-f94747aa1886",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation covers how the most cutting-edge AI-forward founders are operating differently, including three layers of AI transformation: redefining products, changing job definitions, and potentially restructuring the concept of companies themselves. Andreessen discusses the potential for one-person billion-dollar companies and how founders are thinking about AI-native business models.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "why-cryopreserva-lejep6-dlfv4f",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why Cryopreservation is No Longer Science Fiction with Until Co-founder and CEO Laura Deming",
+                    "content_type": "podcast_episodes",
+                    "id": "AH3Z3606hwlj9xihVZnS",
+                    "publish_date": "2026-01-29T11:00:00+00:00",
+                    "query_doc_id": "asmb-e9dd831e-cb50-4689-bb9c-b9d65d13754b",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "no-priors-artifi-dlfv4f",
+                    "series_name": "No Priors: Artificial Intelligence | Technology | Startups",
+                    "tag_context": "The episode extensively covers Laura's founder journey from homeschooled child in New Zealand to MIT, becoming a Thiel Fellow, founding the Longevity Fund, and now co-founding Until. She shares her mental models for identifying neglected but important problems and her partnership with co-founder Hunter.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "the-rise-of-perm-4fg2n2-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The rise of permissionless DERs",
+                    "content_type": "podcast_episodes",
+                    "id": "QDVm7GeIlxiWhWmg83EW",
+                    "publish_date": "2026-01-29T11:00:00+00:00",
+                    "query_doc_id": "asmb-b6c6c45a-b791-4898-bc12-2c54942d9ad6",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "James McGinness shares his founder journey with David Energy, discussing their approach to deploying plugin systems in New York small businesses. The conversation explores his mental models around removing friction, focusing on affordability over resilience, and learning from Germany's market adoption.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "gokul-rajaram-le-k8933i-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Gokul Rajaram - Lessons from Investing in 700 Companies - [Invest Like the Best, EP.456]",
+                    "content_type": "podcast_episodes",
+                    "id": "Mf4gEr750aUC46Gjnxy8",
+                    "publish_date": "2026-01-29T09:00:00+00:00",
+                    "query_doc_id": "asmb-1052f088-e645-40f8-ab04-185b42604215",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "Gokul shares detailed stories and lessons from working with iconic founders like Larry Page, Sergey Brin, Mark Zuckerberg, Jack Dorsey, and Tony Xu. He discusses their unique superpowers and how they shaped their companies, providing mental models for leadership and company building.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "investor-stories-0s9e38-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 1,
+                        "v1_insight": 1
+                    },
+                    "content_title": "Investor Stories 456: Inside Visionary Leadership: Platform Leverage, Founder Adaptability, and Market Timing (Rizik, Wang, Wallach)",
+                    "content_type": "podcast_episodes",
+                    "id": "7eRAsoxLINmmYrbAmXc4",
+                    "publish_date": "2026-01-29T09:00:00+00:00",
+                    "query_doc_id": "asmb-4ce915ab-d8a3-433a-aa70-963eb0af0c14",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.5,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "A significant portion discusses exceptional founders and their unique qualities. Kyle Hanslovin of Huntress is highlighted for his ability to evolve and iterate, while Oguzvan Atay of Billion to One is praised for his responsiveness and singular focus on his business.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "the-late-40s-piv-iadiph-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Late 40s Pivot Into Business Buying",
+                    "content_type": "podcast_episodes",
+                    "id": "zmS59vyvvLWoRrpgqgP5",
+                    "publish_date": "2026-01-29T08:00:00+00:00",
+                    "query_doc_id": "asmb-de9d1500-182a-486e-a889-e41918f78072",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.6,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "Jerem's personal transformation story from corporate executive to business owner is central to the episode. He shares his mental models around risk assessment, the decision-making process of leaving a lucrative corporate career, and his philosophy of seeking freedom and independence through business ownership.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "automating-scien-10priv-95fvav",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "🔬 Automating Science: World Models, Scientific Taste, Agent Loops — Andrew White",
+                    "content_type": "podcast_episodes",
+                    "id": "4QXAbCeiifNtquZPqw0g",
+                    "publish_date": "2026-01-28T19:07:00+00:00",
+                    "query_doc_id": "asmb-17f2ed6f-5aca-4d7b-a343-74112cb577be",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "latent-space-the-95fvav",
+                    "series_name": "Latent Space: The AI Engineer Podcast",
+                    "tag_context": "Andrew White shares his detailed journey from academia to founding Future House and Edison Scientific, including his decision to leave tenure and the challenges of building AI for science companies. He discusses the mental models behind automating science and the strategic decisions in transitioning from nonprofit research to venture-backed startup.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-to-make-roof-8tqmso-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How to make rooftop solar power as cheap in the US as it is in Australia",
+                    "content_type": "podcast_episodes",
+                    "id": "tO3slrimpETBBZSj4N26",
+                    "publish_date": "2026-01-28T17:02:00+00:00",
+                    "query_doc_id": "asmb-6da66892-391c-46c9-b550-55676175a0a4",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Both guests share their personal journeys from working in the solar industry to founding organizations focused on solving systemic cost problems. Their experiences inform their approach to tackling the 'soft costs' that make US solar installations expensive compared to other countries.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "accelerating-dis-22sc8i-pg5y3t",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Accelerating Disaster Response with GiveDirectly's Nick Allardice - Ep. 287",
+                    "content_type": "podcast_episodes",
+                    "id": "dYphZ6PRnRog815Phofp",
+                    "publish_date": "2026-01-28T16:45:00+00:00",
+                    "query_doc_id": "asmb-d2165dfb-1b5c-477d-b1c0-16f28baa3968",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "nvidia-ai-podcas-pg5y3t",
+                    "series_name": "NVIDIA AI Podcast",
+                    "tag_context": "Nick Allardyce shares his personal journey from growing up in rural Australia to working in social movements, technology platforms, and humanitarian aid. He discusses his mental models around empowering people to solve their own problems rather than top-down paternalistic solutions, and his transition from Change.org to GiveDirectly.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-to-build-rea-1hctq5-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How to Build Real-Time Data Streaming for AI | Jacqueline Cheong, Co-founder and CEO of Artie",
+                    "content_type": "podcast_episodes",
+                    "id": "e2rvXqK7lwEnOoE6rfuN",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-4a2e5de8-0378-4002-83f1-af42eabede4c",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "Jacqueline shares her complete founder journey from hedge fund analyst to software CEO, including the transition from finance to tech, learning sales from scratch, and building a technical product. She discusses key mental models like focusing on what you can control and asking customers for their hardest problems.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-elon-builds--f6t3md-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Elon Builds Trillion-Dollar Companies",
+                    "content_type": "podcast_episodes",
+                    "id": "qEYnGZW0ebljAm8ykyrb",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-3b074c80-55ef-4cdc-8833-ceffe72cf038",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The conversation explores Elon Musk's unique approach to building companies, focusing on bottlenecks first, then expanding capabilities. Examples include waiting until Falcon 9 was reliable before launching Starlink, and building massive infrastructure before monetization across multiple ventures.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "ben-horowitz-and-moep3h-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz and Balaji Srinivasan on Netscape and Network States",
+                    "content_type": "podcast_episodes",
+                    "id": "SLarHihTzDDFS2V3co5w",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-cd24d798-7626-4748-bdf0-93de9b7d1621",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Ben Horowitz shares insights from his experience at Netscape as the first major Internet company, drawing parallels to current network state development. They discuss how system integration of mature technologies creates breakthrough moments, using examples from web browsers to Bitcoin.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "reid-riffs-with--q2mvsk-t8lspa",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Reid Riffs with Parth Patil on AI-Native Startups (Part 3 of 3)",
+                    "content_type": "podcast_episodes",
+                    "id": "HEmDJSo3RDaZZdsJTROZ",
+                    "publish_date": "2026-01-28T08:01:00+00:00",
+                    "query_doc_id": "asmb-350fd798-7626-4748-bdf0-93de9b7d1621",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "possible-by-reid-t8lspa",
+                    "series_name": "Possible",
+                    "tag_context": "The discussion extensively covers what it means to be 'AI native' as a founder, with concrete examples like Amila's startup Palette using AI coding agents to accomplish enterprise partnerships with just two people. The conversation explores how founders should fundamentally rethink their approach to building companies in the AI era.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "standard-charter-9afwmh-iujaza",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Standard Chartered CEO: Global Banking, Geopolitical Shifts and the Future of Blockchain",
+                    "content_type": "podcast_episodes",
+                    "id": "9S5KAtEAxqr8OIa1npEe",
+                    "publish_date": "2026-01-28T04:00:00+00:00",
+                    "query_doc_id": "asmb-3ea14b80-55ef-4cdc-8833-ceffe72cf038",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "in-good-company--iujaza",
+                    "series_name": "In Good Company with Nicolai Tangen",
+                    "tag_context": "The conversation is primarily focused on Bill Winters' leadership journey as CEO of Standard Chartered, including his turnaround strategy, decision-making philosophy, and leadership style. He extensively discusses his approach to fixing the bank's problems, team selection, and collaborative leadership methods throughout the interview.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "making-the-case--kegocq-m3369e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Making the Case for the Terminal as AI's Workbench: Warp’s Zach Lloyd",
+                    "content_type": "podcast_episodes",
+                    "id": "M8UUelP6cxpuOfRZTOwU",
+                    "publish_date": "2026-01-27T15:19:00+00:00",
+                    "query_doc_id": "asmb-e24ead38-d177-4d3c-9cdc-a77a18f87c60",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "training-data-by-m3369e",
+                    "series_name": "Training Data",
+                    "tag_context": "Zach shares his founder journey building Warp, including strategic decisions about pricing models, competitive positioning, and product evolution. He discusses the mental models behind focusing on professional developers and the decision to pivot from subsidized to sustainable pricing.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-i-built-a-1--1nycmw-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How I Built a $1.7B Business Repairing Garage Doors",
+                    "content_type": "podcast_episodes",
+                    "id": "HbMQ3yhfsbJHdrdXaHsv",
+                    "publish_date": "2026-01-27T13:58:00+00:00",
+                    "query_doc_id": "asmb-83135649-e406-4dd0-ad3f-e2657c9ea32e",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The entire conversation centers on Tommy Mello's journey from painting garage doors for $100 each to building a $1.7B garage door service company. He shares detailed stories about his early hustling days, key mentorship moments, and the mental models that drove his success, including his father's negotiation lessons and his approach to asking for help.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-mcdonalds-to-eg7ogw-25mkw4",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How McDonald’s Took Over America | Ray Kroc [Outliers]",
+                    "content_type": "podcast_episodes",
+                    "id": "FkFMPLK1IwQ4DXPHhc2O",
+                    "publish_date": "2026-01-27T11:00:00+00:00",
+                    "query_doc_id": "asmb-64eab22d-d05b-44a0-846d-052d0488b9a1",
+                    "rel_icon": "stars",
+                    "score": 0.7,
+                    "series_id": "knowledge-projec-25mkw4",
+                    "series_name": "The Knowledge Project with Shane Parrish",
+                    "tag_context": "The entire episode is centered on Ray Kroc's founder journey, from his early days as a traveling salesman to building the McDonald's empire. The narrative explores his mental models around persistence, obsession with quality, and his ability to see systems and scalability where others saw just a hamburger stand.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "autonomous-wildf-5bcwr6-0sz3if",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Autonomous Wildfire Suppression with Seneca",
+                    "content_type": "podcast_episodes",
+                    "id": "JCV82J37iQyvQUfqcv3W",
+                    "publish_date": "2026-01-27T10:00:00+00:00",
+                    "query_doc_id": "asmb-c3afe285-b0c8-4a1a-8c35-9b17a62ad9b8",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "inevitable-d20sz3if",
+                    "series_name": "Inevitable",
+                    "tag_context": "Stu Landesberg shares his founder journey from taking Grove public to starting Seneca, explaining his motivation to solve existential problems using technology. He discusses the mentality of using one's time and resources to tackle the world's most important challenges and his personal connection to the wildfire problem.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-a-texas-elec-tx3pbb-9e61z0",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How a Texas electric co-op rebuilt for reliability | Sponsored content from Rayburn Electric",
+                    "content_type": "podcast_episodes",
+                    "id": "0KpZWculA1d22Nly0dJV",
+                    "publish_date": "2026-01-27T01:00:00+00:00",
+                    "query_doc_id": "asmb-de3d8aa0-3f29-4d5f-978b-73aa38b11663",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "energy-gang-lp9e61z0",
+                    "series_name": "Energy Gang",
+                    "tag_context": "David Naylor shares leadership philosophy including 'status quo is not company policy' and discusses decision-making during crisis situations. The conversation includes insights on risk assessment, opportunistic thinking, and maintaining organizational culture during rapid change.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "betting-an-entir-cpqi85-1sd4iq",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Betting an Entire Company on AI, Bubble or Not | Render CEO Anurag Goel",
+                    "content_type": "podcast_episodes",
+                    "id": "oYaYj81WssFk63FJ8Jzf",
+                    "publish_date": "2026-01-26T16:36:11+00:00",
+                    "query_doc_id": "asmb-ddd0f3e0-cf96-43e4-a13e-d4447b0b6f39",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "minus-one-by-sou-1sd4iq",
+                    "series_name": "Minus One",
+                    "tag_context": "The entire conversation centers on Anurag Goel's founder journey from early Stripe employee to Render CEO. He shares detailed stories about his path, decision-making processes, and mental models for building companies, including his approach to finding 'life's work' and making strategic pivots.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "20vc-from-only-o-9qsb4r-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: From Only OpenAI to Die-Hard Anthropic: The Downfall of OpenAI in Enterprise | Harvey vs Legora: Legal AI is a Winner Take All | $7M ARR in a Single Day and Raising $200M Across 3 Rounds with No Deck with Max Junestrand, CEO @ Legora",
+                    "content_type": "podcast_episodes",
+                    "id": "Spe7iaFzoxalsUaJchwb",
+                    "publish_date": "2026-01-26T12:00:00+00:00",
+                    "query_doc_id": "asmb-f760e7a8-2982-47c3-8b63-80d8598d13e5",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Max shares detailed founder insights including his decision to stop selling for 6 months to rebuild infrastructure, scaling from 30 to 300 employees in 12 months, and mental models around competition and winning. He discusses the intensity and psychological impact of founder life extensively.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "zcash-founder-on-tk6pxk-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Zcash Founder on Privacy, AI, and How ZEC is 'Encrypted Bitcoin' | Zooko Wilcox-O'Hearn",
+                    "content_type": "podcast_episodes",
+                    "id": "Bj0meahLRopEWMSDZ7cN",
+                    "publish_date": "2026-01-26T11:56:00+00:00",
+                    "query_doc_id": "asmb-fd41866a-3a08-48c6-ab87-ccee5f2b3b95",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "Zooko shares his journey as Zcash founder, including lessons from the Linux movement's failures, the importance of UX-first approach inspired by Moxie Marlinspike, and his transition from Electric Coin Company to Shielded Labs. He reflects on the cypherpunk movement's challenges and evolution.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-ai-is-reachi-k4olgt-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How AI is Reaching the Most Extreme Parts of the World",
+                    "content_type": "podcast_episodes",
+                    "id": "VNdDyOpzbNaQTdNTg1tJ",
+                    "publish_date": "2026-01-26T11:00:00+00:00",
+                    "query_doc_id": "asmb-3cf81f71-9a69-421a-8538-8d75db7e1f13",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Wright shares his company's founding story starting with SpaceX partnership, discusses the 'live the mission' company value demonstrated during California fire response, and explains his philosophy of helping first and figuring out business relationships later.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "why-the-future-o-wnqvjc-fw7dbr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why the Future of Finance Runs in Software | Jeremy Allaire",
+                    "content_type": "podcast_episodes",
+                    "id": "JgCSonbruPd19UCENdbv",
+                    "publish_date": "2026-01-26T10:29:06+00:00",
+                    "query_doc_id": "asmb-ba881755-db25-4f9e-a8a4-7af74f9a2c65",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "grit-by-kleiner--fw7dbr",
+                    "series_name": "Grit",
+                    "tag_context": "Allaire shares his 12+ year journey building Circle, including the near-bankruptcy crisis in 2019 where the company went from 450 to 59 employees, his decision-making process during dark moments, and his philosophy on perseverance and belief in the mission despite widespread skepticism.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "investor-stories-682kpr-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Investor Stories 455: Lessons Learned: Building Investment Criteria, Missing HubSpot, and Staying True to Your Model (Madera, Agarwal, Bussgang)",
+                    "content_type": "podcast_episodes",
+                    "id": "iwMOuGPBXnagXTRunjFv",
+                    "publish_date": "2026-01-26T09:00:00+00:00",
+                    "query_doc_id": "asmb-bcad719a-13ea-47f6-a29d-51eae1c17be0",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "A significant portion discusses the importance of understanding and respecting founder vision versus investor perspectives. Mayta Agarwal specifically shares how she learned to listen to founders' visions rather than imposing her own thematic views, emphasizing the mental model shift needed when evaluating early-stage companies.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "the-first-steps--je8fp5-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The First Steps to a Family Holdco",
+                    "content_type": "podcast_episodes",
+                    "id": "q9DiTTCTZfCtyPBMNkgV",
+                    "publish_date": "2026-01-26T08:00:00+00:00",
+                    "query_doc_id": "asmb-367117e9-fe51-449a-b919-07af2fc508de",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "The episode extensively covers Ling and Leo's personal journey, including Ling's entrepreneurial background from Vietnam, their decision-making process around search, and the mental models they developed for evaluating businesses. Ling's white paper analysis and their approach to risk assessment are key elements of their founder story.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "410-excellent-ad-vpn9hr-mwo4ja",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 1
+                    },
+                    "content_title": "#410 Excellent Advice for Living",
+                    "content_type": "podcast_episodes",
+                    "id": "UV5JZ9dXdN9pZ09qc0dK",
+                    "publish_date": "2026-01-25T21:56:00+00:00",
+                    "query_doc_id": "asmb-b5a11f7b-f75f-46d2-a1e1-5ff1a826457d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.5,
+                    "series_id": "founders-t9mwo4ja",
+                    "series_name": "Founders",
+                    "tag_context": "Throughout the discussion, the host frequently references mental models and stories from successful entrepreneurs like Steve Jobs, Warren Buffett, Charlie Munger, Michael Dell, and Henry Ford. These founder examples are used to illustrate and reinforce many of Kelly's life principles, particularly around persistence, decision-making, and business philosophy.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "the-future-of-ev-kbxha1-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Future of Everything: What CEOs of Circle, CrowdStrike & More See Coming in 2026",
+                    "content_type": "podcast_episodes",
+                    "id": "0yxs1P611dp4jzIrUNev",
+                    "publish_date": "2026-01-25T19:52:00+00:00",
+                    "query_doc_id": "asmb-b55c7090-9497-4d01-855e-bf8764621187",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Multiple CEO interviews share founder journeys, including Jeremy Allaire's decision to build Circle within regulatory frameworks, George Kurtz's path from cybersecurity to racing, and Adam Goldstein's approach to VTOL development. Discusses decision-making during crises and constraints driving innovation.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "why-your-product-jv16mc-jifdtv",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why your product stopped growing (and the 5-step framework to restart it) | Jason Cohen",
+                    "content_type": "podcast_episodes",
+                    "id": "DGPbMfiKN6zLKk0h7tQ3",
+                    "publish_date": "2026-01-25T13:31:25+00:00",
+                    "query_doc_id": "asmb-fa21c8eb-3e3f-46e7-8241-e76be3acac73",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "lenny-s-podcast--jifdtv",
+                    "series_name": "Lenny's Podcast: Product | Growth | Career",
+                    "tag_context": "Jason Cohen shares insights from building four companies including two unicorns, and investing in 60+ startups. He provides mental models for thinking about growth limits, customer value creation, and strategic decision-making. The conversation includes philosophical discussions about whether growth is always necessary and when founders should consider pivoting or exiting.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "20vc-raising-400-pirhc9-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "20VC: Raising $400M for 20VC: Fundraising Lessons | Getting Marc Benioff Through 53 Cold Emails: How to Master Cold Outbound | 7 Lessons from 101 Decacorn Founders with Harry Stebbings (Simon Squibb Edition)",
+                    "content_type": "podcast_episodes",
+                    "id": "41grnOPH3YzaNu4j9QD8",
+                    "publish_date": "2026-01-24T13:40:00+00:00",
+                    "query_doc_id": "asmb-6c67fa88-9431-4af9-8e6e-a46c98b6bd8c",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "This is the primary focus of the conversation, with Harry sharing his personal journey from age 19, making $1.75M to support his mother's MS treatment, and detailing seven key lessons learned from interviewing 107 billionaires. The entire episode is structured around his founder story and mental frameworks for success.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "coinbase-ceo-bri-fcz1ia-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Coinbase CEO Brian Armstrong Breaks Down the Three Biggest Trends in Crypto + More from Davos!",
+                    "content_type": "podcast_episodes",
+                    "id": "DyHBjgkmO7Us5rBXiVsh",
+                    "publish_date": "2026-01-23T18:37:00+00:00",
+                    "query_doc_id": "asmb-413cae9d-d50d-4a10-ac55-fabb025ace62",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Armstrong shares his journey building Coinbase through regulatory challenges, his decision to start a biotech company (New Limits) focused on longevity, and various strategic decisions. The conversation includes insights on dealing with regulatory uncertainty and building in emerging industries.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-mintlify-is--hv440z-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Mintlify Is Rebuilding Documentation for Coding Agents",
+                    "content_type": "podcast_episodes",
+                    "id": "S0AVtl4WYSaiHA0lSEKQ",
+                    "publish_date": "2026-01-23T16:00:00+00:00",
+                    "query_doc_id": "asmb-0cd33b1d-6c41-4c08-ae68-d5d0ecd11da9",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "The founders share their extensive journey through eight pivots before finding success with Mintlify. They discuss key mental models like solving one problem correctly, doing things that don't scale, and the importance of customer love over broad appeal. Their story includes detailed accounts of early customer acquisition and product development philosophy.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "captaining-imo-g-hwpjwm-95fvav",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Captaining IMO Gold, Deep Think, On-Policy RL, Feeling the AGI in Singapore — Yi Tay 2",
+                    "content_type": "podcast_episodes",
+                    "id": "3OGNSMsHjYF969ILEdVX",
+                    "publish_date": "2026-01-23T15:22:00+00:00",
+                    "query_doc_id": "asmb-c9a24fc5-90fa-49aa-bb99-f39a16db8915",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "latent-space-the-95fvav",
+                    "series_name": "Latent Space: The AI Engineer Podcast",
+                    "tag_context": "Yi Tay shares his journey from leaving Google Brain to joining Reka and then returning to DeepMind to establish the Singapore team. He discusses mental models around learning rates in humans, the importance of invalidating world models when new evidence emerges, and his philosophy on research taste and talent identification.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "snowflake-vs-dat-j5ezxg-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Snowflake vs Databricks: The AI Data War | CEO of $SNOW",
+                    "content_type": "podcast_episodes",
+                    "id": "CMrMjETsC8YviBvrBP7n",
+                    "publish_date": "2026-01-23T14:51:14+00:00",
+                    "query_doc_id": "asmb-a83e4c32-b977-40fd-8ec8-1ce9136caff9",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The CEO shares extensive insights about leadership during transformation, lessons learned from Frank Slootman, his experience at Google scaling from $1.6B to $100B in revenue, and mental models for achieving compound growth. He discusses the challenges of leading through volatile AI-driven change.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "4-dumb-ideas-tha-14ange-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "4 dumb ideas that made people rich",
+                    "content_type": "podcast_episodes",
+                    "id": "i2rB2dfhQHfQX2tKFiZ9",
+                    "publish_date": "2026-01-23T14:34:00+00:00",
+                    "query_doc_id": "asmb-f2c33b1d-6c41-4c08-ae68-d5d0ecd11da9",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The episode features detailed founder stories including Michael Birch's journey from insurance programming to creating Birthday Alarm and eventually Bebo ($800M exit), and John Catsimatidis building a grocery empire then expanding into aviation and oil refining. These stories illustrate entrepreneurial mental models around pivoting, recognizing opportunities, and scaling simple ideas.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-mintlify-is--yirahb-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Mintlify Is Rebuilding Documentation for Coding Agents",
+                    "content_type": "podcast_episodes",
+                    "id": "2uQUeDATeFALyxzPLRWV",
+                    "publish_date": "2026-01-23T14:00:00+00:00",
+                    "query_doc_id": "asmb-5e5671f0-80b8-4176-863f-385ab17eb39f",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The founders share their extensive journey through eight pivots before finding success with Mintlify. They discuss key mental models like solving one problem correctly, doing things that don't scale, and the importance of customer love over broad appeal. Their story includes detailed accounts of early customer acquisition and product development philosophy.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "from-oculus-to-a-mo7d5g-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "From Oculus to Anduril: Palmer Luckey on Power, Technology, and the Future",
+                    "content_type": "podcast_episodes",
+                    "id": "v7HRfQ2taCIbfd8QE9sg",
+                    "publish_date": "2026-01-23T13:00:00+00:00",
+                    "query_doc_id": "asmb-a13e65e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "Luckey shares extensive founder stories from both Oculus and Anduril, including the Facebook acquisition decision, early hardware challenges, and building company culture. He discusses mental models for hiring, scaling, and maintaining mission-aligned teams while avoiding 'lily pad jumpers.'",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "inferact-buildin-uxtacy-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Inferact: Building the Infrastructure That Runs Modern AI",
+                    "content_type": "podcast_episodes",
+                    "id": "fbg2t5d5tefcQQjT5b6H",
+                    "publish_date": "2026-01-22T16:21:37+00:00",
+                    "query_doc_id": "asmb-948d8ed7-c3cb-4754-9694-e480fe22875a",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation includes the founding story of VLLM starting from a PhD project at UC Berkeley, the evolution from academic research to open source project to company, and the founders' journey from graduate students to running infrastructure used by major companies like Amazon and LinkedIn.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "inferact-buildin-chl6j8-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Inferact: Building the Infrastructure That Runs Modern AI",
+                    "content_type": "podcast_episodes",
+                    "id": "4Vw6mwpGNH275EXfndYS",
+                    "publish_date": "2026-01-22T16:00:00+00:00",
+                    "query_doc_id": "asmb-c3098024-25d6-436e-97c2-e6a33caa7a50",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "The conversation includes the founding story of VLLM starting from a PhD project, the journey from academic research to open source project to company, and insights from advisors like Ion Stoica. The founders share their mental models about open source development and building infrastructure companies.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "full-zipline-fac-frsu0f-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Full Zipline Factory Tour: How a $7.6B Company Builds Drones",
+                    "content_type": "podcast_episodes",
+                    "id": "Mw0ZN83DKvd3xRg0bQcJ",
+                    "publish_date": "2026-01-22T15:55:44+00:00",
+                    "query_doc_id": "asmb-1f217861-8a7f-4e47-be08-3077c957779a",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The tour provides insights into Zipline's founder-driven approach to building everything in-house, from manufacturing software to flight systems. The discussion reveals their mental model of vertical integration similar to Tesla, and their philosophy of controlling the entire stack for competitive advantage.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "no-priors-live-b-b1c1sz-dlfv4f",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "No Priors Live: Building Durable Software in the AI Age with MongoDB President & CEO CJ Desai",
+                    "content_type": "podcast_episodes",
+                    "id": "QL1iUZPPO7z6V80Sed7n",
+                    "publish_date": "2026-01-22T11:00:00+00:00",
+                    "query_doc_id": "asmb-497264e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "no-priors-artifi-dlfv4f",
+                    "series_name": "No Priors: Artificial Intelligence | Technology | Startups",
+                    "tag_context": "CJ shares his career journey and decision-making process for joining MongoDB, including his mental models for evaluating durable TAM, platform opportunities, and technology transitions. He discusses lessons learned from leaders like Frank Slootman and John Thompson that shaped his approach to product and business strategy.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "nick-rohatyn-eme-1o178y-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Nick Rohatyn – Emerging Markets Multi-Asset Investing at TRG (EP.482)",
+                    "content_type": "podcast_episodes",
+                    "id": "qkwBqaDQ7kXz8ceIi9GQ",
+                    "publish_date": "2026-01-22T09:00:00+00:00",
+                    "query_doc_id": "asmb-f0b21298-af24-4e86-a028-fe9010938da2",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "Extensive discussion of Rohatyn's career journey from JP Morgan to founding TRG in 2002, his decision-making process for leaving a senior bank position, and his philosophy of building a horizontal emerging markets firm. He shares lessons learned from his international upbringing and family history that shaped his approach to combining 'doing well while doing good.'",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "investor-stories-7m5z5l-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Investor Stories 454: When There Are No Good Choices: Navigating Ethical Dilemmas, Founder Splits, and Existential Company Threats (Cohen, Effron, Austin)",
+                    "content_type": "podcast_episodes",
+                    "id": "DbKZ99wCKd8Cj0BkWmGx",
+                    "publish_date": "2026-01-22T09:00:00+00:00",
+                    "query_doc_id": "asmb-564b64e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "The episode centers on high-stakes conflicts and ethical dilemmas faced by founders and investors. David Cohen shares how a company stayed true to its values despite impossible choices, while Ethan Austin discusses various founder split scenarios and creative resolution approaches.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "buying-a-platfor-bdt7xf-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Buying a Platform with an SBA Loan",
+                    "content_type": "podcast_episodes",
+                    "id": "V9yNESc9BcVVUjXuAlmW",
+                    "publish_date": "2026-01-22T08:00:00+00:00",
+                    "query_doc_id": "asmb-c16900cb-a746-4cfa-a5a2-b7fa85679707",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "Jacob shares his personal journey from finance professional to real estate investor to business owner, including his decision-making process around geographic flexibility and willingness to relocate for opportunities. His mental models around building versus buying businesses are explored.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                },
+                {
+                    "content_id": "how-andrew-wilki-ospcfx-pirnwj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Andrew Wilkinson Uses Opus 4.5 in His Work and Life ",
+                    "content_type": "podcast_episodes",
+                    "id": "8lNU2tOQln3yRoe9EKrB",
+                    "publish_date": "2026-01-21T21:22:59+00:00",
+                    "query_doc_id": "asmb-6b9e60c6-adfb-43fd-bb54-74955ea3dac4",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "ai-i-every-to-pirnwj",
+                    "series_name": "AI and I",
+                    "tag_context": "Andrew shares personal experiences and mental models about adapting to AI, including his evolution from anxiety about AI displacement to excitement about creative possibilities. He discusses the psychological aspects of embracing AI tools and overcoming coordination problems in business.",
+                    "tag_meta": {
+                        "parent_id": 6,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Founder Stories & Mental Models",
+                    "tag_value_lower": "founder stories & mental models"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

@@ -1,0 +1,1367 @@
+{
+    "execution": "019c0bed-e631-79d0-9a30-03d86ecb35b2",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "subcategories",
+                "tag_value": "Energy & Climate Policy"
+            },
+            "res": [
+                {
+                    "content_id": "the-rise-of-perm-4fg2n2-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The rise of permissionless DERs",
+                    "content_type": "podcast_episodes",
+                    "id": "QH8IeimoHoioEP3cvVlI",
+                    "publish_date": "2026-01-29T11:00:00+00:00",
+                    "query_doc_id": "asmb-b6c6c45a-b791-4898-bc12-2c54942d9ad6",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "A significant portion discusses the regulatory landscape for permissionless DERs, including interconnection agreements, NEC codes, UL certification requirements, and state-level bills (introduced in 24 states) allowing grid export up to 1.2kW. The murky regulatory environment and utility concerns about grid safety are extensively explored.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "how-to-make-roof-8tqmso-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How to make rooftop solar power as cheap in the US as it is in Australia",
+                    "content_type": "podcast_episodes",
+                    "id": "AK4y8qUJ3KD16hWNUMtT",
+                    "publish_date": "2026-01-28T17:02:00+00:00",
+                    "query_doc_id": "asmb-6da66892-391c-46c9-b550-55676175a0a4",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Policy reform is central to the discussion, with detailed coverage of permitting processes, interconnection regulations, building codes, and state-level legislative solutions. The conversation extensively explores how policy changes at local, state, and federal levels can dramatically reduce solar installation costs and timeframes.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "how-a-texas-elec-tx3pbb-9e61z0",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How a Texas electric co-op rebuilt for reliability | Sponsored content from Rayburn Electric",
+                    "content_type": "podcast_episodes",
+                    "id": "lPsPrJXwLZyjfsoxDhr6",
+                    "publish_date": "2026-01-27T01:00:00+00:00",
+                    "query_doc_id": "asmb-de3d8aa0-3f29-4d5f-978b-73aa38b11663",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "energy-gang-lp9e61z0",
+                    "series_name": "Energy Gang",
+                    "tag_context": "Significant discussion of Texas energy policy, ERCOT market regulations, and legislative changes that enabled cooperative securitization. The conversation covers how Winter Storm Uri exposed policy vulnerabilities and led to regulatory reforms in the Texas electricity market.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "a-five-alarm-fir-qxzyvd-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "A five-alarm fire for the grid? (Live)",
+                    "content_type": "podcast_episodes",
+                    "id": "LPJRGnf2YfpzkULQ88B4",
+                    "publish_date": "2026-01-26T12:44:00+00:00",
+                    "query_doc_id": "asmb-00ce1755-db25-4f9e-a8a4-7af74f9a2c65",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "The discussion extensively covers energy policy challenges including federal coordination efforts, state-level responses to grid reliability issues, and regulatory frameworks. The conversation touches on Trump administration policies, state governors' emergency declarations, and the need for better coordination between federal and state authorities.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "coinbase-ceo-bri-fcz1ia-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Coinbase CEO Brian Armstrong Breaks Down the Three Biggest Trends in Crypto + More from Davos!",
+                    "content_type": "podcast_episodes",
+                    "id": "mUVetec15VJblfvXF0Nc",
+                    "publish_date": "2026-01-23T18:37:00+00:00",
+                    "query_doc_id": "asmb-413cae9d-d50d-4a10-ac55-fabb025ace62",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Discussion of data center power requirements, the shift from measuring data centers by square footage to power consumption, and various energy sources including natural gas, hydro, and nuclear power. The conversation touches on grid infrastructure needs and energy policy implications for AI development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "let-s-dig-a-litt-o470it-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Let's dig a little deeper into virtual power plants (VPPs)",
+                    "content_type": "podcast_episodes",
+                    "id": "a8AG3AX0slUv8QTc4uHv",
+                    "publish_date": "2026-01-21T17:02:00+00:00",
+                    "query_doc_id": "asmb-1628e564-f266-43e4-90a0-016411c2f734",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Significant discussion focuses on regulatory frameworks needed to advance VPPs, including utility regulation, rate structures, and policy recommendations. The conversation covers how regulators should approach VPP programs, avoid over-engineering requirements, and provide long-term stability for market development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "a-rain-delay-for-o4j3lr-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "A ‘rain delay’ for the energy transition [partner content]",
+                    "content_type": "podcast_episodes",
+                    "id": "b7pM84oco5MWMSkhX7Ni",
+                    "publish_date": "2026-01-20T14:58:00+00:00",
+                    "query_doc_id": "asmb-b3bc62e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "stars",
+                    "score": 0.7,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "Policy is central to the discussion, including federal tax credits, foreign sourcing rules (FIAC), permitting reform, and the political environment's impact on clean energy. The conversation addresses how policy uncertainty is creating a 'rain delay' in the energy transition.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "using-drones-to--94x61z-0sz3if",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Using Drones to Make Rain and Snow with Rainmaker",
+                    "content_type": "podcast_episodes",
+                    "id": "JUpSA8E7X6cGIZ7RfJKX",
+                    "publish_date": "2026-01-20T10:00:00+00:00",
+                    "query_doc_id": "asmb-1212ee35-8839-41a5-9ab2-db374c2b7ef7",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "inevitable-d20sz3if",
+                    "series_name": "Inevitable",
+                    "tag_context": "Augustus discusses the regulatory landscape for cloud seeding, including state bans in Florida, Louisiana, and Tennessee, and the political dynamics around weather modification. The conversation covers how legislators conflate cloud seeding with chemtrails and geoengineering concerns.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "iran-s-breaking--fz4o4d-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Iran's Breaking Point, Trump's Greenland Acquisition, Solving Energy Costs, Billionaire Tax Backlash",
+                    "content_type": "podcast_episodes",
+                    "id": "x97dR8vwl7YX1FeBiTzj",
+                    "publish_date": "2026-01-17T00:00:00+00:00",
+                    "query_doc_id": "asmb-b25947de-4712-4614-bbc6-74eaac868791",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Discussion of regulatory changes by Energy Secretary Chris Wright to enable co-location of data centers with power generation, and broader policy implications of energy infrastructure modernization. The conversation covers FERC regulations and behind-the-meter power generation policies.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "dervos-2025-ener-nendf8-58u8l6",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DERVOS 2025: Energy Dominance and the Electrostate",
+                    "content_type": "podcast_episodes",
+                    "id": "6AZRIha6QHxMa5kXE6vK",
+                    "publish_date": "2026-01-16T14:00:00+00:00",
+                    "query_doc_id": "asmb-611ec96d-8dda-4bd0-bb18-b17e9192f62b",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "der-task-force-58u8l6",
+                    "series_name": "DER Task Force",
+                    "tag_context": "The conversation covers industrial policy implications of the electrostate transition, including government incentives, regulatory barriers, and the political challenges of transitioning from a 'petrostate' to an 'electrostate.' The panelists discuss how policy uncertainty affects investment decisions.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "meta-s-nuclear-d-3rg9fg-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Meta's nuclear deal explained: What's real vs hype?",
+                    "content_type": "podcast_episodes",
+                    "id": "i2YOZk71d7Bb34lowfZN",
+                    "publish_date": "2026-01-16T11:02:00+00:00",
+                    "query_doc_id": "asmb-0c88f75a-676a-420f-a641-7bce06219955",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "Significant discussion of Trump administration policies on nuclear power, regulatory challenges with the NRC, utility rate structures, and the political dynamics around data center energy costs. The conversation covers executive orders for new reactors and government involvement in nuclear financing.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "dervos-2025-depl-ruu6c6-58u8l6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DERVOS 2025: Deploying and Orchestrating GWs of Distributed Capacity",
+                    "content_type": "podcast_episodes",
+                    "id": "rZQJECp9EVLG3HtVa6yR",
+                    "publish_date": "2026-01-15T14:00:00+00:00",
+                    "query_doc_id": "asmb-7ba73b7f-1bf4-4bc5-96e5-686f97985e2c",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "der-task-force-58u8l6",
+                    "series_name": "DER Task Force",
+                    "tag_context": "Significant discussion around regulatory challenges, particularly California's defunding of DSGS programs, program fragmentation across states, and the need for stable policy frameworks. The conversation covers utility rate structures, wholesale market participation rules, and the regulatory barriers to VPP deployment.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "2026-trends-gas--ipht0l-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "2026 trends: Gas turbines, Texas’ load queue and China electrifies",
+                    "content_type": "podcast_episodes",
+                    "id": "KfXMkNwFkJkKzFkEmmDU",
+                    "publish_date": "2026-01-15T12:30:00+00:00",
+                    "query_doc_id": "asmb-5d81965b-100c-4595-9e9f-e65b148cd6cc",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "Discussion touches on energy policy implications, including China's electrification strategy for energy security and Trump administration goals for oil prices. The conversation also covers regulatory processes for utility infrastructure approval and interconnection queue management.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "making-the-elect-4v85xo-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Making the electricity grid work like the internet",
+                    "content_type": "podcast_episodes",
+                    "id": "PxkfsejPk7hlNF7ZLRkt",
+                    "publish_date": "2026-01-14T17:02:00+00:00",
+                    "query_doc_id": "asmb-18a32a81-8ca2-4a31-b3c7-defcb0f33e56",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "The discussion covers regulatory changes in the EU that now allow direct electrical connections between households outside utility control, contrasting this with US regulations that prohibit such connections. Policy implications for grid modernization and energy independence are explored throughout.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "dervos-2025-perm-8dxeyj-58u8l6",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DERVOS 2025: Permissionless DERs Wait for No One",
+                    "content_type": "podcast_episodes",
+                    "id": "zDKQyZkU2XS7z5xIVvQ7",
+                    "publish_date": "2026-01-14T14:00:00+00:00",
+                    "query_doc_id": "asmb-5419068c-6e06-4508-bdcf-100ea9828aa6",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "der-task-force-58u8l6",
+                    "series_name": "DER Task Force",
+                    "tag_context": "Kevin extensively discusses state-by-state legislation efforts to enable permissionless DERs, including specific bills like Utah's HB340 and New York's Sunny bill. The conversation covers regulatory barriers, interconnection agreements, and the need for policy changes to enable broader adoption of these technologies.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "dervos-2025-big--vmhouk-58u8l6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "DERVOS 2025: Big DERs Energy",
+                    "content_type": "podcast_episodes",
+                    "id": "jTZLobwatFVCxGulFgn8",
+                    "publish_date": "2026-01-13T14:00:00+00:00",
+                    "query_doc_id": "asmb-2e2578f2-d337-4dc7-8142-e26253b05a8b",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "der-task-force-58u8l6",
+                    "series_name": "DER Task Force",
+                    "tag_context": "Significant discussion of utility regulation, interconnection policies, and how electricity market structures need to evolve for massive data center loads. The conversation covers PJM capacity markets, transmission planning, flexible interconnection programs like SPP's 'Chills,' and fundamental questions about cost-of-service regulation and duty-to-serve obligations.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "scott-nolan-ceo--4fsx1e-jjn0kz",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Scott Nolan - CEO of General Matter on Uranium Enrichment  SRS #211",
+                    "content_type": "podcast_episodes",
+                    "id": "B6epE1d0UTim89MwyMY1",
+                    "publish_date": "2026-01-12T05:15:51+00:00",
+                    "query_doc_id": "asmb-a3514d7d-a326-4278-81de-cb49ebb760ee",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "shawn-ryan-show-jjn0kz",
+                    "series_name": "Shawn Ryan Show",
+                    "tag_context": "Significant focus on recent executive orders supporting nuclear energy, DOE programs for uranium enrichment, and bipartisan political support for nuclear power. Discussion includes regulatory reform at the NRC and government initiatives to quadruple nuclear energy production by 2050.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "what-s-the-deal--9rxkbk-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 4,
+                        "v1_insight": 3
+                    },
+                    "content_title": "What's the deal with closed-loop geothermal?",
+                    "content_type": "podcast_episodes",
+                    "id": "rnDi5LziFBSceqlKV2Nj",
+                    "publish_date": "2026-01-09T17:02:00+00:00",
+                    "query_doc_id": "asmb-a61c7484-4818-4015-90f7-ab01f271b917",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "The discussion touches on regulatory frameworks for geothermal development, permitting processes, and policy support. The founders mention that geothermal received limited support in the IRA and discuss the importance of policy signals for investor confidence and market development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "who-controls-pow-6q3sxv-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Who controls power in the AI era?",
+                    "content_type": "podcast_episodes",
+                    "id": "JAaCYNuo8JoAGAt9OCaW",
+                    "publish_date": "2026-01-09T12:00:00+00:00",
+                    "query_doc_id": "asmb-49fa32dc-9fe3-435d-a1db-6c30a58b027d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "The conversation touches on regulatory challenges, utility tariffs, capacity markets, and the political dynamics affecting clean energy development. They discuss how different market structures (ERCOT vs. other ISOs) enable or constrain energy innovation.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "whats-next-for-t-g00cu0-nt143q",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "What’s next for the global car industry?",
+                    "content_type": "podcast_episodes",
+                    "id": "ZMp3YhgpJjAAuqQdqIRM",
+                    "publish_date": "2026-01-09T11:30:00+00:00",
+                    "query_doc_id": "asmb-4004f93d-494c-4862-b291-f5bf1adef6ce",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "everything-energ-nt143q",
+                    "series_name": "Everything Energy",
+                    "tag_context": "The discussion covers China's comprehensive policy approach to EV development since 2001, including government targets for production and deployment. There's mention of industrial policies, low-cost loans, and innovation policy efforts supporting the transition.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "venezuela-and-wh-nzk9do-9e61z0",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Venezuela and what to expect from energy in 2026",
+                    "content_type": "podcast_episodes",
+                    "id": "Rk957pFO4LMTjAx66Zwv",
+                    "publish_date": "2026-01-08T01:00:00+00:00",
+                    "query_doc_id": "asmb-256d647e-ff10-42ca-b1af-34361a3670ee",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "energy-gang-lp9e61z0",
+                    "series_name": "Energy Gang",
+                    "tag_context": "Detailed discussion of US energy policy under the Trump administration, including Chris Wright's role at the Department of Energy, FERC's expanded authority over data center interconnections, and federal vs. state regulatory frameworks for energy infrastructure.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "nyc-s-congestion-5685p1-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "NYC's congestion pricing has been running for a year now. How's it doing?",
+                    "content_type": "podcast_episodes",
+                    "id": "gv2CAQgW7o6aI4QTb8iS",
+                    "publish_date": "2026-01-07T17:02:00+00:00",
+                    "query_doc_id": "asmb-7861637e-ff10-42ca-b1af-34361a3670ee",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "The entire conversation centers on NYC's congestion pricing policy as a climate and transportation solution. The discussion covers the 20-year policy development process, implementation challenges, political opposition, and measurable environmental benefits including reduced traffic, improved air quality, and decreased noise pollution.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "the-missing-piec-uu4a0b-0sz3if",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Missing Piece Holding Back Advanced Nuclear with Standard Nuclear",
+                    "content_type": "podcast_episodes",
+                    "id": "8d51afXOvW3A059J6Wcc",
+                    "publish_date": "2026-01-06T10:00:00+00:00",
+                    "query_doc_id": "asmb-93b1b177-0dcb-484b-ad4b-dfe744fbeedf",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "inevitable-d20sz3if",
+                    "series_name": "Inevitable",
+                    "tag_context": "The discussion covers regulatory challenges in nuclear fuel manufacturing, DOE programs supporting advanced nuclear development, and recent executive orders promoting nuclear energy. Kurt describes the regulatory environment as 'overkill' and discusses government efforts to streamline nuclear development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "electric-vehicle-fgz1en-9e61z0",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Electric vehicles create problems for the grid. Could they also help solve them? The plan to turn EVs into reliable grid infrastructure",
+                    "content_type": "podcast_episodes",
+                    "id": "tjbcgMf7XlBRWPBBZ7bJ",
+                    "publish_date": "2026-01-06T01:30:00+00:00",
+                    "query_doc_id": "asmb-406008de-f38a-4ed1-b9bb-1c90ebbab586",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "energy-gang-lp9e61z0",
+                    "series_name": "Energy Gang",
+                    "tag_context": "The conversation touches on regulatory challenges around grid modernization, utility rate structures, and the political pressures utilities face from both data center demands and residential customer affordability concerns. Discussion includes how regulators are approving pilots to scale programs for distributed energy resources.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "20vc-0-260m-in-r-4evflx-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: $0-$260M in Revenue in Three Years: How We Did It | You Need to Work Weekends to Win — Most Founders Aren't Ambitious Enough | The Revolut Playbook: Speed, Urgency, Extreme Ownership, and Zero Excuses with Alan Chang @ Fuse Energy",
+                    "content_type": "podcast_episodes",
+                    "id": "F4QdfkiHlbi7FlEE0hIg",
+                    "publish_date": "2026-01-05T07:07:00+00:00",
+                    "query_doc_id": "asmb-7c1772a8-530e-41b5-99ca-4be17648e615",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Discussion of UK energy regulation challenges, comparison with other countries' energy policies, and Chang's recommendations for deregulation. He critiques current regulatory approaches and advocates for free market solutions in energy.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "sen-brian-schatz-5533zz-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Sen. Brian Schatz wants permitting reform, but not like this",
+                    "content_type": "podcast_episodes",
+                    "id": "lClsg5FvnlT1sqQWzxmD",
+                    "publish_date": "2025-12-31T18:02:00+00:00",
+                    "query_doc_id": "asmb-7b04f0e5-c253-4ae7-9278-091ec67f97aa",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "This is the primary focus of the entire conversation. Senator Schatz discusses permitting reform, the IRA's climate provisions, solar energy bans, renewable energy policy, and the politics of climate action extensively throughout the interview. The discussion covers federal energy policy, regulatory frameworks, and legislative strategies.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "voltus-co-founde-q0xo6p-vlfy9x",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Voltus Co-Founder and CEO Dana Guernsey",
+                    "content_type": "podcast_episodes",
+                    "id": "pUAQz5lGRgJ0SZO3hClA",
+                    "publish_date": "2025-12-29T05:00:00+00:00",
+                    "query_doc_id": "asmb-d7135594-7db5-4f39-afcc-eb8289fe0c51",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "watt-it-takes-vlfy9x",
+                    "series_name": "Watt It Takes",
+                    "tag_context": "Discussion includes the landmark 2016 Supreme Court case FERC vs. EPSA that enabled demand response participation in wholesale markets, regulatory challenges across different ISOs/RTOs, and a FERC settlement. Dana emphasizes the importance of clear, transparent market rules.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "what-s-the-real--6pw80r-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "What's the real story with Australian rooftop solar?",
+                    "content_type": "podcast_episodes",
+                    "id": "jWOu2OWBlWz5ZDY1UNis",
+                    "publish_date": "2025-12-26T17:02:00+00:00",
+                    "query_doc_id": "asmb-91ebfe82-08b5-41cc-85ae-64f92c2044fa",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Significant discussion of policy frameworks that enabled Australia's solar success, including the Small Renewable Energy Scheme (SREs), feed-in tariffs, and streamlined permitting processes. The conversation also covers policy recommendations for the US, including PUC reform and federal preemption of local permitting barriers.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "the-gas-turbine--1nqx0l-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The gas turbine crunch",
+                    "content_type": "podcast_episodes",
+                    "id": "IKS6fNNBQgLkDkU0gGmZ",
+                    "publish_date": "2025-12-26T10:00:00+00:00",
+                    "query_doc_id": "asmb-db3b32d1-2556-4405-8679-6196fa450e7e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "The conversation touches on how deregulation in the late 1990s contributed to market bubbles, and discusses emissions constraints being relaxed as a current market driver. Coal plant retirements are also mentioned as a policy-driven factor affecting gas turbine demand.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "209-deals-scanda-anj1fv-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "209. Deals, Scandals and other memorable moments of 2025",
+                    "content_type": "podcast_episodes",
+                    "id": "zkzyxvKwUBIv9XXqdF7h",
+                    "publish_date": "2025-12-22T03:55:07+00:00",
+                    "query_doc_id": "asmb-a700033e-73e8-408d-82b1-d8234de836ce",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "Coverage of government energy policies including nuclear power decisions like Sizewell C, offshore wind policy changes, and regulatory challenges in different countries. The discussion includes analysis of policy impacts on energy markets and investment decisions.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "katherines-final-k23ic1-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 1,
+                        "v1_insight": 1
+                    },
+                    "content_title": "Katherine’s final episode",
+                    "content_type": "podcast_episodes",
+                    "id": "SNuJKBiOWkWKdANGXQD8",
+                    "publish_date": "2025-12-19T12:00:00+00:00",
+                    "query_doc_id": "asmb-b6b62838-392c-40b7-8e21-510fa09271cd",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.55,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "A significant portion discusses Katherine's policy work, including her role in government relations at NREL, lobbying for renewable energy budgets, and working on legislation like the Inflation Reduction Act. She describes translating technical concepts for policymakers and her work on energy storage tax credits that took years to pass.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "the-shifting-geo-2t8lvu-nt143q",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The shifting geography of energy demand",
+                    "content_type": "podcast_episodes",
+                    "id": "7B9ydkBbNr5BqiwchVly",
+                    "publish_date": "2025-12-18T16:08:03+00:00",
+                    "query_doc_id": "asmb-dc793817-3e76-47e1-ba7a-77a41d0aa8df",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "everything-energ-nt143q",
+                    "series_name": "Everything Energy",
+                    "tag_context": "The discussion covers India's net-zero by 2070 ambition, carbon markets, and the policy challenges of decarbonizing while meeting growing energy demand. The speakers discuss how countries are balancing economic development with climate commitments and clean energy deployment policies.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "energy-gangs-yea-kmf08k-9e61z0",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Energy Gang’s year in review: the highs, the lows, the people and the technologies of 2025",
+                    "content_type": "podcast_episodes",
+                    "id": "YeYyEN5Co6V2zRkF4X4B",
+                    "publish_date": "2025-12-18T01:00:00+00:00",
+                    "query_doc_id": "asmb-15b92838-392c-40b7-8e21-510fa09271cd",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "energy-gang-lp9e61z0",
+                    "series_name": "Energy Gang",
+                    "tag_context": "Policy discussions include permitting reform in the US, congestion pricing in New York City, nuclear energy policy, and the impact of the 'big beautiful bill' on energy infrastructure. The hosts analyze various regulatory changes and their effects on energy deployment and costs.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "sen-ruben-galleg-6u3gvf-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Sen. Ruben Gallego has a new energy plan",
+                    "content_type": "podcast_episodes",
+                    "id": "et8sRw1f9cD5VUWsJ3Yr",
+                    "publish_date": "2025-12-17T17:02:00+00:00",
+                    "query_doc_id": "asmb-43db116a-67a6-4c6f-9ce1-800640226f3b",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "This is the primary focus of the entire conversation. Senator Gallego discusses his comprehensive energy plan, including restoring IRA tax credits, permitting reform, transmission infrastructure, and balancing climate goals with affordability concerns. The discussion covers federal energy policy extensively throughout the interview.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "208-ai-vs-energy-yzmd7h-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "208. AI vs. Energy: the cost of speed - dec25",
+                    "content_type": "podcast_episodes",
+                    "id": "1SqPRe2TltiINiJNj6bM",
+                    "publish_date": "2025-12-15T03:15:07+00:00",
+                    "query_doc_id": "asmb-504e77c4-cc5c-4d3e-aca6-41b73b63e01c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "The discussion touches on regulatory challenges around data center permitting, environmental oversight, and the political context enabling rapid deployment of polluting generation. The conversation notes the lack of regulatory constraints and questions about EPA and state-level oversight of these developments.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "advocating-for-d-xm4cqv-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Advocating for decarbonization in 2026",
+                    "content_type": "podcast_episodes",
+                    "id": "fmRdeDOmjk8WXZ8iK2Q0",
+                    "publish_date": "2025-12-12T17:02:00+00:00",
+                    "query_doc_id": "asmb-20d7cf0c-c5ba-454b-9dce-a1a2a0e58257",
+                    "rel_icon": "stars",
+                    "score": 0.7,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Climate policy is central to the discussion, including detailed analysis of the Inflation Reduction Act, carbon pricing mechanisms like cap-and-trade, permitting reform, utility market restructuring, and the evolution of environmental policy from the Clean Air Act era to modern climate legislation.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "the-year-s-twist-9t0svb-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The year's twists, villains, and breakout stars in energy",
+                    "content_type": "podcast_episodes",
+                    "id": "nOxY66kXxoN2gO3NrAR9",
+                    "publish_date": "2025-12-12T11:02:00+00:00",
+                    "query_doc_id": "asmb-016f874e-27ec-4cf4-8cf5-0f67d5fc6686",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "Energy policy is a central theme throughout the discussion, covering Trump administration policies, tariffs, federal funding cuts, regulatory changes, and their impacts on clean energy deployment. The hosts analyze policy uncertainty and its effects on investment and project development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "how-to-bring-pow-fzb8nw-nt143q",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How to bring power to 600 million people",
+                    "content_type": "podcast_episodes",
+                    "id": "zlDyIeany1h6DpWjjBPj",
+                    "publish_date": "2025-12-11T08:07:05+00:00",
+                    "query_doc_id": "asmb-79c99fd7-2f3a-45b5-b5e3-b2d218742c6f",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "everything-energ-nt143q",
+                    "series_name": "Everything Energy",
+                    "tag_context": "Significant discussion of government policies, regulatory frameworks, and policy solutions for electricity access. The speakers detail how governments can set tariff structures, create clear frameworks for grid vs. decentralized solutions, and implement supportive policies for mini-grid development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "california-warms-xj5h2i-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "California warms up to a larger Western energy market",
+                    "content_type": "podcast_episodes",
+                    "id": "DE4xLhAcuN17iA2VX37q",
+                    "publish_date": "2025-12-10T17:02:00+00:00",
+                    "query_doc_id": "asmb-9cf6e132-1dd2-4c8a-baf0-f9cda08d92ce",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Energy policy is the primary focus, covering California's AB825 legislation, the Pathways Initiative, and the complex governance structures needed to coordinate energy markets across politically diverse western states. The conversation explores how different states' clean energy policies (like California's aggressive decarbonization goals versus Wyoming's coal interests) would be harmonized within a regional market framework.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "the-ai-energy-wa-2bcerp-t8lspa",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The AI energy war is here",
+                    "content_type": "podcast_episodes",
+                    "id": "qOZTMfJ4okrBZVBhxm9D",
+                    "publish_date": "2025-12-10T08:01:00+00:00",
+                    "query_doc_id": "asmb-57b415b4-c4e6-4852-ad1f-0763fb01d073",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "possible-by-reid-t8lspa",
+                    "series_name": "Possible",
+                    "tag_context": "Energy policy is extensively critiqued, with discussion of regulatory volatility harming investment, the need for 'all hands on deck' energy approach, and criticism of current administration's approach. The speakers advocate for stable, comprehensive energy policy to support data center development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "californias-grid-eai9c4-9e61z0",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "California’s grid under pressure: affordability, AI, and the future of electricity markets",
+                    "content_type": "podcast_episodes",
+                    "id": "CNGPGaB2IPLNou1NdbEq",
+                    "publish_date": "2025-12-09T12:00:00+00:00",
+                    "query_doc_id": "asmb-fa71d7c9-deb7-4368-b940-125158c69010",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "energy-gang-lp9e61z0",
+                    "series_name": "Energy Gang",
+                    "tag_context": "Significant discussion of California's energy policy framework, including Governor Newsom's $60 billion consumer refund package, Assembly Bill 825 for regional energy market governance, and the regulatory collaboration between CAISO, California Energy Commission, and utilities. The conversation explores how policy decisions impact grid operations and consumer costs.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "207-e-mobility-a-8awmpr-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "207. E-Mobility and V-2-X - dec25",
+                    "content_type": "podcast_episodes",
+                    "id": "XLHEWScffoaXe4cNutDb",
+                    "publish_date": "2025-12-08T04:30:07+00:00",
+                    "query_doc_id": "asmb-234e77c4-cc5c-4d3e-aca6-41b73b63e01c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "The conversation addresses regulatory frameworks needed for vehicle-to-grid integration, smart meter deployment challenges in Germany, and how policy support in China has accelerated EV adoption. The speakers emphasize the need for intelligent regulation to enable the energy transition.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "3-years-after-ch-80lhcv-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "3 years after ChatGPT, vibes meet grid realities",
+                    "content_type": "podcast_episodes",
+                    "id": "Mkr3xiZrbY6CfKZhtDjZ",
+                    "publish_date": "2025-12-05T11:55:00+00:00",
+                    "query_doc_id": "asmb-e1050fbc-d1cf-4c14-baac-aa6453f359bc",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "Regulatory challenges and policy innovations are discussed, particularly around interconnection queues, utility planning, and new tariff structures like the Clean Transition Tariff. The conversation touches on FERC's response to data center load growth and regulatory frameworks.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "watt-s-up-ercot-6qg72q-fy7drx",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Watt's Up, ERCOT?",
+                    "content_type": "podcast_episodes",
+                    "id": "mtFTRcpiDbfjncB0jeHB",
+                    "publish_date": "2025-12-05T05:00:00+00:00",
+                    "query_doc_id": "asmb-7a41b894-7adf-4e5e-a01c-6fd747c3e335",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "battery-storage--fy7drx",
+                    "series_name": "Battery + Storage Podcast",
+                    "tag_context": "Significant discussion of ERCOT's interconnection policies, the Inflation Reduction Act's impact on energy storage tax credits, and Senate Bill 6 affecting load-side processes. The conversation extensively compares regulatory frameworks across different energy markets (ERCOT vs MISO, PJM, SPP) and their impact on renewable energy development.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "using-flexibilit-6tx4lt-uompd9",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Using 'Flexibility' to Solve AI's Energy Bottleneck with Varun Sivaram, Founder and CEO of Emerald AI",
+                    "content_type": "podcast_episodes",
+                    "id": "ZYxRmRLIbYwW8CsTOcP5",
+                    "publish_date": "2025-12-04T09:30:00+00:00",
+                    "query_doc_id": "asmb-1af59857-f651-4b48-bd32-7319d9729844",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "pitching-progres-uompd9",
+                    "series_name": "Pitching Progress",
+                    "tag_context": "Energy Secretary Chris Wright's directive to FERC for fast-tracking flexible data center connections is discussed as emerging national policy. The conversation covers regulatory proceedings across North America and the political implications of rising power prices due to data center demand.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "how-illinois-pas-qyfb1p-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Illinois passed its third big clean-energy bill in a decade",
+                    "content_type": "podcast_episodes",
+                    "id": "duD56ULXb71Ur9c9Uno4",
+                    "publish_date": "2025-12-03T17:02:00+00:00",
+                    "query_doc_id": "asmb-9b3b0bbc-d1cf-4c14-baac-aa6453f359bc",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "The conversation is fundamentally about energy policy, specifically Illinois's third major clean energy bill in a decade. It covers integrated resource planning, utility regulation, renewable portfolio standards, fossil fuel plant closures, and the political dynamics of passing comprehensive energy legislation.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "206-renewables-r-xo8hw8-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "206. Renewables Repriced: Hedge Funds and Algo power trading - dec25",
+                    "content_type": "podcast_episodes",
+                    "id": "SxnfOFqX22x7wDhPt1WP",
+                    "publish_date": "2025-12-01T04:25:09+00:00",
+                    "query_doc_id": "asmb-35faca07-1302-4cdf-bf4a-4a3c79393821",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "German energy policy is critiqued throughout, particularly regarding the proposed 20 GW subsidized gas build-out, resistance to price zone splitting, smart meter rollout delays, and redispatch costs. The guest advocates for market-based solutions over government intervention in capacity markets.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "what-s-going-on--pt0ej5-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "What's going on in electricity world?",
+                    "content_type": "podcast_episodes",
+                    "id": "CatzAi342qzcVdyW0Kyt",
+                    "publish_date": "2025-11-28T17:03:16+00:00",
+                    "query_doc_id": "asmb-fce8135f-5a8c-44e4-9a3a-2dc98a01fd93",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.6,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "The host discusses Democratic Party strategy around electricity bills as a political issue, the complexity of energy policy solutions, and challenges with permitting and interconnection processes. He contrasts simple political narratives about renewables with the complex reality of electricity pricing factors.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "the-future-of-so-nbtlri-nt143q",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The future of solar power",
+                    "content_type": "podcast_episodes",
+                    "id": "x5FzLxU3I2qXbLwutcZh",
+                    "publish_date": "2025-11-27T08:00:00+00:00",
+                    "query_doc_id": "asmb-2d85992e-8edb-415f-bf21-1b31c7d70b49",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "everything-energ-nt143q",
+                    "series_name": "Everything Energy",
+                    "tag_context": "Government policies play a central role throughout the discussion, including policy changes in China and the US affecting solar deployment, the virtuous cycle between policy support and technology innovation, and the need for clear policy frameworks. The conversation emphasizes how policy shifts directly impact market growth and investment confidence.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                },
+                {
+                    "content_id": "what-s-the-deal--rn2s82-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "What's the deal with balcony solar?",
+                    "content_type": "podcast_episodes",
+                    "id": "GbBbK5nyNX2a1fOp2KFG",
+                    "publish_date": "2025-11-26T17:02:00+00:00",
+                    "query_doc_id": "asmb-b96092c2-f23a-4429-9d5f-4899769460a7",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "A major portion of the conversation focuses on regulatory and policy barriers to plug-in solar in the US, including interconnection requirements, utility regulations, and state-level legislation. The discussion extensively covers Germany's regulatory approach and efforts to replicate similar policies across US states.",
+                    "tag_meta": {
+                        "parent_id": 5,
+                        "status": "existing"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "subcategories",
+                    "tag_value": "Energy & Climate Policy",
+                    "tag_value_lower": "energy & climate policy"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

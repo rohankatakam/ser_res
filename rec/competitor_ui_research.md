@@ -444,3 +444,174 @@ Screenshots analyzed (stored in project assets):
 2. **Generic content** — Not investor-focused
 3. **No entity-based discovery** — Can't search by company
 4. **No speaker credibility signals** — Ratings don't reflect expertise
+
+---
+
+## 7. How Netflix/Spotify Test Recommendations
+
+Understanding how major platforms collect signals and update recommendations in real-time is essential for designing Serafis's testing approach.
+
+### 7.1 Netflix Signal Collection
+
+| Signal | What It Captures | Weight | Timing |
+|--------|------------------|--------|--------|
+| **Click/Play** | Implicit interest in content | Medium | Immediate |
+| **Watch Duration** | <30% = weak signal, >80% = strong | High | Post-play |
+| **Thumbs Up** | Explicit positive preference | Very High | Immediate |
+| **Thumbs Down** | Explicit negative preference | Very High | Immediate |
+| **"Not Interested"** | Exclude + penalize similar content | High | Immediate |
+| **Browse/Hover Time** | Hover >2s = mild interest signal | Low | Real-time |
+| **Row Position Clicked** | Top rows = expected, lower = surprise | Medium | Session |
+| **Time of Day** | Context for content appropriateness | Low | Background |
+| **Device Type** | Mobile vs TV affects content length recs | Low | Background |
+
+**Netflix Cold Start Flow:**
+1. Initial: Popular content by genre (global trending)
+2. After 1-2 watches: "Because you watched X" sections appear
+3. After 10+ ratings: Full personalization active
+4. Continuous: Every action refines the model
+
+### 7.2 Spotify Signal Collection
+
+| Signal | What It Captures | Weight | Timing |
+|--------|------------------|--------|--------|
+| **Play** | Positive interest in artist/genre/era | Medium | Immediate |
+| **Skip (<30s)** | Negative signal — "not what I wanted" | High | Immediate |
+| **Full Listen** | Strong positive signal | High | Post-play |
+| **Save to Library** | Explicit strong positive | Very High | Immediate |
+| **Add to Playlist** | Context-aware positive signal | High | Immediate |
+| **"Don't play this"** | Exclude track + train against artist | Very High | Immediate |
+| **Repeat Play** | Very strong preference signal | Very High | Session |
+| **Playlist Context** | Workout vs Chill affects recs | Medium | Background |
+
+**Spotify Discovery Flow:**
+1. Cold start: Genre/mood selection during onboarding
+2. First session: Mix of popular + stated preferences
+3. After listening: Daily Mixes evolve based on patterns
+4. Continuous: Discover Weekly learns from week's activity
+
+### 7.3 Key Testing Patterns
+
+#### Pattern 1: Cold Start → Warm Up
+
+```
+Session Start (t=0)
+├─ User sees: Global popular/quality content
+├─ User clicks: Episode about AI
+│   └─ System learns: +1 AI category affinity
+├─ User clicks: Another AI episode
+│   └─ System learns: +1 AI, "Insights for You" now shows AI
+├─ User clicks: "Not for me" on Crypto episode
+│   └─ System learns: -1 Crypto, exclude from future recs
+└─ Session End: AI preference established, Crypto deprioritized
+```
+
+#### Pattern 2: Quality Seeker
+
+```
+User Behavior:
+├─ Only clicks episodes with "High Insight" badge
+├─ Ignores episodes without badges
+├─ Watches high-insight content fully
+│
+System Response:
+├─ Raises quality threshold for recommendations
+├─ Prioritizes insight_score >= 3 in ranking
+└─ De-emphasizes entertainment-focused content
+```
+
+#### Pattern 3: Series Loyalty
+
+```
+User Behavior:
+├─ Clicks 3 episodes from "20VC" series
+├─ Clicks 2 episodes from "a16z Podcast"
+│
+System Response:
+├─ Auto-subscribes to these series (implicit)
+├─ "New from Your Shows" section populates
+└─ Recommends similar series ("If you like 20VC...")
+```
+
+#### Pattern 4: Contrarian Hunter
+
+```
+User Behavior:
+├─ Specifically clicks "Non-Consensus Ideas" section
+├─ Engages with contrarian-badged content
+├─ Ignores mainstream/consensus content
+│
+System Response:
+├─ Surfaces more contrarian content across all sections
+├─ Prioritizes high insight + credibility combination
+└─ May reduce entertainment-focused recommendations
+```
+
+#### Pattern 5: Negative Feedback Loop
+
+```
+User Behavior:
+├─ Marks 3 Crypto episodes "Not for me"
+├─ Marks 2 long-form (>1hr) episodes "Not for me"
+│
+System Response:
+├─ Excludes marked episodes permanently
+├─ Deprioritizes Crypto category (-weight)
+├─ May prefer shorter content in ranking
+└─ Avoids similar series to rejected content
+```
+
+### 7.4 Testing Metrics to Track
+
+| Metric | Definition | Target |
+|--------|------------|--------|
+| **Cold-to-Warm Sessions** | Actions needed before personalization kicks in | <5 |
+| **Signal Responsiveness** | How quickly recs change after action | <1 second |
+| **Preference Accuracy** | Do recs match inferred preferences | >70% match |
+| **Exclusion Accuracy** | Does "Not Interested" actually exclude | 100% |
+| **Diversity Maintenance** | Still show variety after preferences set | >3 categories |
+
+### 7.5 Serafis-Specific Testing Considerations
+
+| Consideration | Netflix/Spotify Approach | Serafis Adaptation |
+|---------------|--------------------------|---------------------|
+| **Quality signals** | None — popularity-based | Use insight/credibility scores |
+| **Content length** | Duration affects recommendations | Less relevant for research |
+| **Entity tracking** | N/A — music/video focused | Track companies/people of interest |
+| **Contrarian content** | No concept | Explicit non-consensus detection |
+| **Skip behavior** | Strong negative signal | May indicate already-known info |
+| **Save/Bookmark** | Strong positive | Strong research interest signal |
+
+### 7.6 Recommended Testing Flow for Serafis
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  SERAFIS RECOMMENDATION TESTER                              │
+├─────────────────────────────────────────────────────────────┤
+│  Session State:                                             │
+│  ├─ Clicks: [Technology x3, Startups x1]                    │
+│  ├─ Not Interested: [Crypto x2]                             │
+│  ├─ Saves: [ep_123, ep_456]                                 │
+│  └─ Inferred: Technology & AI (confidence: 75%)             │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  📊 Insights for You                                        │
+│  [Why: Matches your Technology interest]                    │
+│  ┌───────┐ ┌───────┐ ┌───────┐                             │
+│  │ AI Ep │ │ AI Ep │ │ Startup│                             │
+│  └───────┘ └───────┘ └───────┘                             │
+│                                                             │
+│  💎 Highest Signal This Week                                │
+│  [Why: Top quality globally, filtered by your exclusions]   │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│  Actions: [Reset] [Export State] [Show Algorithm Details]   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Key Features for Testing:**
+1. Transparent state display (what signals have been captured)
+2. "Why" explanations for each section
+3. Real-time updates after every interaction
+4. Reset button to start fresh cold start
+5. Export capability for analyzing session patterns

@@ -1,10 +1,10 @@
 # Serafis Recommendation Engine — Technical Specification
 
-> *Design document for the research intelligence recommendation system powering the Serafis mobile app.*
+> *Design document for the research intelligence recommendation system powering the Serafis mobile prosumer app.*
 
 **Date:** January 29, 2026  
 **Author:** Rohan Katakam  
-**Status:** Draft  
+**Status:** Draft (Revised)  
 **Stakeholder:** Rohan Sharma (CEO)
 
 ---
@@ -19,15 +19,20 @@
 - Users have **professional/financial motivations**, not entertainment motivations
 - Recommendations should surface **insights relevant to work**, not "podcasts to enjoy"
 
-### 1.2 Who the User Is
+### 1.2 Target User: Prosumer Investor
 
-| Segment | Examples | True Motivation | Job to Be Done |
-|---------|----------|-----------------|----------------|
-| **Institutional** | HF/PE/VC analyst, McKinsey consultant | Alpha generation, professional performance | "Find what experts say about [company] for my memo" |
-| **Prosumer** | RIA, family office, crypto trader | Make money, be early to trends | "Know what smart people think before it's consensus" |
-| **Operator** | Founder, VP Strategy, Corp Dev | Strategic advantage, career growth | "Understand where my market is going" |
+This specification targets the **prosumer segment** for the mobile app:
 
-### 1.3 Why They Choose Serafis Over Spotify/Apple
+| Attribute | Description |
+|-----------|-------------|
+| **Who** | RIA, family office analyst, active retail investor, crypto trader |
+| **Motivation** | Make money, be early to trends, feel like an insider |
+| **Job to be done** | "Know what smart people think before it's consensus" |
+| **Time constraint** | Medium — values efficiency but has flexibility |
+| **Why not Spotify** | No signal vs noise filtering; can't find credible sources; no insight extraction |
+| **Success metric** | Portfolio performance, being early to trends, feeling informed |
+
+### 1.3 Why Prosumers Choose Serafis Over Spotify/Apple
 
 | Need | Spotify/Apple | Serafis |
 |------|---------------|---------|
@@ -36,92 +41,79 @@
 | Quality scoring (Insight, Credibility) | ❌ | ✅ |
 | Claim/insight extraction | ❌ | ✅ |
 | Non-consensus idea detection | ❌ | ✅ |
-| Professional research workflow | ❌ | ✅ |
 
 ### 1.4 Key Differentiator
 
-> **Spotify/Apple optimize for engagement. Serafis optimizes for decision usefulness.**
+> **Spotify/Apple optimize for engagement (what's popular). Serafis optimizes for intelligence quality (what's valuable for decisions).**
 
 ---
 
 ## 2. Data Schema
 
-### 2.1 User Signals
+### 2.1 Available User Signals
 
-| Signal | Fields | Use |
-|--------|--------|-----|
-| **Activity** | `entity_type`, `entity_id`, `timestamp` | Implicit interest signal |
-| **Bookmarks** | `entity_type`, `entity_id`, `timestamp` | Explicit save signal |
-| **Subscriptions** | `series_id`, `timestamp` | Series affinity |
-| **Research Profile** | `role`, `sectors`, `tracked_companies`, `tracked_people` | Core personalization |
-| **Not Interested** | `episode_id`, `timestamp` | Negative signal |
+These are the signals provided by the founder for the recommendation engine:
 
-### 2.2 Research Profile (New)
+| Signal | Fields | Description | Use in Recommendations |
+|--------|--------|-------------|------------------------|
+| **Activity** | `entity_type` (series/episode), `entity_id`, `visit_timestamp` | User's listening/viewing history | Implicit interest, "seen" filtering |
+| **Bookmarks** | `entity_type` (series/episode), `entity_id`, `bookmark_timestamp` | Explicitly saved content | Strong interest signal |
+| **Subscriptions** | `series_id`, `subscription_timestamp` | Series the user follows | "New from Your Shows" section |
+| **Category Interests** | `category_name` | User's stated topic interests (AI, Crypto, etc.) | Primary personalization driver |
 
-Captures user's professional context for research-oriented recommendations:
+### 2.2 Derived User Context
+
+From existing signals, we derive:
 
 ```python
-class ResearchProfile:
-    role: str                    # "investor", "analyst", "operator", "prosumer"
-    sectors: List[str]           # ["AI", "Crypto", "Fintech", ...]
-    tracked_companies: List[str] # ["OpenAI", "Anthropic", "Stripe", ...]
-    tracked_people: List[str]    # ["Sam Altman", "Jensen Huang", ...]
+class UserContext:
+    user_id: str
+    category_interests: List[str]         # From user category interests setting
+    subscribed_series: List[str]          # From subscriptions
+    seen_episode_ids: Set[str]            # From activity (entity_type=episode)
+    bookmarked_episode_ids: Set[str]      # From bookmarks (entity_type=episode)
+    not_interested_ids: Set[str]          # Future: explicit "not interested" feedback
 ```
 
-### 2.3 Content Metadata
+**Note:** This specification uses existing signals only. A richer "Research Profile" with tracked companies/people could be added in a future phase.
 
-| Field | Scope | Description |
-|-------|-------|-------------|
-| `insight_score` | Episode | Novelty and depth of ideas (1-4) |
-| `credibility_score` | Episode | Speaker authority (1-4) |
-| `information_score` | Episode | Data density (1-4) |
-| `categories` | Episode | Major themes (Technology & AI, Crypto, etc.) |
-| `entities` | Episode | Companies mentioned with relevance scores |
-| `people` | Episode | People mentioned with titles and relevance |
-| `critical_views` | Episode | Non-consensus idea flags |
-| `embedding` | Episode | Transcript embedding for similarity |
+### 2.3 Available Content Metadata
+
+These fields are confirmed available from the Serafis platform:
+
+| Field | Scope | Description | Confirmed |
+|-------|-------|-------------|-----------|
+| `insight_score` | Episode | Novelty and depth of ideas (1-4) | ✅ Yes |
+| `credibility_score` | Episode | Speaker authority (1-4) | ✅ Yes |
+| `information_score` | Episode | Data density (1-4) | ✅ Yes |
+| `entertainment_score` | Episode | Engagement quality (1-4) | ✅ Yes (not used) |
+| `categories` | Episode | Major themes + subcategories | ✅ Yes |
+| `entities` | Episode | Companies mentioned with relevance (0-4) | ✅ Yes |
+| `people` | Episode | People mentioned with relevance (0-4) | ✅ Yes |
+| `summary` | Episode | AI-generated episode description | ✅ Yes |
+| `key_insights` | Episode | Top 3 takeaways | ✅ Yes |
+| `critical_views` | Episode | Non-consensus analysis text | ✅ Yes |
+| `popularity` | Series | Series-level popularity score | ✅ Yes |
+| `description` | Series/Episode | Text descriptions | ✅ Yes |
+
+### 2.4 Key Insight Preview
+
+For episode cards, surface a **1-sentence preview** from either:
+1. First sentence of `key_insights[0]` (preferred)
+2. First sentence of `summary` (fallback)
 
 ---
 
-## 3. Onboarding: Build a Research Profile
+## 3. Interface Separation
 
-### 3.1 Flow
+Per the founder's guidance, the mobile app has two distinct interfaces:
 
-Unlike Spotify ("What genres do you like?"), Serafis asks about professional context:
+| Interface | Purpose | Algorithm Focus |
+|-----------|---------|-----------------|
+| **Jump In / Recently Played** | Shows carousel of actual history | N/A — direct history display |
+| **Recommendations** | Shows content user hasn't interacted with | **This specification** |
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│  TELL US ABOUT YOUR RESEARCH FOCUS                                      │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  What best describes your role?                                          │
-│  ○ Investor (VC / PE / HF / Public Markets)                              │
-│  ○ Analyst / Consultant                                                  │
-│  ○ Operator / Founder / Executive                                        │
-│  ○ Individual Investor / Prosumer                                        │
-│                                                                          │
-│  What sectors do you focus on? (select all)                              │
-│  ☐ AI & Machine Learning        ☐ Enterprise SaaS                        │
-│  ☐ Crypto & Web3                ☐ Consumer & Retail                      │
-│  ☐ Fintech & Payments           ☐ Healthcare & Biotech                   │
-│  ☐ Public Markets               ☐ Energy & Climate                       │
-│                                                                          │
-│  What companies are you tracking?                                        │
-│  [OpenAI, Anthropic, Stripe...]                      (entity autocomplete)│
-│                                                                          │
-│  What people do you follow?                                              │
-│  [Sam Altman, Jensen Huang...]                       (person autocomplete)│
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-### 3.2 Why This Matters
-
-| Spotify Onboarding | Serafis Onboarding |
-|-------------------|-------------------|
-| Listening preferences | Research profile |
-| Optimizes for engagement | Optimizes for relevance to work |
-| "What do you enjoy?" | "What do you need to know?" |
+**Critical requirement:** Recommendations must **exclude** all episodes the user has already interacted with (from activity signals).
 
 ---
 
@@ -135,44 +127,23 @@ Unlike Spotify ("What genres do you like?"), Serafis asks about professional con
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  ⏱️ CONTINUE RESEARCH                             [History - N/A] │  │
+│  │  ⏱️ JUMP IN                                    [HISTORY - SEPARATE]│  │
 │  │  Pick up where you left off                                       │  │
+│  │  (Separate interface — not part of recommendations)               │  │
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                          │
+│  ════════════════════ RECOMMENDATIONS BELOW ═══════════════════════════ │
+│                                                                          │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  📊 INSIGHTS FOR YOUR FOCUS                           [PHASE 1]  │  │
-│  │  Based on AI & Machine Learning, Enterprise SaaS                  │  │
+│  │  📊 INSIGHTS FOR YOU                                              │  │
+│  │  Based on AI & Machine Learning, Crypto & Web3                    │  │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
 │  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
 │  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘                 │  │
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                          │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  🎯 TRACKING: OPENAI                                  [PHASE 1]  │  │
-│  │  Latest high-relevance episodes                                   │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
-│  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘                 │  │
-│  └───────────────────────────────────────────────────────────────────┘  │
-│                                                                          │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  👤 TRACKING: SAM ALTMAN                              [PHASE 1]  │  │
-│  │  Recent appearances and mentions                                  │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐                             │  │
-│  │  │ Episode │ │ Episode │ │ Episode │                             │  │
-│  │  └─────────┘ └─────────┘ └─────────┘                             │  │
-│  └───────────────────────────────────────────────────────────────────┘  │
-│                                                                          │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  🔥 NON-CONSENSUS IDEAS                               [PHASE 1]  │  │
-│  │  Contrarian views from credible speakers                          │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
-│  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘                 │  │
-│  └───────────────────────────────────────────────────────────────────┘  │
-│                                                                          │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  💎 HIGHEST SIGNAL THIS WEEK                          [PHASE 1]  │  │
+│  │  💎 HIGHEST SIGNAL THIS WEEK                                      │  │
 │  │  Top Insight + Credibility across all topics                      │  │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
 │  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
@@ -180,8 +151,24 @@ Unlike Spotify ("What genres do you like?"), Serafis asks about professional con
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                          │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  📡 NEW FROM YOUR SHOWS                               [PHASE 2]  │  │
+│  │  🔥 NON-CONSENSUS IDEAS                                           │  │
+│  │  Contrarian views from credible speakers                          │  │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
+│  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
+│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘                 │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │  📡 NEW FROM YOUR SHOWS                                           │  │
 │  │  Latest from subscribed series                                    │  │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
+│  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
+│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘                 │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │  🌟 TRENDING IN [CATEGORY]                                        │  │
+│  │  Popular episodes in AI & Machine Learning                        │  │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐                 │  │
 │  │  │ Episode │ │ Episode │ │ Episode │ │ Episode │                 │  │
 │  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘                 │  │
@@ -192,15 +179,21 @@ Unlike Spotify ("What genres do you like?"), Serafis asks about professional con
 
 ### 4.2 Section Definitions
 
-| Section | Algorithm | Personalized? | Phase |
-|---------|-----------|---------------|-------|
-| **Continue Research** | User history | Yes | N/A |
-| **Insights for Your Focus** | Sector match + quality | Yes | 1 |
-| **Tracking: [Company]** | Entity relevance | Yes | 1 |
-| **Tracking: [Person]** | Person relevance | Yes | 1 |
-| **Non-Consensus Ideas** | Critical Views + credibility | No (global) | 1 |
-| **Highest Signal** | Pure quality scores | No (global) | 1 |
-| **New from Your Shows** | Subscription-based | Yes | 2 |
+| Section | Algorithm | Personalized? | Signal Used |
+|---------|-----------|---------------|-------------|
+| **Jump In** | Direct history | Yes | Activity (separate interface) |
+| **Insights for You** | Category match + quality | Yes | Category interests |
+| **Highest Signal** | Pure quality scores | No (global) | None |
+| **Non-Consensus Ideas** | Critical Views + credibility | No (global) | None |
+| **New from Your Shows** | Subscription-based | Yes | Subscriptions |
+| **Trending in [Category]** | Popularity + category | Yes | Category interests |
+
+### 4.3 Exclusion Rules
+
+**All recommendation sections must exclude:**
+1. Episodes the user has already viewed (from activity signals)
+2. Episodes the user marked "Not Interested" (future feature)
+3. Episodes the user has bookmarked (already saved = already discovered)
 
 ---
 
@@ -249,177 +242,45 @@ Show up to 2 badges. Priority: Insight > Credibility > Information > Contrarian.
 
 ## 6. Algorithm Specifications
 
-### 6.1 "Insights for Your Focus"
-
-Surfaces episodes relevant to user's research profile sectors.
+### 6.1 Core Helper Functions
 
 ```python
-def get_insights_for_focus(user_id: str, limit: int = 10) -> List[Episode]:
-    """
-    Episodes matching user's sector focus, weighted by quality.
-    """
-    user = get_research_profile(user_id)
-    
-    # Get episodes matching user's sectors
-    candidates = []
-    for sector in user.sectors:
-        candidates.extend(get_episodes_by_category(sector, limit=50))
-    
-    # Filter seen
-    seen_ids = get_user_seen_ids(user_id)
-    candidates = [ep for ep in candidates if ep.id not in seen_ids]
-    
-    # Score: 60% quality, 40% recency
-    scored = []
-    for ep in candidates:
-        quality = (ep.insight_score * 0.5 + ep.credibility_score * 0.5) / 4.0
-        recency = max(0, 1 - (days_since(ep.published_at) / 30))
-        score = quality * 0.6 + recency * 0.4
-        scored.append((ep, score))
-    
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return diversify([ep for ep, _ in scored], limit)
-```
+from datetime import datetime, timedelta
+from typing import List, Set
 
-### 6.2 "Tracking: [Company]"
-
-Surfaces episodes where a tracked company is discussed with high relevance.
-
-```python
-def get_tracking_company(user_id: str, company_id: str, limit: int = 10) -> List[Episode]:
-    """
-    Episodes mentioning tracked company with relevance >= 3.
-    """
-    # Get episodes where company has high relevance
-    episodes = get_episodes_by_entity(
-        entity_id=company_id,
-        entity_type="organization",
-        min_relevance=3,
-        limit=50
+def get_user_context(user_id: str) -> UserContext:
+    """Load user's existing signals into context object."""
+    return UserContext(
+        user_id=user_id,
+        category_interests=get_user_category_interests(user_id),
+        subscribed_series=get_user_subscriptions(user_id),
+        seen_episode_ids=get_user_activity_episode_ids(user_id),
+        bookmarked_episode_ids=get_user_bookmark_episode_ids(user_id),
+        not_interested_ids=get_user_not_interested_ids(user_id)
     )
-    
-    # Filter seen
-    seen_ids = get_user_seen_ids(user_id)
-    episodes = [ep for ep in episodes if ep.id not in seen_ids]
-    
-    # Sort by: relevance * quality * recency
-    scored = []
-    for ep in episodes:
-        entity_relevance = get_entity_relevance(ep.id, company_id) / 4.0
-        quality = (ep.insight_score + ep.credibility_score) / 8.0
-        recency = max(0, 1 - (days_since(ep.published_at) / 60))
-        score = entity_relevance * 0.4 + quality * 0.4 + recency * 0.2
-        scored.append((ep, score))
-    
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return scored[:limit]
-```
 
-### 6.3 "Tracking: [Person]"
+def filter_seen(episodes: List[Episode], user: UserContext) -> List[Episode]:
+    """Remove episodes user has already interacted with."""
+    excluded = user.seen_episode_ids | user.bookmarked_episode_ids | user.not_interested_ids
+    return [ep for ep in episodes if ep.id not in excluded]
 
-Surfaces episodes where a tracked person appears or is discussed.
-
-```python
-def get_tracking_person(user_id: str, person_id: str, limit: int = 10) -> List[Episode]:
+def calculate_quality_score(ep: Episode) -> float:
     """
-    Episodes featuring or mentioning tracked person.
-    Prioritize interviews (relevance 4) over mentions.
+    Core quality score: Insight (45%) + Credibility (40%) + Information (15%).
+    Entertainment is excluded — not relevant for research value.
     """
-    episodes = get_episodes_by_person(
-        person_id=person_id,
-        min_relevance=2,
-        limit=50
-    )
-    
-    seen_ids = get_user_seen_ids(user_id)
-    episodes = [ep for ep in episodes if ep.id not in seen_ids]
-    
-    # Heavily weight person relevance (interview vs mention)
-    scored = []
-    for ep in episodes:
-        person_relevance = get_person_relevance(ep.id, person_id) / 4.0
-        quality = (ep.insight_score + ep.credibility_score) / 8.0
-        recency = max(0, 1 - (days_since(ep.published_at) / 90))
-        score = person_relevance * 0.5 + quality * 0.3 + recency * 0.2
-        scored.append((ep, score))
-    
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return scored[:limit]
-```
+    return (
+        ep.scores.insight * 0.45 +
+        ep.scores.credibility * 0.40 +
+        ep.scores.information * 0.15
+    ) / 4.0  # Normalize to 0-1
 
-### 6.4 "Non-Consensus Ideas"
+def days_since(dt: datetime) -> int:
+    """Days since a given datetime."""
+    return (datetime.utcnow() - dt).days
 
-Surfaces contrarian views from credible speakers (unique Serafis value).
-
-```python
-def get_non_consensus_ideas(limit: int = 10, days: int = 14) -> List[Episode]:
-    """
-    Episodes flagged as non-consensus by Critical Views analysis,
-    filtered to high-credibility speakers only.
-    """
-    recent = get_episodes_published_after(now() - timedelta(days=days))
-    
-    # Filter to episodes with non-consensus flag AND high credibility
-    contrarian = [
-        ep for ep in recent
-        if ep.has_critical_views and ep.credibility_score >= 3
-    ]
-    
-    # Sort by insight (novel ideas) + credibility (trustworthy source)
-    contrarian.sort(
-        key=lambda ep: ep.insight_score * 0.6 + ep.credibility_score * 0.4,
-        reverse=True
-    )
-    
-    return diversify(contrarian, limit)
-```
-
-### 6.5 "Highest Signal This Week"
-
-Global quality ranking (not personalized).
-
-```python
-def get_highest_signal(limit: int = 10, days: int = 7) -> List[Episode]:
-    """
-    Top quality episodes from the past week.
-    This is Serafis's unique value vs Spotify/Apple.
-    """
-    recent = get_episodes_published_after(now() - timedelta(days=days))
-    
-    # Pure quality score
-    scored = []
-    for ep in recent:
-        quality = (
-            ep.insight_score * 0.45 +
-            ep.credibility_score * 0.40 +
-            ep.information_score * 0.15
-        ) / 4.0
-        scored.append((ep, quality))
-    
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return diversify([ep for ep, _ in scored], limit)
-```
-
-### 6.6 Cold Start
-
-For users with no research profile yet:
-
-```python
-def get_cold_start_recommendations(limit: int = 10) -> List[Episode]:
-    """
-    Before research profile is set, show global Highest Signal.
-    Prompt user to complete onboarding for personalization.
-    """
-    return get_highest_signal(limit)
-```
-
-### 6.7 Diversification
-
-```python
 def diversify(episodes: List[Episode], limit: int, max_per_series: int = 2) -> List[Episode]:
-    """
-    Ensure variety: max 2 episodes per series.
-    """
+    """Ensure variety: max 2 episodes per series."""
     result = []
     series_count = {}
     
@@ -433,6 +294,176 @@ def diversify(episodes: List[Episode], limit: int, max_per_series: int = 2) -> L
     
     return result
 ```
+
+### 6.2 "Insights for You"
+
+Surfaces episodes matching user's category interests, weighted by quality.
+
+```python
+def get_insights_for_you(user_id: str, limit: int = 10) -> List[Episode]:
+    """
+    Episodes matching user's category interests, weighted by quality.
+    Uses: category_interests signal
+    """
+    user = get_user_context(user_id)
+    
+    # Get episodes matching user's category interests
+    candidates = []
+    for category in user.category_interests:
+        candidates.extend(get_episodes_by_category(category, limit=50))
+    
+    # Remove duplicates and filter seen
+    candidates = list({ep.id: ep for ep in candidates}.values())
+    candidates = filter_seen(candidates, user)
+    
+    # Score: 60% quality, 40% recency
+    scored = []
+    for ep in candidates:
+        quality = calculate_quality_score(ep)
+        recency = max(0, 1 - (days_since(ep.published_at) / 30))
+        score = quality * 0.6 + recency * 0.4
+        scored.append((ep, score))
+    
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return diversify([ep for ep, _ in scored], limit)
+```
+
+### 6.3 "Highest Signal This Week"
+
+Global quality ranking — Serafis's core differentiator vs Spotify/Apple.
+
+```python
+def get_highest_signal(user_id: str, limit: int = 10, days: int = 7) -> List[Episode]:
+    """
+    Top quality episodes from the past week (global, minimally personalized).
+    This is Serafis's unique value vs Spotify/Apple.
+    """
+    user = get_user_context(user_id)
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    
+    recent = get_episodes_published_after(cutoff)
+    recent = filter_seen(recent, user)
+    
+    # Pure quality score
+    scored = [(ep, calculate_quality_score(ep)) for ep in recent]
+    scored.sort(key=lambda x: x[1], reverse=True)
+    
+    return diversify([ep for ep, _ in scored], limit)
+```
+
+### 6.4 "Non-Consensus Ideas"
+
+Contrarian views from credible speakers — unique Serafis value.
+
+```python
+def get_non_consensus_ideas(user_id: str, limit: int = 10, days: int = 14) -> List[Episode]:
+    """
+    Episodes with substantive critical_views analysis from high-credibility speakers.
+    Requires: credibility_score >= 3 AND critical_views has content.
+    """
+    user = get_user_context(user_id)
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    
+    recent = get_episodes_published_after(cutoff)
+    recent = filter_seen(recent, user)
+    
+    # Filter to episodes with critical_views AND high credibility
+    contrarian = [
+        ep for ep in recent
+        if ep.critical_views and len(ep.critical_views) > 50  # Has substantive analysis
+        and ep.scores.credibility >= 3  # From credible source
+    ]
+    
+    # Sort by insight (novel ideas) + credibility (trustworthy source)
+    contrarian.sort(
+        key=lambda ep: ep.scores.insight * 0.6 + ep.scores.credibility * 0.4,
+        reverse=True
+    )
+    
+    return diversify(contrarian, limit)
+```
+
+### 6.5 "New from Your Shows"
+
+Latest episodes from user's subscribed series.
+
+```python
+def get_new_from_subscriptions(user_id: str, limit: int = 10) -> List[Episode]:
+    """
+    Latest episodes from user's subscribed series.
+    Uses: subscriptions signal
+    """
+    user = get_user_context(user_id)
+    
+    # Get episodes from subscribed series
+    candidates = []
+    for series_id in user.subscribed_series:
+        candidates.extend(get_episodes_by_series(series_id, limit=10))
+    
+    candidates = filter_seen(candidates, user)
+    
+    # Sort by recency (newest first), then by quality
+    candidates.sort(
+        key=lambda ep: (ep.published_at, calculate_quality_score(ep)),
+        reverse=True
+    )
+    
+    return candidates[:limit]
+```
+
+### 6.6 "Trending in [Category]"
+
+Popular episodes in user's category interests.
+
+```python
+def get_trending_in_category(user_id: str, category: str, limit: int = 10, days: int = 14) -> List[Episode]:
+    """
+    Popular episodes in a specific category.
+    Uses: category_interests signal + series popularity
+    """
+    user = get_user_context(user_id)
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    
+    # Get recent episodes in category
+    candidates = get_episodes_by_category(category, limit=50)
+    candidates = [ep for ep in candidates if ep.published_at >= cutoff]
+    candidates = filter_seen(candidates, user)
+    
+    # Score: 50% series popularity, 30% quality, 20% recency
+    scored = []
+    for ep in candidates:
+        series_popularity = get_series_popularity(ep.series_id) / 100.0  # Normalize
+        quality = calculate_quality_score(ep)
+        recency = max(0, 1 - (days_since(ep.published_at) / days))
+        score = series_popularity * 0.5 + quality * 0.3 + recency * 0.2
+        scored.append((ep, score))
+    
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return diversify([ep for ep, _ in scored], limit)
+```
+
+### 6.7 Cold Start
+
+For users with no category interests or subscriptions set.
+
+```python
+def get_cold_start_recommendations(user_id: str, limit: int = 10) -> List[Episode]:
+    """
+    Before category interests are set, show global Highest Signal.
+    UI should prompt user to set preferences for personalization.
+    """
+    return get_highest_signal(user_id, limit)
+```
+
+### 6.8 Algorithm Weights Summary
+
+| Algorithm | Quality Weight | Recency Weight | Other Factors |
+|-----------|---------------|----------------|---------------|
+| Insights for You | 60% | 40% | Category match required |
+| Highest Signal | 100% | — | — |
+| Non-Consensus | 60% insight, 40% cred | — | critical_views + cred >= 3 |
+| New from Shows | Tiebreaker | — | Subscriptions required |
+| Trending | 30% | 20% | 50% series popularity |
 
 ---
 
@@ -458,24 +489,59 @@ class NotInterested:
 
 ### 8.1 Endpoints
 
-| Endpoint | Description | Phase |
-|----------|-------------|-------|
-| `GET /api/recommendations/focus` | Insights for user's sector focus | 1 |
-| `GET /api/recommendations/tracking/company/{id}` | Episodes for tracked company | 1 |
-| `GET /api/recommendations/tracking/person/{id}` | Episodes for tracked person | 1 |
-| `GET /api/recommendations/non-consensus` | Contrarian ideas | 1 |
-| `GET /api/recommendations/highest-signal` | Top quality (global) | 1 |
-| `GET /api/recommendations/subscriptions` | New from subscribed series | 2 |
-| `POST /api/feedback/not-interested` | Mark as not interested | 1 |
-| `PUT /api/profile/research` | Update research profile | 1 |
+| Endpoint | Description | Personalized | Signals Used |
+|----------|-------------|--------------|--------------|
+| `GET /api/recommendations/insights-for-you` | Category-matched episodes | Yes | category_interests, activity |
+| `GET /api/recommendations/highest-signal` | Top quality (global) | Minimal | activity (exclusion only) |
+| `GET /api/recommendations/non-consensus` | Contrarian ideas | Minimal | activity (exclusion only) |
+| `GET /api/recommendations/new-from-shows` | Subscription-based | Yes | subscriptions, activity |
+| `GET /api/recommendations/trending/{category}` | Popular in category | Yes | category_interests, activity |
+| `GET /api/recommendations/discover` | Full discover page | Yes | All signals |
+| `POST /api/feedback/not-interested` | Mark as not interested | — | — |
 
-### 8.2 Response Format
+### 8.2 Request Parameters
+
+```
+GET /api/recommendations/insights-for-you
+  ?user_id=string       (required)
+  &limit=int            (default: 10, max: 20)
+
+GET /api/recommendations/highest-signal
+  ?user_id=string       (required for exclusion)
+  &limit=int            (default: 10)
+  &days=int             (default: 7)
+
+GET /api/recommendations/non-consensus
+  ?user_id=string       (required for exclusion)
+  &limit=int            (default: 10)
+  &days=int             (default: 14)
+
+GET /api/recommendations/new-from-shows
+  ?user_id=string       (required)
+  &limit=int            (default: 10)
+
+GET /api/recommendations/trending/{category}
+  ?user_id=string       (required for exclusion)
+  &limit=int            (default: 10)
+  &days=int             (default: 14)
+
+GET /api/recommendations/discover
+  ?user_id=string       (required)
+
+POST /api/feedback/not-interested
+  {
+    "user_id": "string",
+    "episode_id": "string"
+  }
+```
+
+### 8.3 Response Format
 
 ```json
 {
-  "section": "tracking_company",
-  "title": "Tracking: OpenAI",
-  "subtitle": "Latest high-relevance episodes",
+  "section": "insights_for_you",
+  "title": "📊 Insights for You",
+  "subtitle": "Based on AI & Machine Learning, Crypto & Web3",
   "episodes": [
     {
       "id": "ep_123",
@@ -494,8 +560,46 @@ class NotInterested:
         "information": 3
       },
       "badges": ["high_insight", "high_credibility"],
-      "entity_relevance": 0.9,
       "categories": ["Technology & AI"]
+    }
+  ]
+}
+```
+
+### 8.4 Discover Page Response
+
+```json
+{
+  "sections": [
+    {
+      "section": "insights_for_you",
+      "title": "📊 Insights for You",
+      "subtitle": "Based on AI & Machine Learning",
+      "episodes": [...]
+    },
+    {
+      "section": "highest_signal",
+      "title": "💎 Highest Signal This Week",
+      "subtitle": "Top Insight + Credibility",
+      "episodes": [...]
+    },
+    {
+      "section": "non_consensus",
+      "title": "🔥 Non-Consensus Ideas",
+      "subtitle": "Contrarian views from credible speakers",
+      "episodes": [...]
+    },
+    {
+      "section": "new_from_shows",
+      "title": "📡 New from Your Shows",
+      "subtitle": "Latest from subscribed series",
+      "episodes": [...]
+    },
+    {
+      "section": "trending",
+      "title": "🌟 Trending in AI & Machine Learning",
+      "subtitle": "Popular this week",
+      "episodes": [...]
     }
   ]
 }
@@ -503,59 +607,95 @@ class NotInterested:
 
 ---
 
-## 9. Implementation Timeline
+## 9. Implementation Approach
 
-### Phase 1: MVP (Week 1-2)
+### 9.1 Mock Development (Recommended First)
 
-| Day | Task |
-|-----|------|
-| 1 | Research profile data model + onboarding API |
-| 2 | `get_insights_for_focus()` implementation |
-| 3 | `get_tracking_company()` implementation |
-| 4 | `get_tracking_person()` implementation |
-| 5 | `get_non_consensus_ideas()` implementation |
-| 6 | `get_highest_signal()` implementation |
-| 7 | Filtering (seen, not interested) + diversification |
-| 8 | API endpoints + integration testing |
-| 9-10 | Mobile frontend integration |
+Before integrating with production, build a mock system to validate algorithms:
 
-### Phase 2: Enhancements (Week 3-4)
+| Phase | Task | Output |
+|-------|------|--------|
+| **Data Extraction** | Extract 50-100 episodes from Serafis website | `mock_data/episodes.json` |
+| **Mock API** | Implement algorithms in FastAPI | `mock_api/` server |
+| **Prototype UI** | React mobile-first prototype | Vercel deployment |
+| **Validation** | Test algorithms with real data | Validated approach |
 
-- Subscription-based section
-- Embedding similarity for "Related Research"
-- Not interested penalty propagation
-- Multiple tracked companies/people sections
+See [Mock Development Plan](./mock_development_plan.md) for detailed execution guide.
+
+### 9.2 Production Integration
+
+Once mock is validated:
+
+| Task | Description |
+|------|-------------|
+| API Integration | Connect mobile app to production Serafis API |
+| Signal Pipeline | Ensure activity/bookmark/subscription signals flow correctly |
+| Algorithm Deployment | Port validated algorithms to production backend |
+| A/B Testing | Compare recommendation quality vs baseline |
+
+### 9.3 Future Enhancements (Out of Scope)
+
+These features are valuable but not in initial scope:
+
+| Feature | Description | Why Deferred |
+|---------|-------------|--------------|
+| Research Profile Onboarding | Role, tracked companies/people | Requires new UI + data model |
+| Entity Tracking Sections | "Tracking: OpenAI" personalized | Requires entity watchlist feature |
+| Embedding Similarity | "Related Research" | Requires embedding infrastructure |
+| Not Interested Propagation | Penalize similar content | Requires similarity model |
 
 ---
 
 ## 10. Success Metrics
 
-### 10.1 Research-Oriented Metrics
+### 10.1 Quality-Oriented Metrics (Primary)
 
-| Metric | Definition | Target |
-|--------|------------|--------|
-| **Profile completion rate** | Users who complete research profile | > 60% |
-| **Tracking adoption** | Users who track ≥1 company or person | > 40% |
-| **Quality of engaged content** | Avg (insight + credibility) of clicked episodes | > 3.0 |
-| **Research session depth** | Episodes viewed per session | > 3 |
+These metrics validate whether recommendations surface high-quality content:
 
-### 10.2 Engagement Metrics
+| Metric | Definition | Target | Rationale |
+|--------|------------|--------|-----------|
+| **Avg quality of clicks** | Mean (insight + credibility) of clicked episodes | > 3.0 | Users engage with high-signal content |
+| **Quality improvement** | Clicked quality vs. average corpus quality | > 1.2x | Recs surface better content than random |
+| **Contrarian engagement** | CTR on Non-Consensus section | > 4% | Unique value proposition resonates |
+
+### 10.2 Engagement Metrics (Secondary)
 
 | Metric | Definition | Target |
 |--------|------------|--------|
 | **Section CTR** | Clicks / impressions per section | > 5% |
 | **Not interested rate** | Not interested / impressions | < 5% |
+| **Recommendation diversity** | Unique series in top 20 recs | > 8 |
 | **Return rate** | Users returning within 7 days | > 30% |
+
+### 10.3 Personalization Metrics
+
+| Metric | Definition | Target |
+|--------|------------|--------|
+| **Category match rate** | % of clicked episodes matching user interests | > 60% |
+| **Subscription coverage** | % of subscribed series represented in recs | > 80% |
+| **Seen exclusion accuracy** | % of recs that are truly unseen | 100% |
 
 ---
 
-## 11. Open Questions for Rohan S.
+## 11. Design Decisions
 
-1. **Entity tracking in mobile:** Is there UI for users to add companies/people to track?
-2. **Onboarding flow:** Can we add research profile questions to signup?
-3. **Critical Views data:** Is the non-consensus flag reliably populated?
-4. **Key insight extraction:** Can we surface a 1-sentence insight preview on cards?
-5. **Success metric:** Is the goal listening time or research efficiency?
+### 11.1 Resolved Questions
+
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| Target user segment | **Prosumer only** | Mobile app focus, simpler scope |
+| Personalization approach | **Use existing signals** | Activity, bookmarks, subscriptions, category interests |
+| Critical Views reliability | **Assume reliable** | Per founder input |
+| Key insight preview | **Use key_insights[0] or summary** | Confirmed available |
+| Entertainment score | **Exclude from quality calc** | Not relevant for research value |
+
+### 11.2 Future Decisions (Deferred)
+
+| Question | Options | When to Decide |
+|----------|---------|----------------|
+| Entity tracking UI | Add to mobile app? | After MVP validation |
+| Research Profile onboarding | Add professional context? | Based on user feedback |
+| Collaborative filtering | "Users like you also liked"? | When user base scales |
 
 ---
 
@@ -568,22 +708,70 @@ class NotInterested:
 | **Information** | 1-4 | Data density | Secondary (15%) |
 | **Entertainment** | 1-4 | Engagement quality | Not used (entertainment ≠ research value) |
 
+### Quality Score Calculation
+
+```python
+quality = (insight * 0.45 + credibility * 0.40 + information * 0.15) / 4.0
+# Result: 0.0 to 1.0, where 1.0 = perfect scores (4, 4, 4)
+```
+
+### Badge Thresholds
+
+| Badge | Condition | Display |
+|-------|-----------|---------|
+| 💎 High Insight | `insight_score >= 3` | "💎 High Insight" |
+| ⭐ High Credibility | `credibility_score >= 3` | "⭐ High Credibility" |
+| 📊 Data-Rich | `information_score >= 3` | "📊 Data-Rich" |
+| 🔥 Contrarian | `critical_views` has substantive content | "🔥 Contrarian" |
+
 ---
 
-## Appendix B: User Segment Behaviors
+## Appendix B: Prosumer User Behavior Model
 
-| Segment | Primary Sections | Key Entities |
-|---------|-----------------|--------------|
-| **VC Investor** | Focus (AI/Enterprise), Tracking (portfolio cos), Non-Consensus | OpenAI, Anthropic, emerging startups |
-| **HF Analyst** | Tracking (public cos), Focus (sector), Highest Signal | Nvidia, Microsoft, macro themes |
-| **McKinsey** | Focus (client sectors), Tracking (client cos), Non-Consensus | Varies by engagement |
-| **Prosumer** | Highest Signal, Non-Consensus, Tracking (FAANG) | Tesla, Apple, crypto projects |
-| **Founder** | Focus (own sector), Tracking (competitors), Non-Consensus | Direct competitors, VCs |
+This specification targets the prosumer segment. Expected behavior patterns:
+
+| Behavior | Description | Recommendation Impact |
+|----------|-------------|----------------------|
+| **Category exploration** | Interested in AI, Crypto, Markets | "Insights for You" section |
+| **Quality-seeking** | Wants credible, insightful content | "Highest Signal" resonates |
+| **Contrarian interest** | Wants to be early to trends | "Non-Consensus" is high value |
+| **Series loyalty** | Subscribes to favorite shows | "New from Shows" for retention |
+| **Time-constrained** | Wants efficient discovery | Key insight previews matter |
+
+### Sample Prosumer Profiles
+
+| Profile | Category Interests | Subscribed Series | Behavior |
+|---------|-------------------|-------------------|----------|
+| **AI Prosumer** | Technology & AI, Startups | 20VC, a16z, No Priors | Tracks AI trends, OpenAI news |
+| **Crypto Prosumer** | Crypto & Web3, Technology | All-In, Bankless | Tracks Bitcoin, Ethereum, DeFi |
+| **Markets Prosumer** | Public Markets, Macro | Invest Like Best, Acquired | Tracks Nvidia, Tesla, macro themes |
 
 ---
 
-## Appendix C: Related Documents
+## Appendix C: Available Metadata Reference
 
-- [Competitor Analysis](./competitor_analysis.md)
-- [UI Examination](/Users/rohankatakam/Documents/serafis/ui/ui_examination.md)
-- [Investor Memo](/Users/rohankatakam/Documents/serafis/serafis_investor_memo.md)
+Confirmed available from Serafis platform:
+
+| Field | Location | Use in Recommendations |
+|-------|----------|------------------------|
+| `insight_score` | Episode Analysis tab | Quality scoring |
+| `credibility_score` | Episode Analysis tab | Quality scoring |
+| `information_score` | Episode Analysis tab | Quality scoring |
+| `summary` | Episode Analysis tab | Key insight preview fallback |
+| `key_insights` | Episode Analysis tab | Key insight preview (primary) |
+| `critical_views` | Episode Analysis tab | Non-consensus detection |
+| `categories.major` | Episode Themes tab | Category matching |
+| `categories.subcategories` | Episode Themes tab | Granular matching |
+| `entities` | Episode Entities tab | Future: entity tracking |
+| `people` | Episode People tab | Future: person tracking |
+| `popularity` | Series metadata | Trending algorithm |
+
+---
+
+## Appendix D: Related Documents
+
+- [Mock Development Plan](./mock_development_plan.md) — How to build and test without backend access
+- [Competitor UI Research](./competitor_ui_research.md) — Spotify/Apple UI patterns
+- [Strategic Positioning](./strategic_positioning.md) — Why Serafis vs alternatives
+- [UI Examination](/Users/rohankatakam/Documents/serafis/ui/ui_examination.md) — Current web app features
+- [Investor Memo](/Users/rohankatakam/Documents/serafis/serafis_investor_memo.md) — Company vision
