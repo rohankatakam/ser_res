@@ -91,6 +91,9 @@ class NotInterestedRequest(BaseModel):
 # Helper Functions
 # ============================================================================
 
+# Credibility floor: episodes with credibility < 2 are filtered out
+CREDIBILITY_FLOOR = 2
+
 def get_user_context(user_id: str) -> Dict:
     """Get user context, return cold start user if not found."""
     if user_id in USERS:
@@ -111,12 +114,19 @@ def filter_seen(episodes: List[Dict], user: Dict) -> List[Dict]:
                set(user.get("not_interested_ids", []))
     return [ep for ep in episodes if ep["id"] not in excluded]
 
+def filter_credible(episodes: List[Dict]) -> List[Dict]:
+    """Remove episodes below the credibility floor."""
+    return [ep for ep in episodes if ep.get("scores", {}).get("credibility", 0) >= CREDIBILITY_FLOOR]
+
 def calculate_quality_score(ep: Dict) -> float:
     """
     Core quality score: Insight (45%) + Credibility (40%) + Information (15%).
     Entertainment is excluded — not relevant for research value.
+    Returns 0 if below credibility floor.
     """
     scores = ep.get("scores", {})
+    if scores.get("credibility", 0) < CREDIBILITY_FLOOR:
+        return 0.0
     return (
         scores.get("insight", 0) * 0.45 +
         scores.get("credibility", 0) * 0.40 +
@@ -193,6 +203,7 @@ def get_insights_for_you(user_id: str, limit: int = 10) -> List[Dict]:
     """
     Episodes matching user's category interests, weighted by quality.
     Uses: category_interests signal
+    Requires: credibility >= CREDIBILITY_FLOOR
     """
     user = get_user_context(user_id)
     category_interests = set(user.get("category_interests", []))
@@ -209,6 +220,7 @@ def get_insights_for_you(user_id: str, limit: int = 10) -> List[Dict]:
             candidates.append(ep)
     
     candidates = filter_seen(candidates, user)
+    candidates = filter_credible(candidates)  # Apply credibility floor
     
     # Score: 60% quality, 40% recency
     scored = []
@@ -225,17 +237,20 @@ def get_insights_for_you(user_id: str, limit: int = 10) -> List[Dict]:
 def get_highest_signal(user_id: str, limit: int = 10, days: int = 7) -> List[Dict]:
     """
     Top quality episodes from the past week (global, minimally personalized).
+    Requires: credibility >= CREDIBILITY_FLOOR
     """
     user = get_user_context(user_id)
     
     # Filter by recency
     recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= days]
     recent = filter_seen(recent, user)
+    recent = filter_credible(recent)  # Apply credibility floor
     
     # If not enough recent, expand window
     if len(recent) < limit:
         recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= 30]
         recent = filter_seen(recent, user)
+        recent = filter_credible(recent)  # Apply credibility floor
     
     # Pure quality score
     scored = [(ep, calculate_quality_score(ep)) for ep in recent]
@@ -247,6 +262,7 @@ def get_highest_signal(user_id: str, limit: int = 10, days: int = 7) -> List[Dic
 def get_non_consensus_ideas(user_id: str, limit: int = 10, days: int = 14) -> List[Dict]:
     """
     Episodes with genuinely contrarian/non-consensus ideas.
+    Requires: credibility >= 3 (higher threshold for contrarian content)
     
     Priority:
     1. Episodes with extracted critical_views marked as "highly_non_consensus"
@@ -258,15 +274,17 @@ def get_non_consensus_ideas(user_id: str, limit: int = 10, days: int = 14) -> Li
     # Filter by recency
     recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= days]
     recent = filter_seen(recent, user)
+    recent = filter_credible(recent)  # Apply credibility floor
     
     # If not enough recent, expand window
     if len(recent) < limit:
         recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= 60]
         recent = filter_seen(recent, user)
+        recent = filter_credible(recent)  # Apply credibility floor
     
     # If still not enough, expand to all time
     if len(recent) < limit:
-        recent = filter_seen(EPISODES, user)
+        recent = filter_credible(filter_seen(EPISODES, user))
     
     # Priority 1: Episodes with extracted critical_views data marked as highly non-consensus
     highly_contrarian = [
@@ -312,6 +330,7 @@ def get_non_consensus_ideas(user_id: str, limit: int = 10, days: int = 14) -> Li
 def get_new_from_subscriptions(user_id: str, limit: int = 10) -> List[Dict]:
     """
     Latest episodes from user's subscribed series.
+    Requires: credibility >= CREDIBILITY_FLOOR
     """
     user = get_user_context(user_id)
     subscribed = set(user.get("subscribed_series", []))
@@ -326,6 +345,7 @@ def get_new_from_subscriptions(user_id: str, limit: int = 10) -> List[Dict]:
     ]
     
     candidates = filter_seen(candidates, user)
+    candidates = filter_credible(candidates)  # Apply credibility floor
     
     # Sort by recency (newest first)
     candidates.sort(key=lambda ep: ep["published_at"], reverse=True)
@@ -336,6 +356,7 @@ def get_new_from_subscriptions(user_id: str, limit: int = 10) -> List[Dict]:
 def get_trending_in_category(user_id: str, category: str, limit: int = 10, days: int = 14) -> List[Dict]:
     """
     Popular episodes in a specific category.
+    Requires: credibility >= CREDIBILITY_FLOOR
     """
     user = get_user_context(user_id)
     
@@ -347,6 +368,7 @@ def get_trending_in_category(user_id: str, category: str, limit: int = 10, days:
     ]
     
     candidates = filter_seen(candidates, user)
+    candidates = filter_credible(candidates)  # Apply credibility floor
     
     # If not enough, expand window
     if len(candidates) < limit:
@@ -356,6 +378,7 @@ def get_trending_in_category(user_id: str, category: str, limit: int = 10, days:
             and days_since(ep["published_at"]) <= 60
         ]
         candidates = filter_seen(candidates, user)
+        candidates = filter_credible(candidates)  # Apply credibility floor
     
     # Score: 50% series popularity, 30% quality, 20% recency
     scored = []

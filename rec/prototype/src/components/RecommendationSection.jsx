@@ -5,13 +5,11 @@
 import { useState } from 'react';
 import EpisodeCard from './EpisodeCard';
 
-export default function RecommendationSection({ section, onEpisodeClick, onNotInterested, onSave }) {
+export default function RecommendationSection({ section, onView, onBookmark, onNotInterested }) {
   const [showWhy, setShowWhy] = useState(false);
   const { title, subtitle, why, episodes } = section;
   
-  if (!episodes || episodes.length === 0) {
-    return null;
-  }
+  if (!episodes || episodes.length === 0) return null;
   
   return (
     <div className="mb-6">
@@ -20,38 +18,33 @@ export default function RecommendationSection({ section, onEpisodeClick, onNotIn
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-bold text-white">{title}</h2>
-            {subtitle && (
-              <p className="text-sm text-slate-400 mt-0.5">{subtitle}</p>
-            )}
+            {subtitle && <p className="text-sm text-slate-400">{subtitle}</p>}
           </div>
-          {why && (
-            <button
-              onClick={() => setShowWhy(!showWhy)}
-              className="text-xs text-slate-500 hover:text-slate-300 px-2 py-1 rounded bg-slate-800"
-            >
-              {showWhy ? 'Hide' : 'Why?'}
-            </button>
-          )}
+          <button
+            onClick={() => setShowWhy(!showWhy)}
+            className="text-xs text-slate-500 hover:text-slate-300 px-2 py-1 rounded bg-slate-800"
+          >
+            {showWhy ? 'Hide' : 'Why?'}
+          </button>
         </div>
         
-        {/* Why explanation */}
-        {showWhy && why && (
+        {showWhy && (
           <div className="mt-2 p-2 bg-slate-800/50 border border-slate-700 rounded text-xs text-slate-400">
-            <span className="text-slate-500">Algorithm: </span>{why}
+            <strong className="text-slate-300">Algorithm:</strong> {why}
           </div>
         )}
       </div>
       
-      {/* Horizontal scroll container */}
+      {/* Episodes scroll */}
       <div className="overflow-x-auto hide-scrollbar">
         <div className="flex gap-3 px-4 pb-2">
-          {episodes.map((episode) => (
+          {episodes.map((ep) => (
             <EpisodeCard
-              key={episode.id || episode.content_id}
-              episode={episode}
-              onEpisodeClick={onEpisodeClick}
+              key={ep.content_id || ep.id}
+              episode={ep}
+              onView={onView}
+              onBookmark={onBookmark}
               onNotInterested={onNotInterested}
-              onSave={onSave}
             />
           ))}
         </div>

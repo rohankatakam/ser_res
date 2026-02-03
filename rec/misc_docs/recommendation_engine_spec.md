@@ -1,11 +1,24 @@
-# Serafis Recommendation Engine — Technical Specification
+"# Serafis Recommendation Engine — Technical Specification
 
 > *Design document for the research intelligence recommendation system powering the Serafis mobile prosumer app.*
 
 **Date:** January 29, 2026  
 **Author:** Rohan Katakam  
-**Status:** Draft (Revised)  
+**Status:** ⚠️ SUPERSEDED — See `FOR_YOU_SPEC.md` for current approach  
 **Stakeholder:** Rohan Sharma (CEO)
+
+---
+
+## ⚠️ PIVOT NOTICE
+
+**This document describes the original 4-section approach with category matching.**
+
+After call with Rohan S., the direction changed to:
+- **Single "For You" feed** (TikTok-style) instead of 4 sections
+- **Embeddings** as primary personalization signal (50%)
+- **See:** `rec/FOR_YOU_SPEC.md` for current specification
+
+The data schema, metadata references, and API patterns below remain useful context.
 
 ---
 
@@ -775,3 +788,4 @@ Confirmed available from Serafis platform:
 - [Strategic Positioning](./strategic_positioning.md) — Why Serafis vs alternatives
 - [UI Examination](/Users/rohankatakam/Documents/serafis/ui/ui_examination.md) — Current web app features
 - [Investor Memo](/Users/rohankatakam/Documents/serafis/serafis_investor_memo.md) — Company vision
+"

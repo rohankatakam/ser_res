@@ -1,127 +1,191 @@
 /**
  * Serafis Recommendation Engine Tester
  * 
- * Interactive testing environment for the recommendation algorithms.
- * Starts cold, learns from interactions, shows transparent algorithm state.
+ * Core principle: Recommendations show content user has NOT interacted with.
+ * 
+ * User signals:
+ * - View/Play (click) → Mark as seen → EXCLUDE from recommendations
+ * - Bookmark → Mark as saved → EXCLUDE from recommendations  
+ * - Not Interested → EXCLUDE + negative signal
+ * - Category interests → Inferred from interactions
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import DiscoverPage from './components/DiscoverPage';
 import SessionPanel from './components/SessionPanel';
 
 function App() {
-  // Session state - starts empty (cold start)
+  // Session state tracking user activity
   const [session, setSession] = useState({
-    clicks: [],           // Episodes clicked/played
-    notInterested: [],    // Episodes marked not interested
-    saves: [],            // Episodes bookmarked
-    categoryAffinities: {},  // Inferred category preferences
-    seriesAffinities: {},    // Inferred series preferences
-    qualityPreference: 0,    // Learned quality threshold
+    // User activity (viewed episodes) - these get EXCLUDED
+    viewedEpisodes: [],      // Episodes user has clicked/played
+    
+    // User bookmarks - also EXCLUDED (already discovered)
+    bookmarkedEpisodes: [],
+    
+    // User "not interested" - EXCLUDED + negative signal
+    notInterestedEpisodes: [],
+    
+    // Inferred from interactions
+    categoryInterests: {},   // { "Technology & AI": 3, "Crypto": -1 }
+    seriesInterests: {},     // { "series_id": { name, count } }
   });
   
   const [refreshKey, setRefreshKey] = useState(0);
   const [showPanel, setShowPanel] = useState(true);
   
-  // Calculate inferred preferences from session
-  const getInferredPreferences = useCallback(() => {
-    const categories = {};
-    const series = {};
-    let totalInsight = 0;
-    let clickCount = 0;
-    
-    session.clicks.forEach(ep => {
-      // Track category affinities
-      if (ep.categories?.major) {
-        ep.categories.major.forEach(cat => {
-          categories[cat] = (categories[cat] || 0) + 1;
-        });
-      }
-      // Track series affinities
-      if (ep.series?.id) {
-        series[ep.series.id] = {
-          name: ep.series.name,
-          count: (series[ep.series.id]?.count || 0) + 1
-        };
-      }
-      // Track quality preference
-      if (ep.scores?.insight) {
-        totalInsight += ep.scores.insight;
-        clickCount++;
-      }
+  // All episode IDs that should be EXCLUDED from recommendations
+  const excludedIds = useMemo(() => {
+    const ids = new Set();
+    // viewedEpisodes and bookmarkedEpisodes now have { episode, timestamp } structure
+    session.viewedEpisodes.forEach(item => {
+      const ep = item.episode || item;
+      ids.add(ep.content_id || ep.id);
     });
-    
-    // Penalize categories from not interested
-    session.notInterested.forEach(ep => {
-      if (ep.categories?.major) {
-        ep.categories.major.forEach(cat => {
-          categories[cat] = (categories[cat] || 0) - 2;
-        });
-      }
+    session.bookmarkedEpisodes.forEach(item => {
+      const ep = item.episode || item;
+      ids.add(ep.content_id || ep.id);
     });
+    session.notInterestedEpisodes.forEach(ep => ids.add(ep.content_id || ep.id));
+    return ids;
+  }, [session]);
+  
+  // Calculate inferred preferences
+  const inferredPreferences = useMemo(() => {
+    const categories = { ...session.categoryInterests };
+    const series = { ...session.seriesInterests };
     
-    // Sort categories by affinity
-    const sortedCategories = Object.entries(categories)
-      .sort((a, b) => b[1] - a[1])
-      .filter(([_, count]) => count > 0);
+    // Sort categories by interest score
+    const topCategories = Object.entries(categories)
+      .filter(([_, score]) => score > 0)
+      .sort((a, b) => b[1] - a[1]);
     
-    // Get top series (2+ clicks = implicit subscription)
+    const excludedCategories = Object.entries(categories)
+      .filter(([_, score]) => score < 0)
+      .map(([cat]) => cat);
+    
+    // Series with 2+ views = implicit subscription
     const implicitSubscriptions = Object.entries(series)
       .filter(([_, data]) => data.count >= 2)
       .map(([id, data]) => ({ id, ...data }));
     
     return {
-      topCategories: sortedCategories.slice(0, 3),
+      topCategories,
+      excludedCategories,
       implicitSubscriptions,
-      avgInsightClicked: clickCount > 0 ? (totalInsight / clickCount).toFixed(1) : null,
-      excludedCategories: Object.entries(categories)
-        .filter(([_, count]) => count < 0)
-        .map(([cat]) => cat),
+      totalViewed: session.viewedEpisodes.length,
+      totalBookmarked: session.bookmarkedEpisodes.length,
+      totalExcluded: excludedIds.size,
     };
-  }, [session]);
+  }, [session, excludedIds]);
   
-  // Handle episode click (positive signal)
-  const handleClick = useCallback((episode) => {
-    setSession(prev => ({
-      ...prev,
-      clicks: [...prev.clicks, episode],
-    }));
-    setRefreshKey(k => k + 1);
-  }, []);
-  
-  // Handle not interested (negative signal)
-  const handleNotInterested = useCallback((episode) => {
-    setSession(prev => ({
-      ...prev,
-      notInterested: [...prev.notInterested, episode],
-    }));
-    setRefreshKey(k => k + 1);
-  }, []);
-  
-  // Handle save/bookmark (strong positive signal)
-  const handleSave = useCallback((episode) => {
-    setSession(prev => ({
-      ...prev,
-      saves: [...prev.saves, episode],
-      clicks: prev.clicks.includes(episode) ? prev.clicks : [...prev.clicks, episode],
-    }));
-    setRefreshKey(k => k + 1);
-  }, []);
-  
-  // Reset to cold start
-  const handleReset = useCallback(() => {
-    setSession({
-      clicks: [],
-      notInterested: [],
-      saves: [],
-      categoryAffinities: {},
-      seriesAffinities: {},
-      qualityPreference: 0,
+  // Handle episode VIEW (click/play) - marks as seen, learns preferences
+  const handleView = useCallback((episode) => {
+    setSession(prev => {
+      // Check if already viewed (prevent duplicates)
+      const alreadyViewed = prev.viewedEpisodes.some(
+        item => (item.episode?.content_id || item.episode?.id) === (episode.content_id || episode.id)
+      );
+      if (alreadyViewed) return prev;
+      
+      const newCategories = { ...prev.categoryInterests };
+      const newSeries = { ...prev.seriesInterests };
+      
+      // Learn from viewed content
+      if (episode.categories?.major) {
+        episode.categories.major.forEach(cat => {
+          newCategories[cat] = (newCategories[cat] || 0) + 1;
+        });
+      }
+      
+      if (episode.series?.id) {
+        newSeries[episode.series.id] = {
+          name: episode.series.name,
+          count: (newSeries[episode.series.id]?.count || 0) + 1
+        };
+      }
+      
+      // Store with timestamp for history tracking
+      const viewedItem = {
+        episode: episode,
+        timestamp: new Date().toISOString(),
+      };
+      
+      return {
+        ...prev,
+        viewedEpisodes: [...prev.viewedEpisodes, viewedItem],
+        categoryInterests: newCategories,
+        seriesInterests: newSeries,
+      };
     });
     setRefreshKey(k => k + 1);
   }, []);
   
-  const inferred = getInferredPreferences();
+  // Handle BOOKMARK - marks as saved (strong interest), excludes from recs
+  const handleBookmark = useCallback((episode) => {
+    setSession(prev => {
+      // Check if already bookmarked (prevent duplicates)
+      const alreadyBookmarked = prev.bookmarkedEpisodes.some(
+        item => (item.episode?.content_id || item.episode?.id) === (episode.content_id || episode.id)
+      );
+      if (alreadyBookmarked) return prev;
+      
+      const newCategories = { ...prev.categoryInterests };
+      
+      // Bookmarks are strong positive signals (weight = 2)
+      if (episode.categories?.major) {
+        episode.categories.major.forEach(cat => {
+          newCategories[cat] = (newCategories[cat] || 0) + 2;
+        });
+      }
+      
+      // Store with timestamp for history tracking
+      const bookmarkedItem = {
+        episode: episode,
+        timestamp: new Date().toISOString(),
+      };
+      
+      return {
+        ...prev,
+        bookmarkedEpisodes: [...prev.bookmarkedEpisodes, bookmarkedItem],
+        categoryInterests: newCategories,
+      };
+    });
+    setRefreshKey(k => k + 1);
+  }, []);
+  
+  // Handle NOT INTERESTED - excludes + negative signal
+  const handleNotInterested = useCallback((episode) => {
+    setSession(prev => {
+      const newCategories = { ...prev.categoryInterests };
+      
+      // Negative signal for categories
+      if (episode.categories?.major) {
+        episode.categories.major.forEach(cat => {
+          newCategories[cat] = (newCategories[cat] || 0) - 1;
+        });
+      }
+      
+      return {
+        ...prev,
+        notInterestedEpisodes: [...prev.notInterestedEpisodes, episode],
+        categoryInterests: newCategories,
+      };
+    });
+    setRefreshKey(k => k + 1);
+  }, []);
+  
+  // Reset to fresh state
+  const handleReset = useCallback(() => {
+    setSession({
+      viewedEpisodes: [],
+      bookmarkedEpisodes: [],
+      notInterestedEpisodes: [],
+      categoryInterests: {},
+      seriesInterests: {},
+    });
+    setRefreshKey(k => k + 1);
+  }, []);
   
   return (
     <div className="min-h-screen bg-slate-900">
@@ -129,9 +193,9 @@ function App() {
       <header className="sticky top-0 z-20 bg-slate-900 border-b border-slate-700">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-white">Serafis Recommendation Tester</h1>
+            <h1 className="text-xl font-bold text-white">Recommendations</h1>
             <p className="text-xs text-slate-500">
-              Session: {session.clicks.length} clicks, {session.notInterested.length} excluded, {session.saves.length} saved
+              {inferredPreferences.totalExcluded} episodes excluded • Showing unseen content only
             </p>
           </div>
           <div className="flex gap-2">
@@ -139,13 +203,13 @@ function App() {
               onClick={() => setShowPanel(!showPanel)}
               className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600"
             >
-              {showPanel ? 'Hide' : 'Show'} Session
+              {showPanel ? 'Hide' : 'Show'} State
             </button>
             <button
               onClick={handleReset}
               className="px-3 py-1.5 text-sm bg-red-600/20 text-red-400 rounded hover:bg-red-600/30"
             >
-              Reset (Cold Start)
+              Reset
             </button>
           </div>
         </div>
@@ -153,14 +217,16 @@ function App() {
       
       <div className="max-w-6xl mx-auto flex">
         {/* Main content */}
-        <div className={`flex-1 ${showPanel ? 'pr-80' : ''}`}>
+        <div className={`flex-1 ${showPanel ? 'mr-80' : ''}`}>
           <DiscoverPage
             key={refreshKey}
-            session={session}
-            inferred={inferred}
-            onEpisodeClick={handleClick}
+            excludedIds={excludedIds}
+            inferred={inferredPreferences}
+            viewedEpisodes={session.viewedEpisodes}
+            bookmarkedEpisodes={session.bookmarkedEpisodes}
+            onView={handleView}
+            onBookmark={handleBookmark}
             onNotInterested={handleNotInterested}
-            onSave={handleSave}
           />
         </div>
         
@@ -168,7 +234,7 @@ function App() {
         {showPanel && (
           <SessionPanel
             session={session}
-            inferred={inferred}
+            inferred={inferredPreferences}
             onReset={handleReset}
           />
         )}
