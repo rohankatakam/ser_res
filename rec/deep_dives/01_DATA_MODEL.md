@@ -79,7 +79,7 @@ These fields are derived at recommendation time from core user data.
 |---------------|------------|---------|
 | `U.viewed_episodes` | Join `seen_episode_ids` with episode metadata + timestamps | Stage 1: User Embedding |
 | `U.bookmarked_episodes` | Join `bookmarked_episode_ids` with episode metadata + timestamps | Stage 1: User Embedding |
-| `U.tracked_entities` | Extract unique entities from `subscribed_series` episodes + bookmarked episodes | Stage 2: S_entity scoring |
+| `U.tracked_entities` | Extract unique entities from `subscribed_series` episodes + bookmarked episodes *(Assumption: users do not explicitly track entities; this is inferred from behavior. If explicit entity tracking is added, this derivation should be updated.)* | Stage 2: S_entity scoring |
 | `U.excluded_ids` | Union of `seen_episode_ids` ∪ `bookmarked_episode_ids` ∪ `not_interested_ids` | Stage 2: Gate 3 |
 
 ### 3.3 User Data Example
@@ -210,11 +210,11 @@ This episode presents genuinely contrarian thinking..."
 | `top_in_categories` | List[String] | Categories where this episode ranks highly |
 | `key_insight` | String | **Legacy field** — often contains entity context; use `critical_views.key_insights` instead |
 
-### 4.9 Episode Embedding (Implicit)
+### 4.9 Episode Embedding
 
 | Field Name | Type | Description |
 |------------|------|-------------|
-| `embedding` | Vector[1536] | Pre-computed from episode content (key_insights + description). **Stored separately in vector DB, not in JSON.** |
+| `embedding` | Vector[1536] | Pre-computed from episode content (key_insights + description) |
 
 ---
 
