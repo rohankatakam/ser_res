@@ -230,7 +230,7 @@ These fields are computed at recommendation time from raw episode data.
 | `E.DaysOld` | `(now - E.published_at).days` | Stage 2: S_fresh |
 | `E.PrimaryTopic` | `max(E.categories.major, key=frequency)` or first element | Stage 3: TopicTracker |
 | `E.PrimaryEntity` | `max(E.entities, key=relevance).name` | Stage 3: Adjacency penalty, GlobalEntityTracker |
-| `E.POV` | Waterfall function (see Document 06) | Stage 3: Contrarian boost |
+| `E.POV` | Binary classification: Contrarian if `non_consensus_level` exists, else Consensus (see Document 06) | Stage 3: Contrarian boost |
 
 ### 5.1 DaysOld Calculation
 
@@ -324,7 +324,7 @@ For the recommendation system to function correctly, the following data quality 
 | Non-null scores | `scores.insight`, `scores.credibility` | Must be 1–4; used in quality gates |
 | Valid timestamps | `published_at` | Must be valid ISO 8601; used in freshness |
 | Embedding availability | `embedding` | Must exist in vector DB; used in S_sim |
-| Critical views for POV | `critical_views.key_insights` | Should exist for sentiment analysis |
+| Critical views for POV | `critical_views.non_consensus_level` | Should exist for contrarian classification |
 | At least one category | `categories.major` | Should have ≥1 for topic tracking |
 
 ---
@@ -354,7 +354,7 @@ For the recommendation system to function correctly, the following data quality 
 |-----------------|-----------|----------------------------|
 | Separate `insight` and `credibility` scores | Enables dual quality gates (C≥2 AND C+I≥5) | Scholar Inbox paper: "Hard Quality Floor" |
 | Pre-computed embeddings | Enables real-time similarity without LLM calls | Spotify Semantic IDs paper |
-| `critical_views` structure | Enables POV derivation without additional LLM inference | Podcast Recommendations paper |
+| `critical_views` structure | Enables binary POV derivation (Contrarian/Consensus) without additional LLM inference | Podcast Recommendations paper |
 | Entity relevance scores (0–4) | Enables PrimaryEntity extraction for diversity | MMR algorithm principles |
 | Series as nested object | Simplifies join logic; series data rarely changes | Practical implementation choice |
 
@@ -376,7 +376,7 @@ For the recommendation system to function correctly, the following data quality 
 | 02: User Embedding | `U.viewed_episodes`, `U.bookmarked_episodes`, `U.category_interests` |
 | 03: Quality Gates | `E.scores.credibility`, `E.scores.insight`, `U.excluded_ids` |
 | 04: Scoring Components | `E.embedding`, `E.scores.*`, `E.entities`, `E.published_at` |
-| 06: POV Derivation | `E.critical_views.*` |
+| 06: POV Derivation | `E.critical_views.non_consensus_level` |
 | 07: Narrative Reranking | `E.series.id`, `E.PrimaryTopic`, `E.PrimaryEntity`, `E.POV` |
 
 ---

@@ -97,6 +97,8 @@ BaseScore = (S_sim × W_sim) + (S_alpha × W_alpha) + (S_fresh × W_fresh)
 
 **Constraint:** W_sim + W_alpha + W_fresh = 1.0
 
+> **Tuning Note:** The 50/35/15 distribution is a starting point based on product priorities. These weights should be tuned during testing based on user feedback and engagement metrics. Adjust toward higher W_sim if feed feels generic, or higher W_alpha if quality feels inconsistent.
+
 ### 5.3 Why These Weights?
 
 | Weight | Value | Reasoning |
@@ -222,7 +224,7 @@ def select_candidates(
 
 | Parameter | Value | Tunable? | Rationale |
 |-----------|-------|----------|-----------|
-| n_candidates | 50 | ⚙️ Yes | Provides enough diversity for reranking while limiting computation |
+| n_candidates | 50 | ⚙️ Yes | Provides enough diversity for reranking while limiting computation. *Tune during testing — increase if reranking lacks variety, decrease if performance is a concern.* |
 
 ---
 
