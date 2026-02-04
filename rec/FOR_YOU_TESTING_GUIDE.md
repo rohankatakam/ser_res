@@ -25,6 +25,7 @@
 **Known Tradeoff:** Gate 2 may reject valuable content from unverified sources (whistleblowers, new analysts). This is an intentional safety decision for investor-grade content. If this causes feed quality issues, consider:
 - Lowering combined floor to 4
 - Adding "Breaking News" override flag
+- **V2: Velocity Bypass** (see section 5.2)
 
 ---
 
@@ -262,6 +263,39 @@ LLMs struggle with:
 
 ---
 
+### 3.8 Breaking News Test (V2)
+
+**Setup:** High-velocity episode from unknown source (C=1, I=4, Velocity=99th percentile).
+
+**Current Expected (V1):**
+- Rejected by Gate 1 (C < 2)
+- Does not appear in feed
+
+**V2 Expected (with Velocity Bypass):**
+- Routed to "Speculative Slot"
+- Appears with "Unverified" badge
+- Does not pollute main quality-filtered feed
+
+**Pass Criteria (V2):** Breaking news visible within 1 hour of velocity spike
+
+---
+
+### 3.9 Echo Chamber Test
+
+**Setup:** User views 10 consecutive Bullish AI episodes. No Contrarian content in catalog.
+
+**Expected:**
+- Contrarian boost has no effect (nothing to boost)
+- Feed may feel one-sided
+
+**Risk:** Without Contrarian content, feed becomes echo chamber.
+
+**Mitigation:** Monitor POV distribution in catalog. Alert if <10% Contrarian.
+
+**Pass Criteria:** If Contrarian content exists, it appears in top 5
+
+---
+
 ## 4. Monitoring & Debugging
 
 ### 4.1 Score Logging
@@ -326,6 +360,7 @@ For every recommended episode, log:
 | Enhancement | Impact | Complexity | Priority |
 |-------------|--------|------------|----------|
 | Global Entity Tracker | Prevents single-entity dominance | Low | High |
+| Velocity Bypass | Catches breaking news from unknown sources | Medium | High |
 | Dual λ (news vs thematic) | Better freshness handling | Medium | Medium |
 | Search query signal (U_search) | Captures active intent | Medium | Medium |
 | Vector clustering (K clusters) | Prevents grey sludge | High | Low |
@@ -339,6 +374,21 @@ IF GlobalEntityTracker[E.PrimaryEntity] >= 3:
     TempScore *= 0.70
 ```
 Add to Stage 3 reranking loop.
+
+**Velocity Bypass (Breaking News):**
+
+The "Trust vs Coverage" tradeoff: Quality gates may hide breaking news from unknown sources (e.g., anonymous engineer leaks AI breakthrough with C=0).
+
+```
+IF E.Velocity > 99th_percentile AND E.Credibility < 2:
+    → Route to "Speculative Slot" or "Review Queue"
+    → Display with "Unverified" badge
+```
+
+This allows "Black Swan" events into the feed without lowering the general quality bar. Requires:
+- Velocity metric (view/share rate in last 24h)
+- UI treatment for speculative content
+- Editorial review queue for high-velocity/low-credibility items
 
 **Dual Freshness Decay:**
 ```
@@ -378,6 +428,7 @@ Before launch, verify:
 | **Session** | State resets after 30min timeout | ☐ |
 | **Performance** | Feed generation <1s P95 | ☐ |
 | **Logging** | Score components logged | ☐ |
+| **Echo Chamber** | Contrarian appears in top 5 (if exists) | ☐ |
 
 ---
 
