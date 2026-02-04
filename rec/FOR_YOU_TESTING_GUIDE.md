@@ -2,9 +2,11 @@
 
 > *Companion document to FOR_YOU_SPEC_FINAL.md*
 
-**Version:** 1.0  
-**Date:** January 29, 2026  
+**Version:** 1.1  
+**Date:** February 3, 2026  
 **Purpose:** Edge cases, testing scenarios, tuning priorities, and implementation notes
+
+> **Note:** Updated to align with deep dive documents. See `/rec/deep_dives/` for detailed specifications.
 
 ---
 
@@ -58,14 +60,9 @@ After 1000+ views, the user embedding may average out to the centroid of all fin
 
 ### 1.3 Entity Alignment Edge Cases
 
-| User Tracks | Episode Entities | Overlap | Matchable | S_entity |
-|-------------|------------------|---------|-----------|----------|
-| 1 (Nvidia) | 5 (incl. Nvidia) | 1 | min(1,5)=1 | 1.0 |
-| 50 | 1 (Nvidia) | 1 | min(50,1)=1 | 1.0 |
-| 50 | 5 (2 match) | 2 | min(50,5)=5 | 0.4 |
-| 0 | 5 | 0 | 1 (max floor) | 0 |
+> **Note:** S_entity is deferred to V2 (requires explicit entity tracking feature). See `deep_dives/08_FUTURE_ENHANCEMENTS.md`.
 
-**Test:** Verify the "Nvidia Trap" is avoided — user tracking 1 entity shouldn't see 100% Nvidia content.
+For V1, entity diversity is handled by **GlobalEntityTracker** in reranking (see Section 1.5).
 
 ---
 
@@ -98,45 +95,39 @@ After 1000+ views, the user embedding may average out to the centroid of all fin
 | Scenario | Expected Behavior | Test |
 |----------|-------------------|------|
 | 3 episodes from same series | Only 2 appear in top 10 | Hard cap works |
-| 5 Nvidia episodes from 5 series | All 5 could appear | **"One-Hit Wonder" risk** |
+| 5 Nvidia episodes from 5 series | Max 3 appear, 4th+ gets 0.70× penalty | GlobalEntityTracker works |
 | 3 consecutive AI topics | 3rd gets 0.85 penalty | Topic saturation works |
-| Bullish → Contrarian | 1.15x boost applied | Narrative flow works |
-| Bullish → Bullish → Bullish | No boost, no penalty | May feel echo-chamber |
+| Consensus → Contrarian | 1.15x boost applied | Narrative flow works |
+| Consensus → Consensus → Consensus | No boost, no penalty | Expected behavior |
 
-**Known Risk: Global Entity Domination**
+**GlobalEntityTracker (V1):**
 
-Current design caps series (max 2) but not entities globally. If user tracks "Apple" and there are 5 great Apple episodes from 5 different series, feed could be 50% Apple content.
+Added to prevent single-entity dominance across different series.
 
-**Symptom:** Feed dominated by single hot stock/company.
+| Entity Count | Behavior |
+|--------------|----------|
+| 1-2 | No penalty |
+| 3+ | 0.70× penalty applied |
 
-**Mitigation (V2):**
-- Add GlobalEntityTracker similar to TopicTracker
-- Cap at 3 episodes mentioning same primary entity
+**Test:** If there are 5 great Nvidia episodes from 5 different series, verify that at most 3 appear in top 10 without heavy penalty.
 
 ---
 
 ### 1.6 POV Classification Edge Cases
 
-| Key Insight | Expected POV | Risk |
-|-------------|--------------|------|
-| "NVDA will dominate AI for decades" | Bullish | Correct |
-| "We see significant headwinds ahead" | Bearish | Correct |
-| "Facing challenges but optimistic about Q4" | **Bullish by LLM** | Should be Bearish |
-| "The market is overreacting to the downside" | **Contrarian** | Depends on non_consensus tag |
+POV is now **binary** (Contrarian/Consensus) based solely on `non_consensus_level`:
 
-**Known Risk: LLM Sentiment Nuance**
+| non_consensus_level | Expected POV |
+|---------------------|--------------|
+| "highly_non_consensus" | Contrarian |
+| "non_consensus" | Contrarian |
+| null / absent | Consensus |
 
-LLMs struggle with:
-- Hedged language ("cautiously optimistic")
-- Irony/sarcasm
-- Finance-specific phrases ("headwinds", "priced in")
+**No LLM sentiment analysis** — POV is deterministic based on pre-computed field.
 
-**Symptom:** POV misclassification leads to poor narrative flow.
+**Test:** Verify episodes with `non_consensus_level` set are classified as Contrarian, all others as Consensus.
 
-**Mitigation:**
-- Ensure key_insight is a summarized analysis, not raw transcript
-- Consider fine-tuning prompt for financial context
-- Fall back to "Neutral" when confidence is low
+> **V2 Enhancement:** Sentiment-based POV (Bullish/Bearish/Neutral) deferred. See `deep_dives/08_FUTURE_ENHANCEMENTS.md`.
 
 ---
 
@@ -146,8 +137,8 @@ LLMs struggle with:
 
 | Parameter | Default | Range | Impact | How to Tune |
 |-----------|---------|-------|--------|-------------|
-| W_sim | 0.45 | 0.35–0.55 | Feed personalization strength | If feed feels generic, increase. If echo-chamber, decrease |
-| W_alpha | 0.30 | 0.25–0.40 | Quality signal strength | If low-quality content appears, increase |
+| W_sim | 0.50 | 0.40–0.60 | Feed personalization strength | If feed feels generic, increase. If echo-chamber, decrease |
+| W_alpha | 0.35 | 0.25–0.45 | Quality signal strength | If low-quality content appears, increase |
 | Combined Floor | 5 | 4–6 | Content volume vs quality | If feed is empty, lower. If quality issues, raise |
 
 ### 2.2 Medium Priority
@@ -155,8 +146,10 @@ LLMs struggle with:
 | Parameter | Default | Range | Impact | How to Tune |
 |-----------|---------|-------|--------|-------------|
 | λ_fresh | 0.03 | 0.02–0.05 | Content freshness | If feed feels stale, increase |
-| Adjacency penalty | 0.80 | 0.70–0.90 | Entity diversity | If same entity repeats, lower |
+| Adjacency penalty | 0.80 | 0.70–0.90 | Entity diversity | If same entity repeats consecutively, lower |
 | Topic penalty | 0.85 | 0.75–0.90 | Topic diversity | If topics repeat, lower |
+| Entity saturation threshold | 3 | 2–4 | Global entity diversity | If single entity dominates, lower to 2 |
+| Entity saturation penalty | 0.70 | 0.60–0.80 | Strength of entity diversity | If users want more depth on topics, raise to 0.80 |
 | Contrarian boost | 1.15 | 1.10–1.25 | Narrative flow strength | If contrarian views buried, increase |
 
 ### 2.3 Low Priority (Fine-Tuning)
@@ -166,9 +159,9 @@ LLMs struggle with:
 | Bookmark weight | 2.0 | 1.5–3.0 | Bookmark signal strength |
 | λ_user | 0.05 | 0.03–0.10 | User interest recency |
 | Freshness floor | 0.10 | 0.05–0.20 | Evergreen content visibility |
-| W_entity | 0.15 | 0.10–0.20 | Entity tracking impact |
-| W_fresh | 0.10 | 0.05–0.15 | Freshness impact |
+| W_fresh | 0.15 | 0.10–0.20 | Freshness impact |
 | Series cap | 2 | 1–3 | Series diversity |
+| Session timeout | 30 min | 15–60 min | State persistence duration |
 
 ---
 
@@ -200,16 +193,18 @@ LLMs struggle with:
 
 ---
 
-### 3.3 Entity Tracking Test
+### 3.3 Entity Diversity Test (GlobalEntityTracker)
 
-**Setup:** User tracks {Nvidia, OpenAI}. Episodes exist about both.
+**Setup:** 5 high-quality Nvidia episodes from 5 different series.
 
 **Expected:**
-- Episodes mentioning tracked entities get S_entity boost
-- Mix of both entities in top 10
-- Not 100% one entity
+- First 2 Nvidia episodes appear without penalty
+- 3rd Nvidia episode gets 0.70× penalty
+- At most 3 Nvidia episodes in top 10
 
-**Pass Criteria:** Both entities represented in top 10
+**Pass Criteria:** Max 3 episodes about same primary entity in feed
+
+> **Note:** S_entity scoring is deferred to V2. Entity diversity is handled via GlobalEntityTracker in reranking.
 
 ---
 
@@ -227,13 +222,13 @@ LLMs struggle with:
 
 ### 3.5 Narrative Flow Test
 
-**Setup:** User sees Bullish episode first. Contrarian episode exists with similar base score.
+**Setup:** User sees Consensus episode first. Contrarian episode exists with similar base score.
 
 **Expected:**
 - Contrarian gets 1.15x boost
 - Contrarian appears in slots 2-4
 
-**Pass Criteria:** Bullish → Contrarian sequence appears
+**Pass Criteria:** Consensus → Contrarian sequence appears
 
 ---
 
@@ -282,7 +277,7 @@ LLMs struggle with:
 
 ### 3.9 Echo Chamber Test
 
-**Setup:** User views 10 consecutive Bullish AI episodes. No Contrarian content in catalog.
+**Setup:** User views 10 consecutive Consensus AI episodes. No Contrarian content in catalog.
 
 **Expected:**
 - Contrarian boost has no effect (nothing to boost)
@@ -290,7 +285,7 @@ LLMs struggle with:
 
 **Risk:** Without Contrarian content, feed becomes echo chamber.
 
-**Mitigation:** Monitor POV distribution in catalog. Alert if <10% Contrarian.
+**Mitigation:** Monitor POV distribution in catalog. Alert if <5% Contrarian.
 
 **Pass Criteria:** If Contrarian content exists, it appears in top 5
 
@@ -310,12 +305,13 @@ For every recommended episode, log:
   components: {
     S_sim: 0.82,
     S_alpha: 0.75,
-    S_entity: 0.50,
     S_fresh: 0.74
   },
   adjustments: {
+    series_capped: false,
     adjacency_penalty: false,
     topic_penalty: false,
+    entity_penalty: false,
     contrarian_boost: true
   },
   position: 3,
@@ -355,57 +351,37 @@ For every recommended episode, log:
 
 ## 5. V2 Considerations
 
+> See `deep_dives/08_FUTURE_ENHANCEMENTS.md` for full specifications.
+
 ### 5.1 From Feedback (Prioritized)
 
 | Enhancement | Impact | Complexity | Priority |
 |-------------|--------|------------|----------|
-| Global Entity Tracker | Prevents single-entity dominance | Low | High |
-| Velocity Bypass | Catches breaking news from unknown sources | Medium | High |
-| Dual λ (news vs thematic) | Better freshness handling | Medium | Medium |
-| Search query signal (U_search) | Captures active intent | Medium | Medium |
-| Vector clustering (K clusters) | Prevents grey sludge | High | Low |
-| Score explanation UI | User trust & debugging | Low | Low |
+| S_entity (Entity Alignment) | Enables explicit entity tracking | Medium | P1 |
+| Search query signal (U_search) | Captures active intent | Medium | P1 |
+| Velocity Bypass | Catches breaking news from unknown sources | High | P2 |
+| Sentiment-based POV | Bullish/Bearish/Neutral classification | Medium | P2 |
+| Dual λ (news vs thematic) | Better freshness handling | Low | P3 |
+| Vector clustering (K clusters) | Prevents grey sludge | High | P4 |
+| Score explanation UI | User trust & debugging | Low | P3 |
 
 ### 5.2 Implementation Notes
 
-**Global Entity Tracker:**
-```
-IF GlobalEntityTracker[E.PrimaryEntity] >= 3:
-    TempScore *= 0.70
-```
-Add to Stage 3 reranking loop.
+**Note:** GlobalEntityTracker is now **V1** (implemented in reranking).
 
-**Velocity Bypass (Breaking News):**
+**S_entity (V2):**
+Requires explicit "Follow Company" feature in app. See `deep_dives/08_FUTURE_ENHANCEMENTS.md` for full spec.
 
-The "Trust vs Coverage" tradeoff: Quality gates may hide breaking news from unknown sources (e.g., anonymous engineer leaks AI breakthrough with C=0).
-
+**Velocity Bypass (V2):**
 ```
 IF E.Velocity > 99th_percentile AND E.Credibility < 2:
     → Route to "Speculative Slot" or "Review Queue"
     → Display with "Unverified" badge
 ```
+Requires velocity tracking infrastructure.
 
-This allows "Black Swan" events into the feed without lowering the general quality bar. Requires:
-- Velocity metric (view/share rate in last 24h)
-- UI treatment for speculative content
-- Editorial review queue for high-velocity/low-credibility items
-
-**Dual Freshness Decay:**
-```
-IF E.content_type == "News":
-    λ = 0.10
-ELSE:
-    λ = 0.03
-```
-Requires content_type classification.
-
-**Search Query Signal:**
-```
-IF |U.search_queries| > 0:
-    V_intent = Mean(last 3 query embeddings)
-    scores.append(CosineSim(V_intent, E.embedding))
-```
-Already spec'd as optional/future.
+**Sentiment-based POV (V2):**
+Extends binary POV to Contrarian/Bullish/Bearish/Neutral via LLM sentiment analysis.
 
 ---
 
@@ -423,11 +399,13 @@ Before launch, verify:
 | **Reranking** | Max 2 per series enforced | ☐ |
 | **Reranking** | Adjacency penalty applied | ☐ |
 | **Reranking** | Topic saturation penalty applied | ☐ |
-| **Reranking** | Contrarian boost applied | ☐ |
+| **Reranking** | Entity saturation penalty applied (≥3) | ☐ |
+| **Reranking** | Contrarian boost applied (Consensus→Contrarian) | ☐ |
 | **Session** | State persists across batches | ☐ |
 | **Session** | State resets after 30min timeout | ☐ |
 | **Performance** | Feed generation <1s P95 | ☐ |
 | **Logging** | Score components logged | ☐ |
+| **POV** | Binary classification working (Contrarian/Consensus) | ☐ |
 | **Echo Chamber** | Contrarian appears in top 5 (if exists) | ☐ |
 
 ---
@@ -438,10 +416,9 @@ Before launch, verify:
 |-----------|-------|
 | Credibility Floor | ≥ 2 |
 | Combined Floor | ≥ 5 |
-| W_sim | 0.45 |
-| W_alpha | 0.30 |
-| W_entity | 0.15 |
-| W_fresh | 0.10 |
+| W_sim | 0.50 |
+| W_alpha | 0.35 |
+| W_fresh | 0.15 |
 | W_insight (in alpha) | 0.5 |
 | W_cred (in alpha) | 0.5 |
 | λ_fresh | 0.03 |
@@ -450,12 +427,13 @@ Before launch, verify:
 | λ_user | 0.05 |
 | Max viewed episodes | 10 |
 | Series cap | 2 |
-| Topic cap | 2 |
+| Topic threshold | 2 |
+| Entity threshold | 3 |
 | Adjacency penalty | 0.80 |
 | Topic penalty | 0.85 |
+| Entity penalty | 0.70 |
 | Contrarian boost | 1.15 |
-| Bullish threshold | 0.3 |
-| Bearish threshold | -0.3 |
+| POV values | Contrarian, Consensus |
 | Session timeout | 30 min |
 | Candidates for reranking | 50 |
 | Final feed size | 10 |
