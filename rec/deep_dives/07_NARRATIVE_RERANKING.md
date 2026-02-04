@@ -188,6 +188,13 @@ if global_entity_tracker.get(episode.primary_entity, 0) >= 3:
 
 **Why Added to V1?** Data analysis showed high entity concentration (OpenAI: 13%, Nvidia: 11% of catalog). Without this, a user interested in AI could get 5+ Nvidia episodes from different series.
 
+> **Tuning Note:** The threshold of 3 was chosen as a starting point based on:
+> - A 10-episode feed should have entity diversity (no single entity > 30%)
+> - Allowing 2 episodes about a hot topic (e.g., Nvidia earnings) feels natural
+> - The 3rd triggers penalty, the 4th+ is heavily discouraged
+> 
+> **Tune during testing:** If users report "not enough depth on topics I care about," increase to 4. If feeds feel repetitive, decrease to 2. Monitor entity distribution in served feeds to find optimal balance.
+
 ---
 
 #### 6.2.5 Contrarian Boost
@@ -382,7 +389,14 @@ A **session** is a continuous period of app usage. State resets when:
 
 | Parameter | Value | Tunable? |
 |-----------|-------|----------|
-| Session timeout | 30 min | ⚙️ Yes |
+| Session timeout | 30 min | ⚙️ Yes (range: 15–60 min) |
+
+> **Tuning Note:** The 30-minute timeout was chosen based on:
+> - Typical mobile app session patterns (most sessions are < 15 min)
+> - Users returning within 30 min likely want continuity (no repeated content)
+> - Users returning after 30+ min may have shifted context/interests
+> 
+> **Tune during testing:** If users complain about seeing "the same stuff" after breaks, decrease timeout (e.g., 15 min). If users complain about "losing their place" after short breaks, increase timeout (e.g., 60 min). Monitor session length distribution to calibrate.
 
 ### 10.2 Batch Loading
 
