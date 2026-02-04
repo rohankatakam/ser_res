@@ -79,8 +79,11 @@ These fields are derived at recommendation time from core user data.
 |---------------|------------|---------|
 | `U.viewed_episodes` | Join `seen_episode_ids` with episode metadata + timestamps | Stage 1: User Embedding |
 | `U.bookmarked_episodes` | Join `bookmarked_episode_ids` with episode metadata + timestamps | Stage 1: User Embedding |
-| `U.tracked_entities` | Extract unique entities from `subscribed_series` episodes + bookmarked episodes *(Assumption: users do not explicitly track entities; this is inferred from behavior. If explicit entity tracking is added, this derivation should be updated.)* | Stage 2: S_entity scoring |
 | `U.excluded_ids` | Union of `seen_episode_ids` ∪ `bookmarked_episode_ids` ∪ `not_interested_ids` | Stage 2: Gate 3 |
+
+**Future Enhancement: Entity Tracking**
+
+> Explicit entity tracking (`U.tracked_entities`) is not currently a product feature. When/if the app adds a "Follow Company" or "Follow Person" feature, this would enable an additional scoring component (S_entity) that boosts episodes mentioning tracked entities. See Document 08 for the full S_entity specification.
 
 ### 3.3 User Data Example
 
@@ -328,18 +331,18 @@ For the recommendation system to function correctly, the following data quality 
 
 ## 9. Field Usage Summary
 
-| Field | Gate 1 | Gate 2 | S_sim | S_alpha | S_entity | S_fresh | POV | Reranking |
-|-------|--------|--------|-------|---------|----------|---------|-----|-----------|
-| `scores.credibility` | ✓ | ✓ | | ✓ | | | | |
-| `scores.insight` | | ✓ | | ✓ | | | | |
-| `embedding` | | | ✓ | | | | | |
-| `entities` | | | | | ✓ | | | ✓ |
-| `published_at` | | | | | | ✓ | | |
-| `series.id` | | | | | | | | ✓ |
-| `categories.major` | | | | | | | | ✓ |
-| `critical_views.non_consensus_level` | | | | | | | ✓ | |
-| `critical_views.new_ideas_summary` | | | | | | | ✓ | |
-| `critical_views.key_insights` | | | | | | | ✓ | |
+| Field | Gate 1 | Gate 2 | S_sim | S_alpha | S_fresh | POV | Reranking |
+|-------|--------|--------|-------|---------|---------|-----|-----------|
+| `scores.credibility` | ✓ | ✓ | | ✓ | | | |
+| `scores.insight` | | ✓ | | ✓ | | | |
+| `embedding` | | | ✓ | | | | |
+| `entities` | | | | | | | ✓ |
+| `published_at` | | | | | ✓ | | |
+| `series.id` | | | | | | | ✓ |
+| `categories.major` | | | | | | | ✓ |
+| `critical_views.non_consensus_level` | | | | | | ✓ | |
+| `critical_views.new_ideas_summary` | | | | | | ✓ | |
+| `critical_views.key_insights` | | | | | | ✓ | |
 
 ---
 
