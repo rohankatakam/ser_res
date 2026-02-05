@@ -74,8 +74,8 @@ print(f"Loaded {len(EPISODES)} episodes, {len(SERIES)} series, {len(EMBEDDINGS)}
 # Stage A: Candidate Pool Pre-Selection
 CREDIBILITY_FLOOR = 2
 COMBINED_FLOOR = 5
-FRESHNESS_WINDOW_DAYS = 30
-CANDIDATE_POOL_SIZE = 50
+FRESHNESS_WINDOW_DAYS = 90  # Expanded from 30 to include more diverse content
+CANDIDATE_POOL_SIZE = 150   # Expanded from 50 to allow more semantic variety
 
 # Stage B: Semantic Matching
 USER_VECTOR_LIMIT = 5

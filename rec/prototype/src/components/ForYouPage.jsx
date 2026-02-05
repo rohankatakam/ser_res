@@ -4,9 +4,11 @@
  * Session-based feed with:
  * - Load More: Get next 10 from queue
  * - Refresh: Create new session with fresh rankings
+ * 
+ * FIXED: Properly handles engagement updates from other tabs
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { createSession, loadMore as loadMoreApi, fetchStats } from '../api';
 
 export default function ForYouPage({ 
@@ -30,35 +32,78 @@ export default function ForYouPage({
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
   
-  // Initialize session
+  // Track engagement count to detect changes
+  const lastEngagementCount = useRef(0);
+  const [engagementsDirty, setEngagementsDirty] = useState(false);
+  
+  // Detect when engagements change from outside this component
   useEffect(() => {
-    async function init() {
-      setLoading(true);
-      try {
-        const [sessionResult, stats] = await Promise.all([
-          createSession(engagements || [], Array.from(excludedIds || [])),
-          fetchStats().catch(() => null)
-        ]);
-        
-        setSessionId(sessionResult.session_id);
-        setEpisodes(sessionResult.episodes || []);
-        setQueueInfo({
-          total: sessionResult.total_in_queue,
-          shown: sessionResult.shown_count,
-          remaining: sessionResult.remaining_count
-        });
-        setColdStart(sessionResult.cold_start);
-        setDebugInfo(sessionResult.debug);
-        setApiStats(stats);
-        onSessionChange?.(sessionResult.session_id);
-      } catch (err) {
-        setError('API not running. Start the backend server.');
-      } finally {
-        setLoading(false);
+    const currentCount = engagements?.length || 0;
+    if (currentCount !== lastEngagementCount.current) {
+      lastEngagementCount.current = currentCount;
+      if (!loading) {
+        setEngagementsDirty(true);
       }
     }
-    init();
-  }, []); // Only run once on mount
+  }, [engagements, loading]);
+  
+  // Core fetch function - creates a new session
+  const fetchSession = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
+    setRefreshing(!showLoading);
+    
+    try {
+      // Convert excludedIds Set to Array for API
+      const excludedArray = excludedIds ? Array.from(excludedIds) : [];
+      const engagementsArray = engagements || [];
+      
+      console.log('[ForYouPage] Creating session with:', {
+        engagements: engagementsArray.length,
+        excluded: excludedArray.length
+      });
+      
+      const [sessionResult, stats] = await Promise.all([
+        createSession(engagementsArray, excludedArray),
+        fetchStats().catch(() => null)
+      ]);
+      
+      console.log('[ForYouPage] Session created:', {
+        sessionId: sessionResult.session_id,
+        userVectorEpisodes: sessionResult.debug?.user_vector_episodes,
+        coldStart: sessionResult.cold_start
+      });
+      
+      setSessionId(sessionResult.session_id);
+      setEpisodes(sessionResult.episodes || []);
+      setQueueInfo({
+        total: sessionResult.total_in_queue,
+        shown: sessionResult.shown_count,
+        remaining: sessionResult.remaining_count
+      });
+      setColdStart(sessionResult.cold_start);
+      setDebugInfo(sessionResult.debug);
+      setApiStats(stats);
+      setEngagementsDirty(false);
+      onSessionChange?.(sessionResult.session_id);
+      
+    } catch (err) {
+      console.error('[ForYouPage] Failed to create session:', err);
+      setError('API not running. Start the backend server.');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [engagements, excludedIds, onSessionChange]);
+  
+  // Initialize on mount
+  useEffect(() => {
+    fetchSession(true);
+  }, []); // Only on mount
+  
+  // Handle Refresh button click
+  const handleRefresh = useCallback(() => {
+    fetchSession(false);
+  }, [fetchSession]);
   
   // Handle Load More
   const handleLoadMore = useCallback(async () => {
@@ -79,31 +124,6 @@ export default function ForYouPage({
       setLoadingMore(false);
     }
   }, [sessionId, loadingMore, queueInfo.remaining]);
-  
-  // Handle Refresh (create new session)
-  const handleRefresh = useCallback(async () => {
-    if (refreshing) return;
-    
-    setRefreshing(true);
-    try {
-      const result = await createSession(engagements || [], Array.from(excludedIds || []));
-      
-      setSessionId(result.session_id);
-      setEpisodes(result.episodes || []);
-      setQueueInfo({
-        total: result.total_in_queue,
-        shown: result.shown_count,
-        remaining: result.remaining_count
-      });
-      setColdStart(result.cold_start);
-      setDebugInfo(result.debug);
-      onSessionChange?.(result.session_id);
-    } catch (err) {
-      console.error('Failed to refresh session:', err);
-    } finally {
-      setRefreshing(false);
-    }
-  }, [refreshing, engagements, excludedIds, onSessionChange]);
   
   if (loading) {
     return (
@@ -141,20 +161,31 @@ export default function ForYouPage({
             }
           </p>
         </div>
-        <button
-          onClick={handleRefresh}
-          disabled={refreshing}
-          className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          {refreshing ? (
-            <>
-              <span className="animate-spin">↻</span>
-              Refreshing...
-            </>
-          ) : (
-            <>↻ Refresh Feed</>
+        <div className="flex items-center gap-2">
+          {engagementsDirty && (
+            <span className="text-xs text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">
+              New activity detected
+            </span>
           )}
-        </button>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className={`px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2 ${
+              engagementsDirty 
+                ? 'bg-yellow-500 text-black hover:bg-yellow-400' 
+                : 'bg-indigo-600 text-white hover:bg-indigo-500'
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            {refreshing ? (
+              <>
+                <span className="animate-spin">↻</span>
+                Refreshing...
+              </>
+            ) : (
+              <>↻ Refresh Feed</>
+            )}
+          </button>
+        </div>
       </div>
       
       {/* Cold Start Hint */}
@@ -172,16 +203,26 @@ export default function ForYouPage({
         </div>
       )}
       
-      {/* Queue Stats */}
-      <div className="flex items-center gap-4 mb-4 text-sm text-slate-500">
-        <span>Showing {episodes.length} of {queueInfo.total}</span>
-        <span>•</span>
-        <span>{queueInfo.remaining} more available</span>
+      {/* Debug Info Bar */}
+      <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-slate-800/50 rounded-lg text-xs">
+        <span className="text-slate-400">
+          Queue: <span className="text-white">{episodes.length}/{queueInfo.total}</span>
+        </span>
+        <span className="text-slate-400">
+          Remaining: <span className="text-green-400">{queueInfo.remaining}</span>
+        </span>
+        <span className="text-slate-400">
+          Vector: <span className="text-purple-400">{debugInfo?.user_vector_episodes || 0} eps</span>
+        </span>
+        {debugInfo?.top_similarity_scores?.[0] && (
+          <span className="text-slate-400">
+            Top sim: <span className="text-indigo-400">{(debugInfo.top_similarity_scores[0] * 100).toFixed(0)}%</span>
+          </span>
+        )}
         {sessionId && (
-          <>
-            <span>•</span>
-            <span className="font-mono text-xs text-slate-600">Session: {sessionId}</span>
-          </>
+          <span className="text-slate-500 font-mono ml-auto">
+            {sessionId}
+          </span>
         )}
       </div>
       
