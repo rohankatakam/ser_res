@@ -3,62 +3,51 @@
  * 
  * V1.1 - Session Pool with Progressive Reveal (Option C)
  * 
- * Feed Behavior:
- * - On load: Create session with ranked queue of all candidates
- * - Load More: Return next 10 from queue (no recomputation)
- * - Refresh: Create new session with fresh computation from latest engagements
- * - Engage: Mark episode as engaged, exclude from queue
- * 
- * Session persists within page session (no persistence across refreshes).
+ * Three Pages:
+ * 1. Browse - All catalog sorted by popularity
+ * 2. For You - Personalized recommendations
+ * 3. Developer - Debug view with algorithm details
  */
 
 import { useState, useCallback, useMemo } from 'react';
-import DiscoverPage from './components/DiscoverPage';
+import BrowsePage from './components/BrowsePage';
+import ForYouPage from './components/ForYouPage';
+import DevPage from './components/DevPage';
 import EpisodeDetailPage from './components/EpisodeDetailPage';
-import SessionPanel from './components/SessionPanel';
 import { engageEpisode } from './api';
 
 function App() {
-  // Current view: 'feed' or 'detail'
-  const [currentView, setCurrentView] = useState('feed');
+  // Current tab: 'browse', 'foryou', 'dev'
+  const [currentTab, setCurrentTab] = useState('foryou');
+  
+  // Detail view state
   const [selectedEpisode, setSelectedEpisode] = useState(null);
+  const [showDetail, setShowDetail] = useState(false);
   
   // Active recommendation session
   const [activeSessionId, setActiveSessionId] = useState(null);
   
   // Session state tracking user activity (resets on page refresh)
   const [session, setSession] = useState({
-    // Engagement history with timestamps - used to build user activity vector
-    engagements: [],         // [{episode, type: 'click'|'bookmark', timestamp}]
-    
-    // User "not interested" - excluded from recommendations
+    engagements: [],
     notInterestedEpisodes: [],
-    
-    // Inferred from interactions (for display purposes)
-    categoryInterests: {},   // { "Technology & AI": 3, "Crypto": -1 }
-    seriesInterests: {},     // { "series_id": { name, count } }
+    categoryInterests: {},
+    seriesInterests: {},
   });
   
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [showPanel, setShowPanel] = useState(true);
-  
-  // Computed: viewed episodes (clicks)
+  // Computed values
   const viewedEpisodes = useMemo(() => 
     session.engagements.filter(e => e.type === 'click'),
     [session.engagements]
   );
   
-  // Computed: bookmarked episodes
   const bookmarkedEpisodes = useMemo(() => 
     session.engagements.filter(e => e.type === 'bookmark'),
     [session.engagements]
   );
   
-  // All episode IDs that should be EXCLUDED from recommendations
   const excludedIds = useMemo(() => {
     const ids = new Set();
-    
-    // All engaged episodes (clicks and bookmarks)
     session.engagements.forEach(eng => {
       const ep = eng.episode;
       if (ep) {
@@ -66,17 +55,13 @@ function App() {
         ids.add(ep.id);
       }
     });
-    
-    // Not interested episodes
     session.notInterestedEpisodes.forEach(ep => {
       ids.add(ep.content_id || ep.id);
       ids.add(ep.id);
     });
-    
     return ids;
   }, [session]);
   
-  // Engagements in API format (for sending to backend)
   const engagementsForApi = useMemo(() => 
     session.engagements.map(eng => ({
       episode_id: eng.episode?.id || eng.episode?.content_id,
@@ -86,12 +71,10 @@ function App() {
     [session.engagements]
   );
   
-  // Calculate inferred preferences
   const inferredPreferences = useMemo(() => {
     const categories = { ...session.categoryInterests };
     const series = { ...session.seriesInterests };
     
-    // Sort categories by interest score
     const topCategories = Object.entries(categories)
       .filter(([_, score]) => score > 0)
       .sort((a, b) => b[1] - a[1]);
@@ -100,7 +83,6 @@ function App() {
       .filter(([_, score]) => score < 0)
       .map(([cat]) => cat);
     
-    // Series with 2+ views = implicit subscription
     const implicitSubscriptions = Object.entries(series)
       .filter(([_, data]) => data.count >= 2)
       .map(([id, data]) => ({ id, ...data }));
@@ -116,11 +98,10 @@ function App() {
     };
   }, [session, viewedEpisodes, bookmarkedEpisodes, excludedIds]);
   
-  // Handle episode CLICK - records engagement, opens detail page
+  // Handle episode CLICK
   const handleView = useCallback((episode) => {
     const now = new Date().toISOString();
     
-    // Also notify backend session about the engagement
     if (activeSessionId && episode.id) {
       engageEpisode(activeSessionId, episode.id, 'click').catch(err => {
         console.warn('Failed to record engagement in session:', err);
@@ -128,21 +109,16 @@ function App() {
     }
     
     setSession(prev => {
-      // Check if already engaged (prevent duplicate engagements of same type)
       const alreadyClicked = prev.engagements.some(
         eng => eng.type === 'click' && 
         (eng.episode?.id === episode.id || eng.episode?.content_id === episode.content_id)
       );
       
-      if (alreadyClicked) {
-        // Still show the detail page, but don't record duplicate
-        return prev;
-      }
+      if (alreadyClicked) return prev;
       
       const newCategories = { ...prev.categoryInterests };
       const newSeries = { ...prev.seriesInterests };
       
-      // Learn from viewed content (click = weight 1)
       if (episode.categories?.major) {
         episode.categories.major.forEach(cat => {
           newCategories[cat] = (newCategories[cat] || 0) + 1;
@@ -156,84 +132,58 @@ function App() {
         };
       }
       
-      // Record engagement
-      const engagement = {
-        episode: episode,
-        type: 'click',
-        timestamp: now,
-      };
-      
       return {
         ...prev,
-        engagements: [...prev.engagements, engagement],
+        engagements: [...prev.engagements, { episode, type: 'click', timestamp: now }],
         categoryInterests: newCategories,
         seriesInterests: newSeries,
       };
     });
     
-    // Navigate to detail page
     setSelectedEpisode(episode);
-    setCurrentView('detail');
+    setShowDetail(true);
   }, [activeSessionId]);
   
-  // Handle BOOKMARK - strong signal, stays on current page
+  // Handle BOOKMARK
   const handleBookmark = useCallback((episode) => {
     const now = new Date().toISOString();
     
-    // Notify backend session
     if (activeSessionId && episode.id) {
-      engageEpisode(activeSessionId, episode.id, 'bookmark').catch(err => {
-        console.warn('Failed to record bookmark in session:', err);
-      });
+      engageEpisode(activeSessionId, episode.id, 'bookmark').catch(console.warn);
     }
     
     setSession(prev => {
-      // Check if already bookmarked
       const alreadyBookmarked = prev.engagements.some(
         eng => eng.type === 'bookmark' && 
         (eng.episode?.id === episode.id || eng.episode?.content_id === episode.content_id)
       );
       
-      if (alreadyBookmarked) {
-        return prev;
-      }
+      if (alreadyBookmarked) return prev;
       
       const newCategories = { ...prev.categoryInterests };
-      
-      // Bookmarks are strong positive signals (weight = 2)
       if (episode.categories?.major) {
         episode.categories.major.forEach(cat => {
           newCategories[cat] = (newCategories[cat] || 0) + 2;
         });
       }
       
-      // Record engagement
-      const engagement = {
-        episode: episode,
-        type: 'bookmark',
-        timestamp: now,
-      };
-      
       return {
         ...prev,
-        engagements: [...prev.engagements, engagement],
+        engagements: [...prev.engagements, { episode, type: 'bookmark', timestamp: now }],
         categoryInterests: newCategories,
       };
     });
   }, [activeSessionId]);
   
-  // Handle NOT INTERESTED - excludes + negative signal
+  // Handle NOT INTERESTED
   const handleNotInterested = useCallback((episode) => {
     setSession(prev => {
       const newCategories = { ...prev.categoryInterests };
-      
-      // Negative signal for categories
       if (episode.categories?.major) {
         episode.categories.major.forEach(cat => {
           newCategories[cat] = (newCategories[cat] || 0) - 1;
         });
       }
-      
       return {
         ...prev,
         notInterestedEpisodes: [...prev.notInterestedEpisodes, episode],
@@ -242,18 +192,15 @@ function App() {
     });
   }, []);
   
-  // Handle session ID change (from DiscoverPage)
   const handleSessionChange = useCallback((sessionId) => {
     setActiveSessionId(sessionId);
   }, []);
   
-  // Navigate back to feed from detail page
-  const handleBackToFeed = useCallback(() => {
-    setCurrentView('feed');
+  const handleBackFromDetail = useCallback(() => {
+    setShowDetail(false);
     setSelectedEpisode(null);
   }, []);
   
-  // Reset to fresh state (cold start)
   const handleReset = useCallback(() => {
     setSession({
       engagements: [],
@@ -262,81 +209,112 @@ function App() {
       seriesInterests: {},
     });
     setActiveSessionId(null);
-    setCurrentView('feed');
+    setShowDetail(false);
     setSelectedEpisode(null);
-    setRefreshKey(k => k + 1);
   }, []);
+  
+  // Show detail page overlay
+  if (showDetail && selectedEpisode) {
+    return (
+      <div className="min-h-screen bg-slate-900">
+        <EpisodeDetailPage
+          episode={selectedEpisode}
+          onBack={handleBackFromDetail}
+          onBookmark={handleBookmark}
+        />
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen bg-slate-900">
-      {/* Header */}
-      <header className="sticky top-0 z-20 bg-slate-900 border-b border-slate-700">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-white">
-              {currentView === 'detail' ? 'Episode Details' : 'For You Feed'}
-            </h1>
-            <p className="text-xs text-slate-500">
-              V1.1 Session Pool • {inferredPreferences.totalEngagements} engagements • 
-              {activeSessionId ? ` Session: ${activeSessionId}` : ' No session'}
-            </p>
-          </div>
-          <div className="flex gap-2">
-            {currentView === 'feed' && (
-              <button
-                onClick={() => setShowPanel(!showPanel)}
-                className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600"
+      {/* Tab Bar */}
+      <nav className="sticky top-0 z-20 bg-slate-900 border-b border-slate-700">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex items-center justify-between h-14">
+            <div className="flex gap-1">
+              <TabButton 
+                active={currentTab === 'browse'} 
+                onClick={() => setCurrentTab('browse')}
               >
-                {showPanel ? 'Hide' : 'Show'} State
-              </button>
-            )}
+                Browse
+              </TabButton>
+              <TabButton 
+                active={currentTab === 'foryou'} 
+                onClick={() => setCurrentTab('foryou')}
+                badge={inferredPreferences.totalEngagements > 0 ? inferredPreferences.totalEngagements : null}
+              >
+                For You
+              </TabButton>
+              <TabButton 
+                active={currentTab === 'dev'} 
+                onClick={() => setCurrentTab('dev')}
+              >
+                Developer
+              </TabButton>
+            </div>
             <button
               onClick={handleReset}
               className="px-3 py-1.5 text-sm bg-red-600/20 text-red-400 rounded hover:bg-red-600/30"
             >
-              Reset (Cold Start)
+              Reset
             </button>
           </div>
         </div>
-      </header>
+      </nav>
       
-      <div className="max-w-6xl mx-auto flex">
-        {/* Main content */}
-        <div className={`flex-1 ${currentView === 'feed' && showPanel ? 'mr-80' : ''}`}>
-          {currentView === 'detail' ? (
-            <EpisodeDetailPage
-              episode={selectedEpisode}
-              onBack={handleBackToFeed}
-              onBookmark={handleBookmark}
-            />
-          ) : (
-            <DiscoverPage
-              key={refreshKey}
-              excludedIds={excludedIds}
-              inferred={inferredPreferences}
-              viewedEpisodes={viewedEpisodes}
-              bookmarkedEpisodes={bookmarkedEpisodes}
-              engagements={engagementsForApi}
-              activeSessionId={activeSessionId}
-              onSessionChange={handleSessionChange}
-              onView={handleView}
-              onBookmark={handleBookmark}
-              onNotInterested={handleNotInterested}
-            />
-          )}
-        </div>
-        
-        {/* Session panel (only on feed view) */}
-        {currentView === 'feed' && showPanel && (
-          <SessionPanel
+      {/* Page Content */}
+      <main className="max-w-4xl mx-auto">
+        {currentTab === 'browse' && (
+          <BrowsePage
+            onView={handleView}
+            onBookmark={handleBookmark}
+            excludedIds={excludedIds}
+          />
+        )}
+        {currentTab === 'foryou' && (
+          <ForYouPage
+            engagements={engagementsForApi}
+            excludedIds={excludedIds}
+            activeSessionId={activeSessionId}
+            onSessionChange={handleSessionChange}
+            onView={handleView}
+            onBookmark={handleBookmark}
+            onNotInterested={handleNotInterested}
+          />
+        )}
+        {currentTab === 'dev' && (
+          <DevPage
             session={session}
             inferred={inferredPreferences}
             activeSessionId={activeSessionId}
+            viewedEpisodes={viewedEpisodes}
+            bookmarkedEpisodes={bookmarkedEpisodes}
             onReset={handleReset}
           />
         )}
-      </div>
+      </main>
     </div>
+  );
+}
+
+function TabButton({ children, active, onClick, badge }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors relative ${
+        active 
+          ? 'bg-indigo-600 text-white' 
+          : 'text-slate-400 hover:text-white hover:bg-slate-800'
+      }`}
+    >
+      {children}
+      {badge && (
+        <span className="absolute -top-1 -right-1 w-5 h-5 bg-indigo-500 text-white text-xs rounded-full flex items-center justify-center">
+          {badge}
+        </span>
+      )}
+    </button>
   );
 }
 
