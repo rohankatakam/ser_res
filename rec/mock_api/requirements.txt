@@ -1,4 +1,8 @@
-# Serafis Mock Recommendation API
+# Serafis Mock Recommendation API — V1.1
 fastapi>=0.109.0
 uvicorn>=0.27.0
 pydantic>=2.0.0
+numpy>=1.24.0
+
+# For embedding generation (optional, only needed for generate_embeddings.py)
+openai>=1.0.0

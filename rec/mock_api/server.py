@@ -1,29 +1,31 @@
 #!/usr/bin/env python3
 """
-Serafis Mock Recommendation API Server
+Serafis Mock Recommendation API Server — V1.1
 
-Implements the recommendation algorithms from the spec using the extracted dataset.
+Implements the refined 2-stage recommendation algorithm with Option C:
+Session Pool with Progressive Reveal.
+
+Session Behavior:
+- Create Session: Compute user vector, rank all candidates, store as queue
+- Load More: Return next N from queue (no recomputation)
+- Refresh: Create new session with fresh computation
+- Engage: Mark episode as engaged (excluded from future sessions)
 
 Usage:
     uvicorn server:app --reload --port 8000
-    
-Endpoints:
-    GET /api/recommendations/discover?user_id=...
-    GET /api/recommendations/insights-for-you?user_id=...
-    GET /api/recommendations/highest-signal?user_id=...
-    GET /api/recommendations/non-consensus?user_id=...
-    GET /api/recommendations/new-from-shows?user_id=...
-    GET /api/recommendations/trending/{category}?user_id=...
-    POST /api/feedback/not-interested
 """
 
 import json
+import math
+import uuid
+import hashlib
+import numpy as np
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import List, Dict, Optional, Set
+from typing import List, Dict, Optional, Set, Tuple
 from collections import defaultdict
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -46,11 +48,56 @@ def load_users() -> Dict[str, Dict]:
         users = json.load(f)
         return {u["id"]: u for u in users}
 
+def load_embeddings() -> Dict[str, List[float]]:
+    """Load pre-computed embeddings if available."""
+    embeddings_file = DATA_DIR / "embeddings.json"
+    if embeddings_file.exists():
+        with open(embeddings_file) as f:
+            return json.load(f)
+    return {}
+
 # Load data at startup
 EPISODES = load_episodes()
 SERIES = load_series()
 USERS = load_users()
+EMBEDDINGS = load_embeddings()
 SERIES_MAP = {s["id"]: s for s in SERIES}
+EPISODE_MAP = {ep["id"]: ep for ep in EPISODES}
+EPISODE_BY_CONTENT_ID = {ep["content_id"]: ep for ep in EPISODES}
+
+print(f"Loaded {len(EPISODES)} episodes, {len(SERIES)} series, {len(EMBEDDINGS)} embeddings")
+
+# ============================================================================
+# Configuration — V1.1 Parameters
+# ============================================================================
+
+# Stage A: Candidate Pool Pre-Selection
+CREDIBILITY_FLOOR = 2
+COMBINED_FLOOR = 5
+FRESHNESS_WINDOW_DAYS = 30
+CANDIDATE_POOL_SIZE = 50
+
+# Stage B: Semantic Matching
+USER_VECTOR_LIMIT = 5
+EMBEDDING_DIMENSIONS = 1536
+
+# Session Configuration
+DEFAULT_PAGE_SIZE = 10
+MAX_PAGE_SIZE = 20
+
+# Engagement type weights (Option B, for future use)
+ENGAGEMENT_WEIGHTS = {
+    "bookmark": 2.0,
+    "listen": 1.5,
+    "click": 1.0,
+}
+RECENCY_LAMBDA = 0.05
+
+# ============================================================================
+# In-Memory Session Storage (for testing - would be Redis in production)
+# ============================================================================
+
+SESSIONS: Dict[str, Dict] = {}
 
 # ============================================================================
 # Models
@@ -66,6 +113,33 @@ class EpisodeScores(BaseModel):
     information: int
     entertainment: int
 
+class EntityInfo(BaseModel):
+    name: str
+    relevance: int
+    context: Optional[str] = None
+
+class CriticalViews(BaseModel):
+    non_consensus_level: Optional[str] = None
+    has_critical_views: Optional[bool] = None
+    new_ideas_summary: Optional[str] = None
+    key_insights: Optional[str] = None
+
+class EpisodeDetail(BaseModel):
+    id: str
+    content_id: str
+    title: str
+    series: SeriesInfo
+    published_at: str
+    scores: EpisodeScores
+    categories: Dict[str, List[str]]
+    entities: List[EntityInfo]
+    people: List[Dict]
+    key_insight: Optional[str]
+    critical_views: Optional[CriticalViews]
+    search_relevance_score: Optional[float]
+    aggregate_score: Optional[float]
+    top_in_categories: List[str]
+
 class EpisodeCard(BaseModel):
     id: str
     content_id: str
@@ -76,97 +150,57 @@ class EpisodeCard(BaseModel):
     badges: List[str]
     key_insight: Optional[str]
     categories: Dict[str, List[str]]
+    similarity_score: Optional[float] = None
+    queue_position: Optional[int] = None
 
-class RecommendationSection(BaseModel):
-    section: str
-    title: str
-    subtitle: str
-    episodes: List[EpisodeCard]
-
-class NotInterestedRequest(BaseModel):
-    user_id: str
+class Engagement(BaseModel):
     episode_id: str
+    type: str = "click"
+    timestamp: str
+
+class CreateSessionRequest(BaseModel):
+    engagements: List[Engagement] = []
+    excluded_ids: List[str] = []
+
+class SessionResponse(BaseModel):
+    session_id: str
+    episodes: List[EpisodeCard]
+    total_in_queue: int
+    shown_count: int
+    remaining_count: int
+    cold_start: bool
+    algorithm: str = "v1.1_session_pool"
+    debug: Optional[Dict] = None
+
+class LoadMoreRequest(BaseModel):
+    limit: int = DEFAULT_PAGE_SIZE
+
+class EngageRequest(BaseModel):
+    episode_id: str
+    type: str = "click"
+    timestamp: Optional[str] = None
 
 # ============================================================================
 # Helper Functions
 # ============================================================================
 
-# Credibility floor: episodes with credibility < 2 are filtered out
-CREDIBILITY_FLOOR = 2
-
-def get_user_context(user_id: str) -> Dict:
-    """Get user context, return cold start user if not found."""
-    if user_id in USERS:
-        return USERS[user_id]
-    return USERS.get("user_cold_start", {
-        "id": user_id,
-        "category_interests": [],
-        "subscribed_series": [],
-        "seen_episode_ids": [],
-        "bookmarked_episode_ids": [],
-        "not_interested_ids": []
-    })
-
-def filter_seen(episodes: List[Dict], user: Dict) -> List[Dict]:
-    """Remove episodes user has already interacted with."""
-    excluded = set(user.get("seen_episode_ids", [])) | \
-               set(user.get("bookmarked_episode_ids", [])) | \
-               set(user.get("not_interested_ids", []))
-    return [ep for ep in episodes if ep["id"] not in excluded]
-
-def filter_credible(episodes: List[Dict]) -> List[Dict]:
-    """Remove episodes below the credibility floor."""
-    return [ep for ep in episodes if ep.get("scores", {}).get("credibility", 0) >= CREDIBILITY_FLOOR]
-
-def calculate_quality_score(ep: Dict) -> float:
-    """
-    Core quality score: Insight (45%) + Credibility (40%) + Information (15%).
-    Entertainment is excluded — not relevant for research value.
-    Returns 0 if below credibility floor.
-    """
-    scores = ep.get("scores", {})
-    if scores.get("credibility", 0) < CREDIBILITY_FLOOR:
-        return 0.0
-    return (
-        scores.get("insight", 0) * 0.45 +
-        scores.get("credibility", 0) * 0.40 +
-        scores.get("information", 0) * 0.15
-    ) / 4.0  # Normalize to 0-1
-
 def days_since(date_str: str) -> int:
     """Days since a given ISO date string."""
     try:
-        dt = datetime.fromisoformat(date_str.replace('+00:00', '+00:00'))
+        dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
         now = datetime.now(timezone.utc)
         return (now - dt).days
     except:
-        return 0
-
-def diversify(episodes: List[Dict], limit: int, max_per_series: int = 2) -> List[Dict]:
-    """Ensure variety: max N episodes per series."""
-    result = []
-    series_count = defaultdict(int)
-    
-    for ep in episodes:
-        series_id = ep.get("series", {}).get("id", "")
-        if series_count[series_id] >= max_per_series:
-            continue
-        result.append(ep)
-        series_count[series_id] += 1
-        if len(result) >= limit:
-            break
-    
-    return result
+        return 999
 
 def get_badges(ep: Dict) -> List[str]:
     """Determine badges for an episode."""
     badges = []
     scores = ep.get("scores", {})
-    
-    # Check for non-consensus first (most distinctive)
     critical_views = ep.get("critical_views")
+    
     if critical_views and critical_views.get("non_consensus_level") == "highly_non_consensus":
         badges.append("highly_contrarian")
     elif critical_views and critical_views.get("has_critical_views"):
@@ -179,9 +213,9 @@ def get_badges(ep: Dict) -> List[str]:
     if scores.get("information", 0) >= 3:
         badges.append("data_rich")
     
-    return badges[:2]  # Max 2 badges
+    return badges[:2]
 
-def to_episode_card(ep: Dict) -> EpisodeCard:
+def to_episode_card(ep: Dict, similarity_score: float = None, queue_position: int = None) -> EpisodeCard:
     """Convert raw episode dict to EpisodeCard."""
     return EpisodeCard(
         id=ep["id"],
@@ -192,207 +226,247 @@ def to_episode_card(ep: Dict) -> EpisodeCard:
         scores=EpisodeScores(**ep["scores"]),
         badges=get_badges(ep),
         key_insight=ep.get("key_insight"),
-        categories=ep.get("categories", {"major": [], "subcategories": []})
+        categories=ep.get("categories", {"major": [], "subcategories": []}),
+        similarity_score=similarity_score,
+        queue_position=queue_position
+    )
+
+def to_episode_detail(ep: Dict) -> EpisodeDetail:
+    """Convert raw episode dict to full EpisodeDetail."""
+    entities = [EntityInfo(**e) for e in ep.get("entities", [])]
+    critical_views = None
+    if ep.get("critical_views"):
+        critical_views = CriticalViews(**ep["critical_views"])
+    
+    return EpisodeDetail(
+        id=ep["id"],
+        content_id=ep["content_id"],
+        title=ep["title"],
+        series=SeriesInfo(**ep["series"]),
+        published_at=ep["published_at"],
+        scores=EpisodeScores(**ep["scores"]),
+        categories=ep.get("categories", {"major": [], "subcategories": []}),
+        entities=entities,
+        people=ep.get("people", []),
+        key_insight=ep.get("key_insight"),
+        critical_views=critical_views,
+        search_relevance_score=ep.get("search_relevance_score"),
+        aggregate_score=ep.get("aggregate_score"),
+        top_in_categories=ep.get("top_in_categories", [])
     )
 
 # ============================================================================
-# Recommendation Algorithms
+# Stage A: Candidate Pool Pre-Selection
 # ============================================================================
 
-def get_insights_for_you(user_id: str, limit: int = 10) -> List[Dict]:
+def get_candidate_pool(
+    excluded_ids: Set[str],
+    freshness_days: int = FRESHNESS_WINDOW_DAYS,
+    pool_size: int = CANDIDATE_POOL_SIZE
+) -> List[Dict]:
     """
-    Episodes matching user's category interests, weighted by quality.
-    Uses: category_interests signal
-    Requires: credibility >= CREDIBILITY_FLOOR
+    Stage A: Pre-select candidate pool using quality gates and freshness.
     """
-    user = get_user_context(user_id)
-    category_interests = set(user.get("category_interests", []))
-    
-    if not category_interests:
-        # Cold start: return highest signal
-        return get_highest_signal(user_id, limit)
-    
-    # Get episodes matching user's category interests
     candidates = []
+    
     for ep in EPISODES:
-        ep_categories = set(ep.get("categories", {}).get("major", []))
-        if ep_categories & category_interests:
-            candidates.append(ep)
+        ep_id = ep["id"]
+        content_id = ep.get("content_id", "")
+        scores = ep.get("scores", {})
+        credibility = scores.get("credibility", 0)
+        insight = scores.get("insight", 0)
+        
+        # Gate 1: Credibility floor
+        if credibility < CREDIBILITY_FLOOR:
+            continue
+        
+        # Gate 2: Combined quality floor
+        if (credibility + insight) < COMBINED_FLOOR:
+            continue
+        
+        # Gate 3: Freshness
+        age = days_since(ep.get("published_at", ""))
+        if age > freshness_days:
+            continue
+        
+        # Gate 4: Exclusions (check both ID and content_id)
+        if ep_id in excluded_ids or content_id in excluded_ids:
+            continue
+        
+        candidates.append(ep)
     
-    candidates = filter_seen(candidates, user)
-    candidates = filter_credible(candidates)  # Apply credibility floor
+    # Expand freshness if not enough candidates
+    if len(candidates) < pool_size // 2 and freshness_days < 60:
+        return get_candidate_pool(excluded_ids, freshness_days=60, pool_size=pool_size)
     
-    # Score: 60% quality, 40% recency
-    scored = []
-    for ep in candidates:
-        quality = calculate_quality_score(ep)
-        recency = max(0, 1 - (days_since(ep["published_at"]) / 30))
-        score = quality * 0.6 + recency * 0.4
-        scored.append((ep, score))
+    if len(candidates) < pool_size // 4 and freshness_days < 90:
+        return get_candidate_pool(excluded_ids, freshness_days=90, pool_size=pool_size)
     
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return diversify([ep for ep, _ in scored], limit)
-
-
-def get_highest_signal(user_id: str, limit: int = 10, days: int = 7) -> List[Dict]:
-    """
-    Top quality episodes from the past week (global, minimally personalized).
-    Requires: credibility >= CREDIBILITY_FLOOR
-    """
-    user = get_user_context(user_id)
-    
-    # Filter by recency
-    recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= days]
-    recent = filter_seen(recent, user)
-    recent = filter_credible(recent)  # Apply credibility floor
-    
-    # If not enough recent, expand window
-    if len(recent) < limit:
-        recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= 30]
-        recent = filter_seen(recent, user)
-        recent = filter_credible(recent)  # Apply credibility floor
-    
-    # Pure quality score
-    scored = [(ep, calculate_quality_score(ep)) for ep in recent]
-    scored.sort(key=lambda x: x[1], reverse=True)
-    
-    return diversify([ep for ep, _ in scored], limit)
-
-
-def get_non_consensus_ideas(user_id: str, limit: int = 10, days: int = 14) -> List[Dict]:
-    """
-    Episodes with genuinely contrarian/non-consensus ideas.
-    Requires: credibility >= 3 (higher threshold for contrarian content)
-    
-    Priority:
-    1. Episodes with extracted critical_views marked as "highly_non_consensus"
-    2. Episodes with critical_views marked as "non_consensus" 
-    3. Fallback: high insight + credibility + low entertainment (heuristic)
-    """
-    user = get_user_context(user_id)
-    
-    # Filter by recency
-    recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= days]
-    recent = filter_seen(recent, user)
-    recent = filter_credible(recent)  # Apply credibility floor
-    
-    # If not enough recent, expand window
-    if len(recent) < limit:
-        recent = [ep for ep in EPISODES if days_since(ep["published_at"]) <= 60]
-        recent = filter_seen(recent, user)
-        recent = filter_credible(recent)  # Apply credibility floor
-    
-    # If still not enough, expand to all time
-    if len(recent) < limit:
-        recent = filter_credible(filter_seen(EPISODES, user))
-    
-    # Priority 1: Episodes with extracted critical_views data marked as highly non-consensus
-    highly_contrarian = [
-        ep for ep in recent
-        if ep.get("critical_views") and ep["critical_views"].get("non_consensus_level") == "highly_non_consensus"
-    ]
-    
-    # Priority 2: Episodes marked as somewhat non-consensus
-    somewhat_contrarian = [
-        ep for ep in recent
-        if ep.get("critical_views") and ep["critical_views"].get("non_consensus_level") in ["non_consensus", "somewhat_insightful"]
-        and ep not in highly_contrarian
-    ]
-    
-    # Priority 3: Heuristic fallback - high insight + credibility, lower entertainment
-    heuristic_contrarian = [
-        ep for ep in recent
-        if ep["scores"]["credibility"] >= 3 
-        and ep["scores"]["insight"] >= 3 
-        and ep["scores"]["entertainment"] <= 2
-        and ep not in highly_contrarian 
-        and ep not in somewhat_contrarian
-    ]
-    
-    # Combine in priority order
-    contrarian = highly_contrarian + somewhat_contrarian + heuristic_contrarian
-    
-    # Sort within each priority by insight score
-    contrarian.sort(
-        key=lambda ep: (
-            # Priority score: highly_non_consensus=3, non_consensus/somewhat=2, heuristic=1
-            3 if (ep.get("critical_views") and ep["critical_views"].get("non_consensus_level") == "highly_non_consensus") else
-            2 if (ep.get("critical_views") and ep["critical_views"].get("non_consensus_level") in ["non_consensus", "somewhat_insightful"]) else 1,
-            # Then by insight + credibility
-            ep["scores"]["insight"] * 0.6 + ep["scores"]["credibility"] * 0.4
-        ),
+    # Sort by combined quality
+    candidates.sort(
+        key=lambda ep: ep["scores"]["credibility"] + ep["scores"]["insight"],
         reverse=True
     )
     
-    return diversify(contrarian, limit)
+    return candidates[:pool_size]
 
+# ============================================================================
+# Stage B: Semantic Matching
+# ============================================================================
 
-def get_new_from_subscriptions(user_id: str, limit: int = 10) -> List[Dict]:
-    """
-    Latest episodes from user's subscribed series.
-    Requires: credibility >= CREDIBILITY_FLOOR
-    """
-    user = get_user_context(user_id)
-    subscribed = set(user.get("subscribed_series", []))
+def cosine_similarity(v1: List[float], v2: List[float]) -> float:
+    """Compute cosine similarity between two vectors."""
+    if not v1 or not v2:
+        return 0.0
     
-    if not subscribed:
-        return []
+    v1 = np.array(v1)
+    v2 = np.array(v2)
     
-    # Get episodes from subscribed series
-    candidates = [
-        ep for ep in EPISODES 
-        if ep.get("series", {}).get("id", "") in subscribed
-    ]
+    dot_product = np.dot(v1, v2)
+    norm_product = np.linalg.norm(v1) * np.linalg.norm(v2)
     
-    candidates = filter_seen(candidates, user)
-    candidates = filter_credible(candidates)  # Apply credibility floor
-    
-    # Sort by recency (newest first)
-    candidates.sort(key=lambda ep: ep["published_at"], reverse=True)
-    
-    return candidates[:limit]
+    return float(dot_product / norm_product) if norm_product > 0 else 0.0
 
+def get_user_vector(engagements: List[Dict], limit: int = USER_VECTOR_LIMIT) -> Optional[List[float]]:
+    """
+    Compute user activity vector from recent engagements.
+    Simple mean of most recent N engagement embeddings.
+    """
+    if not engagements:
+        return None
+    
+    # Sort by timestamp, most recent first
+    sorted_eng = sorted(engagements, key=lambda e: e.get("timestamp", ""), reverse=True)
+    recent = sorted_eng[:limit]
+    
+    vectors = []
+    for eng in recent:
+        ep_id = eng.get("episode_id")
+        
+        # Try to find embedding by ID
+        if ep_id in EMBEDDINGS:
+            vectors.append(EMBEDDINGS[ep_id])
+        elif ep_id in EPISODE_BY_CONTENT_ID:
+            real_id = EPISODE_BY_CONTENT_ID[ep_id]["id"]
+            if real_id in EMBEDDINGS:
+                vectors.append(EMBEDDINGS[real_id])
+    
+    if not vectors:
+        return None
+    
+    return list(np.mean(vectors, axis=0))
 
-def get_trending_in_category(user_id: str, category: str, limit: int = 10, days: int = 14) -> List[Dict]:
+def rank_candidates_by_similarity(
+    user_vector: Optional[List[float]],
+    candidates: List[Dict]
+) -> List[Tuple[Dict, float]]:
     """
-    Popular episodes in a specific category.
-    Requires: credibility >= CREDIBILITY_FLOOR
+    Rank all candidates by similarity to user vector.
+    Returns list of (episode, similarity_score) tuples, sorted by score desc.
     """
-    user = get_user_context(user_id)
-    
-    # Get recent episodes in category
-    candidates = [
-        ep for ep in EPISODES
-        if category in ep.get("categories", {}).get("major", [])
-        and days_since(ep["published_at"]) <= days
-    ]
-    
-    candidates = filter_seen(candidates, user)
-    candidates = filter_credible(candidates)  # Apply credibility floor
-    
-    # If not enough, expand window
-    if len(candidates) < limit:
-        candidates = [
-            ep for ep in EPISODES
-            if category in ep.get("categories", {}).get("major", [])
-            and days_since(ep["published_at"]) <= 60
-        ]
-        candidates = filter_seen(candidates, user)
-        candidates = filter_credible(candidates)  # Apply credibility floor
-    
-    # Score: 50% series popularity, 30% quality, 20% recency
     scored = []
+    
     for ep in candidates:
-        series_id = ep.get("series", {}).get("id", "")
-        series = SERIES_MAP.get(series_id, {})
-        series_popularity = series.get("popularity", 50) / 100.0
-        quality = calculate_quality_score(ep)
-        recency = max(0, 1 - (days_since(ep["published_at"]) / days))
-        score = series_popularity * 0.5 + quality * 0.3 + recency * 0.2
-        scored.append((ep, score))
+        ep_id = ep["id"]
+        
+        if user_vector and ep_id in EMBEDDINGS:
+            sim = cosine_similarity(user_vector, EMBEDDINGS[ep_id])
+        else:
+            # Fallback: use quality score (normalized to ~0.5 range)
+            quality = (ep["scores"]["credibility"] + ep["scores"]["insight"]) / 8.0
+            sim = quality * 0.5
+        
+        scored.append((ep, sim))
     
     scored.sort(key=lambda x: x[1], reverse=True)
-    return diversify([ep for ep, _ in scored], limit)
+    return scored
+
+# ============================================================================
+# Session Management
+# ============================================================================
+
+def create_session(
+    engagements: List[Dict],
+    excluded_ids: Set[str]
+) -> Dict:
+    """
+    Create a new session with ranked queue.
+    
+    Returns session dict with:
+    - session_id
+    - queue: List of (episode, similarity_score) tuples
+    - shown_indices: Set of indices already shown
+    - created_at
+    - cold_start
+    """
+    session_id = str(uuid.uuid4())[:8]
+    
+    # Get candidate pool
+    candidates = get_candidate_pool(excluded_ids)
+    
+    # Compute user vector
+    user_vector = get_user_vector(engagements)
+    cold_start = user_vector is None or len(engagements) == 0
+    
+    # Rank all candidates
+    ranked = rank_candidates_by_similarity(user_vector, candidates)
+    
+    # Create session
+    session = {
+        "session_id": session_id,
+        "queue": ranked,  # List of (episode, score) tuples
+        "shown_indices": set(),
+        "engaged_ids": set(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "cold_start": cold_start,
+        "user_vector_episodes": min(len(engagements), USER_VECTOR_LIMIT) if engagements else 0,
+        "excluded_ids": excluded_ids.copy(),
+    }
+    
+    # Store session
+    SESSIONS[session_id] = session
+    
+    return session
+
+def get_session(session_id: str) -> Optional[Dict]:
+    """Get session by ID."""
+    return SESSIONS.get(session_id)
+
+def get_next_from_queue(session: Dict, limit: int = DEFAULT_PAGE_SIZE) -> List[Tuple[Dict, float, int]]:
+    """
+    Get next N unshown episodes from queue.
+    Returns list of (episode, score, queue_position) tuples.
+    Marks them as shown.
+    """
+    queue = session["queue"]
+    shown = session["shown_indices"]
+    engaged = session["engaged_ids"]
+    
+    result = []
+    
+    for i, (ep, score) in enumerate(queue):
+        # Skip already shown
+        if i in shown:
+            continue
+        
+        # Skip engaged (in case they engaged mid-session)
+        if ep["id"] in engaged or ep.get("content_id") in engaged:
+            continue
+        
+        result.append((ep, score, i + 1))  # 1-indexed position
+        shown.add(i)
+        
+        if len(result) >= limit:
+            break
+    
+    return result
+
+def mark_engaged(session: Dict, episode_id: str):
+    """Mark an episode as engaged within this session."""
+    session["engaged_ids"].add(episode_id)
+    
+    # Also add to excluded for future sessions
+    session["excluded_ids"].add(episode_id)
 
 # ============================================================================
 # FastAPI App
@@ -400,8 +474,8 @@ def get_trending_in_category(user_id: str, category: str, limit: int = 10, days:
 
 app = FastAPI(
     title="Serafis Mock Recommendation API",
-    description="Mock API for testing recommendation algorithms",
-    version="1.0.0"
+    description="V1.1 with Session Pool (Option C)",
+    version="1.1.0"
 )
 
 app.add_middleware(
@@ -416,190 +490,244 @@ app.add_middleware(
 def root():
     return {
         "name": "Serafis Mock Recommendation API",
-        "version": "1.0.0",
+        "version": "1.1.0",
+        "algorithm": "V1.1 Session Pool (Option C)",
+        "behavior": {
+            "create_session": "Compute user vector, rank all candidates, create queue",
+            "load_more": "Return next N from queue (no recomputation)",
+            "refresh": "Create new session with fresh computation",
+            "engage": "Mark episode as engaged, exclude from queue"
+        },
         "endpoints": [
-            "/api/recommendations/discover",
-            "/api/recommendations/insights-for-you",
-            "/api/recommendations/highest-signal",
-            "/api/recommendations/non-consensus",
-            "/api/recommendations/new-from-shows",
-            "/api/recommendations/trending/{category}",
+            "POST /api/sessions/create",
+            "GET /api/sessions/{session_id}",
+            "POST /api/sessions/{session_id}/next",
+            "POST /api/sessions/{session_id}/engage",
+            "GET /api/episodes",
+            "GET /api/episodes/{id}",
         ],
         "data": {
             "episodes": len(EPISODES),
             "series": len(SERIES),
-            "users": len(USERS)
+            "embeddings": len(EMBEDDINGS),
+            "active_sessions": len(SESSIONS)
         }
     }
 
-@app.get("/api/recommendations/insights-for-you", response_model=RecommendationSection)
-def insights_for_you(
-    user_id: str = Query(..., description="User ID"),
-    limit: int = Query(10, le=20, description="Max results")
-):
-    """Episodes matching user's category interests."""
-    user = get_user_context(user_id)
-    episodes = get_insights_for_you(user_id, limit)
+# ============================================================================
+# Session Endpoints
+# ============================================================================
+
+@app.post("/api/sessions/create", response_model=SessionResponse)
+def create_session_endpoint(request: CreateSessionRequest):
+    """
+    Create a new session with ranked recommendation queue.
     
-    categories_str = ", ".join(user.get("category_interests", ["your interests"])[:2])
-    return RecommendationSection(
-        section="insights_for_you",
-        title="📊 Insights for You",
-        subtitle=f"Based on {categories_str}",
-        episodes=[to_episode_card(ep) for ep in episodes]
+    This computes the user vector from engagements, gets the candidate pool,
+    ranks all candidates by similarity, and stores the queue.
+    
+    Returns the first page of recommendations.
+    """
+    engagements = [e.model_dump() for e in request.engagements]
+    excluded_ids = set(request.excluded_ids)
+    
+    # Create session
+    session = create_session(engagements, excluded_ids)
+    
+    # Get first page
+    first_page = get_next_from_queue(session, DEFAULT_PAGE_SIZE)
+    
+    episodes = [
+        to_episode_card(ep, similarity_score=score, queue_position=pos)
+        for ep, score, pos in first_page
+    ]
+    
+    total_in_queue = len(session["queue"])
+    shown_count = len(session["shown_indices"])
+    
+    # Debug info
+    top_scores = [round(score, 3) for _, score, _ in first_page[:5]]
+    
+    return SessionResponse(
+        session_id=session["session_id"],
+        episodes=episodes,
+        total_in_queue=total_in_queue,
+        shown_count=shown_count,
+        remaining_count=total_in_queue - shown_count,
+        cold_start=session["cold_start"],
+        debug={
+            "candidates_count": total_in_queue,
+            "user_vector_episodes": session["user_vector_episodes"],
+            "embeddings_available": len(EMBEDDINGS) > 0,
+            "top_similarity_scores": top_scores,
+        }
     )
 
-@app.get("/api/recommendations/highest-signal", response_model=RecommendationSection)
-def highest_signal(
-    user_id: str = Query(..., description="User ID"),
-    limit: int = Query(10, le=20, description="Max results"),
-    days: int = Query(7, le=30, description="Recency window in days")
-):
-    """Top quality episodes (global)."""
-    episodes = get_highest_signal(user_id, limit, days)
-    return RecommendationSection(
-        section="highest_signal",
-        title="💎 Highest Signal This Week",
-        subtitle="Top Insight + Credibility across all topics",
-        episodes=[to_episode_card(ep) for ep in episodes]
+@app.get("/api/sessions/{session_id}")
+def get_session_info(session_id: str):
+    """Get session info without fetching more episodes."""
+    session = get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    total = len(session["queue"])
+    shown = len(session["shown_indices"])
+    
+    return {
+        "session_id": session_id,
+        "total_in_queue": total,
+        "shown_count": shown,
+        "remaining_count": total - shown,
+        "cold_start": session["cold_start"],
+        "created_at": session["created_at"],
+        "engaged_count": len(session["engaged_ids"]),
+    }
+
+@app.post("/api/sessions/{session_id}/next", response_model=SessionResponse)
+def load_more(session_id: str, request: LoadMoreRequest = None):
+    """
+    Load more recommendations from the session queue.
+    
+    This returns the next N episodes from the pre-computed queue.
+    NO recomputation happens - this is deterministic pagination.
+    """
+    session = get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    limit = request.limit if request else DEFAULT_PAGE_SIZE
+    limit = min(limit, MAX_PAGE_SIZE)
+    
+    # Get next page
+    next_page = get_next_from_queue(session, limit)
+    
+    episodes = [
+        to_episode_card(ep, similarity_score=score, queue_position=pos)
+        for ep, score, pos in next_page
+    ]
+    
+    total_in_queue = len(session["queue"])
+    shown_count = len(session["shown_indices"])
+    
+    return SessionResponse(
+        session_id=session_id,
+        episodes=episodes,
+        total_in_queue=total_in_queue,
+        shown_count=shown_count,
+        remaining_count=total_in_queue - shown_count,
+        cold_start=session["cold_start"],
     )
 
-@app.get("/api/recommendations/non-consensus", response_model=RecommendationSection)
-def non_consensus(
-    user_id: str = Query(..., description="User ID"),
-    limit: int = Query(10, le=20, description="Max results"),
-    days: int = Query(14, le=60, description="Recency window in days")
-):
-    """Contrarian views from credible speakers."""
-    episodes = get_non_consensus_ideas(user_id, limit, days)
-    return RecommendationSection(
-        section="non_consensus",
-        title="🔥 Non-Consensus Ideas",
-        subtitle="Contrarian views from credible speakers",
-        episodes=[to_episode_card(ep) for ep in episodes]
-    )
+@app.post("/api/sessions/{session_id}/engage")
+def engage_episode(session_id: str, request: EngageRequest):
+    """
+    Record an engagement within the session.
+    
+    The engaged episode is removed from the queue (won't appear in load_more).
+    It's also added to excluded_ids for future sessions.
+    """
+    session = get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    mark_engaged(session, request.episode_id)
+    
+    return {
+        "status": "ok",
+        "session_id": session_id,
+        "episode_id": request.episode_id,
+        "type": request.type,
+        "engaged_count": len(session["engaged_ids"]),
+    }
 
-@app.get("/api/recommendations/new-from-shows", response_model=RecommendationSection)
-def new_from_shows(
-    user_id: str = Query(..., description="User ID"),
-    limit: int = Query(10, le=20, description="Max results")
-):
-    """New episodes from subscribed series."""
-    episodes = get_new_from_subscriptions(user_id, limit)
-    return RecommendationSection(
-        section="new_from_shows",
-        title="📡 New from Your Shows",
-        subtitle="Latest from subscribed series",
-        episodes=[to_episode_card(ep) for ep in episodes]
-    )
+# ============================================================================
+# Legacy Endpoints (kept for compatibility)
+# ============================================================================
 
-@app.get("/api/recommendations/trending/{category}", response_model=RecommendationSection)
-def trending(
-    category: str,
-    user_id: str = Query(..., description="User ID"),
-    limit: int = Query(10, le=20, description="Max results"),
-    days: int = Query(14, le=60, description="Recency window in days")
-):
-    """Popular episodes in a category."""
-    episodes = get_trending_in_category(user_id, category, limit, days)
-    return RecommendationSection(
-        section="trending",
-        title=f"🌟 Trending in {category}",
-        subtitle=f"Popular this week",
-        episodes=[to_episode_card(ep) for ep in episodes]
-    )
-
-@app.get("/api/recommendations/discover")
-def discover(user_id: str = Query(..., description="User ID")):
-    """Full discover page with all sections."""
-    user = get_user_context(user_id)
+@app.post("/api/recommendations/for-you")
+def for_you_legacy(request: CreateSessionRequest):
+    """
+    Legacy endpoint - creates a session and returns first page.
+    For backwards compatibility with existing frontend.
+    """
+    result = create_session_endpoint(request)
     
-    sections = []
-    
-    # Insights for you
-    eps = get_insights_for_you(user_id, 10)
-    categories_str = ", ".join(user.get("category_interests", ["your interests"])[:2])
-    sections.append(RecommendationSection(
-        section="insights_for_you",
-        title="📊 Insights for You",
-        subtitle=f"Based on {categories_str}",
-        episodes=[to_episode_card(ep) for ep in eps]
-    ))
-    
-    # Highest signal
-    eps = get_highest_signal(user_id, 10)
-    sections.append(RecommendationSection(
-        section="highest_signal",
-        title="💎 Highest Signal This Week",
-        subtitle="Top Insight + Credibility across all topics",
-        episodes=[to_episode_card(ep) for ep in eps]
-    ))
-    
-    # Non-consensus
-    eps = get_non_consensus_ideas(user_id, 8)
-    sections.append(RecommendationSection(
-        section="non_consensus",
-        title="🔥 Non-Consensus Ideas",
-        subtitle="Contrarian views from credible speakers",
-        episodes=[to_episode_card(ep) for ep in eps]
-    ))
-    
-    # Add subscription section if user has subscriptions
-    if user.get("subscribed_series"):
-        eps = get_new_from_subscriptions(user_id, 8)
-        if eps:
-            sections.append(RecommendationSection(
-                section="new_from_shows",
-                title="📡 New from Your Shows",
-                subtitle="Latest from subscribed series",
-                episodes=[to_episode_card(ep) for ep in eps]
-            ))
-    
-    # Add trending section for first category interest
-    if user.get("category_interests"):
-        first_cat = user["category_interests"][0]
-        eps = get_trending_in_category(user_id, first_cat, 8)
-        if eps:
-            sections.append(RecommendationSection(
-                section="trending",
-                title=f"🌟 Trending in {first_cat}",
-                subtitle="Popular this week",
-                episodes=[to_episode_card(ep) for ep in eps]
-            ))
-    
-    return {"sections": [s.model_dump() for s in sections]}
-
-@app.post("/api/feedback/not-interested")
-def mark_not_interested(request: NotInterestedRequest):
-    """Mark an episode as not interested."""
-    user_id = request.user_id
-    episode_id = request.episode_id
-    
-    if user_id in USERS:
-        if "not_interested_ids" not in USERS[user_id]:
-            USERS[user_id]["not_interested_ids"] = []
-        if episode_id not in USERS[user_id]["not_interested_ids"]:
-            USERS[user_id]["not_interested_ids"].append(episode_id)
-    
-    return {"status": "ok", "user_id": user_id, "episode_id": episode_id}
-
-@app.get("/api/users")
-def list_users():
-    """List available mock users."""
-    return {"users": list(USERS.values())}
+    # Convert to legacy format
+    return {
+        "section": "for_you",
+        "title": "Highest Signal" if result.cold_start else "For You",
+        "subtitle": "Top quality episodes" if result.cold_start else "Based on your recent activity",
+        "algorithm": result.algorithm,
+        "cold_start": result.cold_start,
+        "episodes": [ep.model_dump() for ep in result.episodes],
+        "session_id": result.session_id,
+        "total_in_queue": result.total_in_queue,
+        "remaining_count": result.remaining_count,
+        "debug": result.debug,
+    }
 
 @app.get("/api/episodes")
-def list_episodes(limit: int = Query(None)):
-    """List all episodes for the recommendation tester."""
-    if limit:
-        return {"episodes": EPISODES[:limit], "total": len(EPISODES)}
-    return {"episodes": EPISODES, "total": len(EPISODES)}
+def list_episodes(limit: int = Query(None), offset: int = Query(0)):
+    """List all episodes."""
+    episodes = EPISODES[offset:offset + limit] if limit else EPISODES[offset:]
+    return {
+        "episodes": episodes,
+        "total": len(EPISODES),
+        "offset": offset,
+        "limit": limit
+    }
+
+@app.get("/api/episodes/{episode_id}")
+def get_episode(episode_id: str):
+    """Get full episode details by ID or content_id."""
+    if episode_id in EPISODE_MAP:
+        return to_episode_detail(EPISODE_MAP[episode_id])
+    
+    if episode_id in EPISODE_BY_CONTENT_ID:
+        return to_episode_detail(EPISODE_BY_CONTENT_ID[episode_id])
+    
+    raise HTTPException(status_code=404, detail="Episode not found")
 
 @app.get("/api/series")
 def list_series():
-    """List series (for debugging)."""
+    """List all series."""
     return {"series": SERIES}
 
+@app.get("/api/stats")
+def get_stats():
+    """Get data statistics."""
+    credible_count = sum(1 for ep in EPISODES if ep.get("scores", {}).get("credibility", 0) >= CREDIBILITY_FLOOR)
+    high_quality = sum(1 for ep in EPISODES if (ep.get("scores", {}).get("credibility", 0) + ep.get("scores", {}).get("insight", 0)) >= COMBINED_FLOOR)
+    recent_count = sum(1 for ep in EPISODES if days_since(ep.get("published_at", "")) <= FRESHNESS_WINDOW_DAYS)
+    contrarian_count = sum(1 for ep in EPISODES if (ep.get("critical_views") or {}).get("has_critical_views"))
+    
+    return {
+        "total_episodes": len(EPISODES),
+        "total_series": len(SERIES),
+        "total_embeddings": len(EMBEDDINGS),
+        "credible_episodes": credible_count,
+        "high_quality_episodes": high_quality,
+        "recent_episodes": recent_count,
+        "contrarian_episodes": contrarian_count,
+        "active_sessions": len(SESSIONS),
+        "config": {
+            "credibility_floor": CREDIBILITY_FLOOR,
+            "combined_floor": COMBINED_FLOOR,
+            "freshness_window_days": FRESHNESS_WINDOW_DAYS,
+            "candidate_pool_size": CANDIDATE_POOL_SIZE,
+            "user_vector_limit": USER_VECTOR_LIMIT,
+            "default_page_size": DEFAULT_PAGE_SIZE,
+        }
+    }
+
+# ============================================================================
+# Cleanup old sessions (simple memory management)
+# ============================================================================
+
+@app.on_event("startup")
+async def startup_cleanup():
+    """Clean up is handled by in-memory storage (sessions disappear on restart)."""
+    pass
 
 if __name__ == "__main__":
     import uvicorn

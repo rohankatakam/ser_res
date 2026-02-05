@@ -1,134 +1,200 @@
-# Serafis Mock Recommendation API
+# Serafis Mock Recommendation API — V1.1
 
-A functional mock API for testing the Serafis recommendation algorithms without backend access.
+A functional mock API for testing the Serafis "For You" recommendation algorithms with semantic matching.
+
+## What's New in V1.1
+
+- **2-Stage Pipeline**: Pre-filtering + semantic matching
+- **Embedding-based recommendations**: Cosine similarity between user activity vector and episode embeddings
+- **Clean embedding strategy**: Only `title + key_insights` for noise reduction
+- **Real-time personalization**: Recommendations update as user engages
 
 ## Quick Start
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 pip install -r requirements.txt
 
-# Build dataset from extracted API responses
-python build_dataset.py
-
-# Start the server
+# 2. Start the server
 python server.py
 # Or: uvicorn server:app --reload --port 8000
+
+# 3. (Optional) Generate embeddings for semantic matching
+export OPENAI_API_KEY="sk-..."
+python generate_embeddings.py
 
 # Server runs at http://localhost:8000
 ```
 
-## Data Extraction
+## Embedding Generation
 
-The dataset is built from JSON responses captured from the Serafis web app.
+For semantic matching to work, you need to generate embeddings:
 
-### Folder Structure
+```bash
+# Set your OpenAI API key
+export OPENAI_API_KEY="sk-your-key-here"
 
-```
-mock_api/
-├── org_search/           # Organization search responses
-│   ├── openai_response.json
-│   ├── google_response.json
-│   └── nvidia_response.json
-├── people_search/        # People search responses
-│   ├── samaltman_response.json
-│   ├── elonmusk_response.json
-│   └── ...
-├── theme_search/         # Theme search responses
-│   ├── major_categories/
-│   │   ├── crypto_web3_response.json
-│   │   └── startups_growth_founder_journeys_response.json
-│   └── sub_categories/
-│       ├── energyclimate_response.json
-│       └── defensetech_response.json
-├── data/                 # Generated dataset (after running build_dataset.py)
-│   ├── episodes.json     # Unified episode data
-│   ├── series.json       # Series metadata
-│   ├── mock_users.json   # Test user profiles
-│   └── stats.json        # Dataset statistics
-├── build_dataset.py      # Dataset builder script
-├── server.py             # FastAPI server
-└── requirements.txt      # Dependencies
+# Generate embeddings for all episodes (~$0.10 cost)
+python generate_embeddings.py
+
+# Check what would be done without calling API
+python generate_embeddings.py --dry-run
+
+# Force regenerate all embeddings
+python generate_embeddings.py --force
 ```
 
-### How to Extract More Data
+This creates `data/embeddings.json` with 1536-dim vectors for each episode.
 
-1. Open the Serafis web app (app.serafis.ai)
-2. Open browser DevTools → Network tab
-3. Run a search (org, people, or theme)
-4. Find the POST request to `agent.superblocks.com/v2/execute`
-5. Copy the response JSON
-6. Save to appropriate folder (e.g., `org_search/anthropic_response.json`)
-7. Run `python build_dataset.py` to rebuild the dataset
+**Without embeddings**: The API falls back to quality-based ranking (C+I score).
+
+## V1.1 Algorithm
+
+### Stage A: Candidate Pool Pre-Selection
+
+```
+All Episodes (561)
+    ↓ Filter: Credibility ≥ 2
+    ↓ Filter: C + I ≥ 5
+    ↓ Filter: Published within 30 days
+    ↓ Filter: Not in user's excluded_ids
+    ↓ Sort by C+I descending
+    ↓ Take top 50
+Candidate Pool (50 episodes)
+```
+
+### Stage B: Semantic Matching
+
+```
+User Activity Vector ←── Mean of last 5 engagement embeddings
+        ↓
+        ↓ Cosine similarity against each candidate
+        ↓ Sort by similarity descending
+        ↓ Take top 10
+Final Recommendations (10 episodes)
+```
 
 ## API Endpoints
 
-### Recommendation Endpoints
+### V1.1 Endpoints
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /api/recommendations/discover?user_id=...` | Full discover page with all sections |
-| `GET /api/recommendations/insights-for-you?user_id=...` | Category-matched episodes |
-| `GET /api/recommendations/highest-signal?user_id=...` | Top quality episodes (global) |
-| `GET /api/recommendations/non-consensus?user_id=...` | Contrarian views from credible speakers |
-| `GET /api/recommendations/new-from-shows?user_id=...` | From subscribed series |
-| `GET /api/recommendations/trending/{category}?user_id=...` | Popular in category |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `POST /api/recommendations/for-you` | POST | Semantic matching recommendations |
+| `GET /api/episodes` | GET | List all episodes (with pagination) |
+| `GET /api/episodes/{id}` | GET | Full episode details |
+| `GET /api/stats` | GET | Data statistics and config |
 
-### Other Endpoints
-
-| Endpoint | Description |
-|----------|-------------|
-| `GET /` | API info and stats |
-| `GET /api/users` | List mock users |
-| `GET /api/episodes?limit=20` | List episodes |
-| `GET /api/series` | List series |
-| `POST /api/feedback/not-interested` | Mark episode as not interested |
-
-## Mock Users
-
-| User ID | Category Interests | Subscribed Series |
-|---------|-------------------|-------------------|
-| `user_prosumer_ai` | Startups & Founders | a16z, 20VC, Unsupervised Learning |
-| `user_prosumer_crypto` | Crypto, Startups | Unchained, Bankless |
-| `user_prosumer_markets` | Startups & Founders | Invest Like Best, All-In |
-| `user_cold_start` | (none) | (none) |
-
-## Example Usage
+### For You Request
 
 ```bash
-# Get full discover page for a user
-curl "http://localhost:8000/api/recommendations/discover?user_id=user_prosumer_crypto"
-
-# Get highest signal episodes
-curl "http://localhost:8000/api/recommendations/highest-signal?user_id=user_prosumer_ai&limit=5"
-
-# Get trending in a category
-curl "http://localhost:8000/api/recommendations/trending/Crypto%20%26%20Web3?user_id=user_prosumer_crypto"
+curl -X POST http://localhost:8000/api/recommendations/for-you \
+  -H "Content-Type: application/json" \
+  -d '{
+    "engagements": [
+      {"episode_id": "B7d9XwUOKOuoH7R8Tnzi", "type": "click", "timestamp": "2026-02-04T10:00:00Z"},
+      {"episode_id": "lMI5IYECEDErYBlmWMSi", "type": "bookmark", "timestamp": "2026-02-04T09:00:00Z"}
+    ],
+    "excluded_ids": ["B7d9XwUOKOuoH7R8Tnzi", "lMI5IYECEDErYBlmWMSi"]
+  }'
 ```
 
-## Algorithm Details
+### Response
 
-See [recommendation_engine_spec.md](../recommendation_engine_spec.md) for full algorithm specifications.
+```json
+{
+  "section": "for_you",
+  "title": "For You",
+  "subtitle": "Based on your recent activity",
+  "algorithm": "v1.1_semantic",
+  "cold_start": false,
+  "episodes": [
+    {
+      "id": "xyz123",
+      "title": "Episode Title",
+      "similarity_score": 0.847,
+      "scores": {"insight": 3, "credibility": 4, ...},
+      ...
+    }
+  ],
+  "debug": {
+    "candidates_count": 47,
+    "user_vector_episodes": 5,
+    "top_similarity_scores": [0.847, 0.823, 0.801, ...]
+  }
+}
+```
 
-### Quality Score Formula
+### Legacy Endpoints (still available)
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/recommendations/highest-signal` | Top quality episodes |
+| `GET /api/recommendations/non-consensus` | Contrarian views |
+| `GET /api/recommendations/discover` | Full discover page |
+
+## Frontend Testing Harness
+
+A React frontend is available in `../prototype/`:
+
+```bash
+cd ../prototype
+npm install
+npm run dev
+# Open http://localhost:5173
+```
+
+### Features
+
+- Browse all episodes
+- Click episodes to view details and signal engagement
+- View "For You" recommendations updating in real-time
+- See similarity scores for each recommendation
+- Debug panel showing user activity vector
+- Cold start on refresh (no persistence)
+
+## Folder Structure
 
 ```
-quality = (insight * 0.45 + credibility * 0.40 + information * 0.15) / 4.0
+mock_api/
+├── data/
+│   ├── episodes.json       # 561 episodes with metadata
+│   ├── series.json         # 58 podcast series
+│   ├── mock_users.json     # Test user profiles
+│   └── embeddings.json     # Pre-computed embeddings (generated)
+├── server.py               # FastAPI server (V1.1)
+├── generate_embeddings.py  # Embedding generation script
+├── build_dataset.py        # Dataset builder (from raw responses)
+├── requirements.txt        # Python dependencies
+└── README.md               # This file
 ```
 
-### Badge Thresholds
+## Configuration
 
-- 💎 High Insight: `insight_score >= 3`
-- ⭐ High Credibility: `credibility_score >= 3`
-- 📊 Data-Rich: `information_score >= 3`
-- 🔥 Contrarian: Has critical views
+Default parameters in `server.py`:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `CREDIBILITY_FLOOR` | 2 | Minimum credibility score |
+| `COMBINED_FLOOR` | 5 | Minimum C+I score |
+| `FRESHNESS_WINDOW_DAYS` | 30 | Max age for candidates |
+| `CANDIDATE_POOL_SIZE` | 50 | Pre-filtered pool size |
+| `USER_VECTOR_LIMIT` | 5 | Engagements for user vector |
+
+## Specs & Documentation
+
+- **V1.1 Spec**: `../FOR_YOU_V1_1_SPEC.md`
+- **Testing Strategy**: `../TESTING_STRATEGY.md`
+- **Original Spec**: `../FOR_YOU_SPEC_FINAL.html`
+- **Testing Guide**: `../FOR_YOU_TESTING_GUIDE.md`
 
 ## Current Dataset Stats
 
-- **387 unique episodes**
+- **561 unique episodes**
 - **58 series**
-- **Average insight score:** 2.54
-- **Average credibility score:** 3.16
+- **Average insight score:** ~2.5
+- **Average credibility score:** ~3.2
+- **Episodes with critical_views:** ~150
 
 ## Interactive API Docs
 

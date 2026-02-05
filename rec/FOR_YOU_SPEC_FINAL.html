@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serafis "For You" Feed Specification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #333;
+            --text-light: #666;
+            --border: #e0e0e0;
+            --bg-light: #f8f9fa;
+            --bg-code: #f4f4f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: letter;
+            margin: 0.6in 0.5in;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            color: var(--text);
+            max-width: 8in;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+        }
+        
+        /* Header Styling */
+        .document-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .document-header h1 {
+            font-size: 24pt;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .document-header .subtitle {
+            font-size: 10.5pt;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .document-meta {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            font-size: 9pt;
+            color: var(--text-light);
+        }
+        
+        .document-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .document-meta strong {
+            color: var(--text);
+        }
+        
+        /* Section Styling */
+        h2 {
+            font-size: 14pt;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--accent);
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-top: 18px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            font-size: 10pt;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+        
+        /* Executive Summary Box */
+        .executive-summary {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e8f4f8 100%);
+            border-left: 4px solid var(--accent);
+            padding: 15px 18px;
+            margin: 18px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .executive-summary p {
+            margin: 0;
+            font-size: 9.5pt;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 18px 0;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+        
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+        
+        th {
+            padding: 8px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 7px 8px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+        
+        tbody tr:hover {
+            background: #e8f4f8;
+        }
+        
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+            font-size: 9pt;
+            background: var(--bg-code);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--highlight);
+        }
+        
+        pre {
+            font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+            font-size: 9pt;
+            background: var(--bg-code);
+            padding: 15px 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid var(--border);
+            line-height: 1.5;
+            page-break-inside: avoid;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text);
+        }
+        
+        /* System Diagram */
+        .system-diagram {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            overflow-x: auto;
+            page-break-inside: avoid;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .system-diagram pre {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #e0e0e0;
+            font-size: 7.5pt;
+            line-height: 1.3;
+            white-space: pre;
+        }
+        
+        .system-diagram pre code {
+            color: #e0e0e0;
+        }
+        
+        .diagram-title {
+            text-align: center;
+            font-weight: 600;
+            font-size: 14pt;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 12px 0 12px 25px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+        }
+        
+        /* Blockquotes / Notes */
+        blockquote {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 12px 18px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 10pt;
+        }
+        
+        blockquote p {
+            margin: 0;
+        }
+        
+        /* Info boxes */
+        .info-box {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 12px 0;
+            font-size: 9.5pt;
+        }
+        
+        .info-box.warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        
+        .info-box.success {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        /* Page breaks */
+        .page-break {
+            page-break-before: always;
+        }
+        
+        /* Footer */
+        .document-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+            text-align: center;
+            font-size: 9pt;
+            color: var(--text-light);
+        }
+        
+        /* Print optimizations */
+        @media print {
+            body {
+                padding: 0;
+                font-size: 10pt;
+            }
+            
+            .system-diagram {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            
+            .system-diagram-split {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            
+            table {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            
+            h2, h3, h4 {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+            
+            pre {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            
+            .page-break {
+                page-break-before: always;
+                break-before: page;
+            }
+            
+            .no-break {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            
+            .executive-summary {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Split diagram styling */
+        .system-diagram-split {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .system-diagram-split pre {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #e0e0e0;
+            font-size: 8pt;
+            line-height: 1.25;
+            white-space: pre;
+        }
+        
+        .system-diagram-split pre code {
+            color: #e0e0e0;
+        }
+        
+        .diagram-section-title {
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 20px 0 10px 0;
+        }
+        
+        /* Stage labels */
+        .stage-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        /* Horizontal rule */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 15px 0;
+        }
+        
+        /* Formula styling */
+        .formula {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9.5pt;
+        }
+    </style>
+</head>
+<body>
+    <div class="document-header">
+        <h1>Serafis "For You" Feed</h1>
+        <div class="subtitle">Single-stream personalized investment intelligence feed</div>
+    </div>
+
+    <div class="executive-summary">
+        <p><strong>Executive Summary:</strong> A 3-stage recommendation pipeline designed to transform raw user signals and episode metadata into a personalized, narrative-aware feed of 10 episodes. The system combines semantic similarity, signal quality scoring, and diversity-aware reranking to surface investor-grade content. <em>This specification represents our initial design — all parameters and thresholds require validation through testing and iteration.</em></p>
+    </div>
+
+    <!-- SYSTEM ARCHITECTURE DIAGRAM - Split into sections for better printing -->
+    <div class="diagram-title">Complete System Architecture</div>
+    
+    <p class="diagram-section-title">Data Layer & User Embedding (Stages 0–1)</p>
+    <div class="system-diagram-split">
+        <pre><code>┌───────────────────────────────────────────────────────────────────────────┐
+│                           STAGE 0: DATA LAYER                              │
+├───────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────┐                  ┌────────────────────────────────┐ │
+│  │  USER DATA (U.*) │                  │     EPISODE CATALOG (E.*)      │ │
+│  ├──────────────────┤                  ├────────────────────────────────┤ │
+│  │ • viewed_episodes│                  │ • id, embedding [1536]         │ │
+│  │ • bookmarked_eps │                  │ • scores.insight (1-4)         │ │
+│  │ • excluded_ids   │                  │ • scores.credibility (1-4)     │ │
+│  │ • category_ints  │                  │ • published_at, series.id      │ │
+│  └────────┬─────────┘                  │ • entities[], categories[]     │ │
+│           │                            │ • critical_views.non_consensus │ │
+│           │                            └───────────────┬────────────────┘ │
+│           │                              DERIVED: PrimaryTopic, Entity, DaysOld, POV
+└───────────┼────────────────────────────────────────────┼──────────────────┘
+            │                                            │
+            ▼                                            ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│                        STAGE 1: USER EMBEDDING                             │
+├───────────────────────────────────────────────────────────────────────────┤
+│  INPUTS: U.viewed_episodes, U.bookmarked_episodes, U.category_interests   │
+│  PARAMS: W_bookmark=2.0, W_view=1.0, λ_user=0.05, N_max=10                │
+│  OUTPUT: V_activity [Vector 1536] | null                                  │
+└───────────────────────────────────────────────────────────────────────────┘</code></pre>
+    </div>
+
+    <p class="diagram-section-title">Quality Gates & Scoring (Stage 2)</p>
+    <div class="system-diagram-split">
+        <pre><code>┌───────────────────────────────────────────────────────────────────────────┐
+│                         STAGE 2: QUALITY GATES                             │
+├───────────────────────────────────────────────────────────────────────────┤
+│  INPUTS: E.scores.credibility, E.scores.insight, E.id, U.excluded_ids     │
+│  GATE 1: Credibility ≥ 2  →  GATE 2: C+I ≥ 5  →  GATE 3: E.id ∉ excluded │
+│  OUTPUT: PASS / REJECT                                                    │
+└─────────────────────────────────────────┬─────────────────────────────────┘
+                                          │ (PASS only)
+                                          ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│                       STAGE 2: SCORING COMPONENTS                          │
+├───────────────────────────────────────────────────────────────────────────┤
+│  ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐          │
+│  │     S_sim       │   │    S_alpha      │   │    S_fresh      │          │
+│  │  (Weight: 50%)  │   │  (Weight: 35%)  │   │  (Weight: 15%)  │          │
+│  ├─────────────────┤   ├─────────────────┤   ├─────────────────┤          │
+│  │ IN: V_activity, │   │ IN: E.insight,  │   │ IN: E.DaysOld   │          │
+│  │     E.embedding │   │     E.cred      │   │ λ=0.03,FLOOR=.10│          │
+│  │ OUT: [0,1]      │   │ OUT: [0.25,1.0] │   │ OUT: [0.10,1.0] │          │
+│  └────────┬────────┘   └────────┬────────┘   └────────┬────────┘          │
+│           └─────────────────────┼─────────────────────┘                   │
+│                                 ▼                                         │
+│                    ┌────────────────────────┐                             │
+│                    │  BaseScore = 0.50×S_sim│                             │
+│                    │  + 0.35×S_alpha        │                             │
+│                    │  + 0.15×S_fresh        │                             │
+│                    │  OUT: [0,1]            │                             │
+│                    └───────────┬────────────┘                             │
+└────────────────────────────────┼──────────────────────────────────────────┘
+                                 ▼
+                    ┌────────────────────────┐
+                    │   TOP 50 CANDIDATES    │
+                    │     (by BaseScore)     │
+                    └────────────────────────┘</code></pre>
+    </div>
+
+    <p class="diagram-section-title">Narrative Reranking (Stage 3)</p>
+    <div class="system-diagram-split">
+        <pre><code>┌───────────────────────────────────────────────────────────────────────────┐
+│                      STAGE 3: NARRATIVE RERANKING                          │
+├───────────────────────────────────────────────────────────────────────────┤
+│  STATE TRACKERS:                                                          │
+│  ┌─────────────────────────────────────────────────────────────────────┐  │
+│  │ • SeriesTracker: Map[series_id → count]                             │  │
+│  │ • TopicTracker: Map[topic → count]                                  │  │
+│  │ • GlobalEntityTracker: Map[entity → count]                          │  │
+│  │ • LastEntity: entity_id | null                                      │  │
+│  │ • LastPOV: Contrarian | Consensus | null                            │  │
+│  └─────────────────────────────────────────────────────────────────────┘  │
+│                                                                           │
+│  ADJUSTMENTS:                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐  │
+│  │ HARD CAP:   Series ≥ 2              → TempScore = 0                 │  │
+│  │ PENALTIES:  Adjacency (same entity) → ×0.80                         │  │
+│  │             Topic ≥ 2               → ×0.85                         │  │
+│  │             Entity ≥ 3              → ×0.70                         │  │
+│  │ BOOST:      Consensus→Contrarian    → ×1.15                         │  │
+│  └─────────────────────────────────────────────────────────────────────┘  │
+│                                                                           │
+│  RE-SELECTION LOOP (10 iterations):                                       │
+│  FOR slot 1→10: Compute TempScore → Select max → Update state → Remove   │
+└───────────────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │     FINAL OUTPUT:      │
+                    │      10 Episodes       │
+                    │    (Narrative Order)   │
+                    └────────────────────────┘</code></pre>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- STAGE 0 -->
+    <h2><span class="stage-label">Stage 0</span> Base Input Parameters</h2>
+    
+    <h3>User Signals</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>U.viewed_episodes</code></td>
+                <td>List[{episode_id, timestamp}]</td>
+                <td>Episodes user has viewed</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td><code>U.bookmarked_episodes</code></td>
+                <td>List[{episode_id, timestamp}]</td>
+                <td>Episodes user has saved</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td><code>U.excluded_ids</code></td>
+                <td>Set[episode_id]</td>
+                <td>Viewed + Bookmarked + Not Interested</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td><code>U.category_interests</code></td>
+                <td>List[category_name]</td>
+                <td>Stated topic preferences</td>
+                <td>Cold start only</td>
+            </tr>
+            <tr>
+                <td><code>U.tracked_entities</code></td>
+                <td>List[entity_id]</td>
+                <td>Companies/people user follows</td>
+                <td><em>Future (V2)</em></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Episode Metadata</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Range</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>E.id</code></td>
+                <td>String</td>
+                <td>—</td>
+                <td>Unique identifier</td>
+            </tr>
+            <tr>
+                <td><code>E.embedding</code></td>
+                <td>Vector[1536]</td>
+                <td>—</td>
+                <td>Pre-computed from key_insight + description</td>
+            </tr>
+            <tr>
+                <td><code>E.Insight</code></td>
+                <td>Float</td>
+                <td>1–4</td>
+                <td>Novelty and depth of ideas</td>
+            </tr>
+            <tr>
+                <td><code>E.Credibility</code></td>
+                <td>Float</td>
+                <td>1–4</td>
+                <td>Speaker authority and track record</td>
+            </tr>
+            <tr>
+                <td><code>E.published_at</code></td>
+                <td>DateTime</td>
+                <td>—</td>
+                <td>Publication timestamp</td>
+            </tr>
+            <tr>
+                <td><code>E.series_id</code></td>
+                <td>String</td>
+                <td>—</td>
+                <td>Parent podcast series</td>
+            </tr>
+            <tr>
+                <td><code>E.Themes</code></td>
+                <td>List[{name, relevance}]</td>
+                <td>relevance: 0–4</td>
+                <td>Topic classifications</td>
+            </tr>
+            <tr>
+                <td><code>E.Entities</code></td>
+                <td>List[{id, name, relevance}]</td>
+                <td>relevance: 0–4</td>
+                <td>Companies/people mentioned</td>
+            </tr>
+            <tr>
+                <td><code>E.non_consensus_level</code></td>
+                <td>Enum</td>
+                <td>highly_non_consensus, non_consensus, null</td>
+                <td>Contrarian flag (used for POV)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Derived Episode Fields</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived Field</th>
+                <th>Derivation</th>
+                <th>Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>E.PrimaryTopic</code></td>
+                <td><code>max(E.Themes, key=relevance).name</code></td>
+                <td>Highest-signal theme for diversity tracking</td>
+            </tr>
+            <tr>
+                <td><code>E.PrimaryEntity</code></td>
+                <td><code>max(E.Entities, key=relevance).id</code></td>
+                <td>Highest-signal entity for adjacency penalty</td>
+            </tr>
+            <tr>
+                <td><code>E.DaysOld</code></td>
+                <td><code>(now - E.published_at).days</code></td>
+                <td>For freshness decay</td>
+            </tr>
+            <tr>
+                <td><code>E.POV</code></td>
+                <td>Binary classification (Contrarian/Consensus)</td>
+                <td>For narrative balancing</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- STAGE 0.5 -->
+    <h2><span class="stage-label">Stage 0.5</span> POV Derivation</h2>
+    
+    <p>POV uses <strong>binary classification</strong> (Contrarian vs Consensus) based on the most reliable signal:</p>
+    
+    <div class="info-box">
+        <p><strong>Classification Rule:</strong></p>
+        <p>IF <code>E.non_consensus_level ∈ {highly_non_consensus, non_consensus}</code> → <strong>POV = "Contrarian"</strong></p>
+        <p>ELSE → <strong>POV = "Consensus"</strong></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>POV Value</th>
+                <th>Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Contrarian</strong></td>
+                <td>Challenges conventional wisdom; non-consensus views</td>
+            </tr>
+            <tr>
+                <td><strong>Consensus</strong></td>
+                <td>Aligns with mainstream views; informational content</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- STAGE 1 -->
+    <h2><span class="stage-label">Stage 1</span> User Embedding (V_activity)</h2>
+
+    <p><strong>Purpose:</strong> Represents user's research interests based on consumption history.</p>
+
+    <div class="formula">
+        V_activity = Σ(weight_i × embedding_i) / Σ(weight_i)
+    </div>
+
+    <p>Where:</p>
+    <ul>
+        <li><code>weight_i = interaction_weight × recency_weight</code></li>
+        <li><code>interaction_weight = 2.0</code> if bookmarked, <code>1.0</code> if viewed</li>
+        <li><code>recency_weight = exp(-0.05 × days_since_interaction)</code></li>
+    </ul>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Default</th>
+                <th>Tunable?</th>
+                <th>Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bookmark weight</td>
+                <td>2.0</td>
+                <td>⚙️ Yes</td>
+                <td>Bookmarks are explicit, stronger signal</td>
+            </tr>
+            <tr>
+                <td>View weight</td>
+                <td>1.0</td>
+                <td>🔒 Fixed</td>
+                <td>Baseline interaction</td>
+            </tr>
+            <tr>
+                <td>Recency decay (λ_user)</td>
+                <td>0.05</td>
+                <td>⚙️ Yes</td>
+                <td>~14 days half-life for user interests</td>
+            </tr>
+            <tr>
+                <td>Max episodes considered</td>
+                <td>10</td>
+                <td>⚙️ Yes</td>
+                <td>Recent activity most relevant</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Cold Start Fallback</h3>
+    <div class="info-box">
+        <p>IF <code>|U.viewed_episodes| + |U.bookmarked_episodes| == 0</code>:</p>
+        <ul>
+            <li>IF <code>|U.category_interests| > 0</code>: V_activity = Embed(join(U.category_interests))</li>
+            <li>ELSE: V_activity = null (use global quality ranking)</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <!-- STAGE 2: QUALITY GATES -->
+    <h2><span class="stage-label">Stage 2</span> Quality Gates (Safety Filters)</h2>
+
+    <div class="info-box warning">
+        <p><strong>Gate 1 — Credibility Floor:</strong> IF <code>E.Credibility &lt; 2</code> → REJECT</p>
+        <p><strong>Gate 2 — Combined Signal Floor:</strong> IF <code>(E.Credibility + E.Insight) &lt; 5</code> → REJECT</p>
+        <p><strong>Gate 3 — Exclusion Filter:</strong> IF <code>E.id ∈ U.excluded_ids</code> → REJECT</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Gate</th>
+                <th>Threshold</th>
+                <th>Tunable?</th>
+                <th>Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Credibility Floor</td>
+                <td>≥ 2</td>
+                <td>🔒 Fixed</td>
+                <td>No unverified sources for investors</td>
+            </tr>
+            <tr>
+                <td>Combined Floor</td>
+                <td>≥ 5</td>
+                <td>⚙️ Yes</td>
+                <td>Ensures minimum total quality</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Gate Logic:</strong> An episode with (C=1, I=4) fails Gate 1. An episode with (C=2, I=2) fails Gate 2. Only episodes where (C≥2 AND C+I≥5) pass both gates.</p>
+
+    <hr>
+
+    <!-- STAGE 2: SCORING -->
+    <h2><span class="stage-label">Stage 2</span> Scoring Components</h2>
+
+    <h3>S_sim — Semantic Similarity (Weight: 50%)</h3>
+    <div class="formula">
+        S_sim = CosineSim(V_activity, E.embedding)<br>
+        <small>Range: [0, 1] — Cold start default: 0.5</small>
+    </div>
+
+    <h3>S_alpha — Signal Quality (Weight: 35%)</h3>
+    <div class="formula">
+        S_alpha = (W_insight × E.Insight + W_cred × E.Credibility) / 4.0<br>
+        <small>Range: [0.25, 1.0] after passing quality gates</small>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Default</th>
+                <th>Tunable?</th>
+                <th>Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>W_insight</td>
+                <td>0.5</td>
+                <td>⚙️ Yes</td>
+                <td>Balanced V1, may favor insight later</td>
+            </tr>
+            <tr>
+                <td>W_cred</td>
+                <td>0.5</td>
+                <td>⚙️ Yes</td>
+                <td>Balanced V1, may favor credibility later</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>S_fresh — Freshness (Weight: 15%)</h3>
+    <div class="formula">
+        S_fresh = max(FLOOR, exp(-λ × E.DaysOld))<br>
+        <small>Range: [0.10, 1.0]</small>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Days Old</th>
+                <th>S_fresh (λ=0.03)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>0</td><td>1.00</td></tr>
+            <tr><td>7</td><td>0.81</td></tr>
+            <tr><td>14</td><td>0.66</td></tr>
+            <tr><td>30</td><td>0.41</td></tr>
+            <tr><td>60</td><td>0.17</td></tr>
+            <tr><td>90+</td><td>0.10 (floor)</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Base Score Formula</h3>
+    <div class="formula">
+        BaseScore = (S_sim × 0.50) + (S_alpha × 0.35) + (S_fresh × 0.15)<br>
+        <small>Range: [0, 1] — Constraint: W_sim + W_alpha + W_fresh = 1.0</small>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- STAGE 3 -->
+    <h2><span class="stage-label">Stage 3</span> Narrative Reranking</h2>
+
+    <h3>Reranking Parameters</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>SeriesTracker</code></td>
+                <td>Map[series_id → count]</td>
+                <td>Episodes per series in final feed</td>
+            </tr>
+            <tr>
+                <td><code>TopicTracker</code></td>
+                <td>Map[topic → count]</td>
+                <td>Episodes per topic in final feed</td>
+            </tr>
+            <tr>
+                <td><code>GlobalEntityTracker</code></td>
+                <td>Map[entity → count]</td>
+                <td>Episodes per primary entity in final feed</td>
+            </tr>
+            <tr>
+                <td><code>LastEntity</code></td>
+                <td>entity_id</td>
+                <td>Previous episode's primary entity</td>
+            </tr>
+            <tr>
+                <td><code>LastPOV</code></td>
+                <td>Enum</td>
+                <td>Previous episode's POV (Contrarian/Consensus)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Adjustment Multipliers</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Condition</th>
+                <th>Multiplier</th>
+                <th>Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>HARD CAP</strong></td>
+                <td>SeriesTracker[E.series_id] ≥ 2</td>
+                <td>TempScore = 0</td>
+                <td>Prevent single podcast dominance</td>
+            </tr>
+            <tr>
+                <td><strong>PENALTY</strong></td>
+                <td>E.PrimaryEntity == LastEntity</td>
+                <td>× 0.80</td>
+                <td>Encourage entity variety</td>
+            </tr>
+            <tr>
+                <td><strong>PENALTY</strong></td>
+                <td>TopicTracker[E.PrimaryTopic] ≥ 2</td>
+                <td>× 0.85</td>
+                <td>Encourage topic variety</td>
+            </tr>
+            <tr>
+                <td><strong>PENALTY</strong></td>
+                <td>GlobalEntityTracker[E.PrimaryEntity] ≥ 3</td>
+                <td>× 0.70</td>
+                <td>Prevent single-entity dominance</td>
+            </tr>
+            <tr>
+                <td><strong>BOOST</strong></td>
+                <td>LastPOV == "Consensus" AND E.POV == "Contrarian"</td>
+                <td>× 1.15</td>
+                <td>Surface opposing viewpoints</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Re-Selection Algorithm</h3>
+    <div class="info-box">
+        <p><strong>Strategy:</strong> At each slot, recompute adjusted scores for all remaining candidates and select the highest.</p>
+        <ol>
+            <li><strong>INPUT:</strong> CandidateList (Top 50 by BaseScore)</li>
+            <li><strong>FOR</strong> each slot 1→10:
+                <ul>
+                    <li>Compute TempScore for all remaining candidates</li>
+                    <li>Apply penalties/boosts based on current state</li>
+                    <li>Sort by TempScore DESC</li>
+                    <li>Select Winner = CandidateList[0]</li>
+                    <li>Update SeriesTracker, TopicTracker, GlobalEntityTracker, LastEntity, LastPOV</li>
+                </ul>
+            </li>
+            <li><strong>OUTPUT:</strong> FinalFeed (10 episodes ordered by selection sequence)</li>
+        </ol>
+        <p><strong>Complexity:</strong> O(k × n) where k=10 (output size), n=50 (candidates). Acceptable for real-time.</p>
+    </div>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <!-- PARAMETER SUMMARY -->
+    <h2>Parameter Summary</h2>
+
+    <h3>Fixed Parameters (Robust, No Tuning)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Justification</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Credibility Floor</td>
+                <td>≥ 2</td>
+                <td>Investor safety — non-negotiable</td>
+            </tr>
+            <tr>
+                <td>View weight</td>
+                <td>1.0</td>
+                <td>Baseline, other weights relative to this</td>
+            </tr>
+            <tr>
+                <td>Score normalizer</td>
+                <td>4.0</td>
+                <td>Max possible score</td>
+            </tr>
+            <tr>
+                <td>Weight sum</td>
+                <td>1.0</td>
+                <td>Mathematical constraint</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Tunable Parameters (Require Testing)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Default</th>
+                <th>Range</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Combined Floor</td><td>5</td><td>4–6</td><td>Medium</td></tr>
+            <tr><td>Bookmark weight</td><td>2.0</td><td>1.5–3.0</td><td>Low</td></tr>
+            <tr><td>λ_user (user recency)</td><td>0.05</td><td>0.03–0.10</td><td>Medium</td></tr>
+            <tr><td>λ_fresh (content freshness)</td><td>0.03</td><td>0.02–0.05</td><td>Medium</td></tr>
+            <tr><td>Freshness floor</td><td>0.10</td><td>0.05–0.20</td><td>Low</td></tr>
+            <tr><td>W_sim</td><td>0.50</td><td>0.40–0.60</td><td>High</td></tr>
+            <tr><td>W_alpha</td><td>0.35</td><td>0.25–0.45</td><td>High</td></tr>
+            <tr><td>W_fresh</td><td>0.15</td><td>0.10–0.20</td><td>Low</td></tr>
+            <tr><td>Series cap</td><td>2</td><td>1–3</td><td>Low</td></tr>
+            <tr><td>Adjacency penalty</td><td>0.80</td><td>0.70–0.90</td><td>Medium</td></tr>
+            <tr><td>Topic penalty</td><td>0.85</td><td>0.75–0.90</td><td>Medium</td></tr>
+            <tr><td>Entity saturation threshold</td><td>3</td><td>2–4</td><td>Medium</td></tr>
+            <tr><td>Entity saturation penalty</td><td>0.70</td><td>0.60–0.80</td><td>Medium</td></tr>
+            <tr><td>Contrarian boost</td><td>1.15</td><td>1.10–1.25</td><td>Medium</td></tr>
+            <tr><td>Session timeout</td><td>30 min</td><td>15–60 min</td><td>Low</td></tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- EXAMPLE -->
+    <h2>Example Score Calculation</h2>
+    
+    <div class="info-box">
+        <p><strong>User:</strong> Viewed 5 AI episodes (V_activity computed), No exclusions</p>
+        <p><strong>Episode:</strong> Insight: 4, Credibility: 3, DaysOld: 10, Entities: {Nvidia, Google, Microsoft}, PrimaryTopic: "AI & Machine Learning", POV: Contrarian</p>
+    </div>
+
+    <h4>Gate Checks</h4>
+    <ul>
+        <li>Gate 1: 3 ≥ 2 ✓</li>
+        <li>Gate 2: 3 + 4 = 7 ≥ 5 ✓</li>
+        <li>Gate 3: Not excluded ✓</li>
+    </ul>
+
+    <h4>Score Components</h4>
+    <ul>
+        <li>S_sim = 0.82 (high similarity to user's AI interests)</li>
+        <li>S_alpha = (0.5 × 4 + 0.5 × 3) / 4.0 = <strong>0.875</strong></li>
+        <li>S_fresh = max(0.10, exp(-0.03 × 10)) = <strong>0.74</strong></li>
+    </ul>
+
+    <h4>BaseScore</h4>
+    <div class="formula">
+        = (0.82 × 0.50) + (0.875 × 0.35) + (0.74 × 0.15)<br>
+        = 0.410 + 0.306 + 0.111<br>
+        = <strong>0.827</strong>
+    </div>
+
+    <h4>Reranking Scenarios</h4>
+    <ul>
+        <li>If previous episode was also about Nvidia: 0.827 × 0.80 = <strong>0.662</strong></li>
+        <li>If previous was Consensus and this is Contrarian: 0.827 × 1.15 = <strong>0.951</strong></li>
+        <li>If this is the 4th Nvidia episode: 0.827 × 0.70 = <strong>0.579</strong></li>
+    </ul>
+
+</body>
+</html>
