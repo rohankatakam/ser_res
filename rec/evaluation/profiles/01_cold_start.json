@@ -1,0 +1,18 @@
+{
+  "profile_id": "01_cold_start",
+  "name": "Cold Start New User",
+  "description": "First-time visitor with zero engagement history. Tests quality-only ranking (no personalization signal).",
+  "icp_segment": "All segments",
+  "usage_duration": "0 days (first visit)",
+  "expected_behavior": [
+    "Should see highest quality episodes (quality score dominates)",
+    "Recency should be secondary factor",
+    "No personalization - similarity weight should be 0",
+    "API should return cold_start: true",
+    "Section should be labeled 'Highest Signal' not 'For You'"
+  ],
+  "engagements": [],
+  "excluded_ids": [],
+  "created_at": "2026-02-06T00:00:00Z",
+  "notes": "Critical edge case - every new user starts here"
+}

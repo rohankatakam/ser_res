@@ -1,0 +1,83 @@
+{
+  "profile_id": "03_crypto_web3_investor",
+  "name": "Crypto/Web3 Investor",
+  "description": "Dedicated crypto investor tracking DeFi, stablecoins, and crypto market developments. Heavy consumer of crypto-native podcasts like Bankless and Unchained.",
+  "icp_segment": "Hedge Fund / Crypto Fund / Retail",
+  "usage_duration": "1 week (Jan 30 - Feb 5, 2026)",
+  "expected_behavior": [
+    "High similarity scores for crypto/DeFi/stablecoin episodes",
+    "Bankless, Unchained, and crypto-native podcasts should rank highly",
+    "Topics like Bitcoin, Ethereum, DeFi, stablecoins should surface",
+    "AI/tech content should NOT dominate (maybe 1-2 max in top 10)",
+    "Should see diversity within crypto (markets, tech, regulation)"
+  ],
+  "engagements": [
+    {
+      "episode_id": "5IWFOnkNuVR3opoB0swb",
+      "title": "AI on Ethereum: ERC-8004, x402, OpenClaw and the Botconomy",
+      "series": "Bankless",
+      "type": "click",
+      "timestamp": "2026-02-05T12:30:00Z"
+    },
+    {
+      "episode_id": "vrdJx6BNfkyxFhgOMal6",
+      "title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud...",
+      "series": "Unchained",
+      "type": "click",
+      "timestamp": "2026-02-05T08:00:00Z"
+    },
+    {
+      "episode_id": "whmNSah5ZZHWfNUcDpdc",
+      "title": "Bits + Bips: Why Gold Price Discovery Happened on Hyperliquid",
+      "series": "Unchained",
+      "type": "bookmark",
+      "timestamp": "2026-02-04T19:15:00Z"
+    },
+    {
+      "episode_id": "LR8JPPNQqq68Kyv933UA",
+      "title": "Bridge CEO Zach Abrams: Stablecoins Are The Next Platform for Money",
+      "series": "web3 with a16z crypto",
+      "type": "bookmark",
+      "timestamp": "2026-02-03T14:00:00Z"
+    },
+    {
+      "episode_id": "WED5by5RcHjomGXRYxA7",
+      "title": "Curated Credit: How Maple and Morpho Approach DeFi Lending",
+      "series": "0xResearch",
+      "type": "click",
+      "timestamp": "2026-02-02T20:30:00Z"
+    },
+    {
+      "episode_id": "M6IdKcIrJ945pacDFZm8",
+      "title": "Why Privacy Will Be the Biggest Moat in Crypto",
+      "series": "web3 with a16z crypto",
+      "type": "click",
+      "timestamp": "2026-02-01T16:45:00Z"
+    },
+    {
+      "episode_id": "lOjIMo72hyEoQm3UhuFx",
+      "title": "ROLLUP: Gold & Silver ATHs, Fidelity's Stablecoin, Ethereum's Quantum Pivot",
+      "series": "Bankless",
+      "type": "click",
+      "timestamp": "2026-01-31T09:00:00Z"
+    },
+    {
+      "episode_id": "h8bUchDCs5gTlmAu5sXz",
+      "title": "The Most Underrated Chain: Celo's Surprising Traction Around the World",
+      "series": "Bankless",
+      "type": "click",
+      "timestamp": "2026-01-30T21:00:00Z"
+    }
+  ],
+  "excluded_ids": [],
+  "stats": {
+    "total_engagements": 8,
+    "clicks": 6,
+    "bookmarks": 2,
+    "effective_weight": 10,
+    "avg_credibility": 3.0,
+    "avg_insight": 2.75
+  },
+  "created_at": "2026-02-06T00:00:00Z",
+  "notes": "Tests single-category deep personalization for crypto/web3 content."
+}

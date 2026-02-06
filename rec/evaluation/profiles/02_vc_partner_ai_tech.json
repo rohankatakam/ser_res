@@ -1,0 +1,97 @@
+{
+  "profile_id": "02_vc_partner_ai_tech",
+  "name": "VC Partner — AI/Tech Focus",
+  "description": "Active VC partner tracking AI developments, infrastructure investments, and tech strategy. Heavy consumer of a16z content and technical deep-dives.",
+  "icp_segment": "VC / Growth Equity",
+  "usage_duration": "1 week (Jan 30 - Feb 5, 2026)",
+  "expected_behavior": [
+    "High similarity scores for AI/tech infrastructure episodes",
+    "a16z and similar VC-perspective podcasts should rank highly",
+    "Topics like OpenAI, AI infrastructure, enterprise AI should surface",
+    "Should NOT see unrelated content (crypto, pure macro) in top 5",
+    "Bookmarked episodes should have outsized influence on recommendations"
+  ],
+  "engagements": [
+    {
+      "episode_id": "kbGCH0QvC6Tb3t7myipH",
+      "title": "20VC: SpaceX Completes Acquisition of xAI | The 2026 SaaS Massacre...",
+      "series": "The Twenty Minute VC",
+      "type": "click",
+      "timestamp": "2026-02-05T09:00:00Z"
+    },
+    {
+      "episode_id": "ddzQwPxlELoIPRUgzaOd",
+      "title": "Martin Casado on the Demand Forces Behind AI",
+      "series": "AI + a16z",
+      "type": "bookmark",
+      "timestamp": "2026-02-04T14:30:00Z"
+    },
+    {
+      "episode_id": "n9VyjM1Fld6PyZlnrty0",
+      "title": "The Hidden Economics Powering AI",
+      "series": "a16z Podcast",
+      "type": "click",
+      "timestamp": "2026-02-04T10:15:00Z"
+    },
+    {
+      "episode_id": "K5KTy2BR2Of5R9iSIqUI",
+      "title": "Snowflake vs Databricks: The AI Data War | CEO of $SNOW",
+      "series": "Sourcery",
+      "type": "click",
+      "timestamp": "2026-02-03T16:45:00Z"
+    },
+    {
+      "episode_id": "BfNv9w6eYsyH0lSPIhmE",
+      "title": "No Priors Live: Building Durable Software in the AI Age with MongoDB CEO",
+      "series": "No Priors",
+      "type": "click",
+      "timestamp": "2026-02-02T11:00:00Z"
+    },
+    {
+      "episode_id": "1VjDVKCmlYJUgaocQQlq",
+      "title": "Inferact: Building the Infrastructure That Runs Modern AI",
+      "series": "a16z Podcast",
+      "type": "bookmark",
+      "timestamp": "2026-02-02T09:30:00Z"
+    },
+    {
+      "episode_id": "fi1hDUwcFlPR1O21Zc7M",
+      "title": "Michael Truell: How Cursor Builds at the Speed of AI",
+      "series": "AI + a16z",
+      "type": "click",
+      "timestamp": "2026-02-01T15:20:00Z"
+    },
+    {
+      "episode_id": "m5lvLRONK5dP5Nxng6c8",
+      "title": "Marc Andreessen's 2026 Outlook: AI Timelines, US vs. China, and The Price of AI",
+      "series": "a16z Podcast",
+      "type": "bookmark",
+      "timestamp": "2026-01-31T20:00:00Z"
+    },
+    {
+      "episode_id": "OpriGWr5Unvks7U9q67r",
+      "title": "[State of Post-Training] From GPT-4.1 to 5.1: RLVR, Agent & Token Efficiency — Josh McGrath, OpenAI",
+      "series": "Latent Space",
+      "type": "click",
+      "timestamp": "2026-01-31T14:00:00Z"
+    },
+    {
+      "episode_id": "azcjy2HqnbPneTMU5Ylp",
+      "title": "How Marc Andreessen Actually Uses AI",
+      "series": "a16z Podcast",
+      "type": "click",
+      "timestamp": "2026-01-30T19:45:00Z"
+    }
+  ],
+  "excluded_ids": [],
+  "stats": {
+    "total_engagements": 10,
+    "clicks": 7,
+    "bookmarks": 3,
+    "effective_weight": 13,
+    "avg_credibility": 3.5,
+    "avg_insight": 2.9
+  },
+  "created_at": "2026-02-06T00:00:00Z",
+  "notes": "Primary ICP segment. Tests core personalization for AI/tech focused investor."
+}

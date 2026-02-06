@@ -1,0 +1,55 @@
+{
+  "profile_id": "05_startup_founder_operator",
+  "name": "Startup Founder / Operator",
+  "description": "New user (1 day) who is a startup founder looking for tactical advice on product, growth, and scaling. Tests warm start behavior with minimal engagement data.",
+  "icp_segment": "Prosumer / Founder",
+  "usage_duration": "1 day (Feb 5, 2026)",
+  "expected_behavior": [
+    "Warm start behavior - should personalize despite limited data",
+    "Founder journey and product/growth content should rank highly",
+    "Lenny's Podcast, In Depth, and operator-focused shows should surface",
+    "Should see startup/growth episodes, NOT macro or crypto",
+    "Bookmarked Duo episode should be weighted heavily in user vector"
+  ],
+  "engagements": [
+    {
+      "episode_id": "uJLuvlba870Dje0TDoOo",
+      "title": "Introducing 4D Creation: Roblox CEO Dave Baszucki",
+      "series": "No Priors",
+      "type": "click",
+      "timestamp": "2026-02-05T18:30:00Z"
+    },
+    {
+      "episode_id": "UqfsgpCd8sgnuOjNbCZ4",
+      "title": "Executive Function: Building systems that make decisions (Vercel COO)",
+      "series": "In Depth",
+      "type": "click",
+      "timestamp": "2026-02-05T15:00:00Z"
+    },
+    {
+      "episode_id": "X9V2tc18MmM3WMtHBvF4",
+      "title": "How Duo Security went Zero to $1B ARR in Ann Arbor",
+      "series": "The Peel",
+      "type": "bookmark",
+      "timestamp": "2026-02-05T12:30:00Z"
+    },
+    {
+      "episode_id": "t5FBbw85B9yXZJy0QSfz",
+      "title": "Why your product stopped growing (5-step framework)",
+      "series": "Lenny's Podcast",
+      "type": "click",
+      "timestamp": "2026-02-05T10:00:00Z"
+    }
+  ],
+  "excluded_ids": [],
+  "stats": {
+    "total_engagements": 4,
+    "clicks": 3,
+    "bookmarks": 1,
+    "effective_weight": 5,
+    "avg_credibility": 3.75,
+    "avg_insight": 3.0
+  },
+  "created_at": "2026-02-06T00:00:00Z",
+  "notes": "Tests warm start behavior - transition from cold start to personalized with minimal data."
+}
