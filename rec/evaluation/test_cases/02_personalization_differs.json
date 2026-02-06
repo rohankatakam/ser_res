@@ -1,0 +1,49 @@
+{
+  "test_id": "02_personalization_differs",
+  "name": "Personalization Differs from Cold Start",
+  "type": "MFT",
+  "evaluation_method": "deterministic_llm",
+  "description": "Engaged user's top 10 should be measurably different from cold start top 10 (at least 5 different episodes).",
+  "profiles": ["01_cold_start", "02_vc_partner_ai_tech"],
+  "llm_criteria": {
+    "enabled": true,
+    "focus_areas": ["relevance", "personalization"],
+    "prompt_hint": "Evaluate if the personalized recommendations are meaningfully different and more relevant to the user's interests"
+  },
+  "setup": {
+    "scenario_a": {
+      "name": "Cold Start",
+      "profile": "01_cold_start",
+      "engagements": [],
+      "excluded_ids": []
+    },
+    "scenario_b": {
+      "name": "VC Partner",
+      "profile": "02_vc_partner_ai_tech",
+      "note": "Use full engagement history from profile"
+    }
+  },
+  "pass_criteria": [
+    {
+      "id": "episode_difference",
+      "description": "At least 5 of top 10 episodes are different between cold start and VC Partner",
+      "check": "len(set(cold_start_ids) - set(vc_partner_ids)) >= 5"
+    },
+    {
+      "id": "similarity_increase",
+      "description": "VC Partner results have higher average similarity_score than cold start",
+      "check": "avg(vc_partner.similarity_scores) > avg(cold_start.similarity_scores)"
+    },
+    {
+      "id": "cold_start_flag_off",
+      "description": "VC Partner cold_start flag is false",
+      "check": "vc_partner_response.cold_start === false"
+    }
+  ],
+  "validation_method": "Compare episode IDs in top 10 from both calls, count overlap, compare similarity scores",
+  "if_fails_adjust": [
+    "Similarity weight (currently 55%)",
+    "User vector computation (engagement limit, currently 10)"
+  ],
+  "created_at": "2026-02-06T00:00:00Z"
+}

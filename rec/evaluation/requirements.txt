@@ -1,0 +1,11 @@
+# Evaluation Framework Requirements
+
+# Core dependencies
+requests>=2.28.0
+python-dotenv>=1.0.0
+
+# LLM evaluation (Gemini)
+google-generativeai>=0.8.0
+
+# Note: The API server (mock_api) has its own requirements.txt
+# This file is only for the evaluation framework

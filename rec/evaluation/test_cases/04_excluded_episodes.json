@@ -1,0 +1,52 @@
+{
+  "test_id": "04_excluded_episodes",
+  "name": "Excluded Episodes Never Reappear",
+  "type": "MFT",
+  "evaluation_method": "deterministic",
+  "description": "Episodes in excluded_ids must not appear in recommendations.",
+  "profiles": ["02_vc_partner_ai_tech"],
+  "setup": {
+    "base_profile": "02_vc_partner_ai_tech",
+    "modifications": {
+      "excluded_ids": [
+        "ddzQwPxlELoIPRUgzaOd",
+        "m5lvLRONK5dP5Nxng6c8",
+        "n9VyjM1Fld6PyZlnrty0"
+      ]
+    },
+    "excluded_episodes_info": [
+      {
+        "id": "ddzQwPxlELoIPRUgzaOd",
+        "title": "Martin Casado on the Demand Forces Behind AI",
+        "reason": "Previously bookmarked"
+      },
+      {
+        "id": "m5lvLRONK5dP5Nxng6c8",
+        "title": "Marc Andreessen's 2026 Outlook: AI Timelines, US vs. China",
+        "reason": "Previously bookmarked"
+      },
+      {
+        "id": "n9VyjM1Fld6PyZlnrty0",
+        "title": "The Hidden Economics Powering AI",
+        "reason": "Previously clicked"
+      }
+    ]
+  },
+  "pass_criteria": [
+    {
+      "id": "exclusions_respected",
+      "description": "None of the 3 excluded episode IDs appear in recommendations",
+      "check": "all(excluded_id not in response_ids for excluded_id in excluded_ids)"
+    },
+    {
+      "id": "still_returns_results",
+      "description": "System still returns 10 valid recommendations",
+      "check": "len(response.episodes) == 10"
+    }
+  ],
+  "validation_method": "Run API with exclusions, check that no excluded ID appears in response",
+  "if_fails_adjust": [
+    "Stage A exclusion filter logic"
+  ],
+  "created_at": "2026-02-06T00:00:00Z"
+}

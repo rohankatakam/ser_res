@@ -1,0 +1,45 @@
+{
+  "test_id": "01_cold_start_quality",
+  "name": "Cold Start Returns Quality Content",
+  "type": "MFT",
+  "evaluation_method": "deterministic_llm",
+  "description": "With 0 engagements, top 10 should be dominated by high-quality episodes. API returns cold_start: true.",
+  "profiles": ["01_cold_start"],
+  "llm_criteria": {
+    "enabled": true,
+    "focus_areas": ["quality", "relevance"],
+    "prompt_hint": "Evaluate if these recommendations feel like high-quality content for a new investor user with no history"
+  },
+  "setup": {
+    "engagements": [],
+    "excluded_ids": []
+  },
+  "pass_criteria": [
+    {
+      "id": "cold_start_flag",
+      "description": "API response includes cold_start: true",
+      "check": "response.cold_start === true"
+    },
+    {
+      "id": "avg_credibility",
+      "description": "Average credibility of top 10 episodes >= 3.0",
+      "check": "avg(episodes[0:10].scores.credibility) >= 3.0"
+    },
+    {
+      "id": "min_credibility",
+      "description": "No episode in top 10 has credibility < 2",
+      "check": "all(episodes[0:10].scores.credibility >= 2)"
+    },
+    {
+      "id": "top_quality_score",
+      "description": "Top 3 episodes have quality_score >= 0.7",
+      "check": "all(episodes[0:3].quality_score >= 0.7)"
+    }
+  ],
+  "validation_method": "Run API call with empty engagements, parse response and compute average credibility, verify cold_start flag",
+  "if_fails_adjust": [
+    "Quality weight in cold start (currently 60%)",
+    "Credibility floor (currently 2)"
+  ],
+  "created_at": "2026-02-06T00:00:00Z"
+}

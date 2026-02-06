@@ -1,0 +1,43 @@
+{
+  "test_id": "03_quality_gates_credibility",
+  "name": "Quality Gates Enforce Credibility Floor",
+  "type": "MFT",
+  "evaluation_method": "deterministic",
+  "description": "No episode with credibility < 2 should ever appear in recommendations. All episodes must have C + I >= 5.",
+  "profiles": ["01_cold_start", "02_vc_partner_ai_tech", "03_crypto_web3_investor", "04_generalist_multi_theme", "05_startup_founder_operator"],
+  "known_low_credibility_episodes": [
+    {
+      "id": "LexVsfaBFuk0MWokZOhY",
+      "title": "#411 Tortured Into Greatness: Andre Agassi",
+      "series": "Founders",
+      "credibility": 1,
+      "insight": 2
+    }
+  ],
+  "setup": {
+    "note": "Run API calls with each profile"
+  },
+  "pass_criteria": [
+    {
+      "id": "credibility_floor",
+      "description": "No episode with credibility < 2 appears in ANY recommendation response",
+      "check": "all(episode.scores.credibility >= 2 for episode in all_responses)"
+    },
+    {
+      "id": "combined_floor",
+      "description": "All recommended episodes have C + I >= 5",
+      "check": "all(episode.scores.credibility + episode.scores.insight >= 5 for episode in all_responses)"
+    },
+    {
+      "id": "known_bad_excluded",
+      "description": "Known low-credibility episode LexVsfaBFuk0MWokZOhY never appears",
+      "check": "'LexVsfaBFuk0MWokZOhY' not in any_response_ids"
+    }
+  ],
+  "validation_method": "For each profile, run API call, check every returned episode's credibility score, flag any violation",
+  "if_fails_adjust": [
+    "Stage A quality gates (credibility floor)",
+    "Stage A combined floor threshold"
+  ],
+  "created_at": "2026-02-06T00:00:00Z"
+}

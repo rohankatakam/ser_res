@@ -1,0 +1,81 @@
+{
+  "test_id": "06_bookmark_weighting",
+  "name": "Bookmarks Outweigh Clicks",
+  "type": "DIR",
+  "evaluation_method": "deterministic_llm",
+  "description": "Bookmarks should have stronger influence than clicks (2x weight). Same episodes with bookmark vs click engagement should produce different personalization strength.",
+  "profiles": ["custom"],
+  "llm_criteria": {
+    "enabled": true,
+    "focus_areas": ["personalization_strength", "relevance"],
+    "prompt_hint": "Compare recommendations from bookmark vs click scenarios and evaluate if bookmarks result in stronger personalization"
+  },
+  "setup": {
+    "scenario_a": {
+      "name": "Bookmarks Only",
+      "engagements": [
+        {
+          "episode_id": "ddzQwPxlELoIPRUgzaOd",
+          "title": "Martin Casado on the Demand Forces Behind AI",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T10:00:00Z"
+        },
+        {
+          "episode_id": "n9VyjM1Fld6PyZlnrty0",
+          "title": "The Hidden Economics Powering AI",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T11:00:00Z"
+        },
+        {
+          "episode_id": "m5lvLRONK5dP5Nxng6c8",
+          "title": "Marc Andreessen's 2026 Outlook",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T12:00:00Z"
+        }
+      ],
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "n9VyjM1Fld6PyZlnrty0", "m5lvLRONK5dP5Nxng6c8"]
+    },
+    "scenario_b": {
+      "name": "Clicks Only",
+      "engagements": [
+        {
+          "episode_id": "ddzQwPxlELoIPRUgzaOd",
+          "title": "Martin Casado on the Demand Forces Behind AI",
+          "type": "click",
+          "timestamp": "2026-02-05T10:00:00Z"
+        },
+        {
+          "episode_id": "n9VyjM1Fld6PyZlnrty0",
+          "title": "The Hidden Economics Powering AI",
+          "type": "click",
+          "timestamp": "2026-02-05T11:00:00Z"
+        },
+        {
+          "episode_id": "m5lvLRONK5dP5Nxng6c8",
+          "title": "Marc Andreessen's 2026 Outlook",
+          "type": "click",
+          "timestamp": "2026-02-05T12:00:00Z"
+        }
+      ],
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "n9VyjM1Fld6PyZlnrty0", "m5lvLRONK5dP5Nxng6c8"]
+    }
+  },
+  "pass_criteria": [
+    {
+      "id": "higher_similarity",
+      "description": "Scenario A (bookmarks) has higher average similarity_score for top 10 than Scenario B",
+      "check": "avg(scenario_a.similarity_scores) > avg(scenario_b.similarity_scores)"
+    },
+    {
+      "id": "more_ai_content",
+      "description": "OR Scenario A has more AI-related episodes in top 5 than Scenario B",
+      "check": "count_ai_episodes(scenario_a, top_5) >= count_ai_episodes(scenario_b, top_5)"
+    }
+  ],
+  "validation_method": "Run both scenarios, compare similarity scores and category distribution",
+  "if_fails_adjust": [
+    "Bookmark weight (currently 2.0x)",
+    "User vector weighted mean computation"
+  ],
+  "created_at": "2026-02-06T00:00:00Z"
+}

@@ -1,0 +1,278 @@
+{
+  "timestamp": "2026-02-05T22:40:37.877957",
+  "total_tests": 7,
+  "passed": 5,
+  "failed": 2,
+  "results": [
+    {
+      "test_id": "01_cold_start_quality",
+      "name": "Cold Start Returns Quality Content",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "cold_start_flag",
+          "description": "API response includes cold_start: true",
+          "passed": true,
+          "details": "cold_start=True"
+        },
+        {
+          "criterion_id": "avg_credibility",
+          "description": "Average credibility of top 10 >= 3.0",
+          "passed": true,
+          "details": "avg_credibility=4.00"
+        },
+        {
+          "criterion_id": "min_credibility",
+          "description": "No episode in top 10 has credibility < 2",
+          "passed": true,
+          "details": "min_credibility=4"
+        },
+        {
+          "criterion_id": "top_quality_score",
+          "description": "Top 3 episodes have quality_score >= 0.7",
+          "passed": true,
+          "details": "top_3_quality_scores=[1.0, 1.0, 0.9]"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": true,
+          "details": "pass=True, rationale=The system successfully provided a diverse set of high-quality recommendations relevant to a general..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 5,
+        "diversity_score": 5,
+        "quality_score": 5,
+        "test_pass": true,
+        "rationale": "The system successfully provided a diverse set of high-quality recommendations relevant to a general investor, despite having no prior engagement data. All top 10 episodes meet the high-quality criteria (Credibility >= 3), covering various relevant topics like AI, tech, startups, and banking.",
+        "raw_response": "{\n  \"relevance_score\": 5,\n  \"diversity_score\": 5,\n  \"quality_score\": 5,\n  \"test_pass\": true,\n  \"rationale\": \"The system successfully provided a diverse set of high-quality recommendations relevant to a general investor, despite having no prior engagement data. All top 10 episodes meet the high-quality criteria (Credibility >= 3), covering various relevant topics like AI, tech, startups, and banking.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "02_personalization_differs",
+      "name": "Personalization Differs from Cold Start",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "episode_difference",
+          "description": "At least 5 of top 10 episodes are different",
+          "passed": true,
+          "details": "different_episodes=6"
+        },
+        {
+          "criterion_id": "similarity_increase",
+          "description": "VC Partner has higher avg similarity_score than cold start",
+          "passed": true,
+          "details": "cold_avg=0.500, vc_avg=0.727"
+        },
+        {
+          "criterion_id": "cold_start_flag_off",
+          "description": "VC Partner cold_start flag is false",
+          "passed": true,
+          "details": "vc_cold_start=False"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": true,
+          "details": "pass=True, rationale=The recommendations are highly relevant, focusing on AI, infrastructure, and VC strategy, aligning p..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 5,
+        "diversity_score": 5,
+        "quality_score": 5,
+        "test_pass": true,
+        "rationale": "The recommendations are highly relevant, focusing on AI, infrastructure, and VC strategy, aligning perfectly with the user's profile and a16z content preference. There's good diversity within these core interests, featuring various speakers and series while maintaining high content quality. The strong personalization, including re-surfacing engaged content and aligning with specific speakers, indicates a successful departure from a cold start.",
+        "raw_response": "{\n  \"relevance_score\": 5,\n  \"diversity_score\": 5,\n  \"quality_score\": 5,\n  \"test_pass\": true,\n  \"rationale\": \"The recommendations are highly relevant, focusing on AI, infrastructure, and VC strategy, aligning perfectly with the user's profile and a16z content preference. There's good diversity within these core interests, featuring various speakers and series while maintaining high content quality. The strong personalization, including re-surfacing engaged content and aligning with specific speakers, indicates a successful departure from a cold start.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "03_quality_gates_credibility",
+      "name": "Quality Gates Enforce Credibility Floor",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "credibility_floor",
+          "description": "No episode with credibility < 2 in any response",
+          "passed": true,
+          "details": "low_credibility_count=0"
+        },
+        {
+          "criterion_id": "combined_floor",
+          "description": "All episodes have C + I >= 5",
+          "passed": true,
+          "details": "low_combined_count=0"
+        },
+        {
+          "criterion_id": "known_bad_excluded",
+          "description": "Known low-credibility episode LexVsfaBFuk0MWokZOhY never appears",
+          "passed": true,
+          "details": "found=False"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null
+    },
+    {
+      "test_id": "04_excluded_episodes",
+      "name": "Excluded Episodes Never Reappear",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "exclusions_respected",
+          "description": "None of the excluded episode IDs appear",
+          "passed": true,
+          "details": "excluded_found=[]"
+        },
+        {
+          "criterion_id": "still_returns_results",
+          "description": "System still returns 10 valid recommendations",
+          "passed": true,
+          "details": "episode_count=10"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null
+    },
+    {
+      "test_id": "05_category_personalization",
+      "name": "Category Engagement \u2192 Category Recommendations",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "ai_tech_category_match",
+          "description": "Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
+          "passed": true,
+          "details": "ai_tech_matches=10/10"
+        },
+        {
+          "criterion_id": "crypto_category_match",
+          "description": "Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
+          "passed": true,
+          "details": "crypto_matches=5/10"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": true,
+          "details": "pass=True, rationale=The recommendations are highly relevant, focusing entirely on AI and venture capital, aligning perfe..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 5,
+        "diversity_score": 4,
+        "quality_score": 5,
+        "test_pass": true,
+        "rationale": "The recommendations are highly relevant, focusing entirely on AI and venture capital, aligning perfectly with the user's profile and engagement history. All recommendations are high-quality (credibility 4) and offer good variety within the core AI/VC theme, featuring different perspectives and sub-topics. The system successfully met the test case, as 100% of engagements were category-specific, and 100% of the top 10 recommendations matched that category.",
+        "raw_response": "{\n  \"relevance_score\": 5,\n  \"diversity_score\": 4,\n  \"quality_score\": 5,\n  \"test_pass\": true,\n  \"rationale\": \"The recommendations are highly relevant, focusing entirely on AI and venture capital, aligning perfectly with the user's profile and engagement history. All recommendations are high-quality (credibility 4) and offer good variety within the core AI/VC theme, featuring different perspectives and sub-topics. The system successfully met the test case, as 100% of engagements were category-specific, and 100% of the top 10 recommendations matched that category.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "06_bookmark_weighting",
+      "name": "Bookmarks Outweigh Clicks",
+      "evaluation_method": "deterministic_llm",
+      "passed": false,
+      "criteria_results": [
+        {
+          "criterion_id": "higher_similarity",
+          "description": "Bookmarks have higher avg similarity_score than clicks",
+          "passed": false,
+          "details": "bookmark_avg=0.7005, click_avg=0.7005"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": false,
+          "details": "pass=False, rationale=All recommendations are highly relevant to the user's bookmarked AI content, featuring prominent AI ..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 5,
+        "diversity_score": 4,
+        "quality_score": 5,
+        "test_pass": false,
+        "rationale": "All recommendations are highly relevant to the user's bookmarked AI content, featuring prominent AI figures and investment themes. The quality is excellent, with all top recommendations having high credibility. However, the test case requires comparing the influence of bookmarks vs. clicks, and demonstrating different personalization strength for the same episode with different engagement types. Since this user only has bookmarks, the comparative aspect of the test cannot be verified.",
+        "raw_response": "{\n  \"relevance_score\": 5,\n  \"diversity_score\": 4,\n  \"quality_score\": 5,\n  \"test_pass\": false,\n  \"rationale\": \"All recommendations are highly relevant to the user's bookmarked AI content, featuring prominent AI figures and investment themes. The quality is excellent, with all top recommendations having high credibility. However, the test case requires comparing the influence of bookmarks vs. clicks, and demonstrating different personalization strength for the same episode with different engagement types. Since this user only has bookmarks, the comparative aspect of the test cannot be verified.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "07_recency_scoring",
+      "name": "Recency Scoring Works",
+      "evaluation_method": "deterministic",
+      "passed": false,
+      "criteria_results": [
+        {
+          "criterion_id": "episodes_found",
+          "description": "Both test episodes found in response",
+          "passed": false,
+          "details": "recent_found=True, older_found=False"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null
+    }
+  ]
+}
