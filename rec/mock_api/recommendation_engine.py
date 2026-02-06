@@ -170,8 +170,8 @@ def get_candidate_pool(
         ep_id = ep["id"]
         content_id = ep.get("content_id", "")
         scores = ep.get("scores", {})
-        credibility = scores.get("credibility", 0)
-        insight = scores.get("insight", 0)
+        credibility = scores.get("credibility") or 0
+        insight = scores.get("insight") or 0
         
         # Gate 1: Credibility floor
         if credibility < config.credibility_floor:
@@ -388,8 +388,8 @@ def rank_candidates(
         
         # Compute quality score
         qual_score = quality_score(
-            scores.get("credibility", 0),
-            scores.get("insight", 0),
+            scores.get("credibility") or 0,
+            scores.get("insight") or 0,
             config.credibility_multiplier,
             config.max_quality_score
         )
@@ -476,21 +476,22 @@ def create_recommendation_queue(
 # ============================================================================
 
 def get_badges(ep: Dict) -> List[str]:
-    """Determine badges for an episode based on its scores and views."""
+    """
+    Determine badges for an episode based on its scores.
+    
+    Note: critical_views was removed from schema (only 11 episodes had it).
+    Badges are now purely score-based.
+    """
     badges = []
     scores = ep.get("scores", {})
-    critical_views = ep.get("critical_views")
     
-    if critical_views and critical_views.get("non_consensus_level") == "highly_non_consensus":
-        badges.append("highly_contrarian")
-    elif critical_views and critical_views.get("has_critical_views"):
-        badges.append("contrarian")
-    
-    if scores.get("insight", 0) >= 3:
+    if (scores.get("insight") or 0) >= 3:
         badges.append("high_insight")
-    if scores.get("credibility", 0) >= 3:
+    if (scores.get("credibility") or 0) >= 3:
         badges.append("high_credibility")
-    if scores.get("information", 0) >= 3:
+    if (scores.get("information") or 0) >= 3:
         badges.append("data_rich")
+    if (scores.get("entertainment") or 0) >= 3:
+        badges.append("engaging")
     
     return badges[:2]  # Max 2 badges

@@ -27,7 +27,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # Local modules
 from data_loader import DataCache
 from models import (
-    SeriesInfo, EpisodeScores, EntityInfo, CriticalViews,
+    SeriesInfo, EpisodeScores, EntityInfo,
     EpisodeCard, EpisodeDetail,
     Engagement, CreateSessionRequest, LoadMoreRequest, EngageRequest,
     SessionResponse, SessionDebugInfo
@@ -93,9 +93,6 @@ def to_episode_card(
 def to_episode_detail(ep: Dict) -> EpisodeDetail:
     """Convert raw episode dict to full EpisodeDetail."""
     entities = [EntityInfo(**e) for e in ep.get("entities", [])]
-    critical_views = None
-    if ep.get("critical_views"):
-        critical_views = CriticalViews(**ep["critical_views"])
     
     return EpisodeDetail(
         id=ep["id"],
@@ -108,10 +105,6 @@ def to_episode_detail(ep: Dict) -> EpisodeDetail:
         entities=entities,
         people=ep.get("people", []),
         key_insight=ep.get("key_insight"),
-        critical_views=critical_views,
-        search_relevance_score=ep.get("search_relevance_score"),
-        aggregate_score=ep.get("aggregate_score"),
-        top_in_categories=ep.get("top_in_categories", [])
     )
 
 
@@ -438,20 +431,16 @@ def get_stats():
     
     credible_count = sum(
         1 for ep in episodes
-        if ep.get("scores", {}).get("credibility", 0) >= config.credibility_floor
+        if (ep.get("scores", {}).get("credibility") or 0) >= config.credibility_floor
     )
     high_quality = sum(
         1 for ep in episodes
-        if (ep.get("scores", {}).get("credibility", 0) +
-            ep.get("scores", {}).get("insight", 0)) >= config.combined_floor
+        if ((ep.get("scores", {}).get("credibility") or 0) +
+            (ep.get("scores", {}).get("insight") or 0)) >= config.combined_floor
     )
     recent_count = sum(
         1 for ep in episodes
         if days_since(ep.get("published_at", "")) <= config.freshness_window_days
-    )
-    contrarian_count = sum(
-        1 for ep in episodes
-        if (ep.get("critical_views") or {}).get("has_critical_views")
     )
     
     return {
@@ -461,7 +450,6 @@ def get_stats():
         "credible_episodes": credible_count,
         "high_quality_episodes": high_quality,
         "recent_episodes": recent_count,
-        "contrarian_episodes": contrarian_count,
         "active_sessions": len(SESSIONS),
         "config": {
             "credibility_floor": config.credibility_floor,

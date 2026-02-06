@@ -1,0 +1,173 @@
+{
+    "execution": "019c3049-582a-74b7-90ba-9dfdf51d08c1",
+    "output": {
+        "result": {
+            "n_fmt": "6",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "people",
+                "tag_value": "Dario Amodei"
+            },
+            "res": [
+                {
+                    "content_id": "20vc-s-big-fat-q-trntls-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "20VC's Big Fat Quiz of the Year: Founder, Fund and Breakout Company of 2025 | Predictions for 2026: The Company to Buy, The Biggest Short | Why Salesforce Could Win 2026 and The Tailwinds NVIDIA Will Face",
+                    "content_type": "podcast_episodes",
+                    "id": "akfP4J4uxQLhTaDRVokb",
+                    "publish_date": "2025-12-22T07:07:00+00:00",
+                    "query_doc_id": "asmb-a747bcd2-1cdf-4264-aad3-40fc24729d52",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Dario was extensively discussed as both Jason and Rory's choice for founder of the year, with detailed analysis of Anthropic's performance and his leadership approach.",
+                    "tag_meta": {
+                        "title": "CEO of Anthropic"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "people",
+                    "tag_value": "Dario Amodei",
+                    "tag_value_lower": "dario amodei"
+                },
+                {
+                    "content_id": "anthropic-ceo-da-kk1f8v-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Anthropic CEO Dario Amodei on designing AGI-pilled products, model economics, and 19th-century vitalism",
+                    "content_type": "podcast_episodes",
+                    "id": "JvwRVzI7Vdw9BgWxnVTW",
+                    "publish_date": "2025-08-06T13:22:56+00:00",
+                    "query_doc_id": "asmb-126321f6-7726-4643-8ac7-884939eca2e2",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "Dario Amodei was the primary guest on the podcast, discussing Anthropic's business, AI development, and his views on the future of AI technology. He provided extensive insights into Anthropic's approach to AI, product development, and the potential societal impacts of advanced AI systems.",
+                    "tag_meta": {
+                        "title": "CEO of Anthropic"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Dario Amodei",
+                    "tag_value_lower": "dario amodei"
+                },
+                {
+                    "content_id": "anthropic-ceo-da-4mj6pe-sw9jax",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Anthropic CEO Dario Amodei: AI's Potential, OpenAI Rivalry, GenAI Business, Doomerism",
+                    "content_type": "podcast_episodes",
+                    "id": "kzUzH6TywglKVeX57U8z",
+                    "publish_date": "2025-07-30T11:09:00+00:00",
+                    "query_doc_id": "asmb-03d2b020-3a9c-4825-bc07-9c98db13057c",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "big-technology-p-sw9jax",
+                    "series_name": "Big Technology Podcast",
+                    "tag_context": "Dario Amodei was the primary guest and focus of the interview. He discussed Anthropic's approach to AI development, safety concerns, his personal background, and responded to criticisms from others in the industry. Amodei provided extensive insights into Anthropic's business model, technological progress, and ethical considerations around AI.",
+                    "tag_meta": {
+                        "title": "CEO of Anthropic"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Dario Amodei",
+                    "tag_value_lower": "dario amodei"
+                },
+                {
+                    "content_id": "ai-experts-debat-f72orw-wpzclr",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "AI Experts Debate: AI Job Loss, The End of Privacy & Beginning of AI Warfare w/ Mo Gawdat, Salim Ismail & Dave Blundin | EP #176",
+                    "content_type": "podcast_episodes",
+                    "id": "sLi51lZctQ1UM0Q9VJOe",
+                    "publish_date": "2025-06-03T15:10:00+00:00",
+                    "query_doc_id": "asmb-d239d92b-c926-43f9-893c-d8dfb01f219b",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "moonshots-with-p-wpzclr",
+                    "series_name": "Moonshots with Peter Diamandis",
+                    "tag_context": "Dario Amodei's comments on AI job displacement were discussed at length, particularly his concerns about the rapid pace of change and potential impacts on democracy. His views on AI safety measures implemented by Anthropic were also mentioned.",
+                    "tag_meta": {
+                        "title": "CEO of Anthropic"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Dario Amodei",
+                    "tag_value_lower": "dario amodei"
+                },
+                {
+                    "content_id": "ai-rollup-ai-rob-bq8giv-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "AI Rollup: AI Robots and The $10T Arms Race",
+                    "content_type": "podcast_episodes",
+                    "id": "zSBb9CFFtgAltUmRHeYr",
+                    "publish_date": "2025-05-08T10:30:00+00:00",
+                    "query_doc_id": "asmb-5ac8940b-d3de-42ef-9c3b-6ea2eb88f79c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.5,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "Dario Amodei is discussed in relation to his blog post on AI interpretability. The hosts explore his insights on the challenges of understanding how AI models think and the importance of developing methods to interpret AI decision-making processes.",
+                    "tag_meta": {
+                        "title": "Co-founder of Anthropic"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Dario Amodei",
+                    "tag_value_lower": "dario amodei"
+                },
+                {
+                    "content_id": "anthropics-c-e-o-jy68tz-zwwgur",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Anthropic’s C.E.O. Dario Amodei on Surviving the A.I. Endgame",
+                    "content_type": "podcast_episodes",
+                    "id": "CkxAUou5YFix6PPVpY4W",
+                    "publish_date": "2025-02-28T12:00:00+00:00",
+                    "query_doc_id": "asmb-7c6ee1ce-4b5a-4429-b668-799c40cc1bde",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "hard-fork-0tzwwgur",
+                    "series_name": "Hard Fork",
+                    "tag_context": "Dario Amodei was the primary guest on the episode, discussing Anthropic's new AI model Claude 3.7 Sonnet, AI safety concerns, and the future of AI development. He provided extensive insights on Anthropic's approach to AI, potential risks, and the societal impact of advanced AI systems.",
+                    "tag_meta": {
+                        "title": "CEO of Anthropic"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Dario Amodei",
+                    "tag_value_lower": "dario amodei"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

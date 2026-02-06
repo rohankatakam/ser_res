@@ -1,0 +1,199 @@
+{
+    "execution": "019c3049-1271-745f-a333-facd84460089",
+    "output": {
+        "result": {
+            "n_fmt": "7",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "people",
+                "tag_value": "Sundar Pichai"
+            },
+            "res": [
+                {
+                    "content_id": "google-the-ai-co-5o2eim-spzznv",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 4,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Google: The AI Company",
+                    "content_type": "podcast_episodes",
+                    "id": "SIDA6PWT4eGT5oS7y5U9",
+                    "publish_date": "2025-10-06T01:35:54+00:00",
+                    "query_doc_id": "asmb-3fcdc2d3-bad3-4fa5-a373-b8bff0c9d07a",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.75,
+                    "series_id": "acquired-8mspzznv",
+                    "series_name": "Acquired",
+                    "tag_context": "Mentioned as Google's current CEO who issued the 'code red' response to ChatGPT and made key decisions to unify DeepMind and Brain teams and standardize on Gemini.",
+                    "tag_meta": {
+                        "title": "CEO of Google"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                },
+                {
+                    "content_id": "alphabet-inc-twlq3f-spzznv",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Alphabet Inc.",
+                    "content_type": "podcast_episodes",
+                    "id": "1MPATPSqlnGvSzaeHT45",
+                    "publish_date": "2025-08-26T10:19:06+00:00",
+                    "query_doc_id": "asmb-ee2f44d9-b3ef-4d02-9622-3b7097220f7d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "acquired-8mspzznv",
+                    "series_name": "Acquired",
+                    "tag_context": "Sundar Pichai is mentioned as a key figure who rose through Google's ranks, leading important projects like Chrome and Android before becoming CEO of Google under the Alphabet structure.",
+                    "tag_meta": {
+                        "title": "CEO of Google"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                },
+                {
+                    "content_id": "471-sundar-picha-3gv0bn-v783i7",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "#471 – Sundar Pichai: CEO of Google and Alphabet",
+                    "content_type": "podcast_episodes",
+                    "id": "3s5ut4HjEci3vk4zUSh5",
+                    "publish_date": "2025-06-05T17:53:32+00:00",
+                    "query_doc_id": "asmb-37f97940-b5fe-431a-839f-a30a74e7c904",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "lex-fridman-7mv783i7",
+                    "series_name": "Lex Fridman Podcast",
+                    "tag_context": "Sundar Pichai was the primary guest of the podcast, discussing his life story, leadership of Google, and the company's developments in AI, including Gemini, Android, and various Google products. He provided extensive insights into Google's AI strategy, product development, and his vision for the future of technology.",
+                    "tag_meta": {
+                        "title": "CEO of Google and Alphabet"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                },
+                {
+                    "content_id": "why-openai-paid--u2sm35-wpzclr",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why OpenAI Paid $6.5 Billion to make the new iPhone & How Google Just Ended Hollywood w/ Dave Blundin & Salim Ismail | EP #174",
+                    "content_type": "podcast_episodes",
+                    "id": "MXibd2rgePMh0SpF2iTF",
+                    "publish_date": "2025-05-23T21:44:00+00:00",
+                    "query_doc_id": "asmb-4ecf135c-5df5-4b33-9584-2eec5992a100",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "moonshots-with-p-wpzclr",
+                    "series_name": "Moonshots with Peter Diamandis",
+                    "tag_context": "Sundar Pichai is discussed in relation to Google's AI announcements at Google I/O, including the introduction of new AI models and features.",
+                    "tag_meta": {
+                        "title": "CEO of Google"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                },
+                {
+                    "content_id": "sundar-pichai-ce-b6m45c-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Sundar Pichai, CEO of Alphabet | The All-In Interview",
+                    "content_type": "podcast_episodes",
+                    "id": "67aziCTxmA41DT50lFWL",
+                    "publish_date": "2025-05-16T05:36:00+00:00",
+                    "query_doc_id": "asmb-a7fa1323-ba4a-4b52-b9e5-627a34b0ca3c",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Sundar Pichai was the primary guest in this interview, discussing Google's AI initiatives, business strategy, and his leadership as CEO of Alphabet. He provided extensive insights into Google's approach to AI, quantum computing, robotics, and company culture.",
+                    "tag_meta": {
+                        "title": "CEO of Alphabet"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                },
+                {
+                    "content_id": "trump-rally-or-b-l6nl8m-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Trump Rally or Bessent Put? Elon Back at Tesla, Google's Gemini Problem, China's Thorium Discovery",
+                    "content_type": "podcast_episodes",
+                    "id": "lETGW2HiNe1RiLj7bBHe",
+                    "publish_date": "2025-04-26T06:00:00+00:00",
+                    "query_doc_id": "asmb-29c12f4d-f298-42cc-bcd1-ea1691a60e59",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Sundar Pichai was discussed in relation to Google's earnings report and the company's strategy regarding AI integration. His leadership decisions were analyzed in the context of Google's competition with other AI companies.",
+                    "tag_meta": {
+                        "title": "CEO of Google"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                },
+                {
+                    "content_id": "googles-roadmap--751emm-q9uf6f",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Google’s Roadmap Through the AI Revolution",
+                    "content_type": "podcast_episodes",
+                    "id": "1yawMzEP6984UMcJ2OPH",
+                    "publish_date": "2025-04-19T23:22:00+00:00",
+                    "query_doc_id": "asmb-9ade165e-4ccf-4fbc-83ea-28f8060add2c",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.55,
+                    "series_id": "ai-investing-q9uf6f",
+                    "series_name": "AI Investing",
+                    "tag_context": "Sundar Pichai was extensively discussed as the key figure outlining Google's AI strategy for 2025. He emphasized the critical nature of the coming year for Google, the urgency to move faster in AI development, and the company's focus on scaling Gemini, their AI model.",
+                    "tag_meta": {
+                        "title": "CEO of Google"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "people",
+                    "tag_value": "Sundar Pichai",
+                    "tag_value_lower": "sundar pichai"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

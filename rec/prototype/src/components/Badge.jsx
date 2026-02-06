@@ -3,14 +3,6 @@
  */
 
 const badgeConfig = {
-  highly_contrarian: {
-    label: '🔥 Highly Contrarian',
-    className: 'bg-orange-500/20 text-orange-300 border-orange-500/30'
-  },
-  contrarian: {
-    label: '🔥 Contrarian',
-    className: 'bg-orange-500/20 text-orange-300 border-orange-500/30'
-  },
   high_insight: {
     label: '💎 High Insight',
     className: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
@@ -22,6 +14,10 @@ const badgeConfig = {
   data_rich: {
     label: '📊 Data-Rich',
     className: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+  },
+  engaging: {
+    label: '🎯 Engaging',
+    className: 'bg-green-500/20 text-green-300 border-green-500/30'
   }
 };
 

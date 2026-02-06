@@ -62,22 +62,19 @@ DELAY_BETWEEN_BATCHES = 0.5  # seconds
 
 def get_embed_text(episode: dict) -> str:
     """
-    Generate text for embedding - uses title + key_insights.
+    Generate text for embedding - uses title + key_insight.
     
     This is the SAME formula used for user activity vectors to ensure
     apples-to-apples comparison in cosine similarity.
     """
     title = episode.get("title", "")
+    key_insight = episode.get("key_insight") or ""
     
-    # Prefer critical_views.key_insights, fallback to key_insight
-    critical_views = episode.get("critical_views") or {}
-    key_insights = critical_views.get("key_insights") or episode.get("key_insight") or ""
+    # Truncate key_insight to first 500 chars to reduce noise
+    if len(key_insight) > 500:
+        key_insight = key_insight[:500]
     
-    # Truncate key_insights to first 500 chars to reduce noise
-    if len(key_insights) > 500:
-        key_insights = key_insights[:500]
-    
-    embed_text = f"{title}. {key_insights}".strip()
+    embed_text = f"{title}. {key_insight}".strip()
     
     # Ensure we have something to embed
     if not embed_text or embed_text == ".":

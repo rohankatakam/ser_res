@@ -1,0 +1,1318 @@
+{
+    "execution": "019c304b-78e5-77c5-b326-519f21e12531",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "pub_after": "2026-01-07",
+                "tag_type": "categories",
+                "tag_value": "Technology & AI"
+            },
+            "res": [
+                {
+                    "content_id": "introducing-4d-c-01lbun-dlfv4f",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Introducing 4D Creation Open Beta: NPCs, 4D Worlds, and the Future of Gaming with Roblox CEO Dave Baszucki",
+                    "content_type": "podcast_episodes",
+                    "id": "uJLuvlba870Dje0TDoOo",
+                    "publish_date": "2026-02-05T16:56:00+00:00",
+                    "query_doc_id": "asmb-ddb99882-9bd2-4947-87a6-151acc70ce9f",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "no-priors-artifi-dlfv4f",
+                    "series_name": "No Priors: Artificial Intelligence | Technology | Startups",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI's impact on gaming, world models, NPCs, AI-powered content creation, virtual doppelgangers, and the technical infrastructure needed for AI-driven experiences. The discussion extensively explores how AI will transform game development, user experiences, and the future of virtual worlds.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 4,
+                        "v1_insight": 4
+                    },
+                    "content_title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+                    "content_type": "podcast_episodes",
+                    "id": "10FJ6iMqTrV0LJul40zA",
+                    "publish_date": "2026-02-05T16:50:00+00:00",
+                    "query_doc_id": "asmb-357810e7-4852-447d-b180-56aaad706deb",
+                    "rel_icon": "stars",
+                    "score": 1,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 4,
+                        "v1_insight": 4
+                    },
+                    "content_title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space”",
+                    "content_type": "podcast_episodes",
+                    "id": "msiyn7GcqjsjqMvEzgef",
+                    "publish_date": "2026-02-05T16:45:08+00:00",
+                    "query_doc_id": "asmb-b4a2c617-3343-4e44-94bd-ca961c3bb7ca",
+                    "rel_icon": "stars",
+                    "score": 1,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI development, space-based data centers, humanoid robots (Optimus), chip manufacturing, neural networks, and the future of artificial intelligence. The discussion spans AI training, inference, digital human emulation, and the technical challenges of scaling AI infrastructure both on Earth and in space.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "executive-functi-t0liy8-um0t9f",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Executive Function: Building systems that can make decisions without you | Jeanne DeWitt Grosser (COO, Vercel)",
+                    "content_type": "podcast_episodes",
+                    "id": "UqfsgpCd8sgnuOjNbCZ4",
+                    "publish_date": "2026-02-05T12:00:00+00:00",
+                    "query_doc_id": "asmb-a4836102-9eb1-44dd-abf8-8c56863d6c98",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "in-depth-m7um0t9f",
+                    "series_name": "In Depth",
+                    "tag_context": "AI is discussed as a significant factor in business operations and executive decision-making, particularly around building AI-forward GTM experiences and using AI agents for sales processes. While not the main focus, it's presented as an important consideration for modern executives and represents a meaningful portion of the strategic discussion.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "ai-on-ethereum-e-2yqv4m-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "AI on Ethereum: ERC-8004, x402, OpenClaw and the Botconomy | Austin Griffith & Davide Crapis",
+                    "content_type": "podcast_episodes",
+                    "id": "5IWFOnkNuVR3opoB0swb",
+                    "publish_date": "2026-02-05T11:30:00+00:00",
+                    "query_doc_id": "asmb-efb708d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI agents, OpenClaw capabilities, AI development tools, and the technical infrastructure needed for AI-blockchain integration. The discussion extensively explores AI agent capabilities, limitations, security concerns, and practical implementations throughout the episode.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "how-duo-security-kfca1m-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Duo Security went Zero to $1B ARR in Ann Arbor | Dug Song, Jon Oberheide",
+                    "content_type": "podcast_episodes",
+                    "id": "mzSWvKb2x78UYyFlTloy",
+                    "publish_date": "2026-02-05T11:00:01+00:00",
+                    "query_doc_id": "asmb-d9cb6102-9eb1-44dd-abf8-8c56863d6c98",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "Cybersecurity technology and product development are integral to understanding Duo's story, with detailed discussions of two-factor authentication, cloud security, mobile-first approaches, and technical architecture decisions. The founders' hacking backgrounds and technical expertise in security are central to their credibility and product vision.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-91e2qq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "WOrXeEiKMAfawtmSWgh7",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-75a808d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact and compares it to previous technology waves like the internet.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "inside-6-8b-aum--4r3ypb-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Inside $6.8B+ AUM Fund Behind 80+ Public Companies, 165+ M&A",
+                    "content_type": "podcast_episodes",
+                    "id": "LYtZBtjiYZzcdIsnq5Lp",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-c1136418-acda-46f4-a645-1d41d7f1d092",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "AI technology and its applications are deeply integrated throughout the discussion, covering AI model evolution, infrastructure development, mechanistic interpretability, reinforcement learning, and the technical aspects of AI companies. The speaker's investment thesis heavily focuses on AI companies and the technical evolution of the field.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "the-path-to-mark-8pwvay-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The path to market for new nuclear reactors",
+                    "content_type": "podcast_episodes",
+                    "id": "5vcGXja9Kdz17DLalw8K",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-1ec259d7-dda6-45e7-a199-0694a2d3170c",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "The entire conversation centers on advanced nuclear reactor technologies, including small modular reactors (SMRs), microreactors, and various new reactor designs. The discussion covers technical milestones like criticality testing, reactor design certification, and the engineering challenges of bringing new nuclear technologies to market.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "20vc-spacex-comp-60zqma-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: SpaceX Completes Acquisition of xAI | The 2026 SaaS Massacre: Public Market Collapse | Microsoft's $360 Billion Market Cap Loss | NVIDIA's $100BN Investment Dispute with OpenAI | Waymo Raises $16 Billion at a $110 Billion Valuation",
+                    "content_type": "podcast_episodes",
+                    "id": "FY3dvZyvCS2elaGOVqsy",
+                    "publish_date": "2026-02-05T07:07:00+00:00",
+                    "query_doc_id": "asmb-ef51d03d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "AI and technology dominate the entire conversation, from discussions about OpenAI's capital needs and compute requirements, to AI agents and their capabilities, to the emergence of products like OpenClaw and MoatBook. The speakers extensively analyze how AI is transforming business models, with concepts like 'inference is the new sales and marketing' being central themes.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "taiwan-s-energy--4t9os0-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Taiwan's energy dilemma",
+                    "content_type": "podcast_episodes",
+                    "id": "1AfOrZAMdK9FG49KzAHT",
+                    "publish_date": "2026-02-04T17:02:00+00:00",
+                    "query_doc_id": "asmb-a925e787-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "Technology plays a crucial role throughout the discussion, particularly Taiwan's semiconductor industry (including TSMC and AI data centers) which consumes over half the country's electricity, renewable energy technologies like solar and offshore wind, and emerging technologies like geothermal and battery storage. The conversation frequently returns to how Taiwan's tech-heavy economy shapes its energy needs.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "how-ai-powered-h-y9l0vg-pg5y3t",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How AI-Powered Holograms Are Reimagining Fan Experiences at the Big Game - Ep. 288",
+                    "content_type": "podcast_episodes",
+                    "id": "jhP7sZsNIMVLvVUwZlWI",
+                    "publish_date": "2026-02-04T16:45:00+00:00",
+                    "query_doc_id": "asmb-06ff58d7-dda6-45e7-a199-0694a2d3170c",
+                    "rel_icon": "stars",
+                    "score": 0.7,
+                    "series_id": "nvidia-ai-podcas-pg5y3t",
+                    "series_name": "NVIDIA AI Podcast",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI agents, holographic technology, machine learning models, GPU infrastructure, and the technical challenges of creating human-like AI interactions. The discussion extensively covers Nvidia's AI stack, real-time inference, and the evolution of AI technology across multiple industries.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "how-we-built-cla-tuik1e-pirnwj",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How We Built 'Claudie,' Our AI Project Manager (Full Walkthrough)",
+                    "content_type": "podcast_episodes",
+                    "id": "WUetH6MgdD0qxcbKA1cE",
+                    "publish_date": "2026-02-04T16:23:30+00:00",
+                    "query_doc_id": "asmb-14b6cf3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "ai-i-every-to-pirnwj",
+                    "series_name": "AI and I",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI adoption strategies, implementation patterns, specific AI tools like Claude and ChatGPT, and detailed technical demonstrations of AI agents. The discussion centers on practical AI applications in business, from consulting workflows to engineering productivity, representing over 80% of the content.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "uncapped-41-the--857931-7hzkh1",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uncapped #41 | The Benchmark Partnership",
+                    "content_type": "podcast_episodes",
+                    "id": "jpiSuxbPcdDfJNXErIye",
+                    "publish_date": "2026-02-04T10:00:00+00:00",
+                    "query_doc_id": "asmb-5d8e5342-c209-40e6-8185-77887ee3f4c2",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "uncapped-with-ja-7hzkh1",
+                    "series_name": "Uncapped with Jack Altman",
+                    "tag_context": "AI is discussed extensively in the final portion as a major investment theme for Benchmark, covering their AI portfolio companies, investment timing during 2022-2023, and thoughts on future AI opportunities. While important, it serves as a case study for their broader investment approach.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "cryptopunks-crea-0jeue6-t8lspa",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "CryptoPunks creators: from art experiment to cultural movement",
+                    "content_type": "podcast_episodes",
+                    "id": "F0MJ67nIzo8kXCB4fMKp",
+                    "publish_date": "2026-02-04T08:01:00+00:00",
+                    "query_doc_id": "asmb-56eece3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "possible-by-reid-t8lspa",
+                    "series_name": "Possible",
+                    "tag_context": "The conversation includes meaningful discussion about AI's impact on coding and creative work, with the founders sharing their experience using AI tools like Claude for development. While not the main focus, it represents a substantial portion exploring how AI accelerates their technical work and creative process.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "unicredit-ceo-th-olv6ny-iujaza",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "UniCredit CEO: The Future of European Banking, Digital Transformation and Grit",
+                    "content_type": "podcast_episodes",
+                    "id": "E7UIhZT52roa1gRzfmyP",
+                    "publish_date": "2026-02-04T04:00:00+00:00",
+                    "query_doc_id": "asmb-563189c2-82d8-4e6f-8bcd-15c3b7d7e6db",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "in-good-company--iujaza",
+                    "series_name": "In Good Company with Nicolai Tangen",
+                    "tag_context": "Technology transformation and AI adoption are integral to the banking discussion, with detailed examples of how AI is revolutionizing credit processes (reducing 6-week tasks to 14 minutes), client onboarding, and operational efficiency. The conversation explores how banks must transform digitally to compete with fintech companies and deliver Netflix-like customer experiences.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "speed-and-scale--cwt515-kjave4",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Speed and Scale: How Today's AI Datacenters Are Operating Through Hypergrowth",
+                    "content_type": "podcast_episodes",
+                    "id": "XaIhYHPQVkqiOzG8Ph4l",
+                    "publish_date": "2026-02-03T18:00:00+00:00",
+                    "query_doc_id": "asmb-05e9b2a9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "mlops-community-kjave4",
+                    "series_name": "MLOps.community ",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI infrastructure development, data center construction, GPU deployment, networking architecture, and the technical challenges of building AI infrastructure at scale. The discussion centers on the technical aspects of AI data centers, from physical components to logical systems, representing over 80% of the content.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "palmer-luckey-on-64hmwq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Palmer Luckey on Hardware, Building, and the Next Frontiers of Innovation",
+                    "content_type": "podcast_episodes",
+                    "id": "JEQEzGoCESXzJtBGb4Dl",
+                    "publish_date": "2026-02-03T15:01:24+00:00",
+                    "query_doc_id": "asmb-a3ea7e7e-ec37-4dea-8ed6-0026adf25a09",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "This is the primary focus throughout the conversation, covering Palmer's work with VR/AR at Oculus, defense technology at Anduril, AI development, hardware challenges, and future technological trends. The discussion extensively covers technological innovation, AI's role in defense, and emerging technologies like fusion and quantum computing.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "51foOIPyWCt1rjDKCzFA",
+                    "publish_date": "2026-02-03T11:00:00+00:00",
+                    "query_doc_id": "asmb-d1cff00f-d638-4efc-b4c2-70251f6bf028",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "michael-ovitz-th-9m6kmh-25mkw4",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Michael Ovitz: The Business of Relationships",
+                    "content_type": "podcast_episodes",
+                    "id": "2lWD5zI6iR9zo2tRwCNz",
+                    "publish_date": "2026-02-03T11:00:00+00:00",
+                    "query_doc_id": "asmb-f62206d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "knowledge-projec-25mkw4",
+                    "series_name": "The Knowledge Project with Shane Parrish",
+                    "tag_context": "Technology and AI feature prominently throughout, from discussions about cloud computing with Loudcloud, to current AI applications in intellectual property protection, and observations about how tech founders think differently. Ovitz's work with various tech companies and his views on technological innovation are central themes.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "whats-the-future-h650x8-m3369e",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "What’s the Future of Vertical SaaS in an AGI World? Jamie Cuffe, CEO of Pace",
+                    "content_type": "podcast_episodes",
+                    "id": "ntwrsYRmi0T73ic3z3m3",
+                    "publish_date": "2026-02-03T10:00:00+00:00",
+                    "query_doc_id": "asmb-ceb9af3f-6e46-4596-ab74-af431be77395",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "training-data-by-m3369e",
+                    "series_name": "Training Data",
+                    "tag_context": "This is the primary focus of the entire conversation, with extensive discussion of AI agents, their capabilities in automating complex workflows, the evolution from traditional software to AI-powered solutions, and technical challenges like web agents and reinforcement learning. The conversation centers on how AI is transforming business operations and replacing traditional outsourcing models.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "ben-horowitz-bac-u76tvy-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz - Backing America’s Future - [Invest Like the Best, EP.457]",
+                    "content_type": "podcast_episodes",
+                    "id": "2YbYEnYnztQ2AgxiJEuA",
+                    "publish_date": "2026-02-03T09:00:00+00:00",
+                    "query_doc_id": "asmb-8cb9cd3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "AI is the dominant theme throughout the conversation, with extensive discussion of its transformative impact across industries, the rapid deployment timeline (12-24 months), and specific applications from coding to policing. Horowitz positions AI as a technology that can solve nearly every major problem and discusses how it's changing the fundamental laws of company building.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "bridge-ceo-zach--mv5wf1-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Bridge CEO Zach Abrams: Stablecoins Are The Next Platform for Money",
+                    "content_type": "podcast_episodes",
+                    "id": "LR8JPPNQqq68Kyv933UA",
+                    "publish_date": "2026-02-02T20:50:32+00:00",
+                    "query_doc_id": "asmb-add2c0fe-8dd3-4721-b392-deb9e382e065",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "AI and agentic payments are discussed as a key driver for stablecoin adoption, with mentions of agent-to-agent micropayments and AI's role in accelerating financial services platforms. While not the core focus, it supports the thesis about future payment infrastructure and appears in multiple segments.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "ai-vs-humans-mat-t0tqs1-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "AI vs Humans: Math Superintelligence Is Here",
+                    "content_type": "podcast_episodes",
+                    "id": "CxFECLZYcHUwL5aFO3au",
+                    "publish_date": "2026-02-02T15:38:49+00:00",
+                    "query_doc_id": "asmb-c9dbff3b-49d5-4343-bc9a-ae7730740e3c",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion about AI breakthroughs, reinforcement learning, mathematical AI systems like Harmonic, and the potential for AI to revolutionize physics and mathematics. The conversation centers on AI's current capabilities and future potential, including speculation about advanced applications like time travel and invisibility cloaks.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "david-solomon-be-we31ag-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "David Solomon & Ben Horowitz on Building Organizational Resilience & Navigating Macro Uncertainty",
+                    "content_type": "podcast_episodes",
+                    "id": "PWkoQSlKgb10m65n953y",
+                    "publish_date": "2026-02-02T15:21:43+00:00",
+                    "query_doc_id": "asmb-e09fcc3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "AI is the dominant theme throughout the conversation, with extensive discussion of how AI is transforming competitive dynamics, enabling companies to 'throw money at problems' unlike traditional software development, and reshaping enterprise operations. Both speakers discuss AI's impact on their respective organizations and the broader technology landscape.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "logan-jastremski-0apndv-kl1x3i",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Logan Jastremski: Solana vs Hyperliquid - Who Wins The Global Exchange Race?",
+                    "content_type": "podcast_episodes",
+                    "id": "LA1LUX3kyNQg5zE1TieI",
+                    "publish_date": "2026-02-02T13:00:53+00:00",
+                    "query_doc_id": "asmb-130c865b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "the-delphi-podca-kl1x3i",
+                    "series_name": "The Delphi Podcast",
+                    "tag_context": "The latter portion includes meaningful discussion about AI development, comparing different AI models like Grok vs Claude, and speculation about the future impact of AI and robotics on society and jobs. While not central to the main crypto thesis, it represents a substantial secondary theme.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "capitalisms-endg-zivpbu-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Capitalism’s Endgame: The Last Companies That Will Ever Exist",
+                    "content_type": "podcast_episodes",
+                    "id": "pSlq2sodmmTuu8dKyLJS",
+                    "publish_date": "2026-02-02T11:30:00+00:00",
+                    "query_doc_id": "asmb-41c69f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of AI models, transformers, intelligence commoditization, humanoid robots, and how AI will reshape labor and productivity. The entire framework revolves around technological advancement as a core pillar of future capitalism.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "how-dopamine-ser-c2npvy-qmk8x7",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 4,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Dopamine & Serotonin Shape Decisions, Motivation & Learning | Dr. Read Montague",
+                    "content_type": "podcast_episodes",
+                    "id": "r6xCsnUGSnNsgSNqleyY",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-8d93a51b-1d0b-4a3b-b53c-445774c9c29d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "huberman-lab-qmk8x7",
+                    "series_name": "Huberman Lab",
+                    "tag_context": "AI and machine learning are integral to several major discussion points, particularly how reinforcement learning algorithms mirror biological dopamine systems. The conversation explores how AI systems like AlphaGo use the same learning rules found in human brains, and discusses future applications of AI in neuroscience research and personal health monitoring.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "jonathan-lewinso-2hjy4c-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Jonathan Lewinsohn – Credit Microcycles at Diameter (EP.484)",
+                    "content_type": "podcast_episodes",
+                    "id": "UgpvcZAh4s2rdAOZb3JE",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-11fa845b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "AI's impact on various industries, particularly software and SaaS companies, is a significant theme. The discussion covers how AI is disrupting legacy software providers, creating investment opportunities in AI infrastructure, and represents what they call a 'super duper microcycle' affecting multiple sectors.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "501-spotting-the-xkstmg-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "501. Spotting the Next Big Thing, Why This Cycle Is Different, Acceptable vs Unacceptable Risk, and Why Duration Is a Feature Not a Bug (Jon Callaghan)",
+                    "content_type": "podcast_episodes",
+                    "id": "5j2xa3D8jkLq8GUW9Sp7",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-d2a09f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "AI is discussed as a major current investment theme, with True Ventures having made 85 AI investments since 2015. The conversation covers how AI represents a new wave of capital efficiency similar to previous technology cycles, and discusses the application layer opportunities emerging from current AI infrastructure investments.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+                    "content_type": "podcast_episodes",
+                    "id": "80TAft4aGsPh0lzbQE1T",
+                    "publish_date": "2026-02-02T07:07:00+00:00",
+                    "query_doc_id": "asmb-00752bbd-63d0-492e-96bb-7508012a5355",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "AI is discussed as a major investment theme and transformative force, with significant coverage of how AI impacts investment decisions, company valuations, and business models. Zeev emphasizes that every investment now requires asking whether a company is an AI beneficiary or victim, making this integral to the venture discussion.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "214-grid-resilie-fkdi8s-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "214. Grid Resilience: hot risks, cold solutions - Feb26",
+                    "content_type": "podcast_episodes",
+                    "id": "Mb3P4RaOFlMTpRORPrkg",
+                    "publish_date": "2026-02-02T04:50:07+00:00",
+                    "query_doc_id": "asmb-b302865b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "Technology and AI form the primary focus of this energy podcast, with extensive discussion of smart grids, digitalization, AI's impact on energy consumption, smart meters, automated systems, and the technological infrastructure needed for grid resilience. The conversation repeatedly emphasizes how digital transformation and AI are essential for modern energy grid management and resilience.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "dr-becky-on-the--v6jggo-jifdtv",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Dr. Becky on the surprising overlap between great parenting and great leadership",
+                    "content_type": "podcast_episodes",
+                    "id": "MGXXQ1ce3V3uK5MeSjts",
+                    "publish_date": "2026-02-01T13:31:43+00:00",
+                    "query_doc_id": "asmb-aa9be387-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "lenny-s-podcast--jifdtv",
+                    "series_name": "Lenny's Podcast: Product | Growth | Career",
+                    "tag_context": "AI is discussed as a tool Dr. Becky uses for rapid prototyping and product development, including specific mentions of tools like Figma Make, ChatGPT, and Claude. The Good Inside app also incorporates AI through their chatbot 'Gigi' for personalized parenting guidance, though this is a supporting element rather than a core focus.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "490-state-of-ai--77abw2-v783i7",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "#490 – State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI",
+                    "content_type": "podcast_episodes",
+                    "id": "iIesb4OZffsxNlPeszx1",
+                    "publish_date": "2026-02-01T02:46:43+00:00",
+                    "query_doc_id": "asmb-f873cb3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "lex-fridman-7mv783i7",
+                    "series_name": "Lex Fridman Podcast",
+                    "tag_context": "This is overwhelmingly the primary focus of the entire conversation, covering AI model architectures, scaling laws, training methodologies, open vs closed models, reasoning capabilities, and the technical evolution of LLMs. The discussion spans from technical implementation details to broader AI development trends and represents over 80% of the content.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "20growth-how-wix-pzdjac-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20Growth: How Wix Built a $100M Marketing Machine | Why LTV is BS and Why Time Return On Investment is the Most Important Metric | How to 10x Your Growth: What is the Next Great Channel with Omer Shai, CMO @ Wix",
+                    "content_type": "podcast_episodes",
+                    "id": "4QDJ2RfqbIE3pYDw0wTO",
+                    "publish_date": "2026-01-31T07:07:00+00:00",
+                    "query_doc_id": "asmb-c7009e39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "AI is discussed as a significant factor reshaping marketing execution, content creation, and business operations. Omer talks about hiring AI-first talent, the impact of AI on workflow efficiency, and how AI is changing search and marketing channels. This theme is integral to understanding modern growth strategies.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "uneasy-money-how-je6uo5-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uneasy Money: How Ethereum May Have One-Upped Bitcoin in One Big Way",
+                    "content_type": "podcast_episodes",
+                    "id": "l6yfeJ7gDXbskQEI78sM",
+                    "publish_date": "2026-01-30T23:49:00+00:00",
+                    "query_doc_id": "asmb-717ca6d3-1a07-4363-aa77-70ab650003de",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "AI dominates the conversation with extensive discussion of Claude/Claudebot, agentic AI capabilities, coordination problems between AI agents, and the transformative potential of AI across various domains. The hosts explore AI's rapid advancement, security implications, and future impact on society, making this the primary focus of over 50% of the content.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "ice-chaos-in-min-93sipp-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "ICE Chaos in Minneapolis, Clawdbot Takeover, Why the Dollar is Dropping",
+                    "content_type": "podcast_episodes",
+                    "id": "DANrGVGLoQWncdwjhf8M",
+                    "publish_date": "2026-01-30T23:25:00+00:00",
+                    "query_doc_id": "asmb-7f365dd4-ffd9-48c5-8444-49202d752bf0",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Significant discussion of Claudebot (now Multbot) as an open-source AI assistant, the release of Qwen 2.5 open-source model, and the implications for AI agents and personal assistants. The conversation explores how these technologies could transform work and the shift from closed to open-source AI models.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "exclusive-brexs--s25erg-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Exclusive: Brex’s $5.15B Capital One Acquisition | CEO Pedro Franceschi",
+                    "content_type": "podcast_episodes",
+                    "id": "N2oXGGzSNUdADQG86BPh",
+                    "publish_date": "2026-01-30T17:23:14+00:00",
+                    "query_doc_id": "asmb-4aa7afa9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "AI is discussed as a major strategic focus for Brex's future, with detailed explanation of their six AI agents, the 'inversion of control' concept, and how AI will accelerate their product roadmap by 2-3 years. Pedro describes AI as transforming finance teams from doing work to managing by exception.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "why-privacy-will-ta725f-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why Privacy Will Be the Biggest Moat in Crypto",
+                    "content_type": "podcast_episodes",
+                    "id": "SUieSZnOjYDaUZM33LYO",
+                    "publish_date": "2026-01-30T17:21:09+00:00",
+                    "query_doc_id": "asmb-33918288-7b3f-45eb-96a3-4e790b3e6ceb",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "Technology is discussed throughout in the context of privacy solutions (zero-knowledge proofs, trusted execution environments, fully homomorphic encryption), quantum computing threats, and briefly touches on AI agents transacting on behalf of users. While integral to the crypto discussion, it serves as supporting technical context rather than a primary focus.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "the-dawn-of-a-ne-u04a5e-58u8l6",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The dawn of a new DERcade",
+                    "content_type": "podcast_episodes",
+                    "id": "98AZDrmmIQttI06gCiqT",
+                    "publish_date": "2026-01-30T16:58:14+00:00",
+                    "query_doc_id": "asmb-a36ae287-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "der-task-force-58u8l6",
+                    "series_name": "DER Task Force",
+                    "tag_context": "AI and data centers are discussed extensively as major drivers of energy demand and grid transformation. The conversation covers AI's impact on electricity systems, compute buildout, humanoid robots, and how AI might reshape various industries including legal work and energy management.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "anyone-can-code--rad5dl-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "“Anyone Can Code Now” - Netlify CEO Talks AI Agents",
+                    "content_type": "podcast_episodes",
+                    "id": "DHTTaFuzNC72CX6937DR",
+                    "publish_date": "2026-01-30T11:00:00+00:00",
+                    "query_doc_id": "asmb-8faaa5d3-1a07-4363-aa77-70ab650003de",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "This is the primary focus of the entire conversation, covering AI's impact on software development, coding agents, agent experience (AX), and how AI is transforming web development and user interactions. The discussion extensively explores AI tools, their capabilities, limitations, and the fundamental shift they're creating in how software is built and consumed.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "jeff-currie-on-t-duofrs-a97umq",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Jeff Currie on the Crazy Surge in Metals, And Why The Supercycle Has Years to Run",
+                    "content_type": "podcast_episodes",
+                    "id": "5Rpo6GVo36smELBcvm5e",
+                    "publish_date": "2026-01-30T09:00:00+00:00",
+                    "query_doc_id": "asmb-647b825b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "odd-lots-doa97umq",
+                    "series_name": "Odd Lots",
+                    "tag_context": "Technology and AI are discussed as significant drivers of commodity demand, particularly through data center construction and the electrification transition. The conversation touches on how hyperscalers are moving from asset-light to asset-heavy business models, requiring substantial physical infrastructure and commodity inputs.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "rollup-gold-silv-yj0x83-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "ROLLUP: Gold & Silver ATHs | Fidelity’s Stablecoin | Ethereum’s Quantum Pivot | Tether Buys Gold",
+                    "content_type": "podcast_episodes",
+                    "id": "lOjIMo72hyEoQm3UhuFx",
+                    "publish_date": "2026-01-30T06:30:00+00:00",
+                    "query_doc_id": "asmb-60870cf2-60f2-4684-a553-1f6be43fc1a8",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "Technology discussions appear in multiple segments, including Ethereum's quantum resistance preparations, Mega Eth's scaling achievements, and OpenAI's potential social network integration with Worldcoin. While not the core focus, these technological developments support important secondary themes about blockchain evolution and AI integration.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "arc-boats-co-fou-i6ikx7-vlfy9x",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Arc Boats Co-Founder and CEO Mitch Lee",
+                    "content_type": "podcast_episodes",
+                    "id": "xqtKN53Nxn8piPo0dena",
+                    "publish_date": "2026-01-30T05:00:00+00:00",
+                    "query_doc_id": "asmb-ac2c5cd4-ffd9-48c5-8444-49202d752bf0",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "watt-it-takes-vlfy9x",
+                    "series_name": "Watt It Takes",
+                    "tag_context": "Electric boat technology and electrification are central themes throughout the conversation. Mitch discusses the technical challenges of developing electric powertrains, battery systems, software integration, and the broader transition from combustion to electric technology in marine applications. The technology discussion is integral to understanding ArcBoats' mission and product development.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "jayshree-ullal-a-c0191m-iujaza",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 1
+                    },
+                    "content_title": "Jayshree Ullal - Arista Networks की CEO (Hindi version)",
+                    "content_type": "podcast_episodes",
+                    "id": "uafrVeJJwbQFqigIOV7B",
+                    "publish_date": "2026-01-30T04:00:00+00:00",
+                    "query_doc_id": "asmb-35c29c39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "in-good-company--iujaza",
+                    "series_name": "In Good Company with Nicolai Tangen",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion about AI infrastructure, networking requirements for AI workloads, GPU connectivity, data center architecture, and the evolution from traditional networking to AI-optimized systems. The conversation centers around how Arista Networks enables AI capabilities through high-performance networking solutions.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "the-politics-of--32qkge-yc0cz6",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The politics of making electricity cheaper, from PJM reform to VPPs",
+                    "content_type": "podcast_episodes",
+                    "id": "TTT65A2YbCVJZNg2amhG",
+                    "publish_date": "2026-01-29T20:40:00+00:00",
+                    "query_doc_id": "asmb-ecd9448d-3644-4799-8e98-c32f0c6bdc0d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "open-circuit-yc0cz6",
+                    "series_name": "Open Circuit",
+                    "tag_context": "AI's impact on electricity demand is a major theme throughout the discussion, including how data centers are driving load growth, the technical challenges of powering AI infrastructure, and the need for new grid technologies like virtual power plants and distributed energy resources to manage this demand.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "pimcos-president-3at970-qw2kdl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Pimco’s President Says Private Debt Investors Are Blind to the Risks",
+                    "content_type": "podcast_episodes",
+                    "id": "1dJHLz983X2g3i9fzSBM",
+                    "publish_date": "2026-01-29T20:12:25+00:00",
+                    "query_doc_id": "asmb-f2ff5ece-30ae-4fbb-bb13-84ac450656d1",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-credit-edge--qw2kdl",
+                    "series_name": "The Credit Edge by Bloomberg Intelligence",
+                    "tag_context": "Technology sector financing and AI infrastructure investment are discussed as significant trends in credit markets, including data center financing and the risks of long-term tech bonds. While important for understanding current market dynamics, it's secondary to the broader credit market focus.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "the-chopping-blo-jd84uq-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Chopping Block: RWA Perps Go Parabolic, ClawdBot, & Superstate's $82M Raise",
+                    "content_type": "podcast_episodes",
+                    "id": "17bZ2OjTNTAIIrmx9i23",
+                    "publish_date": "2026-01-29T15:16:00+00:00",
+                    "query_doc_id": "asmb-5c2304d3-06b4-440b-a716-2afd21f4b1e8",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Significant discussion about Claude code, agentic coding tools, and AI automation through tools like Maltbot (formerly Claudebot). The conversation explores how AI is transforming software engineering practices and the implications for startups and engineering teams.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "ep-81-ex-openai--600fna-gahfcc",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ep 81: Ex-OpenAI Researcher On Why He Left, His Honest AGI Timeline, & The Limits of Scaling RL",
+                    "content_type": "podcast_episodes",
+                    "id": "FVIDF04YSHSCHyswK0V1",
+                    "publish_date": "2026-01-29T15:13:20+00:00",
+                    "query_doc_id": "asmb-ffca831e-cb50-4689-bb9c-b9d65d13754b",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "unsupervised-lea-gahfcc",
+                    "series_name": "Unsupervised Learning",
+                    "tag_context": "This is overwhelmingly the primary focus of the entire conversation, covering AI model development, reinforcement learning, scaling paradigms, reasoning models like O1 and O3, continual learning, and the technical challenges of building AGI. The discussion spans Jerry's work at OpenAI, current AI capabilities, limitations, and future research directions throughout the entire episode.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                },
+                {
+                    "content_id": "how-i-went-from--tvrcf2-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How I went from $0 to $1M in 12 months",
+                    "content_type": "podcast_episodes",
+                    "id": "SRlbQslaZmVP7DM25p8a",
+                    "publish_date": "2026-01-29T13:57:00+00:00",
+                    "query_doc_id": "asmb-10f06328-b773-4b15-a367-9e475e398876",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "Technology is discussed as part of the product development strategy, including building newsletter tools, referral programs, and automation features. AI is mentioned specifically as a marketable feature they added to their editor during the peak of AI hype, but it's not a central theme of the conversation.",
+                    "tag_meta": {
+                        "id": 1
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Technology & AI",
+                    "tag_value_lower": "technology & ai"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

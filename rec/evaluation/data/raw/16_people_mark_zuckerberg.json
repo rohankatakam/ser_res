@@ -1,0 +1,1161 @@
+{
+    "execution": "019c3049-bdea-747b-b962-033ed2434015",
+    "output": {
+        "result": {
+            "n_fmt": "44",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "people",
+                "tag_value": "Mark Zuckerberg"
+            },
+            "res": [
+                {
+                    "content_id": "why-this-isn-t-t-91e2qq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "kdIv5xhwB5GWvsXMqzCu",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-9de5b4a9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg was discussed multiple times regarding Meta's AI spending, his comments about potential infrastructure bubbles, and comparisons between AI and VR investment at Meta.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "palmer-luckey-on-64hmwq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Palmer Luckey on Hardware, Building, and the Next Frontiers of Innovation",
+                    "content_type": "podcast_episodes",
+                    "id": "yy4wdU9tQBHYqQuW8Nzk",
+                    "publish_date": "2026-02-03T15:01:24+00:00",
+                    "query_doc_id": "asmb-05bde587-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg is discussed extensively in relation to Facebook's acquisition of Oculus for $3 billion, including the negotiation process and his commitment to investing billions in VR R&D.",
+                    "tag_meta": {
+                        "title": "CEO of Meta/Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "Xxl39MDFLMp59Pp3Wnr6",
+                    "publish_date": "2026-02-03T11:00:00+00:00",
+                    "query_doc_id": "asmb-f5e7a039-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "Mark Zuckerberg was discussed multiple times regarding Meta's AI spending, his comments about potential infrastructure bubbles, and comparisons between AI and VR investment at Meta.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "490-state-of-ai--77abw2-v783i7",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "#490 – State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI",
+                    "content_type": "podcast_episodes",
+                    "id": "Vf9grBNNkhU3Q47hg8cm",
+                    "publish_date": "2026-02-01T02:46:43+00:00",
+                    "query_doc_id": "asmb-334c6426-8b74-4b57-ba00-0a79ad7bb2d4",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "lex-fridman-7mv783i7",
+                    "series_name": "Lex Fridman Podcast",
+                    "tag_context": "Mark Zuckerberg was discussed in relation to Meta's open source AI strategy with Llama models, his blog post advocating for open source AI, and internal debates about the direction of AI development at Meta.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "gokul-rajaram-le-k8933i-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Gokul Rajaram - Lessons from Investing in 700 Companies - [Invest Like the Best, EP.456]",
+                    "content_type": "podcast_episodes",
+                    "id": "6F6ucJPNxo9DwFBUM8fZ",
+                    "publish_date": "2026-01-29T09:00:00+00:00",
+                    "query_doc_id": "asmb-23c930b7-f6cb-4899-8364-1eefd09bec33",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "Mark is discussed as one of the great leaders Gokul worked with, particularly highlighting his expertise in consumer product growth and engagement. Gokul shares how Mark came up with the foundational idea of custom audiences for Facebook ads.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "from-oculus-to-a-mo7d5g-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "From Oculus to Anduril: Palmer Luckey on Power, Technology, and the Future",
+                    "content_type": "podcast_episodes",
+                    "id": "GWBDbBZx05k1XXJHjhW6",
+                    "publish_date": "2026-01-23T13:00:00+00:00",
+                    "query_doc_id": "asmb-63234fc5-90fa-49aa-bb99-f39a16db8915",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "Mark Zuckerberg is discussed in relation to Facebook's acquisition of Oculus, including his personal visit to see the demo and the subsequent billion-dollar offer that led to the acquisition.",
+                    "tag_meta": {
+                        "title": ""
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "20vc-groq-s-20bn-m2n08q-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: Groq's $20BN NVIDIA Acquisition | Manus Acquired by Meta for $2BN | Why Sam Altman Does Not Care About Dilution | Navan Trading at 4x ARR & Why Going Public Does Not Make Sense Anymore | The Rise of Invisible Unemployment and Labour Markets in 2026",
+                    "content_type": "podcast_episodes",
+                    "id": "TCMotG2FLZrZP6ayG13x",
+                    "publish_date": "2026-01-08T07:07:00+00:00",
+                    "query_doc_id": "asmb-d20c3c60-b44c-488d-92e5-53b699890999",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Zuckerberg is discussed in relation to Meta's acquisition of Manus for $2.5 billion and his aggressive AI strategy. The hosts analyze his 'spite' motivation following years of regulatory constraints.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "reed-hastings-bu-y2af2a-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Reed Hastings - Building Netflix - [Invest Like the Best, EP.453]",
+                    "content_type": "podcast_episodes",
+                    "id": "Dx3sNpWARhOW2n4FHGO6",
+                    "publish_date": "2026-01-06T09:00:00+00:00",
+                    "query_doc_id": "asmb-3b7382bc-56c8-4175-a574-e11a22548eb2",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "Mark Zuckerberg is discussed in the context of Reed's board service at Facebook, highlighting his long-term vision and commitment to ambitious projects like the Metaverse.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook/Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "the-high-growth--xuyzgh-jifdtv",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The high-growth handbook: Molly Graham’s frameworks for leading through chaos, change, and scale",
+                    "content_type": "podcast_episodes",
+                    "id": "vB4NK2hAbhpIceciGcAi",
+                    "publish_date": "2026-01-04T13:31:22+00:00",
+                    "query_doc_id": "asmb-393eae77-0dcb-484b-ad4b-dfe744fbeedf",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "lenny-s-podcast--jifdtv",
+                    "series_name": "Lenny's Podcast: Product | Growth | Career",
+                    "tag_context": "Mark Zuckerberg is discussed extensively as one of the high-performing founder CEOs Molly worked with at Facebook and later at the Chan Zuckerberg Initiative. Molly shares specific lessons learned from him about escalation and company culture.",
+                    "tag_meta": {
+                        "title": "Founder/CEO of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "transform-pain-t-rthtci-qmk8x7",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 4,
+                        "v1_info_density": 1,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Transform Pain & Trauma Into Creative Expression | David Choe",
+                    "content_type": "podcast_episodes",
+                    "id": "HyG0qBA9cgAhgyT0XLGA",
+                    "publish_date": "2025-12-22T09:00:00+00:00",
+                    "query_doc_id": "asmb-2f1e53a5-daf1-4dd7-9162-263065b58821",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.5,
+                    "series_id": "huberman-lab-qmk8x7",
+                    "series_name": "Huberman Lab",
+                    "tag_context": "Mark Zuckerberg is discussed in relation to Choe's work at Facebook's early offices. Choe describes meeting him and working around him while painting murals, though their interactions were more limited than with Sean Parker.",
+                    "tag_meta": {
+                        "title": "Co-founder of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "ai-vibe-check-th-88bfwe-gahfcc",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "AI Vibe Check: The Actual Bottleneck In Research, SSI’s Mystique, & Spicy 2026 Predictions",
+                    "content_type": "podcast_episodes",
+                    "id": "UH4L2qITIc39JbE0nJIT",
+                    "publish_date": "2025-12-18T16:57:44+00:00",
+                    "query_doc_id": "asmb-35db1ebb-0a53-499b-8564-ccabf4ffdcd8",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "unsupervised-lea-gahfcc",
+                    "series_name": "Unsupervised Learning",
+                    "tag_context": "Zuckerberg is discussed in relation to Meta's AI strategy, the Meta Superintelligence team challenges, and the shift from open source to closed source models.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "mission-before-s-zspqxa-1sd4iq",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Mission Before Startup: Gokul Rajaram’s Playbook for Founders",
+                    "content_type": "podcast_episodes",
+                    "id": "tsh30IxmWfHMmkwiKsHS",
+                    "publish_date": "2025-12-11T14:00:00+00:00",
+                    "query_doc_id": "asmb-9cdfc410-a6db-4085-969f-e3fcb0f71257",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "minus-one-by-sou-1sd4iq",
+                    "series_name": "Minus One",
+                    "tag_context": "Zuckerberg is discussed as an example of a founder who started with a problem rather than wanting to start a company. Gokul praises his learning ability and beginner's mindset, noting how he quickly mastered advertising when Gokul joined Facebook.",
+                    "tag_meta": {
+                        "title": ""
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "how-to-lead-ben--3358jd-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How To Lead | Ben Horowitz on My First Million",
+                    "content_type": "podcast_episodes",
+                    "id": "v1IxhZoGVclMAj8R6Fpt",
+                    "publish_date": "2025-12-02T11:00:00+00:00",
+                    "query_doc_id": "asmb-9413490a-d36e-4e7e-9fde-79a1ce3baef5",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg is discussed extensively as an example of effective leadership, with Ben sharing stories about their early interactions and Zuckerberg's evolution as a CEO, including his decision-making during Facebook's growth challenges.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "weird-ways-ben-h-cy83o8-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Weird ways Ben Horowitz makes Founders more confident",
+                    "content_type": "podcast_episodes",
+                    "id": "Yuj1htjmWwGerDL34k2J",
+                    "publish_date": "2025-12-01T12:39:00+00:00",
+                    "query_doc_id": "asmb-d257f101-2d30-47bb-8d26-f6c42cba1c7c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "Mark Zuckerberg is discussed extensively as an example of effective leadership, with Ben sharing detailed stories about their early interactions and Zuckerberg's management decisions at Facebook.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "the-secret-marke-37y2ag-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Secret Marketing Strategy That Built a16z: From Zero to Legendary VC Firm",
+                    "content_type": "podcast_episodes",
+                    "id": "ch8RiNtCrho0Mtbr8ttT",
+                    "publish_date": "2025-11-26T11:00:00+00:00",
+                    "query_doc_id": "asmb-def5d48a-5c14-47fa-b02c-c6815a99e47e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg is discussed in multiple contexts - initially as someone who provided an introduction that led to Margit meeting the founders, and later extensively discussed regarding his transformation of public persona from scripted to authentic.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook/Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "how-frontier-ai--d4egwh-95fvav",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Frontier AI + Virtual Biology Can Help Us Cure All Diseases",
+                    "content_type": "podcast_episodes",
+                    "id": "GdgJUJ3qtYRj1DX63QOM",
+                    "publish_date": "2025-11-06T15:00:00+00:00",
+                    "query_doc_id": "asmb-19192e6b-73b7-40d3-b1ed-48c13c4ee488",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "latent-space-the-95fvav",
+                    "series_name": "Latent Space: The AI Engineer Podcast",
+                    "tag_context": "Mark is one of the main guests and co-founder of CZI, discussing their 10-year journey in philanthropy, the biohub model, and their focus on building AI tools for biological research to help cure diseases.",
+                    "tag_meta": {
+                        "title": ""
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "mark-zuckerberg--q0bk6n-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Mark Zuckerberg & Priscilla Chan: How AI Will Cure All Disease",
+                    "content_type": "podcast_episodes",
+                    "id": "jRoFp66hMdiLyAl7o2cf",
+                    "publish_date": "2025-11-06T14:45:00+00:00",
+                    "query_doc_id": "asmb-4e23f0ae-bbb5-4c7b-b0fa-4a9e3a20b48c",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg was one of the primary guests and speakers throughout the entire podcast, discussing the Chan Zuckerberg Initiative's mission to cure all disease by the end of the century, their approach to building scientific tools, and their focus on AI-biology integration.",
+                    "tag_meta": {
+                        "title": "Co-founder of Chan Zuckerberg Initiative"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "20vc-sequoia-s-d-8rxgi7-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: Sequoia's David Cahn on The Winners and Losers in AI | The $0-$100M Revenue Club: Is Triple, Triple, Double, Double Dead? | The Future of Defence: Who Wins and Who Loses | How to Analyse Margins and Growth Rates in a World of AI",
+                    "content_type": "podcast_episodes",
+                    "id": "MvsvFqe126In2O3SDoSt",
+                    "publish_date": "2025-10-27T07:07:00+00:00",
+                    "query_doc_id": "asmb-dd7a1491-4583-4b51-90fa-5db290059582",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Zuckerberg is discussed in the context of Meta's AI strategy and the dramatic actions he's taking, including large compensation packages for AI talent. David uses him as an example of what founder CEOs can accomplish when deeply invested in a problem.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "why-creativity-w-qrxwk5-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why Creativity Will Matter More Than Code",
+                    "content_type": "podcast_episodes",
+                    "id": "rKoSmWdHk1ucEzpd75Zi",
+                    "publish_date": "2025-10-22T10:00:00+00:00",
+                    "query_doc_id": "asmb-d4b8c861-a82d-4cd8-9c3e-4dc52bac5457",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg is discussed extensively in Kevin's story about the creation of the like button. Kevin describes meeting with Mark, sharing ideas about social signals, and how Facebook later implemented the like button feature.",
+                    "tag_meta": {
+                        "title": ""
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "20vc-are-burn-mu-03skh4-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: Are Burn Multiples BS in an AI World | Sam Altman Needs $1TRN of Energy | Klarna, Figma, Stubhub, all Down: Are Public Markets Turning? | FiveTran and DBT: Is the Wave of Consolidation About to Begin?",
+                    "content_type": "podcast_episodes",
+                    "id": "GGQ3r4h8B7OrKylDdsw9",
+                    "publish_date": "2025-10-02T07:07:00+00:00",
+                    "query_doc_id": "asmb-fe6a020f-25b4-43f1-8531-4a755789ae7e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Zuckerberg is discussed in relation to Meta's AI strategy and his willingness to spend $20 billion in operating income on AI development. The hosts debate the effectiveness of his AI approach compared to competitors like OpenAI.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "josh-wolfe-on-ai-zihm15-a97umq",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Josh Wolfe on AI and the Breaking of Silicon Valley's Social Contract",
+                    "content_type": "podcast_episodes",
+                    "id": "2S65qrhhbFI2GaM0JcOf",
+                    "publish_date": "2025-09-08T08:00:00+00:00",
+                    "query_doc_id": "asmb-48734fc1-af07-454d-a312-dcc97b4886c2",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "odd-lots-doa97umq",
+                    "series_name": "Odd Lots",
+                    "tag_context": "Mark Zuckerberg was discussed in the context of Meta's AI efforts and attempts to acquire talent. His role in the AI 'pochapalooza' and competition with other tech leaders was highlighted.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "20growth-meta-cm-g1metc-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20Growth: Meta CMO Alex Schultz on How All Founders Have to Change Their Marketing Playbook in a World of AI | Is AI Plateauing, What it Means if China Wins the AI Race and Why Zuck is a Generational Leader",
+                    "content_type": "podcast_episodes",
+                    "id": "DB57tHoUvd0U4PGK3hvu",
+                    "publish_date": "2025-09-05T22:35:00+00:00",
+                    "query_doc_id": "asmb-1bf5b442-8c4f-47dc-bb9d-2cc98e07ce31",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Mark Zuckerberg was discussed multiple times in relation to Meta's strategic decisions, including the company rebrand and his consistent vision for connecting the world online. His leadership style and decision-making were praised by Alex Schultz.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "inside-early-fac-j1g3yc-1sd4iq",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Inside Early Facebook with Andrew Bosworth: Culture, Ads, and AR Glasses",
+                    "content_type": "podcast_episodes",
+                    "id": "EnssaasluEv6ZYEVPJ5F",
+                    "publish_date": "2025-09-04T13:42:36+00:00",
+                    "query_doc_id": "asmb-c64dd5fc-39bd-4ede-a3c8-2c3cbbd6238d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "minus-one-by-sou-1sd4iq",
+                    "series_name": "Minus One",
+                    "tag_context": "Mark Zuckerberg was frequently mentioned as the founder of Facebook and Bosworth's long-time colleague. Bosworth discussed Zuckerberg's leadership style, vision, and their interactions throughout Facebook's history.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook/Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "shishir-mehrotra-i5fpz8-fw7dbr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Shishir Mehrotra on Building Tools Creators Love",
+                    "content_type": "podcast_episodes",
+                    "id": "6ToucBYIdC3QH1PQqMCi",
+                    "publish_date": "2025-08-11T09:34:57+00:00",
+                    "query_doc_id": "asmb-25448a31-bbf0-4d06-b898-9fd572334518",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "grit-by-kleiner--fw7dbr",
+                    "series_name": "Grit",
+                    "tag_context": "Mark Zuckerberg was discussed as an example of a tech leader making bold moves in AI, particularly his recent high-profile hires and investments. His approach to capital allocation and risk-taking in the AI space was analyzed.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "the-ai-industry--mfu547-a97umq",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The AI Industry Is Becoming Like Professional Sports",
+                    "content_type": "podcast_episodes",
+                    "id": "qcUc72ZcsLmvK9E6cWaa",
+                    "publish_date": "2025-08-04T08:00:00+00:00",
+                    "query_doc_id": "asmb-aae0d8ab-f409-41ae-90f0-d16ba367e690",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "odd-lots-doa97umq",
+                    "series_name": "Odd Lots",
+                    "tag_context": "Mark Zuckerberg is discussed multiple times in the context of Meta's aggressive talent acquisition strategy in the AI field. His role in offering large compensation packages to AI researchers is highlighted.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "the-steelman-for-tkcnyx-9vfrmr",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Steelman for Grok's Vulgar Anime Mode, AWS Launches Competitor to Browserbase, What AI Product Will Zuck Launch Next? | Delian Asparouhov, Lucas Swisher, Ravi Gupta, Adam Warmoth, Misha Laskin",
+                    "content_type": "podcast_episodes",
+                    "id": "fz0QWxI7Y3qc2DrgpZP7",
+                    "publish_date": "2025-07-16T21:34:38+00:00",
+                    "query_doc_id": "asmb-e3a787d4-a640-4908-893d-36c80697d5bf",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "tbpn-z99vfrmr",
+                    "series_name": "TBPN",
+                    "tag_context": "Zuckerberg was discussed in relation to Meta's AI efforts, including investments in data centers and AI talent acquisition. The conversation speculated on Meta's future AI product launches.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "windsurf-s-wild--0pos11-9vfrmr",
+                    "content_scores": {
+                        "v1_credibility": null,
+                        "v1_entertainment": null,
+                        "v1_info_density": null,
+                        "v1_insight": null
+                    },
+                    "content_title": "Windsurf's Wild Weekend, SpaceX Invests $2B into xAI, Zuck's AI Data Supercluster | Jeff Huber, Scott Wu & Jeff Wang, Carl Pei, Garrett McCurrach",
+                    "content_type": "podcast_episodes",
+                    "id": "7f3oQfDLWGo9JNaZNMOW",
+                    "publish_date": "2025-07-14T22:19:51+00:00",
+                    "query_doc_id": "asmb-96eedc4e-e316-41b0-bcd0-812d68819430",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": "",
+                    "series_id": "tbpn-z99vfrmr",
+                    "series_name": "TBPN",
+                    "tag_context": "Mark Zuckerberg was discussed in relation to Meta's new AI data supercluster and the company's investments in AI technology. His recent announcements about Meta's AI infrastructure were analyzed.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "ai-is-making-mor-izrmxj-wpzclr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "AI Is Making More Millionaires Than Anything in History w/ Salim Ismail & Dave Blundin | EP #181",
+                    "content_type": "podcast_episodes",
+                    "id": "szYJf6sxyHJarMomf4BM",
+                    "publish_date": "2025-07-10T22:18:00+00:00",
+                    "query_doc_id": "asmb-1c705248-7c57-445c-ae8c-c9fbf801849e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "moonshots-with-p-wpzclr",
+                    "series_name": "Moonshots with Peter Diamandis",
+                    "tag_context": "Mark Zuckerberg is discussed in relation to Meta's aggressive hiring and compensation strategies in the AI field. The hosts mention his personal involvement in recruiting top AI talent and Meta's significant investments in AI development.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "weekly-recap-the-nqvqcf-9vfrmr",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Weekly Recap: The Soham Parekh Drama, Meta Attacks OpenAI, The AI Talent War, Trump's Mega Bill",
+                    "content_type": "podcast_episodes",
+                    "id": "iLiOnim5rpv3VqF9zUIt",
+                    "publish_date": "2025-07-05T21:33:08+00:00",
+                    "query_doc_id": "asmb-944c3207-a3f0-49b8-8ff5-cadb8a889daa",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "tbpn-z99vfrmr",
+                    "series_name": "TBPN",
+                    "tag_context": "Mark Zuckerberg was extensively discussed regarding Meta's aggressive hiring of AI researchers, particularly from OpenAI. His strategy for building a superintelligence team and past successes in overcoming challenges were analyzed.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "openai-responds--ci12cz-9vfrmr",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "OpenAI Responds to Meta Offers, Meta's Secret List, Apple Scores Big With 'F1' | Will Brown, Will O'Brien, Kylie Robison, Joshua Meier, John Glasgow, Tom Lee",
+                    "content_type": "podcast_episodes",
+                    "id": "3prXLt8LwoY8ZhS2TAd8",
+                    "publish_date": "2025-06-30T21:46:22+00:00",
+                    "query_doc_id": "asmb-1f7fcc58-85d9-40fa-a3a8-cc3309f445f1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.6,
+                    "series_id": "tbpn-z99vfrmr",
+                    "series_name": "TBPN",
+                    "tag_context": "Zuckerberg was extensively discussed for his aggressive recruitment of AI researchers, particularly from OpenAI. His efforts to build a 'superintelligence' team at Meta and the significant compensation packages offered were central topics.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "meta-poaches-ope-wirqcg-9vfrmr",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Meta Poaches OpenAI Researchers, Murati's Plans to Take on OpenAI, NATO Takeaways | Mike Gallagher, Pippa Lamb, Dan Shipper, Eliano Younes",
+                    "content_type": "podcast_episodes",
+                    "id": "vefcCnNA6k9o4OHbzJ69",
+                    "publish_date": "2025-06-26T20:23:53+00:00",
+                    "query_doc_id": "asmb-8968d92b-c926-43f9-893c-d8dfb01f219b",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "tbpn-z99vfrmr",
+                    "series_name": "TBPN",
+                    "tag_context": "Mark Zuckerberg was discussed in the context of Meta's aggressive hiring strategy for AI researchers, including personally reaching out to potential hires. His role in Meta's 'Superintelligence Project' was also mentioned.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "20vc-nat-friedma-qhw51i-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "20VC: Nat Friedman and Daniel Gross Bought with Zuck's $100BN AI Budget | Navan Files to Go Public and Canva Pulls the Brakes: Why and What Happens | Why Larry Ellison is the Smartest Man in Tech | Substance or Sizzle: What is Real and What is BS in AI",
+                    "content_type": "podcast_episodes",
+                    "id": "pi1PahDJUqeoePetbBI9",
+                    "publish_date": "2025-06-26T07:07:00+00:00",
+                    "query_doc_id": "asmb-b3cc39a8-c5f7-430e-8163-d4500798a41e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Zuckerberg is discussed in relation to Meta's significant investments in AI, including potential acquisitions and talent recruitment. His strategic decisions regarding AI investments are analyzed in the context of Meta's future.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "ai-producers-tes-tf754m-wz54fi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "AI Producers, Tesla Robotaxis & the Rise of the “Tiny Teams” Era | E2142",
+                    "content_type": "podcast_episodes",
+                    "id": "jnjqV4wkVzmFRKGZALoE",
+                    "publish_date": "2025-06-24T00:54:35+00:00",
+                    "query_doc_id": "asmb-c0f8a33e-ebbe-42c6-8adf-97b9f1702381",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "this-week-in-sta-wz54fi",
+                    "series_name": "This Week in Startups",
+                    "tag_context": "Mark Zuckerberg is discussed in relation to his efforts to recruit top AI talent for Meta. The hosts highlight his hands-on approach to recruitment, including personal outreach and involvement in the hiring process.",
+                    "tag_meta": {
+                        "title": "CEO and founder of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "ipos-and-spacs-a-gtetvf-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "IPOs and SPACs are Back, Mag 7 Showdown, Zuck on Tilt, Apple's Fumble, GENIUS Act passes Senate",
+                    "content_type": "podcast_episodes",
+                    "id": "iUZ4AW37eY22W89mtDSI",
+                    "publish_date": "2025-06-21T02:53:00+00:00",
+                    "query_doc_id": "asmb-f982c2be-f26e-4f32-ab3e-12cdae5c98e6",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Zuckerberg was discussed in relation to Meta's aggressive moves in AI, including large offers to OpenAI employees and the acquisition of Scale AI. His actions were described as 'swinging for the fences' in AI development.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "meta-cfo-susan-l-hejyw6-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Meta CFO Susan Li on headcount vs. GPU allocation, “free cash flow” hats, and almost becoming a PM",
+                    "content_type": "podcast_episodes",
+                    "id": "prltdtIw88FthilCoO4N",
+                    "publish_date": "2025-06-18T13:00:00+00:00",
+                    "query_doc_id": "asmb-dad3709e-07d0-4c5d-a20f-c04ffe046d1a",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "Mark Zuckerberg was discussed as the CEO of Meta, with Susan Li providing insights into his leadership style, vision for the company, and approach to giving feedback. His role in shaping Meta's long-term strategy was highlighted.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "meta-scale-and-t-l8uvbp-wz54fi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Meta, Scale, and the Future of AI Labeling: Did Zuck Just Kill a Category? | E2139",
+                    "content_type": "podcast_episodes",
+                    "id": "km0Z1FC8KziwTH5LalDt",
+                    "publish_date": "2025-06-17T03:18:01+00:00",
+                    "query_doc_id": "asmb-a827d92b-c926-43f9-893c-d8dfb01f219b",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "this-week-in-sta-wz54fi",
+                    "series_name": "This Week in Startups",
+                    "tag_context": "Mark Zuckerberg is discussed in relation to Meta's acquisition of Scale AI. The hosts speculate on his motivations for the purchase and its potential impact on the AI labeling industry. His actions are seen as potentially anti-competitive.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "marc-andreessen--0ijq2i-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Marc Andreessen: What We Got Right—and Wrong—About the Future of Tech",
+                    "content_type": "podcast_episodes",
+                    "id": "QuESTy8A3Cola8HxIfp1",
+                    "publish_date": "2025-06-02T10:00:00+00:00",
+                    "query_doc_id": "asmb-441ff836-23c7-44ff-be5a-4252d4c926db",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Mark Zuckerberg was discussed in the context of Facebook's early days, its growth, and the challenges it faced. Andreessen, who serves on Facebook's board, shared insights about Zuckerberg's leadership and decision-making during critical periods.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "bret-taylors-jou-yjqc0s-fw7dbr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Bret Taylor’s Journey Leading Salesforce, Sierra & OpenAI",
+                    "content_type": "podcast_episodes",
+                    "id": "cNrFYKqD75TdQMhvVchr",
+                    "publish_date": "2025-06-02T09:25:07+00:00",
+                    "query_doc_id": "asmb-7c123df6-dd06-48b0-81a9-d3d3d76ce969",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "grit-by-kleiner--fw7dbr",
+                    "series_name": "Grit",
+                    "tag_context": "Mark Zuckerberg was mentioned multiple times in relation to Bret Taylor's time at Facebook, including Taylor's quick promotion to CTO and their working relationship.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "aliens-ai-weapon-cilqfr-wpzclr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Aliens, AI Weapons, China & Global Conflict: Palmer Luckey Sounds the Alarm | EP #169",
+                    "content_type": "podcast_episodes",
+                    "id": "aDmq2GQvLmw3P4vXmvyW",
+                    "publish_date": "2025-05-09T18:04:00+00:00",
+                    "query_doc_id": "asmb-c0083964-0f91-4b88-b7bb-19c077975a86",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "moonshots-with-p-wpzclr",
+                    "series_name": "Moonshots with Peter Diamandis",
+                    "tag_context": "Mark Zuckerberg was discussed in relation to Facebook's acquisition of Oculus, Palmer's former company. Palmer shared his thoughts on Zuckerberg's leadership and vision, particularly regarding VR and AI investments.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "mark-zuckerberg--dvmpjh-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Mark Zuckerberg — Meta's AGI Plan",
+                    "content_type": "podcast_episodes",
+                    "id": "GmU6pGFjUmX48AgON38U",
+                    "publish_date": "2025-04-29T15:46:54+00:00",
+                    "query_doc_id": "asmb-1e0a3351-258d-4bee-a2d0-22edb1ef5ecd",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Mark Zuckerberg was the primary guest on the podcast, discussing Meta's AI initiatives, including Llama 4, Meta AI, and the company's approach to open-source AI development. He provided extensive insights into Meta's AI strategy, product development, and views on the future of AI technology.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "palmer-luckey-h47lqf-4a4j8f",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Palmer Luckey",
+                    "content_type": "podcast_episodes",
+                    "id": "3jicCL6QsbhiCxLBkVhC",
+                    "publish_date": "2025-04-16T07:00:00+00:00",
+                    "query_doc_id": "asmb-b5534e19-7f05-404e-b7b2-184efae4313c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "tetragrammaton-w-4a4j8f",
+                    "series_name": "Tetragrammaton with Rick Rubin",
+                    "tag_context": "Mark Zuckerberg was discussed in relation to Facebook's acquisition of Oculus and his continued belief in VR technology. Luckey described interactions with Zuckerberg during the acquisition process and Zuckerberg's commitment to VR development.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook/Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "171-palmer-lucke-e2omhu-l8tgpy",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "#171 Palmer Luckey  - Superhuman Soldiers, AI Missiles and Exoskeletons in Warzones",
+                    "content_type": "podcast_episodes",
+                    "id": "23eo4YfJNiJHhitvY1EF",
+                    "publish_date": "2025-02-14T10:00:00+00:00",
+                    "query_doc_id": "asmb-ba44d4eb-eb04-4d5e-b805-1f9362feb17b",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "shawn-ryan-show-l8tgpy",
+                    "series_name": "Shawn Ryan Show",
+                    "tag_context": "Mark Zuckerberg was discussed in relation to Facebook's acquisition of Oculus and the subsequent controversy surrounding Palmer Luckey's political activities. Luckey described interactions with Zuckerberg and Facebook's handling of the situation.",
+                    "tag_meta": {
+                        "title": "CEO of Facebook (now Meta)"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "458-marc-andrees-p0jq0x-v783i7",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "#458 – Marc Andreessen: Trump, Power, Tech, AI, Immigration & Future of America",
+                    "content_type": "podcast_episodes",
+                    "id": "S55s5AfQXQwR27boXfAv",
+                    "publish_date": "2025-01-26T20:50:35+00:00",
+                    "query_doc_id": "asmb-37dfde74-a64b-4b02-a98c-fcdfbd9c1844",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "lex-fridman-7mv783i7",
+                    "series_name": "Lex Fridman",
+                    "tag_context": "Mark Zuckerberg was discussed in relation to his leadership at Meta (formerly Facebook), particularly regarding recent changes in the company's approach to content moderation and free speech. His appearance on Joe Rogan's podcast was also mentioned.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                },
+                {
+                    "content_id": "mark-zuckerberg--qgzy6w-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Mark Zuckerberg — Llama 3, $10B models, Caesar Augustus, & 1 GW datacenters",
+                    "content_type": "podcast_episodes",
+                    "id": "Y7anD5Iz770z6lwG0bFk",
+                    "publish_date": "2024-04-18T15:49:17+00:00",
+                    "query_doc_id": "asmb-6d84f5ef-3854-44be-8b4e-2fe5da7e6ee2",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Mark Zuckerberg is the primary guest and speaker throughout the entire podcast, discussing Meta's AI developments, Llama 3 models, open source philosophy, and the company's strategic direction. The conversation centers entirely around his perspectives and decisions.",
+                    "tag_meta": {
+                        "title": "CEO of Meta"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Mark Zuckerberg",
+                    "tag_value_lower": "mark zuckerberg"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

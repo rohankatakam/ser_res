@@ -30,13 +30,6 @@ class EntityInfo(BaseModel):
     context: Optional[str] = None
 
 
-class CriticalViews(BaseModel):
-    non_consensus_level: Optional[str] = None
-    has_critical_views: Optional[bool] = None
-    new_ideas_summary: Optional[str] = None
-    key_insights: Optional[str] = None
-
-
 class EpisodeCard(BaseModel):
     """Compact episode representation for lists/cards."""
     id: str
@@ -69,10 +62,6 @@ class EpisodeDetail(BaseModel):
     entities: List[EntityInfo]
     people: List[Dict]
     key_insight: Optional[str]
-    critical_views: Optional[CriticalViews]
-    search_relevance_score: Optional[float]
-    aggregate_score: Optional[float]
-    top_in_categories: List[str]
 
 
 # ============================================================================

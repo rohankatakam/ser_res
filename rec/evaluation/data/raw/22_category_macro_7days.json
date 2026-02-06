@@ -1,0 +1,1318 @@
+{
+    "execution": "019c3058-cd92-761e-9651-11e06c65edab",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "pub_after": "2026-01-30",
+                "tag_type": "categories",
+                "tag_value": "Macro, Investing & Market Trends"
+            },
+            "res": [
+                {
+                    "content_id": "bits-bips-bitcoi-y015ki-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Bits + Bips: Bitcoin Is Deeply Oversold. Does That Mean the Bottom Is In?",
+                    "content_type": "podcast_episodes",
+                    "id": "nbpPmxK8WP6byoxAjv3W",
+                    "publish_date": "2026-02-05T21:54:00+00:00",
+                    "query_doc_id": "asmb-f3b6b5a9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Technical analysis methodology, market sentiment indicators, trading strategies, and broader risk asset performance are integral to understanding the crypto market discussion. The conversation extensively covers investment approaches, support/resistance levels, and market cycle analysis across multiple asset classes including gold.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "distressed-buyer-onjbz8-qw2kdl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Distressed Buyer H.I.G. Sees Most Loan Distress in Years (Podcast)",
+                    "content_type": "podcast_episodes",
+                    "id": "KvA8RBfGeOJPL5UWTW4N",
+                    "publish_date": "2026-02-05T21:00:00+00:00",
+                    "query_doc_id": "asmb-5ea5b5a9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "the-credit-edge--qw2kdl",
+                    "series_name": "The Credit Edge by Bloomberg Intelligence",
+                    "tag_context": "This is the primary focus of the entire conversation, covering distressed debt markets, credit quality degradation, loan pricing, CLO behavior, and broader market conditions. The discussion centers on investment strategies, market dislocations, and credit cycle dynamics throughout over 80% of the content.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "the-chopping-blo-238c0l-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud, and Tarun's Epstein Files Cameo",
+                    "content_type": "podcast_episodes",
+                    "id": "loEJ4rU0LzrsPDG5kzeE",
+                    "publish_date": "2026-02-05T17:08:00+00:00",
+                    "query_doc_id": "asmb-821a10b7-03f7-4d8d-ae51-8091fc9fb469",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Market volatility, Bitcoin's correlation breakdown with traditional assets, MicroStrategy's performance, and broader risk asset trends are integral to several major discussion points. The hosts analyze market psychology, liquidation cascades, and investor sentiment as key drivers of current crypto market conditions.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 4,
+                        "v1_insight": 4
+                    },
+                    "content_title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+                    "content_type": "podcast_episodes",
+                    "id": "xgmKs44KcXEQbsvgRgWG",
+                    "publish_date": "2026-02-05T16:50:00+00:00",
+                    "query_doc_id": "asmb-357810e7-4852-447d-b180-56aaad706deb",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.8,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "The conversation touches on capital requirements for AI development, the need for public markets to fund massive infrastructure projects, and economic implications of AI and robotics. Discussion includes national debt concerns and the economic impact of automation.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 4,
+                        "v1_insight": 4
+                    },
+                    "content_title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space”",
+                    "content_type": "podcast_episodes",
+                    "id": "Hys0rr0SmRo96Z26I0oP",
+                    "publish_date": "2026-02-05T16:45:08+00:00",
+                    "query_doc_id": "asmb-b4a2c617-3343-4e44-94bd-ca961c3bb7ca",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.8,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "The conversation touches on capital market dynamics, the potential need for SpaceX to go public for capital access, economic growth projections from AI and robotics, and the competitive landscape between US and Chinese manufacturing capabilities. These economic themes support the broader technological discussions but are not central.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "i-spent-48-hours-8ukhgi-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "I spent 48 Hours With 10 Billionaires. Here’s What I Learned.",
+                    "content_type": "podcast_episodes",
+                    "id": "U4Q2GfHQHFb2YuyGpez9",
+                    "publish_date": "2026-02-05T15:08:00+00:00",
+                    "query_doc_id": "asmb-4df159d7-dda6-45e7-a199-0694a2d3170c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The discussion touches on broader business and market dynamics through examples of companies that achieved massive scale, timing of exits versus staying longer for greater returns, and market selection strategies. While not the core focus, these themes support the entrepreneurial lessons being shared.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "ai-on-ethereum-e-2yqv4m-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "AI on Ethereum: ERC-8004, x402, OpenClaw and the Botconomy | Austin Griffith & Davide Crapis",
+                    "content_type": "podcast_episodes",
+                    "id": "Pfnajp4t3A3sJ6FmPbIL",
+                    "publish_date": "2026-02-05T11:30:00+00:00",
+                    "query_doc_id": "asmb-efb708d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "The discussion includes analysis of the emerging 'bot economy,' token economics around AI agents, and predictions about how AI agents will become dominant transactors on blockchains. There's coverage of market dynamics around AI-generated tokens and the economic implications of autonomous agents.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-91e2qq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "mnEvLp22kCby9S8maCqs",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-75a808d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation centers on whether current AI investments constitute a bubble, comparing market conditions to the dot-com era, analyzing hundreds of billions in AI infrastructure spending, and discussing market valuations and systemic risk. This theme is integral to the main thesis of the episode.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "the-path-to-mark-8pwvay-79yauw",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The path to market for new nuclear reactors",
+                    "content_type": "podcast_episodes",
+                    "id": "xeaVijr0NPbKUwINRG0a",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-1ec259d7-dda6-45e7-a199-0694a2d3170c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "catalyst-with-sh-79yauw",
+                    "series_name": "Catalyst with Shayle Kann",
+                    "tag_context": "The conversation touches on investment trends in nuclear energy, the DOE's pilot program funding, and broader market dynamics affecting nuclear reactor development. While not the primary focus, it discusses how companies need to raise significant capital and manage investor expectations through the lengthy development process.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "inside-6-8b-aum--4r3ypb-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Inside $6.8B+ AUM Fund Behind 80+ Public Companies, 165+ M&A",
+                    "content_type": "podcast_episodes",
+                    "id": "w9bTgvI8YH4O5o1EWykM",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-c1136418-acda-46f4-a645-1d41d7f1d092",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The conversation touches on broader market dynamics including AI company valuations, funding trends, demographic changes affecting labor markets, and economic implications of declining birth rates. While supporting the main themes, these macro discussions provide important context for investment decisions.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "brendan-o-connor-0go7xz-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Brendan O'Connor – Alpha Opportunities in Australia at Regal Partners (EP.485)",
+                    "content_type": "podcast_episodes",
+                    "id": "4usJ39ep7xcs0iR21Bdk",
+                    "publish_date": "2026-02-05T09:00:00+00:00",
+                    "query_doc_id": "asmb-a19659d7-dda6-45e7-a199-0694a2d3170c",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "This is the primary focus of the conversation, covering investment strategies, market analysis, alpha generation, and portfolio management across multiple asset classes. The discussion extensively covers Australian market dynamics, resource sector investing, alternative investment strategies, and the structural elements of Australia's financial system including the superannuation system.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "investor-stories-3c74ar-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Investor Stories 457: Lessons for Early Career VCs: Fiduciary Mindset, Power Law Discipline, and Personal Edge (Dash, Okike, Hudson)",
+                    "content_type": "podcast_episodes",
+                    "id": "186iGg3aNGBDwBaVA731",
+                    "publish_date": "2026-02-05T09:00:00+00:00",
+                    "query_doc_id": "asmb-835456c6-ee7d-457f-909e-ee71c0bbd299",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "The conversation includes meaningful discussion of public market comparisons, valuation multiples, and the relationship between private and public markets. There's also coverage of broader investment principles like risk assessment and the importance of understanding market cycles and liquidity events.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "sba-deal-structu-in630g-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "SBA Deal Structuring to Manage Risk in a Cyclical Industry",
+                    "content_type": "podcast_episodes",
+                    "id": "c3MR2gMhOjKV2YnGFl6M",
+                    "publish_date": "2026-02-05T08:00:00+00:00",
+                    "query_doc_id": "asmb-9a486102-9eb1-44dd-abf8-8c56863d6c98",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "The discussion touches on broader market considerations including construction industry cyclicality, regional economic factors in the D.C. area, and investment strategy decisions around risk management and capital allocation. While supporting the main acquisition narrative, these macro themes provide important context for deal structuring decisions.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "20vc-spacex-comp-60zqma-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: SpaceX Completes Acquisition of xAI | The 2026 SaaS Massacre: Public Market Collapse | Microsoft's $360 Billion Market Cap Loss | NVIDIA's $100BN Investment Dispute with OpenAI | Waymo Raises $16 Billion at a $110 Billion Valuation",
+                    "content_type": "podcast_episodes",
+                    "id": "ixvJZIzbT0lHlPHmLaKn",
+                    "publish_date": "2026-02-05T07:07:00+00:00",
+                    "query_doc_id": "asmb-ef51d03d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Market dynamics are a primary focus, including the 'SaaS massacre' with declining public software valuations, Microsoft's $360 billion market cap loss, and the broader shift from private to public markets. The speakers analyze valuation multiples, growth rates, and the fundamental changes in how companies are being valued in the current market environment.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "bits-bips-why-go-4gxeu0-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Bits + Bips: Why Gold Price Discovery Happened on Hyperliquid",
+                    "content_type": "podcast_episodes",
+                    "id": "whmNSah5ZZHWfNUcDpdc",
+                    "publish_date": "2026-02-04T18:21:00+00:00",
+                    "query_doc_id": "asmb-571d198a-db69-4b97-bb66-24b2c8ea0e30",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Significant discussion of precious metals volatility (gold and silver crashes), traditional vs. crypto market dynamics, derivatives trading, and broader market structure issues. The conversation extensively covers how traditional finance intersects with crypto markets and investment strategies across asset classes.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "taiwan-s-energy--4t9os0-apcwun",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Taiwan's energy dilemma",
+                    "content_type": "podcast_episodes",
+                    "id": "BxPtKmdCQsJe5rxUBri6",
+                    "publish_date": "2026-02-04T17:02:00+00:00",
+                    "query_doc_id": "asmb-a925e787-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "volts-ucapcwun",
+                    "series_name": "Volts",
+                    "tag_context": "The conversation touches on investment challenges in Taiwan's energy sector, including concerns about geopolitical risk affecting long-term infrastructure investments, the economics of various energy sources, and broader market trends in offshore wind and renewable energy development. While not the core focus, these economic considerations support several key discussion points.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "andrew-ross-sork-fh4z3x-pcx1xn",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Andrew Ross Sorkin on Market Bubbles, Banking Rules, and the Real Lessons of 1929",
+                    "content_type": "podcast_episodes",
+                    "id": "aTUlCelcZwEtemrPN9om",
+                    "publish_date": "2026-02-04T12:30:00+00:00",
+                    "query_doc_id": "asmb-00f6e687-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "conversations-wi-pcx1xn",
+                    "series_name": "Conversations with Tyler",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of the 1929 stock market crash, whether it was truly a bubble, comparisons to modern market conditions, and analysis of long-term investment returns. The conversation centers on market dynamics, speculation, and historical financial trends throughout.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "why-americas-hea-gs2b6f-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why America’s Health Crisis Is an Incentive Problem",
+                    "content_type": "podcast_episodes",
+                    "id": "xV4CjMmdRAqvbGBxsTqX",
+                    "publish_date": "2026-02-04T11:00:00+00:00",
+                    "query_doc_id": "asmb-47fcce3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation touches on broader economic trends related to healthcare costs, the potential market disruption from peptides and GLP-1s, and how health crises impact national competitiveness. While supporting the main themes, these economic considerations are secondary to the health-focused discussion.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "uncapped-41-the--857931-7hzkh1",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uncapped #41 | The Benchmark Partnership",
+                    "content_type": "podcast_episodes",
+                    "id": "LQD7Q9jQy7WgK8wVxoef",
+                    "publish_date": "2026-02-04T10:00:00+00:00",
+                    "query_doc_id": "asmb-5d8e5342-c209-40e6-8185-77887ee3f4c2",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "uncapped-with-ja-7hzkh1",
+                    "series_name": "Uncapped with Jack Altman",
+                    "tag_context": "Market cycles and investment trends are discussed in the context of how different market conditions affect entrepreneur quality and investment opportunities, particularly around the 2022-2023 period. This supports the broader venture capital discussion but is not a primary focus.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "unicredit-ceo-th-olv6ny-iujaza",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "UniCredit CEO: The Future of European Banking, Digital Transformation and Grit",
+                    "content_type": "podcast_episodes",
+                    "id": "ZJizsYWcuIKkVXpp6yoc",
+                    "publish_date": "2026-02-04T04:00:00+00:00",
+                    "query_doc_id": "asmb-563189c2-82d8-4e6f-8bcd-15c3b7d7e6db",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "in-good-company--iujaza",
+                    "series_name": "In Good Company with Nicolai Tangen",
+                    "tag_context": "This is the primary focus of the conversation, covering European banking industry challenges, market consolidation, M&A activities (Commerzbank and Banco BPM acquisitions), capital allocation strategies, and broader financial market trends. The discussion extensively covers banking sector dynamics, competition, and strategic positioning across European markets.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "speed-and-scale--cwt515-kjave4",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Speed and Scale: How Today's AI Datacenters Are Operating Through Hypergrowth",
+                    "content_type": "podcast_episodes",
+                    "id": "igYAdy4xHKOIg7UR2XaD",
+                    "publish_date": "2026-02-03T18:00:00+00:00",
+                    "query_doc_id": "asmb-05e9b2a9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "mlops-community-kjave4",
+                    "series_name": "MLOps.community ",
+                    "tag_context": "There is substantial discussion about the massive investment in AI infrastructure representing a meaningful percentage of GDP growth, the emergence of hundreds of new cloud providers, and the economic constraints driving the industry. The conversation explores market dynamics, supply chain bottlenecks, and the economic forces shaping the AI infrastructure boom, making this integral to understanding the broader context.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "my-decision-maki-vp2l0i-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "My decision-making framework for which ideas to chase",
+                    "content_type": "podcast_episodes",
+                    "id": "fz7HWTn0U9OsaXXIX5ME",
+                    "publish_date": "2026-02-03T15:39:00+00:00",
+                    "query_doc_id": "asmb-7827f10f-d638-4efc-b4c2-70251f6bf028",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.5,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The conversation touches on business strategy, brand building approaches (using Nike as a case study), and market positioning throughout multiple segments. While not the core focus, these themes support the broader discussion about building successful ventures and understanding what drives commercial success versus personal fulfillment.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "palmer-luckey-on-64hmwq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Palmer Luckey on Hardware, Building, and the Next Frontiers of Innovation",
+                    "content_type": "podcast_episodes",
+                    "id": "6uCnV5R6pnSiFcbEowel",
+                    "publish_date": "2026-02-03T15:01:24+00:00",
+                    "query_doc_id": "asmb-a3ea7e7e-ec37-4dea-8ed6-0026adf25a09",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation touches on geopolitical trends including US-China rivalry, the end of the 'end of history' period, defense spending inefficiencies, and broader economic themes around technological progress and market dynamics. While supporting the main themes, these macro discussions provide important context rather than being the primary focus.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "where-do-we-go-f-u1e031-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Where Do We Go From Here? | Michael Nadeau",
+                    "content_type": "podcast_episodes",
+                    "id": "HFgsn7c9T5GK8If2wLSQ",
+                    "publish_date": "2026-02-03T11:30:00+00:00",
+                    "query_doc_id": "asmb-2e13ce3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "The conversation heavily focuses on macroeconomic factors affecting crypto markets, including Federal Reserve policy, the new Fed Chair Kevin Warsh, global liquidity conditions, labor market data, and comparative analysis between crypto, stocks, and gold. Investment strategy and market timing are central themes throughout.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "URDvWlUKqgAD6zTXHGGa",
+                    "publish_date": "2026-02-03T11:00:00+00:00",
+                    "query_doc_id": "asmb-d1cff00f-d638-4efc-b4c2-70251f6bf028",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "The conversation centers on whether current AI investments constitute a bubble, comparing it to the dot-com crash, analyzing hundreds of billions in AI infrastructure spending, and discussing market valuations and systemic risk. This theme is integral to the main thesis about distinguishing speculative corrections from economic crises.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "whats-the-future-h650x8-m3369e",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "What’s the Future of Vertical SaaS in an AGI World? Jamie Cuffe, CEO of Pace",
+                    "content_type": "podcast_episodes",
+                    "id": "rAPuwXVR1dLi6lIbQfxG",
+                    "publish_date": "2026-02-03T10:00:00+00:00",
+                    "query_doc_id": "asmb-ceb9af3f-6e46-4596-ab74-af431be77395",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "training-data-by-m3369e",
+                    "series_name": "Training Data",
+                    "tag_context": "The discussion covers broader market trends around the shift from traditional BPO services to AI automation, the $400 billion BPO market opportunity, and how AI is fundamentally changing industry economics. The conversation explores macro themes about the future of work and the transformation of entire sectors through AI adoption.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "spotting-the-dow-wqlsyx-ne8510",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Spotting the Downturn Early and Coming Out Ahead w/ Gryphon's David Andrews",
+                    "content_type": "podcast_episodes",
+                    "id": "rs6lATDaj5QMLdozjlEs",
+                    "publish_date": "2026-02-03T09:00:00+00:00",
+                    "query_doc_id": "asmb-a7d7a039-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "dry-powder-the-p-ne8510",
+                    "series_name": "Dry Powder: The Private Equity Podcast",
+                    "tag_context": "Significant discussion about macroeconomic factors affecting private equity, including interest rate cycles, inflation, the Fed's monetary policy, and broader market conditions since 2021. These macro trends are integral to understanding the 'harsh cycle' that Griffin predicted and navigated.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "ben-horowitz-bac-u76tvy-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz - Backing America’s Future - [Invest Like the Best, EP.457]",
+                    "content_type": "podcast_episodes",
+                    "id": "8J6RebmD7AJYJeJJGFdK",
+                    "publish_date": "2026-02-03T09:00:00+00:00",
+                    "query_doc_id": "asmb-8cb9cd3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "Discussion covers the changing nature of public markets, how companies now stay private longer, and the broader economic implications of AI adoption. Horowitz touches on market dynamics, valuation changes, and America's economic competitiveness in the global context.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "bridge-ceo-zach--mv5wf1-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Bridge CEO Zach Abrams: Stablecoins Are The Next Platform for Money",
+                    "content_type": "podcast_episodes",
+                    "id": "vrI3fDmVmfTqQHjLXJBY",
+                    "publish_date": "2026-02-02T20:50:32+00:00",
+                    "query_doc_id": "asmb-add2c0fe-8dd3-4721-b392-deb9e382e065",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "The conversation touches on broader financial trends, comparing stablecoins to the historical adoption of credit cards, discussing payment velocity increases, and market evolution patterns. These macro themes provide important context for understanding the stablecoin opportunity but are secondary to the main technical discussion.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "curated-credit-h-9ytjpn-plezme",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Curated Credit: How Maple and Morpho Approach DeFi Lending | Sid Powell & Merlin Egalite",
+                    "content_type": "podcast_episodes",
+                    "id": "WED5by5RcHjomGXRYxA7",
+                    "publish_date": "2026-02-02T16:09:00+00:00",
+                    "query_doc_id": "asmb-cebf855b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "0xresearch-ljplezme",
+                    "series_name": "0xResearch",
+                    "tag_context": "Significant portions discuss risk-adjusted returns, APY competition, market dynamics in lending, liquidity risks, and how traditional finance concepts apply to DeFi. The conversation extensively covers investment strategies, risk assessment, and market behavior patterns in the context of decentralized lending.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "david-solomon-be-we31ag-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "David Solomon & Ben Horowitz on Building Organizational Resilience & Navigating Macro Uncertainty",
+                    "content_type": "podcast_episodes",
+                    "id": "3pgRDmXo1Lspug8hZ4KK",
+                    "publish_date": "2026-02-02T15:21:43+00:00",
+                    "query_doc_id": "asmb-e09fcc3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Significant portions cover current macro conditions, with Solomon describing the 'sweet spot' environment of fiscal/monetary stimulus and capital investment cycles. The discussion includes predictions about M&A activity, IPO markets, and how AI is changing traditional investment leads and competitive advantages.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "logan-jastremski-0apndv-kl1x3i",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Logan Jastremski: Solana vs Hyperliquid - Who Wins The Global Exchange Race?",
+                    "content_type": "podcast_episodes",
+                    "id": "qpvBuVWyuX2aQbcNHcxX",
+                    "publish_date": "2026-02-02T13:00:53+00:00",
+                    "query_doc_id": "asmb-130c865b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-delphi-podca-kl1x3i",
+                    "series_name": "The Delphi Podcast",
+                    "tag_context": "Substantial coverage of market dynamics, revenue generation in crypto companies, the shift toward fundamentals-based valuations, and broader trading volume trends across global markets. The discussion includes analysis of how crypto fits into the broader financial ecosystem.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "capitalisms-endg-zivpbu-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Capitalism’s Endgame: The Last Companies That Will Ever Exist",
+                    "content_type": "podcast_episodes",
+                    "id": "2krquNQdsE0jw9zWkUVx",
+                    "publish_date": "2026-02-02T11:30:00+00:00",
+                    "query_doc_id": "asmb-41c69f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "The conversation is fundamentally about investment strategy and market analysis, presenting the 'Infinity Gauntlet of capitalism' framework for evaluating which companies will dominate future markets. Extensive analysis of major tech companies' valuations, competitive positioning, and investment potential forms the core thesis.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "jonathan-lewinso-2hjy4c-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Jonathan Lewinsohn – Credit Microcycles at Diameter (EP.484)",
+                    "content_type": "podcast_episodes",
+                    "id": "hgRv5DzGJ7SaThrRJ5sh",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-11fa845b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of credit markets, investment strategies, microcycles across industries, distressed debt investing, and comprehensive market analysis. The entire conversation revolves around credit investing and market dynamics across multiple sectors.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "501-spotting-the-xkstmg-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "501. Spotting the Next Big Thing, Why This Cycle Is Different, Acceptable vs Unacceptable Risk, and Why Duration Is a Feature Not a Bug (Jon Callaghan)",
+                    "content_type": "podcast_episodes",
+                    "id": "EJwC8Kp8Ta8IeS0wuTJA",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-d2a09f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "The discussion covers broader market cycles, valuation trends, the importance of timing in venture investing, and how different technology waves (Web2, cloud, mobile, AI) create investment opportunities. Callahan provides perspective on current market conditions and how they compare to previous cycles like the dot-com era.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "replay-jonathan--bpcjfd-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "[REPLAY] Jonathan Lewinsohn – Diameter Capital Partners (Manager Meetings, EP.05)",
+                    "content_type": "podcast_episodes",
+                    "id": "mVQ846hVgSGUw7WInj1U",
+                    "publish_date": "2026-02-02T08:30:00+00:00",
+                    "query_doc_id": "asmb-c3829f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "This is the primary focus of the conversation, covering credit investing strategies, market cycles, distressed debt investing, and portfolio management across different market environments. The discussion extensively covers investment philosophy, market dynamics, and specific investment approaches including the COVID-19 market response.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "250k-sde-acquisi-c0lk5t-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "$250k SDE Acquisition: Limited Downside, Big Upside",
+                    "content_type": "podcast_episodes",
+                    "id": "xLi5IFLgmR3WFZmsvO99",
+                    "publish_date": "2026-02-02T08:00:00+00:00",
+                    "query_doc_id": "asmb-f47ca51b-1d0b-4a3b-b53c-445774c9c29d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.5,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "The discussion touches on broader market trends including the supply-demand imbalance for small businesses in Finland, demographic trends with aging business owners seeking succession, and comparative analysis of acquisition markets between the US and Nordic countries. While supporting the main acquisition narrative, these macro themes provide important context for understanding the opportunity landscape.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+                    "content_type": "podcast_episodes",
+                    "id": "ATGX43Tnw3RpaimI1aSb",
+                    "publish_date": "2026-02-02T07:07:00+00:00",
+                    "query_doc_id": "asmb-00752bbd-63d0-492e-96bb-7508012a5355",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "The discussion touches on broader market conditions including the 2021 bubble, interest rate impacts, valuation multiples, and predictions about fund consolidation and market dynamics. While supporting the venture themes, these macro considerations provide important context for investment decisions.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "214-grid-resilie-fkdi8s-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "214. Grid Resilience: hot risks, cold solutions - Feb26",
+                    "content_type": "podcast_episodes",
+                    "id": "p1ue9USagHZJ9ALODnW5",
+                    "publish_date": "2026-02-02T04:50:07+00:00",
+                    "query_doc_id": "asmb-b302865b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "The discussion covers broader market trends including energy price dynamics, investment strategies for grid infrastructure, the economics of interconnectors, and market-based solutions for EV charging optimization. While supporting secondary themes, these economic and investment considerations are not the core focus but provide important context for grid resilience challenges.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "490-state-of-ai--77abw2-v783i7",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "#490 – State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI",
+                    "content_type": "podcast_episodes",
+                    "id": "1t3Bx5p8rAV1tV3Ol7Ty",
+                    "publish_date": "2026-02-01T02:46:43+00:00",
+                    "query_doc_id": "asmb-f873cb3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "lex-fridman-7mv783i7",
+                    "series_name": "Lex Fridman Podcast",
+                    "tag_context": "Discussion includes AI company valuations, massive compute investments, potential IPOs and acquisitions in the AI space, and the economics of training and serving AI models. The conversation explores market dynamics around AI development costs, business models, and investment patterns, though this supports rather than dominates the technical discussion.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "bits-bips-the-mo-in6at9-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Bits + Bips: The Most Dangerous Type of Asset to Trade on Weekends",
+                    "content_type": "podcast_episodes",
+                    "id": "rwYrp4WzBKUy9T62dBSH",
+                    "publish_date": "2026-02-01T00:14:00+00:00",
+                    "query_doc_id": "asmb-eb8ca41b-1d0b-4a3b-b53c-445774c9c29d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "Significant discussion about broader market trends including gold rallies, equity markets, Fed policy, derivatives trading, and the flight to quality from altcoins to mega-cap tokens. These macro themes are integral to understanding the current crypto market dynamics.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "20growth-how-wix-pzdjac-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20Growth: How Wix Built a $100M Marketing Machine | Why LTV is BS and Why Time Return On Investment is the Most Important Metric | How to 10x Your Growth: What is the Next Great Channel with Omer Shai, CMO @ Wix",
+                    "content_type": "podcast_episodes",
+                    "id": "gLqya4IPNSM392Aiy4yH",
+                    "publish_date": "2026-01-31T07:07:00+00:00",
+                    "query_doc_id": "asmb-c7009e39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "The conversation touches on market valuations, competitor funding rounds, investment strategies in marketing spend, and broader trends in the technology sector. While supporting the main growth discussion, these macro themes provide important context for understanding the competitive landscape and investment decisions.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "uneasy-money-how-je6uo5-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uneasy Money: How Ethereum May Have One-Upped Bitcoin in One Big Way",
+                    "content_type": "podcast_episodes",
+                    "id": "d2xkmBG0P6ir71h82mLV",
+                    "publish_date": "2026-01-30T23:49:00+00:00",
+                    "query_doc_id": "asmb-717ca6d3-1a07-4363-aa77-70ab650003de",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "The conversation touches on market dynamics around meme coins, pump.fun performance, the potential for AI-driven bull runs in crypto, and broader investment trends comparing AI stocks to crypto assets. These market trend discussions provide context for the main themes but are not central to the conversation.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "ice-chaos-in-min-93sipp-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "ICE Chaos in Minneapolis, Clawdbot Takeover, Why the Dollar is Dropping",
+                    "content_type": "podcast_episodes",
+                    "id": "NNOT2ZilW4aVGhRF5dMg",
+                    "publish_date": "2026-01-30T23:25:00+00:00",
+                    "query_doc_id": "asmb-7f365dd4-ffd9-48c5-8444-49202d752bf0",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "The hosts discuss dollar devaluation, rising gold and commodity prices, and the broader fiscal implications of government spending and money printing. They analyze how asset inflation benefits asset holders while leaving others behind, contributing to social unrest and populism.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "exclusive-brexs--s25erg-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Exclusive: Brex’s $5.15B Capital One Acquisition | CEO Pedro Franceschi",
+                    "content_type": "podcast_episodes",
+                    "id": "xslruUcWnikajkBsDHas",
+                    "publish_date": "2026-01-30T17:23:14+00:00",
+                    "query_doc_id": "asmb-4aa7afa9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The conversation touches on broader fintech market dynamics, public market comparisons for valuation benchmarking, and the convergence of private and public market valuations. Discussion includes how market conditions affected company strategy and the reset from ZIRP-era expectations.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "the-dawn-of-a-ne-u04a5e-58u8l6",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The dawn of a new DERcade",
+                    "content_type": "podcast_episodes",
+                    "id": "z8NdtarVVzCLuwbIztu5",
+                    "publish_date": "2026-01-30T16:58:14+00:00",
+                    "query_doc_id": "asmb-a36ae287-7faa-4d86-bf95-0ef07a4d5df1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "der-task-force-58u8l6",
+                    "series_name": "DER Task Force",
+                    "tag_context": "The conversation extensively covers energy market trends, the affordability crisis, load growth impacts, and how tech companies are becoming major energy players. They discuss supply chain constraints, market structure changes, and the broader economic implications of the energy transition.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "anyone-can-code--rad5dl-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "“Anyone Can Code Now” - Netlify CEO Talks AI Agents",
+                    "content_type": "podcast_episodes",
+                    "id": "x8AzFhjxasmWRXBYoMRA",
+                    "publish_date": "2026-01-30T11:00:00+00:00",
+                    "query_doc_id": "asmb-8faaa5d3-1a07-4363-aa77-70ab650003de",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation touches on broader market shifts, including the expansion of addressable markets from 17 million developers to 3 billion potential users, changing pricing models from recurring to usage-based, and the economic implications of AI democratizing software development. These trends support the main AI discussion but aren't the core focus.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "jeff-currie-on-t-duofrs-a97umq",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Jeff Currie on the Crazy Surge in Metals, And Why The Supercycle Has Years to Run",
+                    "content_type": "podcast_episodes",
+                    "id": "tFcS7YbYYT7mBq06LlkT",
+                    "publish_date": "2026-01-30T09:00:00+00:00",
+                    "query_doc_id": "asmb-647b825b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "odd-lots-doa97umq",
+                    "series_name": "Odd Lots",
+                    "tag_context": "This is the primary focus of the entire conversation, with extensive discussion of commodity supercycles, metals pricing (gold, silver, copper), market dynamics, investment flows, and broader economic trends. The conversation centers on understanding current market movements and long-term investment implications across commodity markets.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "rollup-gold-silv-yj0x83-9xtlb1",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "ROLLUP: Gold & Silver ATHs | Fidelity’s Stablecoin | Ethereum’s Quantum Pivot | Tether Buys Gold",
+                    "content_type": "podcast_episodes",
+                    "id": "dmclc2kiMlwzuaOo4ZEW",
+                    "publish_date": "2026-01-30T06:30:00+00:00",
+                    "query_doc_id": "asmb-60870cf2-60f2-4684-a553-1f6be43fc1a8",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "bankless-0b9xtlb1",
+                    "series_name": "Bankless",
+                    "tag_context": "Market trends dominate a significant portion of the discussion, particularly the unprecedented rise in gold and silver prices to all-time highs, Federal Reserve policy decisions, government shutdown risks, and the broader shift away from dollar reserves toward precious metals. The hosts extensively analyze these macro trends and their implications for crypto and traditional markets.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                },
+                {
+                    "content_id": "arc-boats-co-fou-i6ikx7-vlfy9x",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Arc Boats Co-Founder and CEO Mitch Lee",
+                    "content_type": "podcast_episodes",
+                    "id": "YaBr8gtEDHCjR89TKynW",
+                    "publish_date": "2026-01-30T05:00:00+00:00",
+                    "query_doc_id": "asmb-ac2c5cd4-ffd9-48c5-8444-49202d752bf0",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "watt-it-takes-vlfy9x",
+                    "series_name": "Watt It Takes",
+                    "tag_context": "The conversation touches on broader market trends around electrification, the marine industry's transition away from combustion engines, and Mitch's early personal investing experiences. While not the core focus, these themes support the discussion of ArcBoats' market opportunity and timing in the electrification trend.",
+                    "tag_meta": {
+                        "id": 3
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Macro, Investing & Market Trends",
+                    "tag_value_lower": "macro, investing & market trends"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

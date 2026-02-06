@@ -1,0 +1,251 @@
+{
+    "execution": "019c304a-e40e-74a8-b0b6-ba40ecd6cd91",
+    "output": {
+        "result": {
+            "n_fmt": "9",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "people",
+                "tag_value": "Patrick Collison"
+            },
+            "res": [
+                {
+                    "content_id": "alex-rampell-on--x20p4z-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Alex Rampell on Venture at Scale and Founder Incentives",
+                    "content_type": "podcast_episodes",
+                    "id": "hxdd8g2466RVjwTebZcc",
+                    "publish_date": "2026-01-12T21:10:00+00:00",
+                    "query_doc_id": "asmb-9df58216-1c30-4e2a-a3d8-f56fb593c27e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Patrick Collison is discussed as an example of a founder who studied the history of payment systems extensively, and Alex mentions passing on Stripe's early round when it was called Dev Payments.",
+                    "tag_meta": {
+                        "title": "Co-founder of Stripe"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "20vc-a16z-s-15bn-2mtyzf-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: a16z's $15BN Fundraise with Alex Rampell | The Best Companies Have Hostages Not Customers | The Best Founders Materialise Capital, Customers and Labour | Mid-Sized Funds with Die and The Future of Venture Capital",
+                    "content_type": "podcast_episodes",
+                    "id": "Ovo0GKYpfQg59DKaBDRd",
+                    "publish_date": "2026-01-12T07:07:00+00:00",
+                    "query_doc_id": "asmb-3496ba49-6d27-4269-9fdd-dac879850612",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Patrick Collison is discussed in the context of Alex's missed investment opportunity in Stripe's early rounds. Alex describes meeting Patrick and being impressed by his deep knowledge of payment systems history.",
+                    "tag_meta": {
+                        "title": "Co-founder of Stripe"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "inside-stripe-st-8tsdso-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Inside Stripe: Stablecoins, AI, and (not) Going Public | Will Gaybrick, President of Technology and Business at Stripe",
+                    "content_type": "podcast_episodes",
+                    "id": "yEh8cvmyouajkY3CA3N7",
+                    "publish_date": "2025-11-13T11:00:00+00:00",
+                    "query_doc_id": "asmb-8d49a565-3660-45be-8afa-1dea7c03fd98",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "Patrick Collison was discussed as Stripe's co-founder who recruited Will Gaybrick to join as CFO via text message, and was mentioned in relation to Stripe's founding story and early development.",
+                    "tag_meta": {
+                        "title": "Co-founder of Stripe"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "tobi-lutke-is-st-nvvfpg-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Tobi Lütke is still captivated by internet commerce, 20 years later",
+                    "content_type": "podcast_episodes",
+                    "id": "H4I616qJ1qBFPh1KInas",
+                    "publish_date": "2025-10-06T08:45:00+00:00",
+                    "query_doc_id": "asmb-d3496313-b361-421b-96ff-e31cc4f20780",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "Patrick Collison appears to be the host conducting the interview with Tobi Lütke. He asks questions and shares perspectives on topics like business partnerships, product development, and the relationship between Stripe and Shopify.",
+                    "tag_meta": {
+                        "title": "CEO of Stripe"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "20vc-general-cat-n47th2-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: General Catalyst CEO Hemant Taneja on The Future of Venture Capital: Chanel vs Walmart | Lessons Scaling GC to $40BN in AUM | Investing $5BN+ Into Stripe Over 14 Rounds | Investing Hundreds of Millions into Anthropic at $60BN Valuation",
+                    "content_type": "podcast_episodes",
+                    "id": "cPmYjFS8RzuVLEjupR8F",
+                    "publish_date": "2025-09-22T07:07:00+00:00",
+                    "query_doc_id": "asmb-f857f7cd-9cf4-4dd1-9c65-412b45255f90",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Patrick Collison was discussed as a notable founder that Hemant Taneja invested in early. Taneja described his first meeting with Patrick as particularly memorable and impactful, highlighting Stripe's growth and potential.",
+                    "tag_meta": {
+                        "title": "Co-founder of Stripe"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "20vc-the-most-in-6z57zq-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: The Most Insane Story in Startups: Airwallex: The Angel That Turned $1M into $1BN | The Fund That Pulled a Term Sheet & Lost $1BN | Rejecting Stripe's $1.2BN Offer | Scaling to $1BN in Revenue & 100% YoY Growth for 8 Years with Jack Zhang",
+                    "content_type": "podcast_episodes",
+                    "id": "hCMsFRy58pCiNxDCVnR1",
+                    "publish_date": "2025-05-27T11:09:00+00:00",
+                    "query_doc_id": "asmb-160ff836-23c7-44ff-be5a-4252d4c926db",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Patrick Collison was discussed in the context of Stripe's acquisition offer to Airwallex. Jack described meeting with Patrick and being impressed by his intelligence and vision, which influenced Jack's decision to continue building Airwallex independently.",
+                    "tag_meta": {
+                        "title": "Co-founder and CEO of Stripe"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "the-stablecoin-f-ddt3ka-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Stablecoin Future, Milei's Memecoin, DOGE for the DoD, Grok 3, Why Stripe Stays Private",
+                    "content_type": "podcast_episodes",
+                    "id": "9L0aOSvJHs7Dw0phypNW",
+                    "publish_date": "2025-02-21T23:41:00+00:00",
+                    "query_doc_id": "asmb-9ee1c15d-c970-4c51-9102-4039440f4204",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Patrick Collison is a guest on the episode and one of the co-founders of Stripe. He discusses Stripe's business model, their decision to remain private, and their involvement in stablecoins and financial technology.",
+                    "tag_meta": {
+                        "title": "Co-founder of Stripe"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "tyler-cowen-the--3w5pnq-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Tyler Cowen - the #1 bottleneck to AI progress is humans",
+                    "content_type": "podcast_episodes",
+                    "id": "YBwNF6cPhCSbhkKEOZUR",
+                    "publish_date": "2025-01-09T16:25:21+00:00",
+                    "query_doc_id": "asmb-cbf1de74-a64b-4b02-a98c-fcdfbd9c1844",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Patrick Collison was mentioned multiple times in relation to progress studies and his views on talent concentration. Tyler discussed and sometimes disagreed with Patrick's perspectives.",
+                    "tag_meta": {
+                        "title": ""
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                },
+                {
+                    "content_id": "patrick-collison-ex9v1n-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Patrick Collison — Why Silicon Valley's most talented should leave",
+                    "content_type": "podcast_episodes",
+                    "id": "sXrqaCIJaeg6Fl2nzoyg",
+                    "publish_date": "2024-02-21T15:25:58+00:00",
+                    "query_doc_id": "asmb-fce993b9-3ec3-490c-8588-49bb7e9b6e27",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Patrick Collison is the main guest and primary speaker throughout the entire podcast, discussing his views on career advice, Stripe's development, the ARC Institute, progress studies, and various other topics in depth.",
+                    "tag_meta": {
+                        "title": "CEO of Stripe"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Patrick Collison",
+                    "tag_value_lower": "patrick collison"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

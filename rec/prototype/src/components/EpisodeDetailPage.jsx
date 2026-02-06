@@ -4,7 +4,7 @@
  * Shows full episode details including:
  * - Title, series, published date
  * - All scores (credibility, insight, information, entertainment)
- * - Key insights from critical_views
+ * - Key insights
  * - Entities mentioned with context
  * - Categories
  * - POV status (contrarian/consensus)
@@ -109,30 +109,29 @@ export default function EpisodeDetailPage({ episode, onBack, onBookmark }) {
     categories, 
     entities,
     people,
-    key_insight, 
-    critical_views,
-    search_relevance_score,
-    aggregate_score,
-    top_in_categories
+    key_insight,
   } = episode;
   
-  // Determine POV status
-  const getPOVStatus = () => {
-    if (!critical_views) return { label: 'Consensus', color: 'text-slate-400', bg: 'bg-slate-700' };
-    if (critical_views.non_consensus_level === 'highly_non_consensus') {
-      return { label: 'Highly Contrarian', color: 'text-orange-400', bg: 'bg-orange-500/20' };
+  // Determine quality status based on scores
+  const getQualityStatus = () => {
+    const c = scores?.credibility || 0;
+    const i = scores?.insight || 0;
+    if (c >= 3 && i >= 3) {
+      return { label: 'High Quality', color: 'text-purple-400', bg: 'bg-purple-500/20' };
     }
-    if (critical_views.has_critical_views) {
-      return { label: 'Contrarian', color: 'text-yellow-400', bg: 'bg-yellow-500/20' };
+    if (c >= 3) {
+      return { label: 'High Credibility', color: 'text-yellow-400', bg: 'bg-yellow-500/20' };
     }
-    return { label: 'Consensus', color: 'text-slate-400', bg: 'bg-slate-700' };
+    if (i >= 3) {
+      return { label: 'High Insight', color: 'text-indigo-400', bg: 'bg-indigo-500/20' };
+    }
+    return { label: 'Standard', color: 'text-slate-400', bg: 'bg-slate-700' };
   };
   
-  const pov = getPOVStatus();
+  const qualityBadge = getQualityStatus();
   
   // Get key insights text
-  const keyInsightsText = critical_views?.key_insights || key_insight || null;
-  const newIdeasSummary = critical_views?.new_ideas_summary || null;
+  const keyInsightsText = key_insight || null;
   
   return (
     <div className="max-w-4xl mx-auto pb-12">
@@ -166,17 +165,12 @@ export default function EpisodeDetailPage({ episode, onBack, onBookmark }) {
           </div>
         </div>
         
-        {/* POV Badge and Action Buttons */}
+        {/* Quality Badge and Action Buttons */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${pov.bg} ${pov.color}`}>
-              {pov.label}
+            <span className={`px-3 py-1 rounded-full text-sm font-medium ${qualityBadge.bg} ${qualityBadge.color}`}>
+              {qualityBadge.label}
             </span>
-            {top_in_categories?.map(cat => (
-              <span key={cat} className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded">
-                Top in {cat}
-              </span>
-            ))}
           </div>
           <button
             onClick={() => onBookmark?.(episode)}
@@ -232,22 +226,6 @@ export default function EpisodeDetailPage({ episode, onBack, onBookmark }) {
             }
           </p>
         </div>
-        
-        {/* Additional Scores */}
-        {(search_relevance_score !== null || aggregate_score !== null) && (
-          <div className="mt-4 flex gap-4 text-sm">
-            {search_relevance_score !== null && (
-              <div className="text-slate-400">
-                Search Relevance: <span className="text-white">{(search_relevance_score * 100).toFixed(0)}%</span>
-              </div>
-            )}
-            {aggregate_score !== null && (
-              <div className="text-slate-400">
-                Aggregate Score: <span className="text-white">{(aggregate_score * 100).toFixed(1)}%</span>
-              </div>
-            )}
-          </div>
-        )}
       </div>
       
       {/* Key Insights */}
@@ -257,20 +235,6 @@ export default function EpisodeDetailPage({ episode, onBack, onBookmark }) {
           <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
             <p className="text-slate-200 whitespace-pre-wrap leading-relaxed">
               {keyInsightsText}
-            </p>
-          </div>
-        </div>
-      )}
-      
-      {/* Contrarian Analysis */}
-      {newIdeasSummary && (
-        <div className="p-6 border-b border-slate-700">
-          <h2 className="text-lg font-semibold text-white mb-4">
-            <span className="text-orange-400">🔥</span> Contrarian Analysis
-          </h2>
-          <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
-            <p className="text-slate-200 whitespace-pre-wrap leading-relaxed text-sm">
-              {newIdeasSummary}
             </p>
           </div>
         </div>
@@ -349,8 +313,7 @@ export default function EpisodeDetailPage({ episode, onBack, onBookmark }) {
           <p><span className="text-slate-500">ID:</span> {episode.id}</p>
           <p><span className="text-slate-500">Content ID:</span> {episode.content_id}</p>
           <p><span className="text-slate-500">Series ID:</span> {series?.id}</p>
-          <p><span className="text-slate-500">Has Critical Views:</span> {critical_views ? 'Yes' : 'No'}</p>
-          <p><span className="text-slate-500">Non-Consensus Level:</span> {critical_views?.non_consensus_level || 'N/A'}</p>
+          <p><span className="text-slate-500">Quality:</span> {qualityBadge.label}</p>
         </div>
       </div>
     </div>

@@ -1,0 +1,329 @@
+{
+    "execution": "019c3048-cdc3-7357-95e9-61980b25ca78",
+    "output": {
+        "result": {
+            "n_fmt": "12",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "people",
+                "tag_value": "Satya Nadella"
+            },
+            "res": [
+                {
+                    "content_id": "microsoft-ceo-sa-vfm2da-jegter",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Microsoft CEO Satya Nadella on AI's Business Revolution: What Happens to SaaS, OpenAI, and Microsoft? | LIVE from Davos",
+                    "content_type": "podcast_episodes",
+                    "id": "R3aQQwEPDtFhTR6jgMdc",
+                    "publish_date": "2026-01-21T21:16:00+00:00",
+                    "query_doc_id": "asmb-c1fab0bd-c23a-4cb3-acf5-0cf46e7127a9",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "all-in-with-cham-jegter",
+                    "series_name": "All-In with Chamath, Jason, Sacks & Friedberg",
+                    "tag_context": "Satya Nadella was the primary guest and main speaker throughout the entire interview, discussing Microsoft's AI strategy, business transformation, and his leadership approach. The conversation centered around his vision for AI integration in knowledge work and Microsoft's competitive positioning.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "satya-nadella-de-64klet-y5dzsl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Satya Nadella describes how lessons from Microsoft’s history apply to today’s boom",
+                    "content_type": "podcast_episodes",
+                    "id": "3Um8zojJs1vZnKI4am3z",
+                    "publish_date": "2025-11-18T09:45:00+00:00",
+                    "query_doc_id": "asmb-cade10b0-f308-46ed-bfc5-7b1068aba4da",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "cheeky-pint-y9y5dzsl",
+                    "series_name": "Cheeky Pint",
+                    "tag_context": "Satya Nadella is the primary guest and speaker throughout the interview, discussing Microsoft's AI strategy, his leadership philosophy, and the company's evolution under his tenure since 2014.",
+                    "tag_meta": {
+                        "title": "Microsoft CEO"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "satya-nadella-ho-c85dbg-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Satya Nadella — How Microsoft is preparing for AGI",
+                    "content_type": "podcast_episodes",
+                    "id": "qja6pBJZzLzOlWV26jHt",
+                    "publish_date": "2025-11-12T17:03:08+00:00",
+                    "query_doc_id": "asmb-f9b717c4-597e-4ac8-809b-a0e5634c425f",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Satya Nadella is the primary guest and main speaker throughout the interview, discussing Microsoft's AI strategy, data center infrastructure, partnerships with OpenAI, and the company's approach to AGI development.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "all-things-ai-w--0jq5hy-z8macx",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "All things AI w @altcap @sama & @satyanadella. A Halloween Special. 🎃🔥BG2 w/ Brad Gerstner",
+                    "content_type": "podcast_episodes",
+                    "id": "kapzlojSyYsdsXqQCpiG",
+                    "publish_date": "2025-10-31T23:11:44+00:00",
+                    "query_doc_id": "asmb-c89997d1-d6ac-4f99-9579-f61a32e9ad4e",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "bg2-with-brad-ge-z8macx",
+                    "series_name": "BG2Pod with Brad Gerstner and Bill Gurley ",
+                    "tag_context": "Satya Nadella was the other primary guest and remained for the entire podcast after Sam left partway through. He discussed Microsoft's investment in OpenAI, Azure growth, AI infrastructure, and the strategic partnership between the companies in great detail.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "ben-horowitz-and-7b25mw-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz and Ali Ghodsi: How to Run a Billion-Dollar Business",
+                    "content_type": "podcast_episodes",
+                    "id": "Qzsm1ZapVEjXqMjHdtLj",
+                    "publish_date": "2025-10-15T10:00:00+00:00",
+                    "query_doc_id": "asmb-9d5bef8e-f20d-408e-81d8-375d1dd39899",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Satya Nadella was central to the Microsoft partnership deal that was game-changing for Databricks. Ben facilitated the introduction, and Satya's leadership style enabled the partnership that put Databricks on the map.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "20vc-figma-s-250-575tqg-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "20VC: Figma's 250% Pop - The Greatest IPO Mispricing Ever | Meta and Microsoft Blowout Quarters: Broken Down | Cognition Raises at $15BN and Ramp at $22BN | CRV Downsizing and What It Means for LPs and GPs",
+                    "content_type": "podcast_episodes",
+                    "id": "ELwClDxMrf2ksD0v1i2d",
+                    "publish_date": "2025-08-07T07:07:00+00:00",
+                    "query_doc_id": "asmb-cdcfa576-d6c5-47ea-9c97-06966b9ca373",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Satya Nadella was discussed in the context of Microsoft's strong performance and his leadership in navigating the company through AI advancements. His approach to partnerships, particularly with OpenAI, was highlighted.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "travis-uber-come-bywsp0-wz54fi",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Travis’ Uber Comeback, AGI’s Stakes, Meta’s $100M AI Hires & Prediction Market Gold Rush | E2144",
+                    "content_type": "podcast_episodes",
+                    "id": "CeeDZ98xx8bcfYb9cO2Z",
+                    "publish_date": "2025-06-27T21:10:42+00:00",
+                    "query_doc_id": "asmb-382c1a8a-3cf5-4e02-8c93-758d8ab640dd",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "this-week-in-sta-wz54fi",
+                    "series_name": "This Week in Startups",
+                    "tag_context": "Satya Nadella is discussed in relation to Microsoft's partnership with OpenAI and the ongoing negotiations regarding AGI definitions and technology sharing. His strategic approach to the AI race is analyzed.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "he-bought-a-loca-8xmui1-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "He Bought a Local Newspaper… Now He Makes $600K/YR",
+                    "content_type": "podcast_episodes",
+                    "id": "7rGD74myEPiW4lb014n5",
+                    "publish_date": "2025-06-27T14:17:00+00:00",
+                    "query_doc_id": "asmb-19efbced-6078-444f-8b2d-7000531c08fa",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.5,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "Satya Nadella was discussed in the context of a story told by Steve Ballmer. The story highlighted Nadella's willingness to give up power to bring in talented individuals, which impressed Ballmer and influenced his decision to support Nadella as CEO.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "ceo-of-microsoft-e41984-1sd4iq",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "CEO of Microsoft on AI Agents & Quantum",
+                    "content_type": "podcast_episodes",
+                    "id": "E6fs3lI3rI98J7hBr96H",
+                    "publish_date": "2025-03-07T15:16:27+00:00",
+                    "query_doc_id": "asmb-68495d96-0345-40d0-831a-8b266377fd2e",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "minus-one-by-sou-1sd4iq",
+                    "series_name": "Minus One by South Park Commons",
+                    "tag_context": "Satya Nadella was the primary guest and focus of the conversation. He discussed Microsoft's history, his leadership as CEO, the company's approach to AI and quantum computing, and his views on the future of technology and education.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "satya-nadella-mi-n8lgjz-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Satya Nadella – Microsoft’s AGI Plan & Quantum Breakthrough",
+                    "content_type": "podcast_episodes",
+                    "id": "ds5yvSl5uq0JitBDpWmv",
+                    "publish_date": "2025-02-19T15:51:23+00:00",
+                    "query_doc_id": "asmb-6ad26574-022c-4534-bffd-aefc2c4fa6fa",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Satya Nadella was the primary guest on the podcast, discussing Microsoft's breakthroughs in quantum computing and AI, as well as his views on the future of technology, Microsoft's strategy, and the potential impact of AI on society and the economy.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "229-former-ceo-a-0tvr67-fw7dbr",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "#229 Former CEO Activision Blizzard, Bobby Kotick w/ Bing Gordon: Change the Game",
+                    "content_type": "podcast_episodes",
+                    "id": "ljq8JzrxnRLL6zT9LQ6l",
+                    "publish_date": "2025-02-10T08:30:00+00:00",
+                    "query_doc_id": "asmb-01f05ccf-0775-425d-ae3a-f05871d5d11e",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "grit-by-kleiner--fw7dbr",
+                    "series_name": "Grit by Kleiner Perkins",
+                    "tag_context": "Satya Nadella was discussed in relation to Microsoft's acquisition of Activision Blizzard. Kotick shared his impressions of Nadella as a CEO and their interactions during the acquisition process.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                },
+                {
+                    "content_id": "nat-friedman-rea-8h33a5-6fptkm",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Nat Friedman - Reading Ancient Scrolls, Open Source, & AI",
+                    "content_type": "podcast_episodes",
+                    "id": "vrkpMzMwBH3T85Z2vwpu",
+                    "publish_date": "2023-03-22T11:15:00+00:00",
+                    "query_doc_id": "asmb-2e3d5a03-8882-41a6-a0e0-2553079a44a6",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "dwarkesh-podcast-6fptkm",
+                    "series_name": "Dwarkesh Podcast",
+                    "tag_context": "Satya Nadella was mentioned multiple times in the context of Microsoft's acquisition of GitHub. Nat Friedman described Nadella's leadership and decision-making process, particularly regarding the GitHub acquisition and Microsoft's investment in OpenAI.",
+                    "tag_meta": {
+                        "title": "CEO of Microsoft"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Satya Nadella",
+                    "tag_value_lower": "satya nadella"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

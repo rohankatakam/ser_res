@@ -272,14 +272,12 @@ export default function ForYouPage({
 }
 
 function RecommendationCard({ episode, onView, onBookmark, onNotInterested }) {
-  const { title, series, published_at, scores, key_insight, critical_views, similarity_score, queue_position, categories } = episode;
+  const { title, series, published_at, scores, key_insight, similarity_score, queue_position, categories, badges } = episode;
   
   const formatDate = (dateString) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
-  
-  const isContrarian = critical_views?.has_critical_views || critical_views?.non_consensus_level;
   
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden hover:border-indigo-500/50 transition-colors">
@@ -299,9 +297,9 @@ function RecommendationCard({ episode, onView, onBookmark, onNotInterested }) {
               {(similarity_score * 100).toFixed(0)}% match
             </span>
           )}
-          {isContrarian && (
-            <span className="text-xs px-2 py-1 bg-orange-500/20 text-orange-400 rounded">
-              Contrarian
+          {badges?.includes('high_insight') && (
+            <span className="text-xs px-2 py-1 bg-purple-500/20 text-purple-400 rounded">
+              High Insight
             </span>
           )}
           <span className="text-xs text-slate-500 ml-auto">{formatDate(published_at)}</span>

@@ -1,0 +1,1318 @@
+{
+    "execution": "019c3041-2bf2-79e4-902b-a158fa9a0c27",
+    "output": {
+        "result": {
+            "n_fmt": "Top 50",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "pub_after": "2025-11-08",
+                "tag_type": "categories",
+                "tag_value": "Venture & Private Markets"
+            },
+            "res": [
+                {
+                    "content_id": "distressed-buyer-onjbz8-qw2kdl",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Distressed Buyer H.I.G. Sees Most Loan Distress in Years (Podcast)",
+                    "content_type": "podcast_episodes",
+                    "id": "iQc10XZZr5hnDnwhxuRt",
+                    "publish_date": "2026-02-05T21:00:00+00:00",
+                    "query_doc_id": "asmb-5ea5b5a9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "the-credit-edge--qw2kdl",
+                    "series_name": "The Credit Edge by Bloomberg Intelligence",
+                    "tag_context": "Private credit markets and special situations investing form a core theme, with extensive discussion of private credit stress, distress opportunities, leverage buyouts, and alternative investment strategies. This represents a major portion of the conversation as Jackson Craig discusses HIG's private market activities and the evolution of private credit.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "the-chopping-blo-238c0l-wzdo9j",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud, and Tarun's Epstein Files Cameo",
+                    "content_type": "podcast_episodes",
+                    "id": "vrdJx6BNfkyxFhgOMal6",
+                    "publish_date": "2026-02-05T17:08:00+00:00",
+                    "query_doc_id": "asmb-821a10b7-03f7-4d8d-ae51-8091fc9fb469",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "unchained-y2wzdo9j",
+                    "series_name": "Unchained",
+                    "tag_context": "There's extensive discussion about founder secondary sales, the morality and economics of taking money off the table before product-market fit, and VC perspectives on these transactions. The conversation includes detailed analysis of specific cases like Farcaster and broader principles around startup financing.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "how-duo-security-kfca1m-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "How Duo Security went Zero to $1B ARR in Ann Arbor | Dug Song, Jon Oberheide",
+                    "content_type": "podcast_episodes",
+                    "id": "X9V2tc18MmM3WMtHBvF4",
+                    "publish_date": "2026-02-05T11:00:01+00:00",
+                    "query_doc_id": "asmb-d9cb6102-9eb1-44dd-abf8-8c56863d6c98",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "Significant portions cover fundraising rounds, investor relationships, valuation discussions, and the M&A process with Cisco. The conversation includes detailed analysis of capital efficiency, burning only $14M to reach $100M ARR, and strategic decisions around staying in Michigan versus moving to Silicon Valley for funding.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "inside-6-8b-aum--4r3ypb-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Inside $6.8B+ AUM Fund Behind 80+ Public Companies, 165+ M&A",
+                    "content_type": "podcast_episodes",
+                    "id": "FmqFET9tSSrO94B0qtzd",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-c1136418-acda-46f4-a645-1d41d7f1d092",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of venture capital investment strategies, portfolio management, fund structures (including the Anthology fund with Anthropic), deal evaluation criteria, and the speaker's role as a partner at Menlo Ventures. The conversation centers around VC practices and investment philosophy throughout.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-91e2qq-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "3qbMsfKR6uIfWL9vNyTx",
+                    "publish_date": "2026-02-05T11:00:00+00:00",
+                    "query_doc_id": "asmb-75a808d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Significant discussion covers venture capital investment strategies in AI, the structure of VC funding rounds, A16Z's infrastructure investment approach, and how private markets are evolving with companies staying private longer. Martin Casado's role as a VC partner provides extensive insight into private market dynamics.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "investor-stories-3c74ar-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Investor Stories 457: Lessons for Early Career VCs: Fiduciary Mindset, Power Law Discipline, and Personal Edge (Dash, Okike, Hudson)",
+                    "content_type": "podcast_episodes",
+                    "id": "wxhYsgWgaG5KemdIENHa",
+                    "publish_date": "2026-02-05T09:00:00+00:00",
+                    "query_doc_id": "asmb-835456c6-ee7d-457f-909e-ee71c0bbd299",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "This is the primary focus of the entire episode, featuring three venture capitalists sharing advice specifically for early-career VCs. The discussion centers on fundamental venture capital concepts including liquidity considerations, power law dynamics, portfolio construction, and investment decision-making processes.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "brendan-o-connor-0go7xz-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Brendan O'Connor – Alpha Opportunities in Australia at Regal Partners (EP.485)",
+                    "content_type": "podcast_episodes",
+                    "id": "F8JjU5d6CvuslgeY2VEM",
+                    "publish_date": "2026-02-05T09:00:00+00:00",
+                    "query_doc_id": "asmb-a19659d7-dda6-45e7-a199-0694a2d3170c",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "Significant discussion about private market investing, including growth equity strategies, pre-IPO investments, credit and royalties, and alternative asset management. Brendan discusses Regal's role as the largest pre-IPO investor in Australia and their multi-strategy approach across private markets, representing a substantial portion of their business model.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "sba-deal-structu-in630g-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "SBA Deal Structuring to Manage Risk in a Cyclical Industry",
+                    "content_type": "podcast_episodes",
+                    "id": "ljYKzlTZEKaaeyfZ88dq",
+                    "publish_date": "2026-02-05T08:00:00+00:00",
+                    "query_doc_id": "asmb-9a486102-9eb1-44dd-abf8-8c56863d6c98",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Andrew's self-funded search process, SBA loan structuring, business acquisition strategy, and deal mechanics. The discussion extensively covers private market dynamics, acquisition financing, equity structures, and risk management in small business purchases.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "20vc-spacex-comp-60zqma-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: SpaceX Completes Acquisition of xAI | The 2026 SaaS Massacre: Public Market Collapse | Microsoft's $360 Billion Market Cap Loss | NVIDIA's $100BN Investment Dispute with OpenAI | Waymo Raises $16 Billion at a $110 Billion Valuation",
+                    "content_type": "podcast_episodes",
+                    "id": "kbGCH0QvC6Tb3t7myipH",
+                    "publish_date": "2026-02-05T07:07:00+00:00",
+                    "query_doc_id": "asmb-ef51d03d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Significant discussion centers on venture capital strategies, including how VCs are adapting to extreme growth rate disparities, the challenge of portfolio management when some companies grow 10x while others grow 2x, and the 'rehabilitation of the IPO' as private capital becomes insufficient. The speakers analyze investment decisions and fund management in this new environment.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "uncapped-41-the--857931-7hzkh1",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Uncapped #41 | The Benchmark Partnership",
+                    "content_type": "podcast_episodes",
+                    "id": "G7mCaIvoiCQIYXBGU95q",
+                    "publish_date": "2026-02-04T10:00:00+00:00",
+                    "query_doc_id": "asmb-5d8e5342-c209-40e6-8185-77887ee3f4c2",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "uncapped-with-ja-7hzkh1",
+                    "series_name": "Uncapped with Jack Altman",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of Benchmark's investment philosophy, partnership structure, decision-making processes, and approach to working with entrepreneurs. The entire conversation centers around venture capital practices and strategies.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "michael-ovitz-th-9m6kmh-25mkw4",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Michael Ovitz: The Business of Relationships",
+                    "content_type": "podcast_episodes",
+                    "id": "kbkC4okBsbHzQ2llAdri",
+                    "publish_date": "2026-02-03T11:00:00+00:00",
+                    "query_doc_id": "asmb-f62206d3-3666-46fd-81db-61bd94a9782f",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "knowledge-projec-25mkw4",
+                    "series_name": "The Knowledge Project with Shane Parrish",
+                    "tag_context": "Significant portions discuss Ovitz's transition to tech investing since 1993, his investment philosophy, working with VCs like Andreessen Horowitz, and evaluating startup opportunities. The conversation covers his approach to packaging deals and supporting portfolio companies, making this integral to understanding his current work.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+                    "content_type": "podcast_episodes",
+                    "id": "PkYjeaPx0xbs5prnPEy9",
+                    "publish_date": "2026-02-03T11:00:00+00:00",
+                    "query_doc_id": "asmb-d1cff00f-d638-4efc-b4c2-70251f6bf028",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "Martin Casado extensively discusses his role as a venture capitalist at A16Z, investment strategies in AI infrastructure, the structure of venture funding rounds, and how private markets are evolving with companies staying private longer. This provides important context for understanding the investment landscape driving AI development.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "whats-the-future-h650x8-m3369e",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "What’s the Future of Vertical SaaS in an AGI World? Jamie Cuffe, CEO of Pace",
+                    "content_type": "podcast_episodes",
+                    "id": "puegBOTspvval5Y3v74F",
+                    "publish_date": "2026-02-03T10:00:00+00:00",
+                    "query_doc_id": "asmb-ceb9af3f-6e46-4596-ab74-af431be77395",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "training-data-by-m3369e",
+                    "series_name": "Training Data",
+                    "tag_context": "The conversation touches on venture capital perspectives through Jamie's experience as a Sequoia intern, the relationship with investors, and insights about what VCs look for in AI companies. While not the core focus, it provides meaningful context about the investment landscape for AI startups and the importance of investor-founder relationships.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "ben-horowitz-bac-u76tvy-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz - Backing America’s Future - [Invest Like the Best, EP.457]",
+                    "content_type": "podcast_episodes",
+                    "id": "ZO1wTqkFSdwpiHHOI8Dx",
+                    "publish_date": "2026-02-03T09:00:00+00:00",
+                    "query_doc_id": "asmb-8cb9cd3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "The conversation extensively covers Andreessen Horowitz's founding story, investment philosophy, scaling challenges, and approach to building a venture firm. Horowitz discusses the evolution of venture capital, their unique positioning strategy, and how AI is changing investment dynamics and company valuations.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "spotting-the-dow-wqlsyx-ne8510",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Spotting the Downturn Early and Coming Out Ahead w/ Gryphon's David Andrews",
+                    "content_type": "podcast_episodes",
+                    "id": "OuJJq9vaRdlLuOli4ZqD",
+                    "publish_date": "2026-02-03T09:00:00+00:00",
+                    "query_doc_id": "asmb-a7d7a039-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "stars",
+                    "score": 0.85,
+                    "series_id": "dry-powder-the-p-ne8510",
+                    "series_name": "Dry Powder: The Private Equity Podcast",
+                    "tag_context": "This is the primary focus of the entire conversation, with David Andrews discussing Griffin Investors' private equity strategies, portfolio management, deal flow, exits, and fundraising challenges. The discussion centers on private equity cycles, DPI performance, and navigating the current market environment.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "ai-vs-humans-mat-t0tqs1-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "AI vs Humans: Math Superintelligence Is Here",
+                    "content_type": "podcast_episodes",
+                    "id": "tBiKa6NpACwNz95ljXDw",
+                    "publish_date": "2026-02-02T15:38:49+00:00",
+                    "query_doc_id": "asmb-c9dbff3b-49d5-4343-bc9a-ae7730740e3c",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Significant portions discuss investment decisions, particularly the $800 million investment in X and detailed analysis of the Harmonic investment. The speaker explains investment thesis, due diligence processes, and how to evaluate founders and differentiated approaches in the AI space.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "david-solomon-be-we31ag-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "David Solomon & Ben Horowitz on Building Organizational Resilience & Navigating Macro Uncertainty",
+                    "content_type": "podcast_episodes",
+                    "id": "pJaTXfKwXETda4IaeZ4N",
+                    "publish_date": "2026-02-02T15:21:43+00:00",
+                    "query_doc_id": "asmb-e09fcc3d-e567-45be-84c3-3bed402e02dd",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Horowitz extensively discusses Andreessen Horowitz's evolution from startup to becoming the largest VC firm by capital raised (18.3% of US venture capital). The conversation covers venture capital strategy, the changing dynamics of startup competition in the AI era, and how companies are achieving unprecedented growth rates.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "logan-jastremski-0apndv-kl1x3i",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Logan Jastremski: Solana vs Hyperliquid - Who Wins The Global Exchange Race?",
+                    "content_type": "podcast_episodes",
+                    "id": "6kU7uTsT6AXIjBnHyjiX",
+                    "publish_date": "2026-02-02T13:00:53+00:00",
+                    "query_doc_id": "asmb-130c865b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-delphi-podca-kl1x3i",
+                    "series_name": "The Delphi Podcast",
+                    "tag_context": "Significant discussion about Logan's fund Frictionless, their investment thesis evolution from Fund 1 to Fund 2, portfolio companies like Backpack and Axiom, and venture capital strategies in crypto. The conversation frequently touches on how they evaluate and invest in blockchain companies.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "501-spotting-the-xkstmg-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "501. Spotting the Next Big Thing, Why This Cycle Is Different, Acceptable vs Unacceptable Risk, and Why Duration Is a Feature Not a Bug (Jon Callaghan)",
+                    "content_type": "podcast_episodes",
+                    "id": "7rkYDt4bwAj1ArNpnVlN",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-d2a09f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of venture capital investment strategies, early-stage investing, portfolio construction, fund performance metrics like DPI vs TVPI, and the venture capital business model. John Callahan shares deep insights from his 20+ years in VC and True Ventures' approach to building a successful early-stage firm.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "jonathan-lewinso-2hjy4c-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Jonathan Lewinsohn – Credit Microcycles at Diameter (EP.484)",
+                    "content_type": "podcast_episodes",
+                    "id": "RDAwuvddFAFkbgD3fWf6",
+                    "publish_date": "2026-02-02T09:00:00+00:00",
+                    "query_doc_id": "asmb-11fa845b-4cdb-465b-9d50-4fc1702c7329",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "Private credit, direct lending, CLOs, and capital solutions are integral to several major discussion points throughout the conversation. The guest explains Diameter's evolution into private markets and discusses the growth and risks in the private credit industry extensively.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "replay-jonathan--bpcjfd-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "[REPLAY] Jonathan Lewinsohn – Diameter Capital Partners (Manager Meetings, EP.05)",
+                    "content_type": "podcast_episodes",
+                    "id": "F2EFTHqWxMXuMAJaqlQD",
+                    "publish_date": "2026-02-02T08:30:00+00:00",
+                    "query_doc_id": "asmb-c3829f39-577e-4ce1-9bb1-821cb290ccbf",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.7,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "Significant discussion about hedge fund formation, early-stage manager investing, and the institutional investor perspective on backing new funds. The conversation covers Evanston Capital's approach to day-one investing in Diameter Capital and the challenges of launching and scaling a hedge fund.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "250k-sde-acquisi-c0lk5t-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "$250k SDE Acquisition: Limited Downside, Big Upside",
+                    "content_type": "podcast_episodes",
+                    "id": "OnKqA6yuIdV8UAg6xNTr",
+                    "publish_date": "2026-02-02T08:00:00+00:00",
+                    "query_doc_id": "asmb-f47ca51b-1d0b-4a3b-b53c-445774c9c29d",
+                    "rel_icon": "stars",
+                    "score": 0.7,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "This is the primary focus of the entire conversation, covering Vilay's acquisition of a Finnish cattle brush manufacturing company for 2x SDE, the deal structure with 80% government-backed debt financing, and detailed discussion of the ETA (Entrepreneurship Through Acquisition) market in Finland. The conversation extensively covers acquisition financing, valuation, deal mechanics, and market dynamics for small business acquisitions.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+                    "content_type": "podcast_episodes",
+                    "id": "JSRpqGTmtRZMYyWbDA6q",
+                    "publish_date": "2026-02-02T07:07:00+00:00",
+                    "query_doc_id": "asmb-00752bbd-63d0-492e-96bb-7508012a5355",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "This is the primary focus of the conversation, covering Oren Zeev's venture capital philosophy, fund structure with zero management fees and 30% carry, investment strategies, LP relationships, and extensive discussion of venture market dynamics. The entire interview centers around venture capital practices and insights.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "exclusive-brexs--s25erg-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Exclusive: Brex’s $5.15B Capital One Acquisition | CEO Pedro Franceschi",
+                    "content_type": "podcast_episodes",
+                    "id": "e9ouIlrwjUtQCIOaKPsa",
+                    "publish_date": "2026-01-30T17:23:14+00:00",
+                    "query_doc_id": "asmb-4aa7afa9-c8fb-43e0-b32e-cede50a1b7ce",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The M&A transaction is central to the entire conversation, with detailed discussion of the 40-day deal process, valuation methodology, term sheets, due diligence, and comparison to public market multiples. Pedro extensively explains how private market valuations work and the challenges of ZIRP-era pricing expectations.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "why-privacy-will-ta725f-gvcigi",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Why Privacy Will Be the Biggest Moat in Crypto",
+                    "content_type": "podcast_episodes",
+                    "id": "M6IdKcIrJ945pacDFZm8",
+                    "publish_date": "2026-01-30T17:21:09+00:00",
+                    "query_doc_id": "asmb-33918288-7b3f-45eb-96a3-4e790b3e6ceb",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "web3-with-a16z-c-gvcigi",
+                    "series_name": "web3 with a16z crypto",
+                    "tag_context": "The conversation includes discussion of investment thesis development, portfolio companies working on privacy solutions, and how this privacy thesis will affect future investment decisions at a16z crypto. This represents the venture capital perspective on evaluating and investing in crypto privacy technologies.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "arc-boats-co-fou-i6ikx7-vlfy9x",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Arc Boats Co-Founder and CEO Mitch Lee",
+                    "content_type": "podcast_episodes",
+                    "id": "gmdPLWua2iM9T2jn7v5w",
+                    "publish_date": "2026-01-30T05:00:00+00:00",
+                    "query_doc_id": "asmb-ac2c5cd4-ffd9-48c5-8444-49202d752bf0",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "watt-it-takes-vlfy9x",
+                    "series_name": "Watt It Takes",
+                    "tag_context": "Venture capital and fundraising are extensively discussed, including ArcBoats' $110M Series B, the involvement of Andreessen Horowitz, Eclipse, and celebrity investors. Mitch shares detailed insights about the fundraising process, investor expectations, and how each funding round became progressively more challenging as the company matured.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "pimcos-president-3at970-qw2kdl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Pimco’s President Says Private Debt Investors Are Blind to the Risks",
+                    "content_type": "podcast_episodes",
+                    "id": "VgWfEnr4CKnO00rBlmAC",
+                    "publish_date": "2026-01-29T20:12:25+00:00",
+                    "query_doc_id": "asmb-f2ff5ece-30ae-4fbb-bb13-84ac450656d1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "the-credit-edge--qw2kdl",
+                    "series_name": "The Credit Edge by Bloomberg Intelligence",
+                    "tag_context": "Private credit and direct lending are extensively discussed as major themes, including criticisms of private debt markets, comparison with public markets, and the risks of illiquid investments. Christian Stryker provides detailed analysis of private credit performance and structural issues.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "how-i-went-from--tvrcf2-o9hchj",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How I went from $0 to $1M in 12 months",
+                    "content_type": "podcast_episodes",
+                    "id": "NxwfKbMBhV3ge7jgrN3y",
+                    "publish_date": "2026-01-29T13:57:00+00:00",
+                    "query_doc_id": "asmb-10f06328-b773-4b15-a367-9e475e398876",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "my-first-million-o9hchj",
+                    "series_name": "My First Million",
+                    "tag_context": "The conversation touches on fundraising strategies, investor relations, and Tyler's approach to building in public to attract investors. They discuss raising a Series A in one week and using investor updates as a growth tactic, but this supports the broader startup growth narrative rather than being a primary focus.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "marc-andreessen--1gmgch-jifdtv",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Marc Andreessen: The real AI boom hasn’t even started yet",
+                    "content_type": "podcast_episodes",
+                    "id": "GBHleOV9abh3FrzTpZE8",
+                    "publish_date": "2026-01-29T13:32:06+00:00",
+                    "query_doc_id": "asmb-1fa93e71-49c6-4c0e-9ebb-04b500acc3e3",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "lenny-s-podcast--jifdtv",
+                    "series_name": "Lenny's Podcast: Product | Growth | Career",
+                    "tag_context": "Substantial discussion about investment strategies in AI, the challenge of identifying moats in rapidly evolving technology, and a16z's approach of 'indeterminate optimism' through portfolio diversification. Andreessen explains their thesis on betting across multiple AI strategies given the uncertainty of outcomes.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "marc-andreessen--p7g382-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Marc Andreessen on Why This Is the Most Important Moment in Tech History",
+                    "content_type": "podcast_episodes",
+                    "id": "WvgHe2PaSZOwGD19hiIg",
+                    "publish_date": "2026-01-29T11:00:00+00:00",
+                    "query_doc_id": "asmb-f00b2e0a-0898-416b-8d52-548d247b670d",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Significant portions discuss venture capital strategy in the AI era, including investment thesis changes, the challenge of identifying defensible moats in AI companies, and how VCs are approaching the rapidly evolving landscape. Andreessen shares insights on portfolio construction and betting strategies during technological transitions.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "investor-stories-0s9e38-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 1,
+                        "v1_insight": 1
+                    },
+                    "content_title": "Investor Stories 456: Inside Visionary Leadership: Platform Leverage, Founder Adaptability, and Market Timing (Rizik, Wang, Wallach)",
+                    "content_type": "podcast_episodes",
+                    "id": "m2wH4u4i9YgkvFzJiWiv",
+                    "publish_date": "2026-01-29T09:00:00+00:00",
+                    "query_doc_id": "asmb-13402321-c9cd-402e-9528-811fc46d24f4",
+                    "rel_icon": "stars",
+                    "score": 0.6,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "This is the primary focus of the episode, featuring venture capitalists discussing their investment strategies, fund management approaches, and experiences with portfolio companies. The entire conversation revolves around VC decision-making, fund operations, and investment philosophies across different sectors like biopharma and cybersecurity.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "gokul-rajaram-le-k8933i-j397bp",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Gokul Rajaram - Lessons from Investing in 700 Companies - [Invest Like the Best, EP.456]",
+                    "content_type": "podcast_episodes",
+                    "id": "WPilQmwieGBeRzcdlDkY",
+                    "publish_date": "2026-01-29T09:00:00+00:00",
+                    "query_doc_id": "asmb-385e3786-e4c8-468d-87a2-f1c039270ad1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "invest-like-the--j397bp",
+                    "series_name": "Invest Like the Best with Patrick O'Shaughnessy",
+                    "tag_context": "Gokul shares insights from investing in 700+ companies, discusses what makes successful investments, evaluates defensibility in AI companies, and provides frameworks for assessing startups. The conversation covers investment strategies, due diligence approaches, and market dynamics from an investor's perspective.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "the-late-40s-piv-iadiph-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 1,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The Late 40s Pivot Into Business Buying",
+                    "content_type": "podcast_episodes",
+                    "id": "vJGsL5Hm5k07ESLTbabH",
+                    "publish_date": "2026-01-29T08:00:00+00:00",
+                    "query_doc_id": "asmb-df9d1500-182a-486e-a889-e41918f78072",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.6,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "Significant portions of the conversation focus on the mechanics of buying businesses, including valuation multiples, SBA lending challenges, quality of earnings processes, and deal structuring. The discussion provides detailed insights into the private market acquisition process for small businesses.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "20vc-brex-acquir-5z4vgz-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: Brex Acquired for $5.15BN | a16z Companies are 2/3 AI Revenues | Anthropic Inference Costs Skyrocket | OpenEvidence Raises at $12BN Valuation | The IPO Market: EquipmentShare, Wealthfront and Ethos Insurance",
+                    "content_type": "podcast_episodes",
+                    "id": "dCuCKNd7q5fn3AIUHqCj",
+                    "publish_date": "2026-01-29T07:07:00+00:00",
+                    "query_doc_id": "asmb-8459cbff-49a4-44db-be04-5a19adf71620",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "This is the primary focus of the conversation, covering major venture deals like Brex's $5.15B acquisition, OpenEvidence's $12B raise, Anthropic's funding rounds, and extensive discussion of valuation multiples, late-stage investing dynamics, and venture capital strategies. The hosts analyze deal structures, investor returns, and market positioning throughout most of the episode.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "how-elon-builds--f6t3md-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Elon Builds Trillion-Dollar Companies",
+                    "content_type": "podcast_episodes",
+                    "id": "etlPjifaBCgCgJPRxq0z",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-d8d04b88-0393-4f5e-8d80-58fa7263785d",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "The discussion heavily focuses on private market investing, with detailed coverage of the speaker's $1.2 billion investment in SpaceX (now worth $12 billion), the upcoming SpaceX IPO, investment strategies in Elon's companies, and the broader private market dynamics. This represents a core theme throughout the conversation.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "how-to-build-rea-1hctq5-cpd1by",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How to Build Real-Time Data Streaming for AI | Jacqueline Cheong, Co-founder and CEO of Artie",
+                    "content_type": "podcast_episodes",
+                    "id": "Ku3Qq7H8XDNlCTCUJiIR",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-5f64d798-7626-4748-bdf0-93de9b7d1621",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "the-peel-with-tu-cpd1by",
+                    "series_name": "The Peel with Turner Novak",
+                    "tag_context": "The episode covers Artie's Series A fundraising process, comparison between Standard Capital's unique model versus traditional VC processes, and investment strategies. While not the core focus, it provides meaningful insight into modern venture capital approaches and fundraising experiences.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "ben-horowitz-and-moep3h-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Ben Horowitz and Balaji Srinivasan on Netscape and Network States",
+                    "content_type": "podcast_episodes",
+                    "id": "15edqpeTyViI47qD4hXl",
+                    "publish_date": "2026-01-28T11:00:00+00:00",
+                    "query_doc_id": "asmb-dd9c05a4-2808-4609-bfea-643c5bd6593d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.7,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "Venture capital perspectives are woven throughout as Ben Horowitz shares insights on investing in network state technologies and the evolution from early internet companies to crypto. The discussion touches on A16Z's involvement in the space and investment opportunities in startup societies.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "martin-casado-on-tyk5ad-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Martin Casado on the Demand Forces Behind AI",
+                    "content_type": "podcast_episodes",
+                    "id": "YDTeBAUCXsGDhSL3KBAg",
+                    "publish_date": "2026-01-27T11:00:00+00:00",
+                    "query_doc_id": "asmb-01a00026-6e04-4530-984a-9455b8c005df",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.8,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "Martin Casado, as a general partner at A16Z, provides extensive insights into infrastructure investing, portfolio companies, valuation trends, and investment thesis around AI companies. The discussion covers deal valuations, market dynamics, and investment strategies in the AI infrastructure space.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "autonomous-wildf-5bcwr6-0sz3if",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Autonomous Wildfire Suppression with Seneca",
+                    "content_type": "podcast_episodes",
+                    "id": "GDCuAxCw4Fjdl1toYNSk",
+                    "publish_date": "2026-01-27T10:00:00+00:00",
+                    "query_doc_id": "asmb-8bc3d640-8ff6-48a9-bf8a-6a34483b3e3f",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.65,
+                    "series_id": "inevitable-d20sz3if",
+                    "series_name": "Inevitable",
+                    "tag_context": "The discussion covers Seneca's venture funding, including details about their $60 million Series A and investor partnerships. While not the primary focus, venture capital and private market dynamics are explored as they relate to funding deep tech and climate solutions.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "the-hidden-econo-onz11w-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "The Hidden Economics Powering AI",
+                    "content_type": "podcast_episodes",
+                    "id": "on9oLwIA8ZQ9716rMGOv",
+                    "publish_date": "2026-01-26T17:33:24+00:00",
+                    "query_doc_id": "asmb-0cfc719a-13ea-47f6-a29d-51eae1c17be0",
+                    "rel_icon": "stars",
+                    "score": 0.9,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The conversation is fundamentally about venture capital investing in the AI era, discussing A16Z's growth fund strategy, portfolio construction, investment approaches, and how private markets are evolving. Significant time is spent on late-stage investing, company valuations, and the trend of companies staying private longer.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "20vc-from-only-o-9qsb4r-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "20VC: From Only OpenAI to Die-Hard Anthropic: The Downfall of OpenAI in Enterprise | Harvey vs Legora: Legal AI is a Winner Take All | $7M ARR in a Single Day and Raising $200M Across 3 Rounds with No Deck with Max Junestrand, CEO @ Legora",
+                    "content_type": "podcast_episodes",
+                    "id": "vuzymtEV9QAwukteiD3M",
+                    "publish_date": "2026-01-26T12:00:00+00:00",
+                    "query_doc_id": "asmb-b593737f-8796-468e-b10d-dba2388058e2",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Significant discussion around fundraising experiences, working with VCs like Benchmark and Redpoint, valuation decisions, and the venture capital landscape in legal AI. The conversation covers fundraising strategy, investor selection, and the dynamics of raising multiple rounds in a competitive market.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "lane-macdonald-t-qmv0p1-gup0m8",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Lane MacDonald – Teamwork, Alignment, and Investing at the Highest Levels at SCS (EP.483)",
+                    "content_type": "podcast_episodes",
+                    "id": "Nz2rwbl36859qPmvxLjX",
+                    "publish_date": "2026-01-26T09:00:00+00:00",
+                    "query_doc_id": "asmb-e0acf791-05d0-422c-a2cb-8340f20c8a15",
+                    "rel_icon": "stars",
+                    "score": 0.8,
+                    "series_id": "capital-allocato-gup0m8",
+                    "series_name": "Capital Allocators – Inside the Institutional Investment Industry",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of private equity investing, co-investment strategies, manager selection, and Lane's career progression from GP to LP across multiple private market platforms. The conversation covers structural alpha in private markets, emerging manager strategies, and the current state of private equity markets.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "investor-stories-682kpr-6odpur",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Investor Stories 455: Lessons Learned: Building Investment Criteria, Missing HubSpot, and Staying True to Your Model (Madera, Agarwal, Bussgang)",
+                    "content_type": "podcast_episodes",
+                    "id": "7OBrhXVIPvGjFH2wVwVN",
+                    "publish_date": "2026-01-26T09:00:00+00:00",
+                    "query_doc_id": "asmb-ed951755-db25-4f9e-a8a4-7af74f9a2c65",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "the-full-ratchet-6odpur",
+                    "series_name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified",
+                    "tag_context": "This is the primary focus of the entire episode, featuring three venture capital investors sharing their biggest mistakes and lessons learned. The discussion centers on investment decision-making, portfolio management, follow-on capital decisions, and the challenges of being a VC investor.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "the-first-steps--je8fp5-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "The First Steps to a Family Holdco",
+                    "content_type": "podcast_episodes",
+                    "id": "3N8uo2pv3VFm6g7hTCg1",
+                    "publish_date": "2026-01-26T08:00:00+00:00",
+                    "query_doc_id": "asmb-357117e9-fe51-449a-b919-07af2fc508de",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "A significant portion discusses search funds, self-funded search strategies, deal structuring, fundraising from investors, and comparisons with traditional private equity models. The conversation covers their experience raising capital from 8-9 investors and the differences between US and UK markets for business acquisitions.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "213-big-funds-bi-p7tkle-rfdqdp",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "213. Big Funds, Bigger Bets: Inside Infrastructure’s Power Shift - Jan26",
+                    "content_type": "podcast_episodes",
+                    "id": "lknSgwrSKSlivPDeLHNN",
+                    "publish_date": "2026-01-26T04:15:09+00:00",
+                    "query_doc_id": "asmb-2bb36018-acda-46f4-a645-1d41d7f1d092",
+                    "rel_icon": "stars",
+                    "score": 0.75,
+                    "series_id": "redefining-energ-rfdqdp",
+                    "series_name": "Redefining Energy",
+                    "tag_context": "This is the primary focus of the conversation, with extensive discussion of infrastructure funds, their asset management strategies, fundraising trends, and investment approaches. The entire episode centers around how infrastructure investing works, major players like Brookfield and KKR, and the evolution of this private markets sector.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 4,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "20vc-raising-400-pirhc9-rpn37e",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "20VC: Raising $400M for 20VC: Fundraising Lessons | Getting Marc Benioff Through 53 Cold Emails: How to Master Cold Outbound | 7 Lessons from 101 Decacorn Founders with Harry Stebbings (Simon Squibb Edition)",
+                    "content_type": "podcast_episodes",
+                    "id": "O1rHmPXI06lWzz89hvtw",
+                    "publish_date": "2026-01-24T13:40:00+00:00",
+                    "query_doc_id": "asmb-ecfe3c1d-6c41-4c08-ae68-d5d0ecd11da9",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "the-twenty-minut-rpn37e",
+                    "series_name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch",
+                    "tag_context": "Significant portions discuss Harry's $400M fund raise, his venture capital approach combining media with investing, and how distribution creates value in VC. The conversation covers fundraising strategies, investor relations, and the evolution of the VC model with media integration.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "how-mintlify-is--hv440z-clbsuh",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Mintlify Is Rebuilding Documentation for Coding Agents",
+                    "content_type": "podcast_episodes",
+                    "id": "LVDVIa8JskVHMtRw9L1N",
+                    "publish_date": "2026-01-23T16:00:00+00:00",
+                    "query_doc_id": "asmb-ce77d53e-0fd8-45a3-8b48-a04460545768",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "ai-a16z-zgclbsuh",
+                    "series_name": "AI + a16z",
+                    "tag_context": "The conversation includes discussion of A16Z's investment in Mintlify, working with enterprise customers, and the expanding market opportunity driven by AI adoption. While not the core focus, venture capital themes and market expansion strategies are woven throughout several segments of the discussion.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "how-mintlify-is--yirahb-gg14bl",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "How Mintlify Is Rebuilding Documentation for Coding Agents",
+                    "content_type": "podcast_episodes",
+                    "id": "dDgAjWzFmRH3flI5aywg",
+                    "publish_date": "2026-01-23T14:00:00+00:00",
+                    "query_doc_id": "asmb-8323f135-8839-41a5-9ab2-db374c2b7ef7",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "a16z-podcast-gg14bl",
+                    "series_name": "a16z Podcast",
+                    "tag_context": "The discussion includes insights from a16z partners about market trends, investment perspectives on the documentation space, and how AI is expanding the total addressable market for developer tools. While not the core focus, venture capital perspectives and market dynamics are woven throughout the conversation as context for the company's growth.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "highlights-mala--q65t5e-iujaza",
+                    "content_scores": {
+                        "v1_credibility": 3,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "HIGHLIGHTS: Mala Gaonkar - Founder of SurgoCap Partners",
+                    "content_type": "podcast_episodes",
+                    "id": "92eo7Qvx18lfvk2wDK1i",
+                    "publish_date": "2026-01-23T04:00:00+00:00",
+                    "query_doc_id": "asmb-3c2465e8-5605-431d-9648-029ff4b2295d",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.55,
+                    "series_id": "in-good-company--iujaza",
+                    "series_name": "In Good Company with Nicolai Tangen",
+                    "tag_context": "Private market investing is discussed as part of SurgoCap's strategy, with explanation of why they invest in private companies and the rationale that disruptive change happens at the edges with smaller, private companies. While not the main focus, it's a meaningful component of their investment approach.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                },
+                {
+                    "content_id": "seix-fears-more--9z8w43-qw2kdl",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 1,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Seix Fears More Zombie Borrower Distress as Interest Rates Stay High",
+                    "content_type": "podcast_episodes",
+                    "id": "GRnxzafx2DD2qeIpvptL",
+                    "publish_date": "2026-01-22T21:00:00+00:00",
+                    "query_doc_id": "asmb-f03c20b4-dab4-43fa-b04d-7581614f84e1",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.65,
+                    "series_id": "the-credit-edge--qw2kdl",
+                    "series_name": "The Credit Edge by Bloomberg Intelligence",
+                    "tag_context": "Private credit markets are discussed extensively as a significant force impacting public credit markets, including competition for deals, refinancing activity, and potential risks from relaxed underwriting standards. The conversation also covers leveraged buyout (LBO) activity and private equity sponsor behavior across multiple sectors.",
+                    "tag_meta": {
+                        "id": 4
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "categories",
+                    "tag_value": "Venture & Private Markets",
+                    "tag_value_lower": "venture & private markets"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}

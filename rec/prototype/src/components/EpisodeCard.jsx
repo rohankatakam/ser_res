@@ -10,16 +10,18 @@ function formatDate(dateString) {
 }
 
 export default function EpisodeCard({ episode, onView, onBookmark, onNotInterested }) {
-  const { title, series, published_at, scores, categories, key_insight, critical_views } = episode;
+  const { title, series, published_at, scores, categories, key_insight, badges: apiBadges } = episode;
   
   const primaryCategory = categories?.major?.[0];
   
-  // Build badges
-  const badges = [];
-  if (critical_views?.has_critical_views) badges.push('highly_contrarian');
-  else if (critical_views?.non_consensus_level) badges.push('contrarian');
-  if (scores?.insight >= 3) badges.push('high_insight');
-  if (scores?.credibility >= 3) badges.push('high_credibility');
+  // Use badges from API if available, otherwise compute locally
+  const badges = apiBadges || (() => {
+    const b = [];
+    if (scores?.insight >= 3) b.push('high_insight');
+    if (scores?.credibility >= 3) b.push('high_credibility');
+    if (scores?.information >= 3) b.push('data_rich');
+    return b;
+  })();
   
   return (
     <div className="flex-shrink-0 w-72 bg-slate-800 rounded-xl border border-slate-700 overflow-hidden hover:border-slate-500 transition-colors">

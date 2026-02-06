@@ -184,26 +184,21 @@ export default function DiscoverPage({
     // Only show additional sections if For You is sparse
     if (forYouEpisodes.length >= 5) return result;
     
-    // Non-Consensus Ideas
-    const contrarian = credibleEpisodes
+    // High Insight Content
+    const highInsight = credibleEpisodes
       .filter(ep => {
-        if (ep.critical_views?.has_critical_views) return true;
         const s = ep.scores || {};
-        return s.insight >= 3 && s.credibility >= 3 && (s.entertainment || 3) <= 2;
+        return s.insight >= 3 && s.credibility >= 3;
       })
-      .sort((a, b) => {
-        const aReal = a.critical_views?.has_critical_views ? 10 : 0;
-        const bReal = b.critical_views?.has_critical_views ? 10 : 0;
-        return (bReal + qualityScore(b)) - (aReal + qualityScore(a));
-      })
+      .sort((a, b) => qualityScore(b) - qualityScore(a))
       .slice(0, 8);
     
-    if (contrarian.length > 0) {
+    if (highInsight.length > 0) {
       result.push({
-        section: 'non_consensus',
-        title: 'Non-Consensus Ideas',
-        subtitle: 'Contrarian views from credible speakers',
-        episodes: contrarian,
+        section: 'high_insight',
+        title: 'High Insight Content',
+        subtitle: 'Deep analysis from credible speakers',
+        episodes: highInsight,
       });
     }
     
@@ -444,18 +439,20 @@ export default function DiscoverPage({
 
 // Episode card with similarity score and queue position
 function EpisodeCardWithScore({ episode, onView, onBookmark, onNotInterested }) {
-  const { title, series, published_at, scores, key_insight, critical_views, similarity_score, queue_position } = episode;
+  const { title, series, published_at, scores, key_insight, similarity_score, queue_position, badges: apiBadges } = episode;
   
   const formatDate = (dateString) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
   
-  const badges = [];
-  if (critical_views?.has_critical_views || critical_views?.non_consensus_level) {
-    badges.push('contrarian');
-  }
-  if (scores?.insight >= 3) badges.push('high_insight');
+  // Use badges from API if available, otherwise compute locally
+  const badges = apiBadges || (() => {
+    const b = [];
+    if (scores?.insight >= 3) b.push('high_insight');
+    if (scores?.credibility >= 3) b.push('high_credibility');
+    return b;
+  })();
   
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden hover:border-indigo-500/50 transition-colors">
@@ -540,14 +537,14 @@ function EpisodeCardWithScore({ episode, onView, onBookmark, onNotInterested }) 
 
 // Browse grid card (compact)
 function BrowseEpisodeCard({ episode, onView, onBookmark }) {
-  const { title, series, scores, published_at, critical_views } = episode;
+  const { title, series, scores, published_at, badges } = episode;
   
   const formatDate = (dateString) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
   
-  const isContrarian = critical_views?.has_critical_views || critical_views?.non_consensus_level;
+  const isHighInsight = scores?.insight >= 3;
   
   return (
     <div 
@@ -566,7 +563,7 @@ function BrowseEpisodeCard({ episode, onView, onBookmark }) {
           <div className="flex items-center gap-2 mt-2 text-xs">
             <span className="text-yellow-400">C:{scores?.credibility}</span>
             <span className="text-purple-400">I:{scores?.insight}</span>
-            {isContrarian && <span className="text-orange-400">Contrarian</span>}
+            {isHighInsight && <span className="text-purple-400">High Insight</span>}
             <span className="text-slate-500 ml-auto">{formatDate(published_at)}</span>
           </div>
         </div>

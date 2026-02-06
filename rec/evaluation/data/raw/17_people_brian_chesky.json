@@ -1,0 +1,121 @@
+{
+    "execution": "019c304a-01b0-7b4d-8e72-15ca5383e9fd",
+    "output": {
+        "result": {
+            "n_fmt": "4",
+            "params": {
+                "limit": 50,
+                "min_rel": 2,
+                "tag_type": "people",
+                "tag_value": "Brian Chesky"
+            },
+            "res": [
+                {
+                    "content_id": "alfred-lin-on-ai-g3po2b-vgpmog",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Alfred Lin on Airbnb, DoorDash, OpenAI & Citadel Securities",
+                    "content_type": "podcast_episodes",
+                    "id": "teEk2fWuhwB6h282R8lV",
+                    "publish_date": "2025-10-30T10:00:00+00:00",
+                    "query_doc_id": "asmb-191ac3e4-a434-4f01-ada4-4598c2ef3a08",
+                    "rel_icon": "signal_cellular_alt",
+                    "score": 0.75,
+                    "series_id": "sourcery-6dvgpmog",
+                    "series_name": "Sourcery",
+                    "tag_context": "Brian Chesky was extensively discussed as the founder and CEO of Airbnb, particularly focusing on his leadership during the COVID-19 crisis when the company lost 80% of its revenue and how he navigated the company through that difficult period.",
+                    "tag_meta": {
+                        "title": "CEO of Airbnb"
+                    },
+                    "tag_relevance": 3,
+                    "tag_type": "people",
+                    "tag_value": "Brian Chesky",
+                    "tag_value_lower": "brian chesky"
+                },
+                {
+                    "content_id": "reid-riffs-on-fo-au4pp3-t8lspa",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Reid riffs on fostering trust with founders, in boardrooms, and in AI",
+                    "content_type": "podcast_episodes",
+                    "id": "73QTuRDe5NUnCPmcSvo6",
+                    "publish_date": "2025-10-15T08:00:00+00:00",
+                    "query_doc_id": "asmb-70058d2d-6c8c-45e0-8a33-05aa7d772fec",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "possible-by-reid-t8lspa",
+                    "series_name": "Possible",
+                    "tag_context": "Brian Chesky is discussed as an example of how Reid builds trust with entrepreneurs. Reid describes their early working relationship and how he changed their initial pitch meeting into a collaborative working session to establish trust.",
+                    "tag_meta": {
+                        "title": "Co-founder of Airbnb"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Brian Chesky",
+                    "tag_value_lower": "brian chesky"
+                },
+                {
+                    "content_id": "founder-mode-for-54y2dy-jkrwhf",
+                    "content_scores": {
+                        "v1_credibility": 2,
+                        "v1_entertainment": 2,
+                        "v1_info_density": 3,
+                        "v1_insight": 3
+                    },
+                    "content_title": "Founder Mode for ETA: $6m to $25m in 3 Years",
+                    "content_type": "podcast_episodes",
+                    "id": "NgdDpU2bfVvD1JDJK1VD",
+                    "publish_date": "2025-09-29T07:00:00+00:00",
+                    "query_doc_id": "asmb-5b312665-2d9f-4f49-b0af-74eca03d707c",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "acquiring-minds-jkrwhf",
+                    "series_name": "Acquiring Minds",
+                    "tag_context": "Brian Chesky is discussed extensively as the originator of the 'Founder Mode' concept that Isaac embraces. His speech about founder mode versus traditional delegation is a key theme that Isaac references multiple times as validation for his hands-on management approach.",
+                    "tag_meta": {
+                        "title": "Co-founder of Airbnb"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Brian Chesky",
+                    "tag_value_lower": "brian chesky"
+                },
+                {
+                    "content_id": "brian-chesky-s-s-jsjoth-jifdtv",
+                    "content_scores": {
+                        "v1_credibility": 4,
+                        "v1_entertainment": 3,
+                        "v1_info_density": 2,
+                        "v1_insight": 2
+                    },
+                    "content_title": "Brian Chesky's secret mentor who died 9 times, started the Burning Man board, and built the world's first midlife wisdom school | Chip Conley (founder of MEA)",
+                    "content_type": "podcast_episodes",
+                    "id": "uukeb9ZHrSNMKTjgH0Wn",
+                    "publish_date": "2025-08-03T11:02:41+00:00",
+                    "query_doc_id": "asmb-73b8b897-cd56-45dd-87bf-85f354b3ba6b",
+                    "rel_icon": "signal_cellular_alt_2_bar",
+                    "score": 0.6,
+                    "series_id": "lenny-s-podcast--jifdtv",
+                    "series_name": "Lenny's Podcast: Product | Growth | Career",
+                    "tag_context": "Brian Chesky was discussed as Chip's boss at Airbnb. Chip shared insights about working with Brian, including his leadership style, challenges, and growth as a founder. Brian's role in recruiting Chip to Airbnb was also mentioned.",
+                    "tag_meta": {
+                        "title": "CEO of Airbnb"
+                    },
+                    "tag_relevance": 2,
+                    "tag_type": "people",
+                    "tag_value": "Brian Chesky",
+                    "tag_value_lower": "brian chesky"
+                }
+            ]
+        }
+    },
+    "status": "STATUS_COMPLETED"
+}
