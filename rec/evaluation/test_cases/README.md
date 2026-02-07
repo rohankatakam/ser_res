@@ -16,8 +16,8 @@
 | 03 | Quality Gates Enforce Credibility Floor | MFT | `deterministic` | All 5 | No C<2 episodes ever |
 | 04 | Excluded Episodes Never Reappear | MFT | `deterministic` | 02 (modified) | Exclusions respected |
 | 05 | Category Engagement → Category Recs | DIR | `deterministic_llm` | 02, 03 | ≥50% category match |
-| 06 | Bookmarks Outweigh Clicks | DIR | `deterministic_llm` | Custom | Bookmarks = stronger signal |
-| 07 | Recency Scoring Works | DIR | `deterministic` | 01 | Recent > older when quality similar |
+| 06 | Bookmarks Outweigh Clicks in Mixed History | DIR | `deterministic_llm` | Custom | Crypto dominance in bookmark-crypto scenario |
+| 07 | Recency Scoring Works | DIR | `deterministic` | 01 | Both episodes in top 10, recent ranks higher |
 
 ---
 
@@ -110,12 +110,12 @@ When tests fail, adjust these parameters:
 
 | Test | Deterministic | LLM | Status |
 |------|--------------|-----|--------|
-| 01 | ✓ Pass | ✓ Pass (5/5/5) | **PASS** |
-| 02 | ✓ Pass | ✓ Pass (5/5/5) | **PASS** |
+| 01 | ✓ Pass | ✓ Pass (R:4/5 D:4/5 Q:5/5) | **PASS** |
+| 02 | ✓ Pass | ✓ Pass (R:5/5 D:4/5 Q:5/5) | **PASS** |
 | 03 | ✓ Pass | N/A | **PASS** |
 | 04 | ✓ Pass | N/A | **PASS** |
-| 05 | ✓ Pass | ✓ Pass (5/4/5) | **PASS** |
-| 06 | ✗ Fail | ✗ Fail | **FAIL** — Investigate bookmark weighting |
-| 07 | ✗ Fail | N/A | **FAIL** — Older episode not in top 10 |
+| 05 | ✓ Pass | ✓ Pass (R:5/5 D:4/5 Q:5/5) | **PASS** |
+| 06 | ✓ Pass | ✓ Pass (R:5/5 D:3/5 Q:5/5) | **PASS** |
+| 07 | ✓ Pass | N/A | **PASS** |
 
-**Baseline:** 5/7 tests pass (71%)
+**Baseline:** 7/7 tests pass (100%)

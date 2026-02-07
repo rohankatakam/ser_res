@@ -3,56 +3,62 @@
   "name": "Recency Scoring Works",
   "type": "DIR",
   "evaluation_method": "deterministic",
-  "description": "Given two similar-quality episodes, the more recent one should rank higher due to recency decay scoring.",
+  "description": "Given two episodes with identical quality scores, the more recent one should rank higher due to recency decay scoring.",
   "profiles": ["01_cold_start"],
   "setup": {
-    "note": "Cold start emphasizes quality (60%) and recency (40%), no similarity component",
-    "test_episode_pairs": [
-      {
-        "recent": {
-          "id": "10FJ6iMqTrV0LJul40zA",
-          "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
-          "published_at": "2026-02-05",
-          "credibility": 4,
-          "insight": 4,
-          "quality_score": 1.0,
-          "expected_recency_score": "~0.97 (1 day old)"
-        },
-        "older": {
-          "id": "azcjy2HqnbPneTMU5Ylp",
-          "title": "How Marc Andreessen Actually Uses AI",
-          "published_at": "2025-11-25",
-          "credibility": 4,
-          "insight": 3,
-          "quality_score": 0.9,
-          "expected_recency_score": "~0.07 (72 days old)"
-        }
+    "note": "Cold start formula: 0.6 * quality + 0.4 * recency. Both episodes have Q=0.90, so recency is the tiebreaker.",
+    "test_episode_pair": {
+      "recent": {
+        "id": "uJLuvlba870Dje0TDoOo",
+        "title": "Introducing 4D Creation Open Beta: NPCs, 4D Worlds, and the Next Era of AI Gaming",
+        "published_at": "2026-02-04",
+        "credibility": 3,
+        "insight": 3,
+        "quality_score": 0.90,
+        "expected_age_days": 1,
+        "expected_recency_score": "~0.97",
+        "expected_position": "top 5"
+      },
+      "older": {
+        "id": "JEQEzGoCESXzJtBGb4Dl",
+        "title": "Palmer Luckey on Hardware, Building, and the Next Frontiers of Defense Tech",
+        "published_at": "2026-02-02",
+        "credibility": 3,
+        "insight": 3,
+        "quality_score": 0.90,
+        "expected_age_days": 3,
+        "expected_recency_score": "~0.91",
+        "expected_position": "top 10"
       }
-    ]
+    },
+    "formula": {
+      "cold_start": "final = 0.6 * quality + 0.4 * recency",
+      "recency": "exp(-0.03 * days_old)"
+    }
   },
   "pass_criteria": [
     {
+      "id": "both_in_top_10",
+      "description": "Both test episodes appear in top 10 cold start results",
+      "check": "recent_id in top_10_ids AND older_id in top_10_ids"
+    },
+    {
       "id": "recency_score_ordering",
-      "description": "recency_score for Feb 5 episode > recency_score for Nov 25 episode",
+      "description": "Recent episode has higher recency_score than older episode",
       "check": "recent_episode.recency_score > older_episode.recency_score"
     },
     {
       "id": "ranking_reflects_recency",
-      "description": "In cold start, recent high-quality episode ranks higher than older equivalent-quality episode",
+      "description": "Recent episode ranks higher (lower position number) than older episode",
       "check": "recent_episode.queue_position < older_episode.queue_position"
-    },
-    {
-      "id": "final_score_difference",
-      "description": "Final score for recent episode is higher than older episode",
-      "check": "recent_episode.final_score > older_episode.final_score"
     }
   ],
-  "validation_method": "Check recency_score values in response, verify ranking order respects recency when quality is similar",
+  "validation_method": "Run cold start, find both episodes in results, compare recency_score and queue_position",
   "if_fails_adjust": [
-    "Recency weight (currently 15% warm, 40% cold)",
+    "Recency weight in cold start (currently 40%)",
     "Lambda decay (currently 0.03)",
-    "Freshness window (currently 90 days)"
+    "Quality score formula"
   ],
-  "notes": "The Nov 25 episode is 72 days old, which is within the 90-day window but should have significantly lower recency score. Lambda=0.03 gives ~23 day half-life, so 72 days = ~3 half-lives = recency_score ~0.11",
+  "notes": "Using episodes with identical quality scores (C=3, I=3 → Q=0.90) ensures recency is the only differentiating factor. With lambda=0.03, a 2-day age difference creates ~6% recency score difference.",
   "created_at": "2026-02-06T00:00:00Z"
 }

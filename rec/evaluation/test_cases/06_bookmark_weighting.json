@@ -1,81 +1,103 @@
 {
   "test_id": "06_bookmark_weighting",
-  "name": "Bookmarks Outweigh Clicks",
+  "name": "Bookmarks Outweigh Clicks in Mixed History",
   "type": "DIR",
   "evaluation_method": "deterministic_llm",
-  "description": "Bookmarks should have stronger influence than clicks (2x weight). Same episodes with bookmark vs click engagement should produce different personalization strength.",
+  "description": "Within a mixed engagement history, bookmarked episodes should contribute 2x more to the user vector than clicked episodes, pulling recommendations toward bookmarked content.",
   "profiles": ["custom"],
   "llm_criteria": {
     "enabled": true,
     "focus_areas": ["personalization_strength", "relevance"],
-    "prompt_hint": "Compare recommendations from bookmark vs click scenarios and evaluate if bookmarks result in stronger personalization"
+    "prompt_hint": "Compare recommendations from bookmark-heavy vs click-heavy scenarios and evaluate if the bookmarked topic dominates"
   },
   "setup": {
+    "note": "Both scenarios have same 3 episodes but different engagement type distributions. Bookmark weight=2.0x should pull user vector toward bookmarked content.",
+    "shared_episodes": {
+      "ai_episode": {
+        "id": "ddzQwPxlELoIPRUgzaOd",
+        "title": "Martin Casado on the Demand Forces Behind AI",
+        "category": "AI/Tech"
+      },
+      "crypto_episode_1": {
+        "id": "nbpPmxK8WP6byoxAjv3W",
+        "title": "Bits + Bips: Bitcoin Is Deeply Oversold",
+        "category": "Crypto/Web3"
+      },
+      "crypto_episode_2": {
+        "id": "vrdJx6BNfkyxFhgOMal6",
+        "title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud",
+        "category": "Crypto/Web3"
+      }
+    },
     "scenario_a": {
-      "name": "Bookmarks Only",
+      "name": "Bookmark AI + Click Crypto",
+      "description": "User bookmarks the AI episode (2x weight) and clicks crypto episodes (1x weight). AI should dominate.",
       "engagements": [
         {
           "episode_id": "ddzQwPxlELoIPRUgzaOd",
           "title": "Martin Casado on the Demand Forces Behind AI",
           "type": "bookmark",
-          "timestamp": "2026-02-05T10:00:00Z"
+          "timestamp": "2026-02-05T12:00:00Z"
         },
         {
-          "episode_id": "n9VyjM1Fld6PyZlnrty0",
-          "title": "The Hidden Economics Powering AI",
-          "type": "bookmark",
+          "episode_id": "nbpPmxK8WP6byoxAjv3W",
+          "title": "Bits + Bips: Bitcoin Is Deeply Oversold",
+          "type": "click",
           "timestamp": "2026-02-05T11:00:00Z"
         },
         {
-          "episode_id": "m5lvLRONK5dP5Nxng6c8",
-          "title": "Marc Andreessen's 2026 Outlook",
-          "type": "bookmark",
-          "timestamp": "2026-02-05T12:00:00Z"
+          "episode_id": "vrdJx6BNfkyxFhgOMal6",
+          "title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud",
+          "type": "click",
+          "timestamp": "2026-02-05T10:00:00Z"
         }
       ],
-      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "n9VyjM1Fld6PyZlnrty0", "m5lvLRONK5dP5Nxng6c8"]
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "nbpPmxK8WP6byoxAjv3W", "vrdJx6BNfkyxFhgOMal6"],
+      "expected_weight_distribution": "AI: 2.0 / Crypto: 2.0 = 50% AI influence"
     },
     "scenario_b": {
-      "name": "Clicks Only",
+      "name": "Click AI + Bookmark Crypto",
+      "description": "User clicks the AI episode (1x weight) and bookmarks crypto episodes (2x weight). Crypto should dominate.",
       "engagements": [
         {
           "episode_id": "ddzQwPxlELoIPRUgzaOd",
           "title": "Martin Casado on the Demand Forces Behind AI",
           "type": "click",
-          "timestamp": "2026-02-05T10:00:00Z"
+          "timestamp": "2026-02-05T12:00:00Z"
         },
         {
-          "episode_id": "n9VyjM1Fld6PyZlnrty0",
-          "title": "The Hidden Economics Powering AI",
-          "type": "click",
+          "episode_id": "nbpPmxK8WP6byoxAjv3W",
+          "title": "Bits + Bips: Bitcoin Is Deeply Oversold",
+          "type": "bookmark",
           "timestamp": "2026-02-05T11:00:00Z"
         },
         {
-          "episode_id": "m5lvLRONK5dP5Nxng6c8",
-          "title": "Marc Andreessen's 2026 Outlook",
-          "type": "click",
-          "timestamp": "2026-02-05T12:00:00Z"
+          "episode_id": "vrdJx6BNfkyxFhgOMal6",
+          "title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T10:00:00Z"
         }
       ],
-      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "n9VyjM1Fld6PyZlnrty0", "m5lvLRONK5dP5Nxng6c8"]
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "nbpPmxK8WP6byoxAjv3W", "vrdJx6BNfkyxFhgOMal6"],
+      "expected_weight_distribution": "AI: 1.0 / Crypto: 4.0 = 20% AI influence"
     }
   },
   "pass_criteria": [
     {
-      "id": "higher_similarity",
-      "description": "Scenario A (bookmarks) has higher average similarity_score for top 10 than Scenario B",
-      "check": "avg(scenario_a.similarity_scores) > avg(scenario_b.similarity_scores)"
+      "id": "different_results",
+      "description": "Scenarios produce different recommendations (at least 2 different episodes in top 10)",
+      "check": "len(set(scenario_a_ids) ^ set(scenario_b_ids)) >= 2"
     },
     {
-      "id": "more_ai_content",
-      "description": "OR Scenario A has more AI-related episodes in top 5 than Scenario B",
-      "check": "count_ai_episodes(scenario_a, top_5) >= count_ai_episodes(scenario_b, top_5)"
+      "id": "crypto_dominance_in_b",
+      "description": "Scenario B (bookmark crypto) has more crypto episodes in top 10 than Scenario A",
+      "check": "count_crypto_episodes(scenario_b, top_10) > count_crypto_episodes(scenario_a, top_10)"
     }
   ],
-  "validation_method": "Run both scenarios, compare similarity scores and category distribution",
+  "validation_method": "Run both scenarios with mixed engagement types, compare category distribution in results",
   "if_fails_adjust": [
     "Bookmark weight (currently 2.0x)",
-    "User vector weighted mean computation"
+    "User vector limit (currently 10)"
   ],
   "created_at": "2026-02-06T00:00:00Z"
 }

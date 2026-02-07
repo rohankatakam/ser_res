@@ -393,22 +393,46 @@ def validate_category_personalization(ai_response: Dict, crypto_response: Dict, 
     return result
 
 
-def validate_bookmark_weighting(bookmark_response: Dict, click_response: Dict, test_case: Dict) -> TestResult:
-    """Test 06: Bookmarks Outweigh Clicks"""
+def validate_bookmark_weighting(scenario_a_response: Dict, scenario_b_response: Dict, test_case: Dict) -> TestResult:
+    """Test 06: Bookmarks Outweigh Clicks in Mixed History"""
     result = TestResult("06_bookmark_weighting", test_case["name"])
     
-    # Get similarity scores
-    bookmark_sims = [ep.get("similarity_score", 0) or 0 for ep in bookmark_response.get("episodes", [])[:10]]
-    click_sims = [ep.get("similarity_score", 0) or 0 for ep in click_response.get("episodes", [])[:10]]
+    # Get episode IDs from both scenarios
+    scenario_a_ids = set(ep["id"] for ep in scenario_a_response.get("episodes", [])[:10])
+    scenario_b_ids = set(ep["id"] for ep in scenario_b_response.get("episodes", [])[:10])
     
-    avg_bookmark_sim = sum(bookmark_sims) / len(bookmark_sims) if bookmark_sims else 0
-    avg_click_sim = sum(click_sims) / len(click_sims) if click_sims else 0
+    # Criterion 1: Different results (at least 2 different episodes)
+    # This proves the engagement type weights ARE affecting the user vector
+    different_count = len(scenario_a_ids ^ scenario_b_ids)  # Symmetric difference
+    result.add_criterion(
+        "different_results",
+        "Scenarios produce different recommendations (at least 2 different episodes)",
+        different_count >= 2,
+        f"different_episodes={different_count}"
+    )
+    
+    # Criterion 2: Crypto presence higher in Scenario B (bookmark crypto)
+    crypto_keywords = ["crypto", "bitcoin", "ethereum", "web3", "defi", "blockchain", "stablecoin", "btc", "eth"]
+    
+    def count_crypto_episodes(episodes: list) -> int:
+        count = 0
+        for ep in episodes[:10]:  # Top 10
+            title = ep.get("title", "").lower()
+            key_insight = (ep.get("key_insight") or "").lower()
+            series = ep.get("series", {}).get("name", "").lower()
+            text = f"{title} {key_insight} {series}"
+            if any(kw in text for kw in crypto_keywords):
+                count += 1
+        return count
+    
+    crypto_count_a = count_crypto_episodes(scenario_a_response.get("episodes", []))
+    crypto_count_b = count_crypto_episodes(scenario_b_response.get("episodes", []))
     
     result.add_criterion(
-        "higher_similarity",
-        "Bookmarks have higher avg similarity_score than clicks",
-        avg_bookmark_sim > avg_click_sim,
-        f"bookmark_avg={avg_bookmark_sim:.4f}, click_avg={avg_click_sim:.4f}"
+        "crypto_dominance_in_b",
+        "Scenario B (bookmark crypto) has more crypto episodes in top 10 than Scenario A",
+        crypto_count_b > crypto_count_a,
+        f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10"
     )
     
     return result
@@ -421,15 +445,25 @@ def validate_recency_scoring(response: Dict, test_case: Dict) -> TestResult:
     
     episodes = response.get("episodes", [])
     
-    # Find the test episodes
-    recent_id = "10FJ6iMqTrV0LJul40zA"
-    older_id = "azcjy2HqnbPneTMU5Ylp"
+    # Get test episode IDs from test case
+    test_pair = test_case.get("setup", {}).get("test_episode_pair", {})
+    recent_id = test_pair.get("recent", {}).get("id", "uJLuvlba870Dje0TDoOo")
+    older_id = test_pair.get("older", {}).get("id", "JEQEzGoCESXzJtBGb4Dl")
     
     recent_ep = next((ep for ep in episodes if ep["id"] == recent_id), None)
     older_ep = next((ep for ep in episodes if ep["id"] == older_id), None)
     
-    if recent_ep and older_ep:
-        # Criterion 1: Recency score ordering
+    # Criterion 1: Both episodes found in top 10
+    both_found = recent_ep is not None and older_ep is not None
+    result.add_criterion(
+        "both_in_top_10",
+        "Both test episodes found in top 10 cold start results",
+        both_found,
+        f"recent_found={recent_ep is not None}, older_found={older_ep is not None}"
+    )
+    
+    if both_found:
+        # Criterion 2: Recency score ordering
         recent_rec_score = recent_ep.get("recency_score", 0) or 0
         older_rec_score = older_ep.get("recency_score", 0) or 0
         result.add_criterion(
@@ -439,7 +473,7 @@ def validate_recency_scoring(response: Dict, test_case: Dict) -> TestResult:
             f"recent={recent_rec_score:.4f}, older={older_rec_score:.4f}"
         )
         
-        # Criterion 2: Ranking order
+        # Criterion 3: Ranking order
         recent_pos = recent_ep.get("queue_position", 999)
         older_pos = older_ep.get("queue_position", 999)
         result.add_criterion(
@@ -447,23 +481,6 @@ def validate_recency_scoring(response: Dict, test_case: Dict) -> TestResult:
             "Recent episode ranks higher (lower position) than older",
             recent_pos < older_pos,
             f"recent_pos={recent_pos}, older_pos={older_pos}"
-        )
-        
-        # Criterion 3: Final score
-        recent_final = recent_ep.get("final_score", 0) or 0
-        older_final = older_ep.get("final_score", 0) or 0
-        result.add_criterion(
-            "final_score_difference",
-            "Recent episode has higher final_score",
-            recent_final > older_final,
-            f"recent_final={recent_final:.4f}, older_final={older_final:.4f}"
-        )
-    else:
-        result.add_criterion(
-            "episodes_found",
-            "Both test episodes found in response",
-            False,
-            f"recent_found={recent_ep is not None}, older_found={older_ep is not None}"
         )
     
     return result

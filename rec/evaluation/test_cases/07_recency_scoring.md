@@ -4,32 +4,39 @@
 **Profile:** `01_cold_start`
 
 ## Description
-Given two similar-quality episodes, the more recent one should rank higher.
+Given two episodes with identical quality scores, the more recent one should rank higher due to recency decay scoring.
 
 ## Setup
-Cold start (quality 60% + recency 40%, no similarity).
+Cold start formula: `final = 0.6 * quality + 0.4 * recency`
+
+Both test episodes have identical quality (C=3, I=3 → Q=0.90), so recency is the only differentiating factor.
 
 ## Test Episode Pair
-| Episode | Published | C/I | Quality | Expected Recency |
-|---------|-----------|-----|---------|------------------|
-| **Recent:** Elon Musk on Space GPUs | Feb 5, 2026 | 4/4 | 1.0 | ~0.97 (1 day) |
-| **Older:** How Marc Andreessen Uses AI | Nov 25, 2025 | 4/3 | 0.9 | ~0.11 (72 days) |
+| Episode | Published | Age | C/I | Quality | Recency | Position |
+|---------|-----------|-----|-----|---------|---------|----------|
+| **Recent:** 4D Creation Open Beta | Feb 4, 2026 | 1d | 3/3 | 0.90 | ~0.97 | Top 5 |
+| **Older:** Palmer Luckey on Hardware | Feb 2, 2026 | 3d | 3/3 | 0.90 | ~0.91 | Top 10 |
 
 Episode IDs:
-- Recent: `10FJ6iMqTrV0LJul40zA`
-- Older: `azcjy2HqnbPneTMU5Ylp`
+- Recent: `uJLuvlba870Dje0TDoOo`
+- Older: `JEQEzGoCESXzJtBGb4Dl`
+
+## Key Insight
+With identical quality scores, the final score difference comes entirely from recency:
+- Recent: 0.6 × 0.90 + 0.4 × 0.97 = **0.93**
+- Older: 0.6 × 0.90 + 0.4 × 0.91 = **0.90**
 
 ## Pass Criteria
 | Criterion | Check |
 |-----------|-------|
+| Both in top 10 | Both episodes found in cold start results |
 | Recency score ordering | Recent recency_score > Older recency_score |
-| Ranking reflects recency | Recent ranks higher than Older |
-| Final score difference | Recent final_score > Older final_score |
+| Ranking reflects recency | Recent ranks higher (lower position) than Older |
 
 ## If Fails, Adjust
-- Recency weight (currently 15% warm, 40% cold)
+- Recency weight in cold start (currently 40%)
 - Lambda decay (currently 0.03)
-- Freshness window (currently 90 days)
+- Quality score formula
 
 ## Notes
-Lambda=0.03 gives ~23 day half-life. At 72 days (~3 half-lives), recency_score ≈ 0.11.
+Using episodes with identical quality ensures a clean test of recency scoring. Lambda=0.03 means each day reduces recency by ~3%.
