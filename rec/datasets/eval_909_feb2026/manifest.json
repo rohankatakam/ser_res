@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "name": "Evaluation Dataset - February 2026",
+  "description": "909 episodes curated for recommendation algorithm evaluation",
+  "created_at": "2026-02-06",
+  "schema_version": "1.0",
+  "episode_count": 909,
+  "unique_series": 104,
+  "source": {
+    "episodes_file": "episodes.json",
+    "series_file": "series.json"
+  },
+  "statistics": {
+    "within_90_days": 528,
+    "within_90_days_percent": 58,
+    "key_insight_coverage": 99.4,
+    "scores_coverage": 99.8,
+    "quality_distribution": {
+      "high": {
+        "count": 472,
+        "percent": 51.9,
+        "definition": "C>=3 AND I>=3"
+      },
+      "medium": {
+        "count": 264,
+        "percent": 29.0,
+        "definition": "C>=2 AND C+I>=5"
+      },
+      "threshold": {
+        "count": 61,
+        "percent": 6.7,
+        "definition": "C=2 AND C+I=5"
+      },
+      "below_threshold": {
+        "count": 112,
+        "percent": 12.3,
+        "definition": "C<2 OR C+I<5"
+      }
+    }
+  },
+  "schema": {
+    "required_fields": [
+      "id",
+      "title",
+      "scores",
+      "key_insight",
+      "published_at"
+    ],
+    "scores_fields": [
+      "credibility",
+      "insight",
+      "information",
+      "entertainment"
+    ],
+    "optional_fields": [
+      "content_id",
+      "series",
+      "categories",
+      "entities",
+      "people"
+    ]
+  }
+}

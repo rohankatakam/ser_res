@@ -8,7 +8,9 @@
  * - Engage: Mark episode as engaged
  */
 
-const API_BASE = 'http://localhost:8000';
+// Use relative URL in production (nginx proxies /api to backend)
+// Use localhost:8000 in development
+const API_BASE = import.meta.env.PROD ? '' : 'http://localhost:8000';
 
 // ============================================================================
 // Session Endpoints (Option C)
@@ -34,7 +36,10 @@ export async function createSession(engagements = [], excludedIds = []) {
     })
   });
   
-  if (!response.ok) throw new Error('Failed to create session');
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to create session');
+  }
   return response.json();
 }
 
@@ -190,6 +195,195 @@ export async function checkApiHealth() {
   } catch {
     return false;
   }
+}
+
+// ============================================================================
+// Configuration Endpoints (new evaluation server)
+// ============================================================================
+
+/**
+ * Get current config status
+ */
+export async function getConfigStatus() {
+  const response = await fetch(`${API_BASE}/api/config/status`);
+  if (!response.ok) throw new Error('Failed to get config status');
+  return response.json();
+}
+
+/**
+ * List available algorithms
+ */
+export async function listAlgorithms() {
+  const response = await fetch(`${API_BASE}/api/config/algorithms`);
+  if (!response.ok) throw new Error('Failed to list algorithms');
+  return response.json();
+}
+
+/**
+ * List available datasets
+ */
+export async function listDatasets() {
+  const response = await fetch(`${API_BASE}/api/config/datasets`);
+  if (!response.ok) throw new Error('Failed to list datasets');
+  return response.json();
+}
+
+/**
+ * Validate algorithm-dataset compatibility
+ */
+export async function validateCompatibility(algorithmFolder, datasetFolder) {
+  const response = await fetch(`${API_BASE}/api/config/validate?algorithm_folder=${encodeURIComponent(algorithmFolder)}&dataset_folder=${encodeURIComponent(datasetFolder)}`);
+  if (!response.ok) throw new Error('Failed to validate');
+  return response.json();
+}
+
+/**
+ * Load algorithm and dataset configuration
+ */
+export async function loadConfiguration(algorithmFolder, datasetFolder, options = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (options.openaiKey) {
+    headers['X-OpenAI-Key'] = options.openaiKey;
+  }
+  
+  const response = await fetch(`${API_BASE}/api/config/load`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      algorithm: algorithmFolder,
+      dataset: datasetFolder,
+      generate_embeddings: options.generateEmbeddings !== false
+    })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    // Handle validation errors (array of objects) or string errors
+    let errorMsg = 'Failed to load configuration';
+    if (typeof err.detail === 'string') {
+      errorMsg = err.detail;
+    } else if (Array.isArray(err.detail)) {
+      errorMsg = err.detail.map(e => e.msg || JSON.stringify(e)).join(', ');
+    }
+    throw new Error(errorMsg);
+  }
+  return response.json();
+}
+
+/**
+ * Check embedding cache status
+ */
+export async function getEmbeddingStatus(algorithmFolder, datasetFolder) {
+  const response = await fetch(
+    `${API_BASE}/api/embeddings/status?algorithm_folder=${encodeURIComponent(algorithmFolder)}&dataset_folder=${encodeURIComponent(datasetFolder)}`
+  );
+  if (!response.ok) throw new Error('Failed to get embedding status');
+  return response.json();
+}
+
+// ============================================================================
+// Evaluation Endpoints
+// ============================================================================
+
+/**
+ * List evaluation user profiles
+ */
+export async function listProfiles() {
+  const response = await fetch(`${API_BASE}/api/evaluation/profiles`);
+  if (!response.ok) throw new Error('Failed to list profiles');
+  return response.json();
+}
+
+/**
+ * Get a specific profile
+ */
+export async function getProfile(profileId) {
+  const response = await fetch(`${API_BASE}/api/evaluation/profiles/${encodeURIComponent(profileId)}`);
+  if (!response.ok) throw new Error('Profile not found');
+  return response.json();
+}
+
+/**
+ * List test cases
+ */
+export async function listTestCases() {
+  const response = await fetch(`${API_BASE}/api/evaluation/test-cases`);
+  if (!response.ok) throw new Error('Failed to list test cases');
+  return response.json();
+}
+
+/**
+ * Get a specific test case
+ */
+export async function getTestCase(testId) {
+  const response = await fetch(`${API_BASE}/api/evaluation/test-cases/${encodeURIComponent(testId)}`);
+  if (!response.ok) throw new Error('Test case not found');
+  return response.json();
+}
+
+/**
+ * Run a single test
+ */
+export async function runTest(testId, options = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (options.geminiKey) {
+    headers['X-Gemini-Key'] = options.geminiKey;
+  }
+  
+  const response = await fetch(`${API_BASE}/api/evaluation/run`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      test_id: testId,
+      with_llm: options.withLlm || false
+    })
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.detail || 'Failed to run test');
+  }
+  return response.json();
+}
+
+/**
+ * Run all tests
+ */
+export async function runAllTests(options = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (options.geminiKey) {
+    headers['X-Gemini-Key'] = options.geminiKey;
+  }
+  
+  const response = await fetch(`${API_BASE}/api/evaluation/run-all`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      with_llm: options.withLlm || false,
+      save_report: options.saveReport !== false
+    })
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.detail || 'Failed to run tests');
+  }
+  return response.json();
+}
+
+/**
+ * List test reports
+ */
+export async function listReports() {
+  const response = await fetch(`${API_BASE}/api/evaluation/reports`);
+  if (!response.ok) throw new Error('Failed to list reports');
+  return response.json();
+}
+
+/**
+ * Get a specific report
+ */
+export async function getReport(reportId) {
+  const response = await fetch(`${API_BASE}/api/evaluation/reports/${encodeURIComponent(reportId)}`);
+  if (!response.ok) throw new Error('Report not found');
+  return response.json();
 }
 
 /**

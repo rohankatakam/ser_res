@@ -1,0 +1,70 @@
+# Serafis Evaluation Framework
+# Docker Compose configuration for local development and deployment
+
+services:
+  # Backend API Server
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: serafis-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount algorithm versions
+      - ./algorithms:/data/algorithms:ro
+      # Mount datasets
+      - ./datasets:/data/datasets:ro
+      # Mount cache for embeddings (read-write)
+      - ./cache:/data/cache
+      # Mount evaluation profiles, test cases, and reports
+      - ./evaluation:/data/evaluation
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - ALGORITHMS_DIR=/data/algorithms
+      - DATASETS_DIR=/data/datasets
+      - CACHE_DIR=/data/cache
+      - EVALUATION_DIR=/data/evaluation
+      # API keys can be passed via environment or .env file
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - serafis-network
+
+  # Frontend UI
+  frontend:
+    build:
+      context: ./prototype
+      dockerfile: Dockerfile
+    container_name: serafis-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - serafis-network
+
+networks:
+  serafis-network:
+    driver: bridge
+
+# Optional: Named volumes for persistence
+# volumes:
+#   cache-data:
+#   evaluation-data:

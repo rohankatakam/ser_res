@@ -88,7 +88,15 @@ export default function ForYouPage({
       
     } catch (err) {
       console.error('[ForYouPage] Failed to create session:', err);
-      setError('API not running. Start the backend server.');
+      // Check if it's a config issue vs API down
+      const errorMsg = err.message || '';
+      if (errorMsg.includes('config/load') || errorMsg.includes('No algorithm')) {
+        setError('No configuration loaded. Click Settings to load an algorithm and dataset.');
+      } else if (errorMsg.includes('Failed to fetch')) {
+        setError('API not running. Start the backend server.');
+      } else {
+        setError(errorMsg || 'Failed to create session. Check the backend server.');
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);

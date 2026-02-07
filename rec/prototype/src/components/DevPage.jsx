@@ -1,16 +1,14 @@
 /**
- * Developer Page - Debug & Algorithm Insights
+ * Developer Page - Debug & Algorithm Insights + Tests
  * 
- * Shows all the behind-the-scenes information:
- * - Session state
- * - Engagement history
- * - Inferred interests
- * - Algorithm configuration
- * - API stats
+ * Two sub-tabs:
+ * 1. Insights - Session state, engagement history, algorithm config
+ * 2. Tests - Run and view evaluation test results
  */
 
 import { useState, useEffect } from 'react';
 import { fetchStats } from '../api';
+import TestsPage from './TestsPage';
 
 export default function DevPage({ 
   session, 
@@ -18,8 +16,10 @@ export default function DevPage({
   activeSessionId,
   viewedEpisodes,
   bookmarkedEpisodes,
-  onReset 
+  onReset,
+  geminiKey
 }) {
+  const [subTab, setSubTab] = useState('insights'); // 'insights' or 'tests'
   const [apiStats, setApiStats] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -40,11 +40,11 @@ export default function DevPage({
   
   return (
     <div className="p-4 pb-8">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      {/* Header with Sub-tabs */}
+      <div className="flex items-start justify-between mb-4">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">Developer View</h1>
-          <p className="text-slate-400 text-sm">Algorithm insights and session debugging</p>
+          <p className="text-slate-400 text-sm">Algorithm insights, session debugging & tests</p>
         </div>
         <button
           onClick={onReset}
@@ -54,6 +54,38 @@ export default function DevPage({
         </button>
       </div>
       
+      {/* Sub-tabs */}
+      <div className="flex gap-2 mb-6 border-b border-slate-700 pb-4">
+        <button
+          onClick={() => setSubTab('insights')}
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+            subTab === 'insights'
+              ? 'bg-indigo-600 text-white'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          }`}
+        >
+          Insights
+        </button>
+        <button
+          onClick={() => setSubTab('tests')}
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+            subTab === 'tests'
+              ? 'bg-indigo-600 text-white'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          }`}
+        >
+          Tests
+        </button>
+      </div>
+      
+      {/* Tests Sub-tab */}
+      {subTab === 'tests' && (
+        <TestsPage geminiKey={geminiKey} />
+      )}
+      
+      {/* Insights Sub-tab */}
+      {subTab === 'insights' && (
+        <>
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <StatCard label="Total Engagements" value={inferred?.totalEngagements || 0} color="blue" />
@@ -256,6 +288,8 @@ export default function DevPage({
             </div>
           </div>
         </Section>
+      )}
+        </>
       )}
     </div>
   );

@@ -1,12 +1,14 @@
 /**
- * Serafis Recommendation Engine Testing Harness
+ * Serafis Evaluation Framework Testing Harness
  * 
- * V1.1 - Session Pool with Progressive Reveal (Option C)
+ * V2.0 - Full Evaluation Framework with Tests UI
  * 
- * Three Pages:
+ * Pages:
  * 1. Browse - All catalog sorted by popularity
  * 2. For You - Personalized recommendations
- * 3. Developer - Debug view with algorithm details
+ * 3. Developer - Debug view with sub-tabs:
+ *    - Insights: Algorithm details and session debugging
+ *    - Tests: Run and view evaluation test results
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -14,6 +16,7 @@ import BrowsePage from './components/BrowsePage';
 import ForYouPage from './components/ForYouPage';
 import DevPage from './components/DevPage';
 import EpisodeDetailPage from './components/EpisodeDetailPage';
+import SettingsModal from './components/SettingsModal';
 import { engageEpisode } from './api';
 
 function App() {
@@ -26,6 +29,23 @@ function App() {
   
   // Active recommendation session
   const [activeSessionId, setActiveSessionId] = useState(null);
+  
+  // Settings modal state - persist API keys to localStorage
+  const [showSettings, setShowSettings] = useState(false);
+  const [geminiKey, setGeminiKey] = useState(() => localStorage.getItem('serafis_gemini_key') || '');
+  const [openaiKey, setOpenaiKey] = useState(() => localStorage.getItem('serafis_openai_key') || '');
+  const [configLoaded, setConfigLoaded] = useState(false);
+  
+  // Persist API keys to localStorage when they change
+  const handleGeminiKeyChange = useCallback((key) => {
+    setGeminiKey(key);
+    localStorage.setItem('serafis_gemini_key', key);
+  }, []);
+  
+  const handleOpenaiKeyChange = useCallback((key) => {
+    setOpenaiKey(key);
+    localStorage.setItem('serafis_openai_key', key);
+  }, []);
   
   // Session state tracking user activity (resets on page refresh)
   const [session, setSession] = useState({
@@ -253,12 +273,24 @@ function App() {
                 Developer
               </TabButton>
             </div>
-            <button
-              onClick={handleReset}
-              className="px-3 py-1.5 text-sm bg-red-600/20 text-red-400 rounded hover:bg-red-600/30"
-            >
-              Reset
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowSettings(true)}
+                className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 flex items-center gap-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Settings
+              </button>
+              <button
+                onClick={handleReset}
+                className="px-3 py-1.5 text-sm bg-red-600/20 text-red-400 rounded hover:bg-red-600/30"
+              >
+                Reset
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -291,9 +323,24 @@ function App() {
             viewedEpisodes={viewedEpisodes}
             bookmarkedEpisodes={bookmarkedEpisodes}
             onReset={handleReset}
+            geminiKey={geminiKey}
           />
         )}
       </main>
+      
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        geminiKey={geminiKey}
+        onGeminiKeyChange={handleGeminiKeyChange}
+        openaiKey={openaiKey}
+        onOpenaiKeyChange={handleOpenaiKeyChange}
+        onConfigLoaded={(result) => {
+          setConfigLoaded(true);
+          setShowSettings(false);
+        }}
+      />
     </div>
   );
 }
