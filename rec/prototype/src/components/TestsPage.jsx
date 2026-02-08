@@ -483,8 +483,20 @@ function CriterionCard({ criterion: cr }) {
             {cr.passed ? '✓' : '✗'}
           </span>
           <span className="text-white font-mono text-xs">{cr.criterion_id}</span>
+          {/* LLM Judge indicator */}
+          {cr.criterion_id?.startsWith('llm_') && (
+            <span className="text-xs px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30">
+              LLM Judge
+            </span>
+          )}
           {cr.weight && cr.weight !== 1.0 && (
             <span className="text-xs text-slate-500">({cr.weight}x weight)</span>
+          )}
+          {/* Confidence indicator - always show for LLM criteria, or when < 1.0 */}
+          {cr.confidence != null && (cr.criterion_id?.startsWith('llm_') || cr.confidence < 1.0) && (
+            <span className={`text-xs ${cr.confidence >= 0.9 ? 'text-green-500' : cr.confidence >= 0.7 ? 'text-yellow-500' : 'text-orange-500'}`}>
+              ({Math.round(cr.confidence * 100)}% conf)
+            </span>
           )}
         </div>
         {hasScalarScore && (
@@ -513,17 +525,25 @@ function CriterionCard({ criterion: cr }) {
         <p className="text-slate-500 text-xs mt-2 font-mono">{cr.details}</p>
       )}
       
-      {/* Confidence indicator for non-deterministic */}
-      {cr.confidence !== undefined && cr.confidence < 1.0 && (
-        <div className="mt-2 flex items-center gap-1 text-xs text-slate-500">
-          <span>Confidence:</span>
-          <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+      {/* Confidence indicator - always show for LLM criteria */}
+      {cr.confidence !== undefined && cr.criterion_id?.startsWith('llm_') && (
+        <div className="mt-2 flex items-center gap-2 text-xs">
+          <span className="text-slate-500">Confidence:</span>
+          <div className="w-20 h-1.5 bg-slate-700 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-purple-500 rounded-full"
+              className={`h-full rounded-full ${
+                cr.confidence >= 0.9 ? 'bg-green-500' : 
+                cr.confidence >= 0.7 ? 'bg-yellow-500' : 'bg-orange-500'
+              }`}
               style={{ width: `${cr.confidence * 100}%` }}
             />
           </div>
-          <span>{(cr.confidence * 100).toFixed(0)}%</span>
+          <span className={
+            cr.confidence >= 0.9 ? 'text-green-400' : 
+            cr.confidence >= 0.7 ? 'text-yellow-400' : 'text-orange-400'
+          }>
+            {(cr.confidence * 100).toFixed(0)}%
+          </span>
         </div>
       )}
     </div>
@@ -732,19 +752,26 @@ function ReportDetail({ report, onBack }) {
             )}
             
             <div className="flex flex-wrap gap-2">
-              {result.criteria_results?.map((cr, cIdx) => (
-                <span 
-                  key={cIdx}
-                  className={`text-xs px-2 py-1 rounded ${
-                    cr.passed 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                  }`}
-                  title={`${cr.details} | Score: ${cr.score?.toFixed(1)}/${cr.threshold}`}
-                >
-                  {cr.criterion_id}: {cr.score !== undefined ? `${cr.score?.toFixed(1)}` : (cr.passed ? '✓' : '✗')}
-                </span>
-              ))}
+              {result.criteria_results?.map((cr, cIdx) => {
+                const isLlm = cr.criterion_id?.startsWith('llm_');
+                return (
+                  <span 
+                    key={cIdx}
+                    className={`text-xs px-2 py-1 rounded ${
+                      isLlm
+                        ? (cr.passed 
+                            ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
+                            : 'bg-purple-500/20 text-red-400 border border-red-500/30')
+                        : (cr.passed 
+                            ? 'bg-green-500/20 text-green-400' 
+                            : 'bg-red-500/20 text-red-400')
+                    }`}
+                    title={`${cr.details} | Score: ${cr.score?.toFixed(1)}/${cr.threshold}${isLlm ? ' | LLM Judge' : ''}`}
+                  >
+                    {isLlm && '🤖 '}{cr.criterion_id}: {cr.score !== undefined ? `${cr.score?.toFixed(1)}` : (cr.passed ? '✓' : '✗')}
+                  </span>
+                );
+              })}
             </div>
           </div>
         ))}

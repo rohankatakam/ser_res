@@ -1373,6 +1373,197 @@ Respond in JSON format:
         }
 
 
+def _llm_judge_criteria(
+    profile: Dict,
+    recommendations: List[Dict],
+    test_case: Dict,
+    gemini_key: str
+) -> List[Dict]:
+    """
+    LLM-as-Judge: Evaluate recommendations and return scalar criteria.
+    
+    This function uses the LLM to evaluate the actual recommendations
+    against the user's profile and Content Hypothesis, returning scores
+    that can be added as criteria alongside deterministic ones.
+    
+    Returns list of criterion dicts ready to be added to results.
+    """
+    try:
+        genai.configure(api_key=gemini_key)
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        
+        # Extract Content Hypothesis from profile description
+        description = profile.get('description', '')
+        if 'Content Hypothesis:' in description:
+            content_hypothesis = description.split('Content Hypothesis:')[1].strip()
+        else:
+            content_hypothesis = "No explicit Content Hypothesis. Evaluate based on engagement patterns."
+        
+        # Format recommendations for the prompt
+        rec_lines = []
+        for i, ep in enumerate(recommendations[:10], 1):
+            title = ep.get("title", "Unknown")
+            series = ep.get("series", {}).get("name", "Unknown")
+            cred = ep.get("scores", {}).get("credibility", 0)
+            sim = ep.get("similarity_score", 0) or 0
+            key_insight = (ep.get("key_insight", "") or "")[:100]
+            rec_lines.append(f"{i}. {title} ({series}) - Cred:{cred}, Sim:{sim:.2f}")
+            if key_insight:
+                rec_lines.append(f"   Insight: {key_insight}...")
+        
+        # Format engagements
+        eng_lines = []
+        for eng in profile.get("engagements", [])[-10:]:
+            eng_type = eng.get("type", "click").upper()
+            title = eng.get("title", eng.get("episode_id", "Unknown"))
+            eng_lines.append(f"- [{eng_type}] {title}")
+        
+        prompt = f"""You are an expert recommendation system evaluator. Evaluate these podcast recommendations for an investor user.
+
+## User Profile
+Name: {profile.get('name', 'Unknown')}
+Segment: {profile.get('icp_segment', 'Unknown')}
+Total Engagements: {len(profile.get('engagements', []))}
+
+## Content Hypothesis
+{content_hypothesis}
+
+## Recent Engagements (last 10)
+{chr(10).join(eng_lines) if eng_lines else 'No engagements (cold start)'}
+
+## Recommendations (Top 10)
+{chr(10).join(rec_lines)}
+
+## Test Being Evaluated
+{test_case.get('name', 'Unknown')}: {test_case.get('description', '')}
+
+## Evaluation Instructions
+
+Score each dimension on a 1-10 scale where:
+- 1-3: Poor (fails to meet expectations)
+- 4-6: Acceptable (meets minimum expectations)  
+- 7-8: Good (exceeds expectations)
+- 9-10: Excellent (exceptional quality)
+
+For each dimension, also provide your CONFIDENCE (0.0-1.0) in your score:
+- 1.0: Completely certain (clear evidence in the data)
+- 0.7-0.9: High confidence (strong signals but some ambiguity)
+- 0.5-0.7: Moderate confidence (mixed signals or limited data)
+- <0.5: Low confidence (insufficient information to judge reliably)
+
+Evaluate these dimensions:
+
+1. **RELEVANCE**: Do recommendations match the user's interests based on their engagements and Content Hypothesis?
+2. **DIVERSITY**: Is there appropriate variety? (For specialists: variety within domain. For explorers: cross-sector diversity)
+3. **QUALITY**: Are high-quality, credible sources being surfaced?
+4. **HYPOTHESIS_ALIGNMENT**: Do recommendations align with the user's stated Exploration/Specialization ratio and Cross-Disciplinary Curiosity?
+
+Respond in JSON format ONLY:
+{{
+    "relevance_score": <1-10>,
+    "relevance_confidence": <0.0-1.0>,
+    "diversity_score": <1-10>,
+    "diversity_confidence": <0.0-1.0>,
+    "quality_score": <1-10>,
+    "quality_confidence": <0.0-1.0>,
+    "hypothesis_alignment_score": <1-10>,
+    "hypothesis_alignment_confidence": <0.0-1.0>,
+    "relevance_rationale": "<1 sentence>",
+    "diversity_rationale": "<1 sentence>",
+    "quality_rationale": "<1 sentence>",
+    "hypothesis_rationale": "<1 sentence>"
+}}"""
+
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
+        
+        # Handle markdown code blocks
+        if response_text.startswith("```"):
+            lines = response_text.split("\n")
+            response_text = "\n".join(lines[1:-1])
+        
+        llm_result = json.loads(response_text)
+        
+        # Convert LLM scores to criteria (scale 1-10, threshold 6.0 for LLM criteria)
+        # Use LLM-reported confidence, with 0.7 as fallback if not provided
+        criteria = []
+        
+        # Relevance criterion
+        relevance_score = float(llm_result.get("relevance_score", 5))
+        relevance_confidence = float(llm_result.get("relevance_confidence", 0.7))
+        relevance_confidence = max(0.0, min(1.0, relevance_confidence))  # Clamp to 0-1
+        criteria.append({
+            "criterion_id": "llm_relevance",
+            "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+            "score": round(relevance_score, 1),
+            "threshold": 6.0,
+            "confidence": round(relevance_confidence, 2),
+            "passed": relevance_score >= 6.0,
+            "details": llm_result.get("relevance_rationale", ""),
+            "weight": 1.0
+        })
+        
+        # Diversity criterion
+        diversity_score = float(llm_result.get("diversity_score", 5))
+        diversity_confidence = float(llm_result.get("diversity_confidence", 0.7))
+        diversity_confidence = max(0.0, min(1.0, diversity_confidence))
+        criteria.append({
+            "criterion_id": "llm_diversity",
+            "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+            "score": round(diversity_score, 1),
+            "threshold": 6.0,
+            "confidence": round(diversity_confidence, 2),
+            "passed": diversity_score >= 6.0,
+            "details": llm_result.get("diversity_rationale", ""),
+            "weight": 1.0
+        })
+        
+        # Quality criterion
+        quality_score = float(llm_result.get("quality_score", 5))
+        quality_confidence = float(llm_result.get("quality_confidence", 0.7))
+        quality_confidence = max(0.0, min(1.0, quality_confidence))
+        criteria.append({
+            "criterion_id": "llm_quality",
+            "description": "LLM Judge: High-quality, credible sources surfaced",
+            "score": round(quality_score, 1),
+            "threshold": 6.0,
+            "confidence": round(quality_confidence, 2),
+            "passed": quality_score >= 6.0,
+            "details": llm_result.get("quality_rationale", ""),
+            "weight": 1.0
+        })
+        
+        # Content Hypothesis Alignment criterion
+        hypothesis_score = float(llm_result.get("hypothesis_alignment_score", 5))
+        hypothesis_confidence = float(llm_result.get("hypothesis_alignment_confidence", 0.7))
+        hypothesis_confidence = max(0.0, min(1.0, hypothesis_confidence))
+        criteria.append({
+            "criterion_id": "llm_hypothesis_alignment",
+            "description": "LLM Judge: Recommendations align with Content Hypothesis",
+            "score": round(hypothesis_score, 1),
+            "threshold": 6.0,
+            "confidence": round(hypothesis_confidence, 2),
+            "passed": hypothesis_score >= 6.0,
+            "details": llm_result.get("hypothesis_rationale", ""),
+            "weight": 1.0
+        })
+        
+        return criteria
+        
+    except Exception as e:
+        # Return a single error criterion
+        return [{
+            "criterion_id": "llm_evaluation_error",
+            "description": "LLM Judge evaluation failed",
+            "score": 0.0,
+            "threshold": 6.0,
+            "confidence": 0.0,
+            "passed": False,
+            "details": f"Error: {str(e)}",
+            "weight": 0.0  # Don't count failed LLM in aggregate
+        }]
+
+
 def _add_criterion(
     result: Dict,
     criterion_id: str,
@@ -1507,11 +1698,32 @@ def _execute_test(
         result["error"] = str(e)
         result["passed"] = False
     
-    # Compute aggregate scores
+    # Run LLM-as-Judge if requested and applicable (BEFORE aggregating)
+    eval_method = test_case.get("evaluation_method", "deterministic")
+    if with_llm and gemini_key and "llm" in eval_method:
+        # Get the profile and recommendations for LLM evaluation
+        llm_context = result.get("_llm_judge_context")
+        if llm_context:
+            profile = llm_context.get("profile")
+            recommendations = llm_context.get("recommendations", [])
+            
+            if profile and recommendations:
+                # Call LLM judge to get criteria
+                llm_criteria = _llm_judge_criteria(profile, recommendations, test_case, gemini_key)
+                
+                # Add LLM criteria to results (before aggregating)
+                for criterion in llm_criteria:
+                    result["criteria_results"].append(criterion)
+                    if not criterion.get("passed", True):
+                        result["passed"] = False
+        
+        # Remove internal context from result
+        result.pop("_llm_judge_context", None)
+    
+    # Compute aggregate scores (now includes LLM criteria)
     result["scores"] = _compute_aggregate_score(result)
     
-    # Run LLM evaluation if requested and applicable
-    eval_method = test_case.get("evaluation_method", "deterministic")
+    # Run LLM summarizer for qualitative commentary
     if with_llm and gemini_key and "llm" in eval_method:
         result["llm_evaluation"] = _llm_evaluate(test_case, result, gemini_key)
     
@@ -1631,6 +1843,13 @@ def _test_cold_start_quality(test_case, profiles, engine, state, result):
             weight=1.5  # Higher weight - core quality metric
         )
     
+    # Store context for LLM-as-Judge evaluation
+    cold_profile = profiles.get("01_cold_start", {})
+    result["_llm_judge_context"] = {
+        "profile": cold_profile,
+        "recommendations": episodes[:10]
+    }
+    
     return result
 
 
@@ -1710,6 +1929,12 @@ def _test_personalization_differs(test_case, profiles, engine, state, result):
         details=f"vc_cold_start={vc_cold_start}",
         weight=1.0
     )
+    
+    # Store context for LLM-as-Judge (use VC profile as the personalized user)
+    result["_llm_judge_context"] = {
+        "profile": vc_profile,
+        "recommendations": vc_response.get("episodes", [])[:10]
+    }
     
     return result
 
@@ -1902,6 +2127,12 @@ def _test_category_personalization(test_case, profiles, engine, state, result):
         weight=1.5  # Core personalization metric
     )
     
+    # Store context for LLM-as-Judge (use AI profile as primary)
+    result["_llm_judge_context"] = {
+        "profile": ai_profile,
+        "recommendations": ai_response.get("episodes", [])[:10]
+    }
+    
     return result
 
 
@@ -1971,6 +2202,20 @@ def _test_bookmark_weighting(test_case, profiles, engine, state, result):
         details=f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10, delta={delta}",
         weight=1.5  # Core weighting test
     )
+    
+    # Store context for LLM-as-Judge (use scenario B - bookmark weighted)
+    # Create a synthetic profile from the scenario for LLM evaluation
+    synthetic_profile = {
+        "profile_id": "scenario_b_bookmark",
+        "name": "Bookmark Weighting Test - Scenario B",
+        "description": "User who has bookmarked crypto content and clicked AI content. Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto despite mixed engagement patterns.",
+        "icp_segment": "Test Scenario",
+        "engagements": scenario_b_engagements
+    }
+    result["_llm_judge_context"] = {
+        "profile": synthetic_profile,
+        "recommendations": response_b.get("episodes", [])[:10]
+    }
     
     return result
 
