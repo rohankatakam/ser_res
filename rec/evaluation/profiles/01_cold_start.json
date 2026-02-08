@@ -1,7 +1,7 @@
 {
   "profile_id": "01_cold_start",
   "name": "Cold Start New User",
-  "description": "First-time visitor with zero engagement history. Tests quality-only ranking (no personalization signal).",
+  "description": "First-time visitor with zero engagement history. Tests quality-only ranking (no personalization signal). Content Hypothesis: Unknown specialization—algorithm should maximize initial diversity to probe user interests across major themes (AI, Crypto, Macro, Startups). First impression should showcase breadth of high-quality content rather than depth in any single category.",
   "icp_segment": "All segments",
   "usage_duration": "0 days (first visit)",
   "expected_behavior": [

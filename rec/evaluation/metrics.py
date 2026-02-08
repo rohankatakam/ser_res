@@ -5,12 +5,21 @@ Quantitative Metrics for Recommendation Evaluation
 Computes industry-standard metrics:
 - Precision@K
 - Coverage
-- Diversity (intra-list)
+- Diversity (intra-list, both entropy-based and embedding-based ILD)
 - Average scores (similarity, quality, recency)
 
 Usage:
     from metrics import compute_metrics
     metrics = compute_metrics(response, all_episodes)
+
+TODO (Future Metrics - requires additional data):
+- Novelty (Long-tail) Score: Measures how many recommendations come from
+  the "long-tail" (low global visit counts). Formula: novelty = 1 - normalized_popularity
+  Requires: Global visit/engagement counts per episode (not currently available)
+
+- Serendipity Score: Measures "unexpected relevance" - items that are highly
+  relevant but dissimilar to user's typical interests.
+  Requires: Clear threshold definitions and possibly user feedback data
 """
 
 import json
@@ -109,7 +118,7 @@ def compute_intra_list_diversity(
     diversity_key: str = "series"
 ) -> float:
     """
-    Compute intra-list diversity.
+    Compute intra-list diversity (entropy-based).
     
     How diverse are the recommendations within a single list?
     Uses entropy of the specified key (series, category, etc.)
@@ -119,7 +128,7 @@ def compute_intra_list_diversity(
         diversity_key: Key to compute diversity on ("series", "category")
     
     Returns:
-        Diversity score (higher = more diverse)
+        Diversity score (higher = more diverse), normalized 0-1
     """
     if not episodes:
         return 0.0
@@ -149,6 +158,79 @@ def compute_intra_list_diversity(
     max_entropy = math.log2(len(counts)) if len(counts) > 1 else 1.0
     
     return entropy / max_entropy if max_entropy > 0 else 0.0
+
+
+def cosine_similarity(vec1: List[float], vec2: List[float]) -> float:
+    """
+    Compute cosine similarity between two vectors.
+    
+    Args:
+        vec1: First embedding vector
+        vec2: Second embedding vector
+    
+    Returns:
+        Cosine similarity between -1 and 1 (typically 0-1 for normalized embeddings)
+    """
+    if not vec1 or not vec2 or len(vec1) != len(vec2):
+        return 0.0
+    
+    dot_product = sum(a * b for a, b in zip(vec1, vec2))
+    norm1 = math.sqrt(sum(a * a for a in vec1))
+    norm2 = math.sqrt(sum(b * b for b in vec2))
+    
+    if norm1 == 0 or norm2 == 0:
+        return 0.0
+    
+    return dot_product / (norm1 * norm2)
+
+
+def compute_embedding_ild(
+    episode_ids: List[str],
+    embeddings: Dict[str, List[float]]
+) -> float:
+    """
+    Compute Intra-List Diversity using embedding cosine distances.
+    
+    Research-grounded metric (Spotify/Netflix methodology):
+    ILD(R) = (2 / n(n-1)) * Σ Σ (1 - cosine_sim(r_i, r_j))
+    
+    This measures the average pairwise dissimilarity between all
+    recommended items using their embeddings.
+    
+    Args:
+        episode_ids: List of recommended episode IDs (in order)
+        embeddings: Dict mapping episode_id -> embedding vector
+    
+    Returns:
+        ILD score between 0 and 1 (higher = more diverse)
+        Returns -1.0 if insufficient embeddings available
+    """
+    # Filter to episodes we have embeddings for
+    valid_ids = [eid for eid in episode_ids if eid in embeddings]
+    n = len(valid_ids)
+    
+    if n < 2:
+        return -1.0  # Not enough items to compute diversity
+    
+    # Compute pairwise cosine distances
+    total_distance = 0.0
+    pair_count = 0
+    
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            vec_i = embeddings[valid_ids[i]]
+            vec_j = embeddings[valid_ids[j]]
+            
+            similarity = cosine_similarity(vec_i, vec_j)
+            distance = 1.0 - similarity
+            total_distance += distance
+            pair_count += 1
+    
+    # Average pairwise distance: 2 / (n * (n-1)) * sum
+    # pair_count = n*(n-1)/2, so average = total_distance / pair_count
+    avg_ild = total_distance / pair_count if pair_count > 0 else 0.0
+    
+    return avg_ild
 
 
 def compute_average_scores(episodes: List[Dict]) -> Dict[str, float]:
@@ -219,13 +301,19 @@ def compute_freshness(episodes: List[Dict]) -> Dict[str, float]:
     }
 
 
-def compute_all_metrics(response: Dict, catalog_size: int = 909) -> Dict:
+def compute_all_metrics(
+    response: Dict, 
+    catalog_size: int = 909,
+    embeddings: Dict[str, List[float]] = None
+) -> Dict:
     """
     Compute all metrics for a single API response.
     
     Args:
         response: API response dict with episodes
         catalog_size: Total episodes in catalog
+        embeddings: Optional dict mapping episode_id -> embedding vector
+                   for computing embedding-based ILD
     
     Returns:
         Dict with all computed metrics
@@ -241,9 +329,16 @@ def compute_all_metrics(response: Dict, catalog_size: int = 909) -> Dict:
     # Average scores
     metrics.update(compute_average_scores(episodes))
     
-    # Diversity
+    # Diversity (entropy-based)
     metrics["series_diversity"] = compute_intra_list_diversity(episodes, "series")
     metrics["category_diversity"] = compute_intra_list_diversity(episodes, "category")
+    
+    # Embedding-based ILD (if embeddings provided)
+    if embeddings:
+        episode_ids = [ep.get("id") for ep in episodes if ep.get("id")]
+        metrics["embedding_ild"] = compute_embedding_ild(episode_ids, embeddings)
+    else:
+        metrics["embedding_ild"] = None
     
     # Freshness
     metrics.update(compute_freshness(episodes))
@@ -278,8 +373,20 @@ def format_metrics_report(metrics: Dict) -> str:
         f"Avg Insight: {metrics.get('avg_insight', 0):.2f}",
         "",
         "--- Diversity ---",
-        f"Series Diversity: {metrics.get('series_diversity', 0):.4f}",
-        f"Category Diversity: {metrics.get('category_diversity', 0):.4f}",
+        f"Series Diversity (entropy): {metrics.get('series_diversity', 0):.4f}",
+        f"Category Diversity (entropy): {metrics.get('category_diversity', 0):.4f}",
+    ]
+    
+    # Add embedding ILD if available
+    embedding_ild = metrics.get('embedding_ild')
+    if embedding_ild is not None and embedding_ild >= 0:
+        lines.append(f"Embedding ILD (cosine): {embedding_ild:.4f}")
+    elif embedding_ild == -1:
+        lines.append("Embedding ILD: N/A (insufficient data)")
+    else:
+        lines.append("Embedding ILD: N/A (no embeddings)")
+    
+    lines.extend([
         f"Unique Series: {metrics.get('unique_series', 0)}",
         f"Max from Single Series: {metrics.get('max_series_count', 0)}",
         "",
@@ -288,7 +395,7 @@ def format_metrics_report(metrics: Dict) -> str:
         f"Newest: {metrics.get('min_age_days', 0):.0f} days",
         f"Oldest: {metrics.get('max_age_days', 0):.0f} days",
         "="*50,
-    ]
+    ])
     return "\n".join(lines)
 
 

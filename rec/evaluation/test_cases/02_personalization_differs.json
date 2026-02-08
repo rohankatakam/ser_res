@@ -1,14 +1,14 @@
 {
   "test_id": "02_personalization_differs",
-  "name": "Personalization Differs from Cold Start",
+  "name": "Personalization Differs from Cold Start (Centroid Shift Test)",
   "type": "MFT",
   "evaluation_method": "deterministic_llm",
-  "description": "Engaged user's top 10 should be measurably different from cold start top 10 (at least 5 different episodes).",
+  "description": "Engaged user's top 10 should be measurably different from cold start top 10. Tests 'Model Selection Agreement' (MSA): as user vector shifts based on engagements, recommendations should shift proportionally. Research-grounded: measures the algorithm's sensitivity to engagement signals.",
   "profiles": ["01_cold_start", "02_vc_partner_ai_tech"],
   "llm_criteria": {
     "enabled": true,
-    "focus_areas": ["relevance", "personalization"],
-    "prompt_hint": "Evaluate if the personalized recommendations are meaningfully different and more relevant to the user's interests"
+    "focus_areas": ["relevance", "personalization", "content_hypothesis_alignment"],
+    "prompt_hint": "Evaluate if the personalized recommendations (1) are meaningfully different from cold start, (2) align with the user's demonstrated interests and Content Hypothesis, and (3) show appropriate thematic shift toward AI/Tech content based on engagement history"
   },
   "setup": {
     "scenario_a": {
@@ -38,12 +38,24 @@
       "id": "cold_start_flag_off",
       "description": "VC Partner cold_start flag is false",
       "check": "vc_partner_response.cold_start === false"
+    },
+    {
+      "id": "model_selection_agreement",
+      "description": "MSA Test: Top 10 theme distribution should shift to match engagement theme distribution (e.g., if 80% of engagements are AI/Tech, at least 50% of top 10 should be AI/Tech)",
+      "check": "theme_alignment_ratio(engagements, recommendations) >= 0.5"
+    },
+    {
+      "id": "personalization_strength",
+      "description": "Average similarity score for personalized user is at least 0.1 higher than cold start",
+      "check": "avg(vc_partner.similarity_scores) - avg(cold_start.similarity_scores) >= 0.1"
     }
   ],
-  "validation_method": "Compare episode IDs in top 10 from both calls, count overlap, compare similarity scores",
+  "validation_method": "Compare episode IDs in top 10 from both calls, count overlap, compare similarity scores, measure theme distribution alignment",
   "if_fails_adjust": [
     "Similarity weight (currently 55%)",
-    "User vector computation (engagement limit, currently 10)"
+    "User vector computation (engagement limit, currently 10)",
+    "Engagement weighting (clicks vs bookmarks)"
   ],
-  "created_at": "2026-02-06T00:00:00Z"
+  "created_at": "2026-02-06T00:00:00Z",
+  "research_note": "Based on 'Centroid Shift Test' / Model Selection Agreement methodology - measures correlation between user vector changes and recommendation list changes"
 }

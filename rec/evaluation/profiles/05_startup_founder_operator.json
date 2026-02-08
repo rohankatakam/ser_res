@@ -1,7 +1,7 @@
 {
   "profile_id": "05_startup_founder_operator",
   "name": "Startup Founder / Operator",
-  "description": "New user (1 day) who is a startup founder looking for tactical advice on product, growth, and scaling. Tests warm start behavior with minimal engagement data.",
+  "description": "New user (1 day) who is a startup founder looking for tactical advice on product, growth, and scaling. Tests warm start behavior with minimal engagement data. Content Hypothesis: 80% Specialization in founder/operator content (product, growth, team building, fundraising). Cross-Disciplinary Curiosity: Moderate—open to AI content if it's about applying AI in products, not AI research. Prefers tactical how-to content and founder journey stories over macro analysis or pure investment commentary.",
   "icp_segment": "Prosumer / Founder",
   "usage_duration": "1 day (Feb 5, 2026)",
   "expected_behavior": [

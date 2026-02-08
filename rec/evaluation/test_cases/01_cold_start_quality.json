@@ -1,14 +1,14 @@
 {
   "test_id": "01_cold_start_quality",
-  "name": "Cold Start Returns Quality Content",
+  "name": "Cold Start Quality & Topic Breadth (First Impression Test)",
   "type": "MFT",
   "evaluation_method": "deterministic_llm",
-  "description": "With 0 engagements, top 10 should be dominated by high-quality episodes. API returns cold_start: true.",
+  "description": "With 0 engagements, top 10 should be dominated by high-quality episodes AND demonstrate topic breadth to probe user interests. API returns cold_start: true. Research-grounded: A first impression should showcase the best of each major theme without overwhelming diversity.",
   "profiles": ["01_cold_start"],
   "llm_criteria": {
     "enabled": true,
-    "focus_areas": ["quality", "relevance"],
-    "prompt_hint": "Evaluate if these recommendations feel like high-quality content for a new investor user with no history"
+    "focus_areas": ["quality", "diversity", "topic_breadth"],
+    "prompt_hint": "Evaluate if these recommendations (1) are high-quality content, (2) span multiple major themes (AI, Crypto, Macro, Startups) to help discover user interests, and (3) avoid low-credibility content. The 'First Impression' should maximize initial diversity within quality bounds."
   },
   "setup": {
     "engagements": [],
@@ -27,19 +27,38 @@
     },
     {
       "id": "min_credibility",
-      "description": "No episode in top 10 has credibility < 2",
+      "description": "No episode in top 10 has credibility < 2 (residual quality check)",
       "check": "all(episodes[0:10].scores.credibility >= 2)"
     },
     {
       "id": "top_quality_score",
       "description": "Top 3 episodes have quality_score >= 0.7",
       "check": "all(episodes[0:3].quality_score >= 0.7)"
+    },
+    {
+      "id": "topic_breadth",
+      "description": "Top 10 includes episodes from at least 3 different major themes (AI/Tech, Crypto, Macro, Startups/Founders, Venture)",
+      "check": "unique_major_themes(episodes[0:10]) >= 3"
+    },
+    {
+      "id": "series_diversity",
+      "description": "Top 10 includes episodes from at least 5 different series (no single-source dominance)",
+      "check": "unique_series(episodes[0:10]) >= 5"
     }
   ],
-  "validation_method": "Run API call with empty engagements, parse response and compute average credibility, verify cold_start flag",
+  "theme_detection": {
+    "AI/Tech": ["AI", "artificial intelligence", "machine learning", "OpenAI", "Anthropic", "GPT", "LLM", "No Priors", "Latent Space", "AI + a16z"],
+    "Crypto/Web3": ["crypto", "Bitcoin", "Ethereum", "DeFi", "blockchain", "stablecoin", "Bankless", "Unchained"],
+    "Macro/Markets": ["market", "Fed", "economy", "credit", "rates", "Goldman", "Bloomberg", "macro"],
+    "Startups/Founders": ["founder", "startup", "growth", "product", "Series A", "Lenny", "In Depth"],
+    "Venture/PE": ["VC", "venture", "fund", "portfolio", "20VC", "Capital Allocators", "Full Ratchet"]
+  },
+  "validation_method": "Run API call with empty engagements, verify cold_start flag, compute average credibility, count unique themes and series in top 10",
   "if_fails_adjust": [
     "Quality weight in cold start (currently 60%)",
-    "Credibility floor (currently 2)"
+    "Credibility floor (currently 2)",
+    "Add diversity boost for cold start to ensure topic breadth"
   ],
-  "created_at": "2026-02-06T00:00:00Z"
+  "created_at": "2026-02-06T00:00:00Z",
+  "research_note": "Based on 'First Impression Test' methodology - cold start should probe user interests with diverse high-quality content"
 }

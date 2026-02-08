@@ -1,35 +1,41 @@
 {
   "test_id": "05_category_personalization",
-  "name": "Category Engagement → Category Recommendations",
+  "name": "Category Personalization & Boundary Cross Test",
   "type": "DIR",
   "evaluation_method": "deterministic_llm",
-  "description": "User with 80%+ category-specific engagements should see 50%+ matching category content in top 10.",
+  "description": "User with 80%+ category-specific engagements should see 50%+ matching category content in top 10. Additionally tests 'Boundary Cross': the 1-2 outside-category recommendations should be contextually linked to user interests (e.g., defense-tech for AI VC, macro stablecoin for crypto investor) rather than random.",
   "profiles": ["02_vc_partner_ai_tech", "03_crypto_web3_investor"],
   "llm_criteria": {
     "enabled": true,
-    "focus_areas": ["relevance", "category_alignment"],
-    "prompt_hint": "Evaluate if recommendations semantically match the user's category interests beyond just keyword matching"
+    "focus_areas": ["relevance", "category_alignment", "cross_disciplinary_coherence"],
+    "prompt_hint": "Evaluate if (1) recommendations match the user's primary category, and (2) any 'outside' recommendations are contextually linked to user interests via cross-disciplinary bridges (e.g., AI+defense, crypto+regulatory, tech+macro). Random unrelated content is a failure."
   },
   "setup": {
     "scenario_a": {
       "name": "AI/Tech Focus",
       "profile": "02_vc_partner_ai_tech",
-      "expected_category": "AI/Tech"
+      "expected_category": "AI/Tech",
+      "acceptable_bridges": ["defense-tech", "enterprise software", "AI regulation", "chip supply chain", "AI infrastructure economics"]
     },
     "scenario_b": {
       "name": "Crypto/Web3 Focus",
       "profile": "03_crypto_web3_investor",
-      "expected_category": "Crypto/Web3"
+      "expected_category": "Crypto/Web3",
+      "acceptable_bridges": ["stablecoin regulation", "macro Fed impact on crypto", "AI agents on blockchain", "fintech disruption"]
     }
   },
   "category_detection": {
     "ai_tech": {
-      "series_keywords": ["a16z", "AI", "No Priors", "Latent Space", "Sourcery"],
-      "content_keywords": ["AI", "artificial intelligence", "machine learning", "OpenAI", "Anthropic", "GPT", "neural", "LLM"]
+      "series_keywords": ["a16z", "AI", "No Priors", "Latent Space", "Sourcery", "MLOps"],
+      "content_keywords": ["AI", "artificial intelligence", "machine learning", "OpenAI", "Anthropic", "GPT", "neural", "LLM", "inference", "training"]
     },
     "crypto_web3": {
-      "series_keywords": ["Bankless", "Unchained", "web3", "0xResearch"],
-      "content_keywords": ["crypto", "Bitcoin", "Ethereum", "DeFi", "blockchain", "stablecoin", "Web3"]
+      "series_keywords": ["Bankless", "Unchained", "web3", "0xResearch", "Delphi"],
+      "content_keywords": ["crypto", "Bitcoin", "Ethereum", "DeFi", "blockchain", "stablecoin", "Web3", "L2", "rollup"]
+    },
+    "bridge_content": {
+      "description": "Content that bridges between themes",
+      "examples": ["AI on Ethereum", "defense-tech VC", "stablecoin Fed policy", "crypto macro", "AI chip economics"]
     }
   },
   "pass_criteria": [
@@ -42,13 +48,25 @@
       "id": "crypto_category_match",
       "description": "Profile 03 (Crypto): At least 5 of top 10 episodes are Crypto/Web3 related",
       "check": "count_matching_category(response, 'crypto_web3') >= 5"
+    },
+    {
+      "id": "boundary_cross_coherence",
+      "description": "Any non-matching category episodes in top 10 should be 'bridge' content (contextually linked) rather than random unrelated content",
+      "check": "all_outside_episodes_are_bridges_or_related(response)"
+    },
+    {
+      "id": "no_random_content",
+      "description": "No completely unrelated content in top 10 (e.g., no random entertainment/lifestyle for a specialist profile)",
+      "check": "count_unrelated_content(response) == 0"
     }
   ],
-  "validation_method": "Parse top 10 results, categorize each by series name and key_insight keywords, count category matches",
+  "validation_method": "Parse top 10 results, categorize each by series name and key_insight keywords, count category matches, evaluate bridge content quality for non-matching episodes",
   "if_fails_adjust": [
     "Similarity weight (currently 55%)",
     "User vector computation",
-    "Embedding quality"
+    "Embedding quality",
+    "Add cross-disciplinary bridge detection in quality evaluation"
   ],
-  "created_at": "2026-02-06T00:00:00Z"
+  "created_at": "2026-02-06T00:00:00Z",
+  "research_note": "Based on 'Boundary Cross Test' methodology - ensures that diversity includes contextually-linked cross-disciplinary content rather than random noise"
 }

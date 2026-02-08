@@ -67,7 +67,8 @@ export default function TestsPage({ geminiKey }) {
       // Check if test supports LLM evaluation
       const testCase = testCases.find(t => t.id === testId);
       const supportsLlm = testCase?.evaluation_method?.includes('llm');
-      const enableLlm = supportsLlm && !!geminiKey;
+      // Always enable LLM for supported tests - backend will use its configured key as fallback
+      const enableLlm = supportsLlm;
       
       const result = await runTest(testId, { 
         geminiKey,
@@ -92,8 +93,8 @@ export default function TestsPage({ geminiKey }) {
     setResults({});
     
     try {
-      // Enable LLM evaluation if Gemini key is provided
-      const enableLlm = !!geminiKey;
+      // Always enable LLM evaluation - backend will use its configured key as fallback
+      const enableLlm = true;
       
       const report = await runAllTests({ 
         geminiKey,
@@ -391,7 +392,75 @@ function TestCard({ test, result, running, disabled, onRun }) {
               <CriterionCard key={idx} criterion={cr} />
             ))}
           </div>
+          
+          {/* LLM Evaluation Section */}
+          {result.llm_evaluation && (
+            <LlmEvaluationCard evaluation={result.llm_evaluation} />
+          )}
         </div>
+      )}
+    </div>
+  );
+}
+
+function LlmEvaluationCard({ evaluation }) {
+  if (!evaluation || evaluation.error) {
+    return evaluation?.error ? (
+      <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+        <span className="text-red-400 text-sm">LLM Error: {evaluation.error}</span>
+      </div>
+    ) : null;
+  }
+  
+  return (
+    <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-sm font-medium text-purple-300 flex items-center gap-2">
+          <span className="text-purple-400">✨</span>
+          LLM Evaluation (Gemini)
+        </h4>
+        <span className="text-lg font-bold text-purple-400">
+          {evaluation.quality_score}/5
+        </span>
+      </div>
+      
+      {/* Summary */}
+      <p className="text-slate-300 text-sm mb-3">{evaluation.summary}</p>
+      
+      {/* Observations */}
+      {evaluation.observations?.length > 0 && (
+        <div className="mb-3">
+          <h5 className="text-xs font-medium text-slate-400 mb-1">Observations</h5>
+          <ul className="space-y-1">
+            {evaluation.observations.map((obs, idx) => (
+              <li key={idx} className="text-xs text-slate-400 flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">•</span>
+                <span>{obs}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {/* Suggestions */}
+      {evaluation.suggestions?.length > 0 && (
+        <div>
+          <h5 className="text-xs font-medium text-slate-400 mb-1">Suggestions</h5>
+          <ul className="space-y-1">
+            {evaluation.suggestions.map((sug, idx) => (
+              <li key={idx} className="text-xs text-slate-400 flex items-start gap-2">
+                <span className="text-yellow-400 mt-0.5">→</span>
+                <span>{sug}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {evaluation.evaluated_at && (
+        <p className="text-xs text-slate-500 mt-2">
+          Evaluated: {new Date(evaluation.evaluated_at).toLocaleString()}
+        </p>
       )}
     </div>
   );

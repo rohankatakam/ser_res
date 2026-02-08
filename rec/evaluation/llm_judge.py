@@ -50,10 +50,13 @@ MAX_OUTPUT_TOKENS = 65535  # Maximum for gemini-2.5-flash
 # Prompt Templates
 # ============================================================================
 
-EVALUATION_PROMPT = """You are evaluating a podcast recommendation system for investors.
+EVALUATION_PROMPT = """You are evaluating a podcast recommendation system for investors using a profile-aware methodology based on 2026 best practices (Spotify/Netflix research).
 
 ## User Profile
 {profile_summary}
+
+## Content Hypothesis
+{content_hypothesis}
 
 ## Recent Engagements
 {engagements_summary}
@@ -66,27 +69,37 @@ EVALUATION_PROMPT = """You are evaluating a podcast recommendation system for in
 
 ## Evaluation Criteria
 
-Please evaluate the recommendations on these criteria (1-5 scale):
+Evaluate recommendations using the user's Content Hypothesis as your primary lens:
 
-1. **RELEVANCE** (1-5): Do the recommendations relate to the user's demonstrated interests?
-   - 5: All recommendations are highly relevant to user interests
-   - 3: Mix of relevant and irrelevant content
-   - 1: Recommendations seem random or unrelated
+1. **RELEVANCE** (1-5): Do the recommendations match the user's content hypothesis?
+   - Consider their Specialization vs. Exploration ratio
+   - Consider their Cross-Disciplinary Curiosity level
+   - 5: Recommendations perfectly match the content hypothesis (right balance of depth/breadth)
+   - 3: Partially matches - some content aligns, some doesn't
+   - 1: Recommendations conflict with the user's stated content preferences
 
-2. **DIVERSITY** (1-5): Is there appropriate variety without being scattered?
-   - 5: Good variety within the user's interest areas
-   - 3: Some repetition or gaps in coverage
-   - 1: Too repetitive or too scattered
+2. **DIVERSITY** (1-5): Does the diversity level match what the Content Hypothesis prescribes?
+   - For specialists (high specialization %): variety WITHIN their domain is good, scattered recommendations are bad
+   - For explorers (high exploration %): cross-sector diversity is expected and good
+   - 5: Diversity level perfectly matches the user's exploration/specialization ratio
+   - 3: Some mismatch in diversity expectations
+   - 1: Major mismatch (e.g., scattered content for a specialist, or narrow content for an explorer)
 
 3. **QUALITY** (1-5): Are high-quality episodes (credibility ≥3) being surfaced?
    - 5: Top recommendations are all high-quality
    - 3: Mix of quality levels
    - 1: Low-quality content is prominent
 
-4. **TEST_PASS** (true/false): Does this specific test case pass?
+4. **CONTENT_HYPOTHESIS_ALIGNMENT** (1-5): How well do recommendations align with the explicit Content Hypothesis?
+   - Consider: Exploration/Specialization ratio, Cross-Disciplinary Curiosity, any stated format preferences
+   - 5: Recommendations demonstrate clear understanding of the user's content preferences
+   - 3: Partial alignment with room for improvement
+   - 1: Recommendations seem to ignore the Content Hypothesis entirely
+
+5. **TEST_PASS** (true/false): Does this specific test case pass?
    - Evaluate based on the test description provided
 
-5. **RATIONALE**: Explain your evaluation in 2-3 sentences.
+6. **RATIONALE**: Explain your evaluation in 2-3 sentences, specifically referencing how the recommendations align (or don't) with the Content Hypothesis.
 
 ## Response Format
 
@@ -95,8 +108,9 @@ You MUST respond with ONLY valid JSON, no markdown code blocks, no additional te
   "relevance_score": <1-5>,
   "diversity_score": <1-5>,
   "quality_score": <1-5>,
+  "content_hypothesis_alignment": <1-5>,
   "test_pass": <true or false>,
-  "rationale": "<explanation>"
+  "rationale": "<explanation referencing content hypothesis>"
 }}
 """
 
@@ -112,13 +126,55 @@ def format_profile_summary(profile: Dict) -> str:
     if stats:
         total_engagements = stats.get("total_engagements", total_engagements)
     
+    # Extract base description without Content Hypothesis
+    full_desc = profile.get('description', '')
+    base_desc = full_desc.split('Content Hypothesis:')[0].strip()
+    
     return f"""
 Name: {profile.get('name', 'Unknown')}
 ICP Segment: {profile.get('icp_segment', 'Unknown')}
 Duration: {profile.get('usage_duration', 'Unknown')}
 Total Engagements: {total_engagements}
-Description: {profile.get('description', '')}
+Description: {base_desc}
 """
+
+
+def extract_content_hypothesis(profile: Dict) -> str:
+    """
+    Extract Content Hypothesis from profile description.
+    
+    The Content Hypothesis describes:
+    - Exploration vs. Specialization ratio (e.g., "85% Specialization")
+    - Cross-Disciplinary Curiosity level (Low/Moderate/High)
+    - Format preferences (if any)
+    - Specific interest areas and boundaries
+    
+    Args:
+        profile: User profile dict
+    
+    Returns:
+        Content Hypothesis text for LLM evaluation
+    """
+    description = profile.get('description', '')
+    
+    # Try to extract Content Hypothesis section if it exists
+    if 'Content Hypothesis:' in description:
+        hypothesis_part = description.split('Content Hypothesis:')[1].strip()
+        return hypothesis_part
+    
+    # For cold start or profiles without explicit hypothesis
+    if not profile.get('engagements'):
+        return """Unknown specialization—first-time user with no engagement history.
+Algorithm should maximize initial diversity to probe user interests across major themes.
+First impression should showcase breadth of high-quality content."""
+    
+    # Generate basic hypothesis from expected_behavior if no explicit one
+    expected = profile.get('expected_behavior', [])
+    if expected:
+        return f"""Inferred from expected behavior:
+{chr(10).join('- ' + str(b) for b in expected[:5])}"""
+    
+    return "No explicit Content Hypothesis available. Evaluate based on engagement patterns."
 
 
 def format_engagements_summary(engagements: List[Dict]) -> str:
@@ -218,6 +274,7 @@ def evaluate_with_llm(
             "relevance_score": None,
             "diversity_score": None,
             "quality_score": None,
+            "content_hypothesis_alignment": None,
             "test_pass": None,
             "rationale": None
         }
@@ -230,6 +287,7 @@ def evaluate_with_llm(
             "relevance_score": None,
             "diversity_score": None,
             "quality_score": None,
+            "content_hypothesis_alignment": None,
             "test_pass": None,
             "rationale": None
         }
@@ -237,9 +295,10 @@ def evaluate_with_llm(
     # Configure Gemini
     genai.configure(api_key=key)
     
-    # Build prompt
+    # Build prompt with Content Hypothesis
     prompt = EVALUATION_PROMPT.format(
         profile_summary=format_profile_summary(profile),
+        content_hypothesis=extract_content_hypothesis(profile),
         engagements_summary=format_engagements_summary(profile.get("engagements", [])),
         recommendations_summary=format_recommendations_summary(response.get("episodes", [])),
         test_description=f"{test_case.get('name', 'Unknown')}: {test_case.get('description', '')}"
@@ -283,6 +342,7 @@ def evaluate_with_llm(
             "relevance_score": None,
             "diversity_score": None,
             "quality_score": None,
+            "content_hypothesis_alignment": None,
             "test_pass": None,
             "rationale": None
         }
