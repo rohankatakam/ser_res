@@ -1,0 +1,109 @@
+{
+  "test_id": "08_bookmark_weighting_high_quality",
+  "name": "Bookmarks Outweigh Clicks (High-Quality Episodes)",
+  "type": "DIR",
+  "evaluation_method": "deterministic_llm",
+  "description": "Same as Test 06 but using high-quality crypto episodes (C>=3, I>=3) that pass all quality gates. This isolates the bookmark weighting behavior from quality gate effects.",
+  "profiles": ["custom"],
+  "llm_criteria": {
+    "enabled": true,
+    "focus_areas": ["personalization_strength", "relevance"],
+    "prompt_hint": "Compare recommendations from bookmark-heavy vs click-heavy scenarios and evaluate if the bookmarked topic dominates. All test episodes are high-quality and pass quality gates."
+  },
+  "setup": {
+    "note": "Uses high-quality episodes (C>=3, I>=3) that all pass quality gates. This isolates bookmark weighting from quality gate effects.",
+    "quality_note": "All episodes pass quality gates: C>=2 AND (C+I)>=5",
+    "shared_episodes": {
+      "ai_episode": {
+        "id": "ddzQwPxlELoIPRUgzaOd",
+        "title": "Martin Casado on the Demand Forces Behind AI",
+        "category": "AI/Tech",
+        "quality": "C:4, I:3 (passes gates)"
+      },
+      "crypto_episode_1": {
+        "id": "F0MJ67nIzo8kXCB4fMKp",
+        "title": "CryptoPunks creators: from art experiment to cultural movement",
+        "category": "Crypto/Web3",
+        "quality": "C:4, I:3 (passes gates)"
+      },
+      "crypto_episode_2": {
+        "id": "eIWV2Z7g1Rl3NZyAMiRI",
+        "title": "The DAO's Unclaimed ETH Becomes a $250M Ethereum Security Fund",
+        "category": "Crypto/Web3",
+        "quality": "C:3, I:3 (passes gates)"
+      }
+    },
+    "scenario_a": {
+      "name": "Bookmark AI + Click Crypto",
+      "description": "User bookmarks the AI episode (2x weight) and clicks crypto episodes (1x weight). AI should dominate.",
+      "engagements": [
+        {
+          "episode_id": "ddzQwPxlELoIPRUgzaOd",
+          "title": "Martin Casado on the Demand Forces Behind AI",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T12:00:00Z"
+        },
+        {
+          "episode_id": "F0MJ67nIzo8kXCB4fMKp",
+          "title": "CryptoPunks creators: from art experiment to cultural movement",
+          "type": "click",
+          "timestamp": "2026-02-05T11:00:00Z"
+        },
+        {
+          "episode_id": "eIWV2Z7g1Rl3NZyAMiRI",
+          "title": "The DAO's Unclaimed ETH Becomes a $250M Ethereum Security Fund",
+          "type": "click",
+          "timestamp": "2026-02-05T10:00:00Z"
+        }
+      ],
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "F0MJ67nIzo8kXCB4fMKp", "eIWV2Z7g1Rl3NZyAMiRI"],
+      "expected_weight_distribution": "AI: 2.0 / Crypto: 2.0 = 50% AI influence"
+    },
+    "scenario_b": {
+      "name": "Click AI + Bookmark Crypto",
+      "description": "User clicks the AI episode (1x weight) and bookmarks crypto episodes (2x weight). Crypto should dominate.",
+      "engagements": [
+        {
+          "episode_id": "ddzQwPxlELoIPRUgzaOd",
+          "title": "Martin Casado on the Demand Forces Behind AI",
+          "type": "click",
+          "timestamp": "2026-02-05T12:00:00Z"
+        },
+        {
+          "episode_id": "F0MJ67nIzo8kXCB4fMKp",
+          "title": "CryptoPunks creators: from art experiment to cultural movement",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T11:00:00Z"
+        },
+        {
+          "episode_id": "eIWV2Z7g1Rl3NZyAMiRI",
+          "title": "The DAO's Unclaimed ETH Becomes a $250M Ethereum Security Fund",
+          "type": "bookmark",
+          "timestamp": "2026-02-05T10:00:00Z"
+        }
+      ],
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "F0MJ67nIzo8kXCB4fMKp", "eIWV2Z7g1Rl3NZyAMiRI"],
+      "expected_weight_distribution": "AI: 1.0 / Crypto: 4.0 = 20% AI influence"
+    }
+  },
+  "pass_criteria": [
+    {
+      "id": "different_results",
+      "description": "Scenarios produce different recommendations (at least 2 different episodes in top 10)",
+      "check": "len(set(scenario_a_ids) ^ set(scenario_b_ids)) >= 2"
+    },
+    {
+      "id": "crypto_dominance_in_b",
+      "description": "Scenario B (bookmark crypto) has more crypto episodes in top 10 than Scenario A",
+      "check": "count_crypto_episodes(scenario_b, top_10) > count_crypto_episodes(scenario_a, top_10)"
+    }
+  ],
+  "validation_method": "Run both scenarios with mixed engagement types, compare category distribution in results",
+  "if_fails_adjust": [
+    "Bookmark weight (currently 2.0x in v1.2, tuned in v1.3)",
+    "User vector limit (currently 10)",
+    "Similarity weight"
+  ],
+  "created_at": "2026-02-08T00:00:00Z",
+  "related_test": "06_bookmark_weighting (uses lower-quality crypto episodes that may fail quality gates)"
+}

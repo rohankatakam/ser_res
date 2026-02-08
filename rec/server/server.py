@@ -801,6 +801,17 @@ def create_session(request: CreateSessionRequest):
     engagements = [e.model_dump() for e in request.engagements]
     excluded_ids = set(request.excluded_ids)
     
+    # Auto-exclude engaged episodes from recommendations
+    # Users should not see episodes they've already interacted with in new sessions
+    # Note: Within a session, engaged items remain visible until refresh
+    for eng in request.engagements:
+        excluded_ids.add(eng.episode_id)
+    
+    # Load algorithm-specific config
+    algo_config = None
+    if state.current_algorithm.config and hasattr(engine, 'RecommendationConfig'):
+        algo_config = engine.RecommendationConfig.from_dict(state.current_algorithm.config)
+    
     # Create recommendation queue
     queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
         engagements=engagements,
@@ -808,6 +819,7 @@ def create_session(request: CreateSessionRequest):
         episodes=state.current_dataset.episodes,
         embeddings=state.current_embeddings,
         episode_by_content_id=state.current_dataset.episode_by_content_id,
+        config=algo_config,
     )
     
     # Create session
@@ -1690,6 +1702,10 @@ def _execute_test(
         elif test_id == "07_recency_scoring":
             result = _test_recency_scoring(test_case, profiles, engine, state, result)
         
+        elif test_id == "08_bookmark_weighting_high_quality":
+            # Same logic as test 06, just with high-quality crypto episodes
+            result = _test_bookmark_weighting_high_quality(test_case, profiles, engine, state, result)
+        
         else:
             result["error"] = f"Unknown test: {test_id}"
             result["passed"] = False
@@ -1734,12 +1750,23 @@ def _call_recommendation_api(engagements: List[Dict], excluded_ids: set, state: 
     """Helper to call the recommendation engine directly."""
     engine = state.current_algorithm.engine_module
     
+    # Auto-exclude engaged episodes (consistent with create_session behavior)
+    all_excluded = excluded_ids.copy()
+    for eng in engagements:
+        all_excluded.add(eng.get("episode_id", ""))
+    
+    # Load algorithm-specific config
+    algo_config = None
+    if state.current_algorithm.config and hasattr(engine, 'RecommendationConfig'):
+        algo_config = engine.RecommendationConfig.from_dict(state.current_algorithm.config)
+    
     queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
         engagements=engagements,
-        excluded_ids=excluded_ids,
+        excluded_ids=all_excluded,
         episodes=state.current_dataset.episodes,
         embeddings=state.current_embeddings,
         episode_by_content_id=state.current_dataset.episode_by_content_id,
+        config=algo_config,
     )
     
     # Convert to response format
@@ -2209,6 +2236,92 @@ def _test_bookmark_weighting(test_case, profiles, engine, state, result):
         "profile_id": "scenario_b_bookmark",
         "name": "Bookmark Weighting Test - Scenario B",
         "description": "User who has bookmarked crypto content and clicked AI content. Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto despite mixed engagement patterns.",
+        "icp_segment": "Test Scenario",
+        "engagements": scenario_b_engagements
+    }
+    result["_llm_judge_context"] = {
+        "profile": synthetic_profile,
+        "recommendations": response_b.get("episodes", [])[:10]
+    }
+    
+    return result
+
+
+def _test_bookmark_weighting_high_quality(test_case, profiles, engine, state, result):
+    """Test 08: Bookmarks Outweigh Clicks (High-Quality Episodes)
+    
+    Same logic as Test 06 but uses high-quality crypto episodes (C>=3, I>=3)
+    that pass all quality gates. This isolates bookmark weighting from quality gate effects.
+    
+    Scoring approach:
+    - different_results: Map [0, 10] different to [1, 10] score
+    - crypto_dominance: Map delta [-10, 10] to [1, 10] score
+    """
+    setup = test_case.get("setup", {})
+    
+    scenario_a_engagements = setup.get("scenario_a", {}).get("engagements", [])
+    scenario_b_engagements = setup.get("scenario_b", {}).get("engagements", [])
+    
+    response_a = _call_recommendation_api(scenario_a_engagements, set(setup.get("scenario_a", {}).get("excluded_ids", [])), state)
+    response_b = _call_recommendation_api(scenario_b_engagements, set(setup.get("scenario_b", {}).get("excluded_ids", [])), state)
+    
+    scenario_a_ids = set(ep["id"] for ep in response_a.get("episodes", [])[:10])
+    scenario_b_ids = set(ep["id"] for ep in response_b.get("episodes", [])[:10])
+    
+    # Criterion 1: Different results
+    # Map [0, 10] different episodes to [1, 10] score
+    different_count = len(scenario_a_ids ^ scenario_b_ids)
+    score = 1.0 + different_count * 0.9  # 0 → 1, 2 → 2.8, 10 → 10
+    
+    _add_criterion(
+        result,
+        criterion_id="different_results",
+        description="Scenarios produce different recommendations (at least 2 different episodes)",
+        score=score,
+        threshold=2.8,  # Corresponds to 2 different episodes
+        confidence=1.0,
+        details=f"different_episodes={different_count}",
+        weight=1.0
+    )
+    
+    # Criterion 2: Crypto presence higher in Scenario B (bookmark crypto)
+    crypto_keywords = ["crypto", "bitcoin", "ethereum", "web3", "defi", "blockchain", "btc", "eth", "cryptopunks", "nft", "dao"]
+    
+    def count_crypto(episodes):
+        count = 0
+        for ep in episodes[:10]:
+            title = ep.get("title", "").lower()
+            key_insight = (ep.get("key_insight") or "").lower()
+            series = ep.get("series", {}).get("name", "").lower()
+            text = f"{title} {key_insight} {series}"
+            if any(kw in text for kw in crypto_keywords):
+                count += 1
+        return count
+    
+    crypto_count_a = count_crypto(response_a.get("episodes", []))
+    crypto_count_b = count_crypto(response_b.get("episodes", []))
+    
+    # Map delta [-10, 10] to score [1, 10], with 0 delta → 5.5
+    delta = crypto_count_b - crypto_count_a
+    score = 5.5 + delta * 0.45  # -10 → 1, 0 → 5.5, +10 → 10
+    score = max(1.0, min(10.0, score))
+    
+    _add_criterion(
+        result,
+        criterion_id="crypto_dominance_in_b",
+        description="Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+        score=score,
+        threshold=5.5,  # Pass if B has more crypto (positive delta)
+        confidence=1.0,
+        details=f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10, delta={delta}",
+        weight=1.5  # Core weighting test
+    )
+    
+    # Store context for LLM-as-Judge (use scenario B - bookmark weighted)
+    synthetic_profile = {
+        "profile_id": "scenario_b_bookmark_hq",
+        "name": "Bookmark Weighting Test (High Quality) - Scenario B",
+        "description": "User who has bookmarked HIGH-QUALITY crypto content and clicked AI content. All test episodes pass quality gates (C>=3, I>=3). Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto.",
         "icp_segment": "Test Scenario",
         "engagements": scenario_b_engagements
     }

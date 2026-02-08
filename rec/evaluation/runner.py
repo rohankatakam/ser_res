@@ -638,6 +638,85 @@ def run_test(test_id: str, profiles: Dict[str, Dict], verbose: bool = False, wit
             result.evaluation_method = evaluation_method
             return result
         
+        elif test_id == "08_bookmark_weighting_high_quality":
+            # Same logic as test 06 but with high-quality crypto episodes
+            setup = test_case["setup"]
+            
+            bookmark_engagements = setup["scenario_a"]["engagements"]
+            click_engagements = setup["scenario_b"]["engagements"]
+            
+            bookmark_response = call_api(bookmark_engagements, setup["scenario_a"]["excluded_ids"])
+            click_response = call_api(click_engagements, setup["scenario_b"]["excluded_ids"])
+            
+            # Reuse the same validation logic (test ID will be 08)
+            result = TestResult(test_id, test_case["name"])
+            
+            # Get episode IDs from both scenarios
+            scenario_a_ids = set(ep["id"] for ep in bookmark_response.get("episodes", [])[:10])
+            scenario_b_ids = set(ep["id"] for ep in click_response.get("episodes", [])[:10])
+            
+            # Criterion 1: Scenarios should produce different results
+            different_episodes = len(scenario_a_ids.symmetric_difference(scenario_b_ids))
+            diff_score = min(10.0, 0.5 + (different_episodes * 1.15))
+            result.add_criterion(
+                "different_results",
+                "Scenarios produce different recommendations (at least 2 different episodes)",
+                diff_score,
+                threshold=2.8,
+                details=f"different_episodes={different_episodes}",
+                weight=1.0
+            )
+            
+            # Criterion 2: Scenario B (bookmark crypto) should have more crypto
+            crypto_keywords = ['crypto', 'bitcoin', 'ethereum', 'web3', 'blockchain', 'defi', 'btc', 'eth']
+            
+            def count_crypto(response):
+                count = 0
+                for ep in response.get("episodes", [])[:10]:
+                    title = ep.get("title", "").lower()
+                    insight = (ep.get("key_insight", "") or "").lower()
+                    if any(kw in title or kw in insight for kw in crypto_keywords):
+                        count += 1
+                return count
+            
+            scenario_a_crypto = count_crypto(bookmark_response)
+            scenario_b_crypto = count_crypto(click_response)
+            
+            crypto_delta = scenario_b_crypto - scenario_a_crypto
+            crypto_score = 5.5 + (crypto_delta * 0.5) if crypto_delta >= 0 else max(1.0, 5.5 + crypto_delta)
+            
+            result.add_criterion(
+                "crypto_dominance_in_b",
+                "Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+                min(10.0, crypto_score),
+                threshold=5.5,
+                details=f"scenario_a_crypto={scenario_a_crypto}/10, scenario_b_crypto={scenario_b_crypto}/10, delta={crypto_delta}",
+                weight=1.5
+            )
+            
+            result.evaluation_method = evaluation_method
+            
+            # Store LLM context
+            scenario_b_profile = {
+                "profile_id": "scenario_b_bookmark",
+                "name": "Bookmark Weighting Test - Scenario B (High Quality)",
+                "description": "User who has bookmarked HIGH-QUALITY crypto content and clicked AI content.",
+                "icp_segment": "Test Scenario",
+                "engagements": setup["scenario_b"]["engagements"]
+            }
+            result._llm_judge_context = {
+                "profile": scenario_b_profile,
+                "recommendations": click_response.get("episodes", [])[:10]
+            }
+            
+            # Add LLM evaluation
+            if needs_llm:
+                llm_result = run_llm_evaluation(test_id, test_case, scenario_b_profile, click_response, verbose)
+                if llm_result:
+                    result.set_llm_evaluation(llm_result)
+            
+            return result
+        
         else:
             result = TestResult(test_id, f"Unknown test: {test_id}", evaluation_method)
             result.set_error(f"No validator implemented for test: {test_id}")

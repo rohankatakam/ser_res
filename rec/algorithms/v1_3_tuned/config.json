@@ -1,0 +1,39 @@
+{
+  "_comment": "V1.3 Tuned Personalization - Near-maximum personalization (85%)",
+  "_changes_from_v1_2": {
+    "bookmark_weight": "2.0 → 5.0 (very strong bookmark signal)",
+    "weight_similarity": "0.55 → 0.85 (near-maximum personalization)",
+    "weight_quality": "0.30 → 0.10 (minimal quality influence)",
+    "weight_recency": "0.15 → 0.05 (minimal recency influence)",
+    "use_sum_similarities": "false → true (preserve interest diversity)"
+  },
+  
+  "stage_a": {
+    "credibility_floor": 2,
+    "combined_floor": 5,
+    "freshness_window_days": 90,
+    "candidate_pool_size": 150
+  },
+  
+  "stage_b": {
+    "user_vector_limit": 10,
+    "weight_similarity": 0.85,
+    "weight_quality": 0.10,
+    "weight_recency": 0.05,
+    "credibility_multiplier": 1.5,
+    "recency_lambda": 0.03,
+    "use_weighted_engagements": true,
+    "use_sum_similarities": true
+  },
+  
+  "engagement_weights": {
+    "bookmark": 5.0,
+    "listen": 1.5,
+    "click": 1.0
+  },
+  
+  "cold_start": {
+    "weight_quality": 0.60,
+    "weight_recency": 0.40
+  }
+}

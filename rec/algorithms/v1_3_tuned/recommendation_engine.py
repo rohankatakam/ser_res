@@ -507,6 +507,7 @@ def create_recommendation_queue(
     # Use default config if none provided
     if config is None:
         config = DEFAULT_CONFIG
+    
     # Get candidate pool
     candidates = get_candidate_pool(excluded_ids, episodes, config)
     
