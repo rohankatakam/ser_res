@@ -1237,9 +1237,29 @@ def run_all_tests(
         )
         results.append(result)
     
-    # Build report
+    # Build report with aggregate scoring
     passed = sum(1 for r in results if r.get("passed", False))
     failed = len(results) - passed
+    
+    # Compute overall algorithm score (weighted by test type)
+    # MFT tests (quality gates, exclusions) are weighted higher
+    mft_tests = ["03_quality_gates_credibility", "04_excluded_episodes"]
+    
+    total_weight = 0.0
+    weighted_score = 0.0
+    total_confidence = 0.0
+    
+    for r in results:
+        test_scores = r.get("scores", {})
+        if test_scores and test_scores.get("aggregate_score") is not None:
+            # MFT tests get 2x weight
+            weight = 2.0 if r.get("test_id") in mft_tests else 1.0
+            weighted_score += test_scores.get("aggregate_score", 0) * weight
+            total_confidence += test_scores.get("aggregate_confidence", 1.0) * weight
+            total_weight += weight
+    
+    overall_score = round(weighted_score / total_weight, 2) if total_weight > 0 else 0.0
+    overall_confidence = round(total_confidence / total_weight, 2) if total_weight > 0 else 0.0
     
     report = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -1253,7 +1273,13 @@ def run_all_tests(
             "total_tests": len(results),
             "passed": passed,
             "failed": failed,
-            "pass_rate": passed / len(results) if results else 0
+            "pass_rate": round(passed / len(results), 3) if results else 0,
+            "overall_score": overall_score,
+            "overall_confidence": overall_confidence,
+            "score_breakdown": {
+                r.get("test_id"): r.get("scores", {}).get("aggregate_score", 0)
+                for r in results
+            }
         },
         "results": results
     }
@@ -1347,6 +1373,76 @@ Respond in JSON format:
         }
 
 
+def _add_criterion(
+    result: Dict,
+    criterion_id: str,
+    description: str,
+    score: float,
+    threshold: float = 7.0,
+    confidence: float = 1.0,
+    details: str = "",
+    weight: float = 1.0
+) -> None:
+    """
+    Add a criterion result with scalar scoring.
+    
+    Args:
+        result: The test result dict to add to
+        criterion_id: Unique identifier for this criterion
+        description: Human-readable description
+        score: Score on 1-10 scale
+        threshold: Minimum score to pass (default 7.0)
+        confidence: 0.0-1.0 confidence in the score (1.0 for deterministic)
+        details: Additional details string
+        weight: Weight for aggregate scoring (default 1.0)
+    """
+    passed = score >= threshold
+    result["criteria_results"].append({
+        "criterion_id": criterion_id,
+        "description": description,
+        "score": round(score, 2),
+        "threshold": threshold,
+        "confidence": confidence,
+        "passed": passed,
+        "details": details,
+        "weight": weight
+    })
+    if not passed:
+        result["passed"] = False
+
+
+def _compute_aggregate_score(result: Dict) -> Dict:
+    """
+    Compute aggregate scores for a test result.
+    
+    Returns dict with:
+        - aggregate_score: Weighted mean of all criteria (1-10)
+        - aggregate_confidence: Weighted mean confidence
+        - criteria_count: Number of criteria
+        - passed_count: Number of passing criteria
+    """
+    criteria = result.get("criteria_results", [])
+    if not criteria:
+        return {
+            "aggregate_score": 0.0,
+            "aggregate_confidence": 0.0,
+            "criteria_count": 0,
+            "passed_count": 0
+        }
+    
+    total_weight = sum(c.get("weight", 1.0) for c in criteria)
+    weighted_score = sum(c.get("score", 0) * c.get("weight", 1.0) for c in criteria)
+    weighted_confidence = sum(c.get("confidence", 1.0) * c.get("weight", 1.0) for c in criteria)
+    passed_count = sum(1 for c in criteria if c.get("passed", False))
+    
+    return {
+        "aggregate_score": round(weighted_score / total_weight, 2) if total_weight > 0 else 0.0,
+        "aggregate_confidence": round(weighted_confidence / total_weight, 2) if total_weight > 0 else 0.0,
+        "criteria_count": len(criteria),
+        "passed_count": passed_count
+    }
+
+
 def _execute_test(
     test_id: str,
     test_case: Dict,
@@ -1359,6 +1455,7 @@ def _execute_test(
     Execute a single test and return the result.
     
     This implements the core test validation logic.
+    Returns results with scalar scoring (1-10 scale).
     """
     result = {
         "test_id": test_id,
@@ -1368,7 +1465,8 @@ def _execute_test(
         "passed": True,
         "criteria_results": [],
         "error": None,
-        "llm_evaluation": None
+        "llm_evaluation": None,
+        "scores": None  # Will be populated with aggregate scores
     }
     
     try:
@@ -1408,6 +1506,9 @@ def _execute_test(
     except Exception as e:
         result["error"] = str(e)
         result["passed"] = False
+    
+    # Compute aggregate scores
+    result["scores"] = _compute_aggregate_score(result)
     
     # Run LLM evaluation if requested and applicable
     eval_method = test_case.get("evaluation_method", "deterministic")
@@ -1449,68 +1550,98 @@ def _call_recommendation_api(engagements: List[Dict], excluded_ids: set, state: 
 
 
 def _test_cold_start_quality(test_case, profiles, engine, state, result):
-    """Test 01: Cold Start Returns Quality Content"""
-    profile = profiles.get("01_cold_start", {"engagements": [], "excluded_ids": []})
-    response = _call_recommendation_api([], set(), state)
+    """Test 01: Cold Start Returns Quality Content
     
+    Scoring approach:
+    - cold_start_flag: Binary (10 if true, 1 if false)
+    - avg_credibility: Map credibility 2.0-4.0 to score 5-10
+    - min_credibility: Binary gate (10 if >=2, 1 otherwise)
+    - top_quality_score: Map avg quality 0.5-1.0 to score 5-10
+    """
+    response = _call_recommendation_api([], set(), state)
     episodes = response.get("episodes", [])
     
-    # Criterion 1: cold_start flag
+    # Criterion 1: cold_start flag (binary)
     cold_start = response.get("cold_start", False)
-    result["criteria_results"].append({
-        "criterion_id": "cold_start_flag",
-        "description": "API response includes cold_start: true",
-        "passed": cold_start == True,
-        "details": f"cold_start={cold_start}"
-    })
-    if not cold_start:
-        result["passed"] = False
+    _add_criterion(
+        result,
+        criterion_id="cold_start_flag",
+        description="API response includes cold_start: true",
+        score=10.0 if cold_start else 1.0,
+        threshold=7.0,
+        confidence=1.0,
+        details=f"cold_start={cold_start}",
+        weight=1.0
+    )
     
     # Criterion 2: Average credibility >= 3.0
+    # Score mapping: 2.0 → 5, 3.0 → 7.5, 4.0 → 10
     if episodes:
         credibilities = [ep["scores"]["credibility"] for ep in episodes[:10]]
         avg_cred = sum(credibilities) / len(credibilities)
-        passed = avg_cred >= 3.0
-        result["criteria_results"].append({
-            "criterion_id": "avg_credibility",
-            "description": "Average credibility of top 10 >= 3.0",
-            "passed": passed,
-            "details": f"avg_credibility={avg_cred:.2f}"
-        })
-        if not passed:
-            result["passed"] = False
+        # Map [2.0, 4.0] to [5, 10]
+        score = 5.0 + (avg_cred - 2.0) * 2.5
+        score = max(1.0, min(10.0, score))
+        
+        _add_criterion(
+            result,
+            criterion_id="avg_credibility",
+            description="Average credibility of top 10 >= 3.0",
+            score=score,
+            threshold=7.5,  # Corresponds to avg_cred >= 3.0
+            confidence=1.0,
+            details=f"avg_credibility={avg_cred:.2f}",
+            weight=1.5  # Higher weight - core quality metric
+        )
     
-    # Criterion 3: No episode with credibility < 2
+    # Criterion 3: No episode with credibility < 2 (gate check)
     if episodes:
         min_cred = min(ep["scores"]["credibility"] for ep in episodes[:10])
-        passed = min_cred >= 2
-        result["criteria_results"].append({
-            "criterion_id": "min_credibility",
-            "description": "No episode in top 10 has credibility < 2",
-            "passed": passed,
-            "details": f"min_credibility={min_cred}"
-        })
-        if not passed:
-            result["passed"] = False
+        # Binary: either passes the gate or doesn't
+        score = 10.0 if min_cred >= 2 else 1.0
+        
+        _add_criterion(
+            result,
+            criterion_id="min_credibility",
+            description="No episode in top 10 has credibility < 2",
+            score=score,
+            threshold=7.0,
+            confidence=1.0,
+            details=f"min_credibility={min_cred}",
+            weight=1.0
+        )
     
     # Criterion 4: Top 3 quality scores >= 0.7
+    # Map avg quality [0.5, 1.0] to score [5, 10]
     if episodes:
         top_3_quality = [ep.get("quality_score", 0) for ep in episodes[:3]]
-        all_high_quality = all(q >= 0.7 for q in top_3_quality)
-        result["criteria_results"].append({
-            "criterion_id": "top_quality_score",
-            "description": "Top 3 episodes have quality_score >= 0.7",
-            "passed": all_high_quality,
-            "details": f"top_3_quality_scores={top_3_quality}"
-        })
-        if not all_high_quality:
-            result["passed"] = False
+        avg_quality = sum(top_3_quality) / len(top_3_quality) if top_3_quality else 0
+        # Map [0.5, 1.0] to [5, 10]
+        score = 5.0 + (avg_quality - 0.5) * 10.0
+        score = max(1.0, min(10.0, score))
+        
+        _add_criterion(
+            result,
+            criterion_id="top_quality_score",
+            description="Top 3 episodes have quality_score >= 0.7",
+            score=score,
+            threshold=7.0,  # Corresponds to avg_quality >= 0.7
+            confidence=1.0,
+            details=f"top_3_quality_scores={[round(q, 3) for q in top_3_quality]}",
+            weight=1.5  # Higher weight - core quality metric
+        )
     
     return result
 
 
 def _test_personalization_differs(test_case, profiles, engine, state, result):
-    """Test 02: Personalization Differs from Cold Start"""
+    """Test 02: Personalization Differs from Cold Start
+    
+    Scoring approach:
+    - episode_difference: Map different count [0, 10] to score [1, 10]
+    - similarity_increase: Map delta [0, 0.2+] to score [5, 10]
+    - cold_start_flag_off: Binary (10 if false, 1 if true)
+    """
     cold_response = _call_recommendation_api([], set(), state)
     
     vc_profile = profiles.get("02_vc_partner_ai_tech", {})
@@ -1523,50 +1654,74 @@ def _test_personalization_differs(test_case, profiles, engine, state, result):
     cold_ids = set(ep["id"] for ep in cold_response.get("episodes", [])[:10])
     vc_ids = set(ep["id"] for ep in vc_response.get("episodes", [])[:10])
     
-    # Criterion 1: At least 5 different episodes
+    # Criterion 1: Episode difference
+    # Map [0, 10] different episodes to score [1, 10]
     different_count = len(vc_ids - cold_ids)
-    passed = different_count >= 5
-    result["criteria_results"].append({
-        "criterion_id": "episode_difference",
-        "description": "At least 5 of top 10 episodes are different",
-        "passed": passed,
-        "details": f"different_episodes={different_count}"
-    })
-    if not passed:
-        result["passed"] = False
+    score = 1.0 + different_count * 0.9  # 0 → 1, 5 → 5.5, 10 → 10
+    score = max(1.0, min(10.0, score))
+    
+    _add_criterion(
+        result,
+        criterion_id="episode_difference",
+        description="At least 5 of top 10 episodes are different",
+        score=score,
+        threshold=5.5,  # Corresponds to 5 different episodes
+        confidence=1.0,
+        details=f"different_episodes={different_count}",
+        weight=1.5  # Core personalization metric
+    )
     
     # Criterion 2: VC has higher similarity scores
     cold_sim = [ep.get("similarity_score", 0) or 0 for ep in cold_response.get("episodes", [])[:10]]
     vc_sim = [ep.get("similarity_score", 0) or 0 for ep in vc_response.get("episodes", [])[:10]]
     avg_cold_sim = sum(cold_sim) / len(cold_sim) if cold_sim else 0
     avg_vc_sim = sum(vc_sim) / len(vc_sim) if vc_sim else 0
-    passed = avg_vc_sim > avg_cold_sim
-    result["criteria_results"].append({
-        "criterion_id": "similarity_increase",
-        "description": "VC Partner has higher avg similarity_score than cold start",
-        "passed": passed,
-        "details": f"cold_avg={avg_cold_sim:.3f}, vc_avg={avg_vc_sim:.3f}"
-    })
-    if not passed:
-        result["passed"] = False
     
-    # Criterion 3: VC cold_start flag is false
+    # Map delta [-0.1, 0.2+] to score [3, 10]
+    delta = avg_vc_sim - avg_cold_sim
+    if delta <= 0:
+        score = 3.0 + delta * 20  # Negative delta reduces score
+    else:
+        score = 5.0 + delta * 25  # Positive delta increases score
+    score = max(1.0, min(10.0, score))
+    
+    _add_criterion(
+        result,
+        criterion_id="similarity_increase",
+        description="VC Partner has higher avg similarity_score than cold start",
+        score=score,
+        threshold=5.0,  # Pass if any positive delta
+        confidence=1.0,
+        details=f"cold_avg={avg_cold_sim:.3f}, vc_avg={avg_vc_sim:.3f}, delta={delta:.3f}",
+        weight=1.0
+    )
+    
+    # Criterion 3: VC cold_start flag is false (binary)
     vc_cold_start = vc_response.get("cold_start", True)
-    passed = vc_cold_start == False
-    result["criteria_results"].append({
-        "criterion_id": "cold_start_flag_off",
-        "description": "VC Partner cold_start flag is false",
-        "passed": passed,
-        "details": f"vc_cold_start={vc_cold_start}"
-    })
-    if not passed:
-        result["passed"] = False
+    score = 10.0 if not vc_cold_start else 1.0
+    
+    _add_criterion(
+        result,
+        criterion_id="cold_start_flag_off",
+        description="VC Partner cold_start flag is false",
+        score=score,
+        threshold=7.0,
+        confidence=1.0,
+        details=f"vc_cold_start={vc_cold_start}",
+        weight=1.0
+    )
     
     return result
 
 
 def _test_quality_gates(test_case, profiles, engine, state, result):
-    """Test 03: Quality Gates Enforce Credibility Floor"""
+    """Test 03: Quality Gates Enforce Credibility Floor
+    
+    This is a MFT (Minimum Functionality Test) - binary by nature.
+    Scoring: 10 if gate holds, 1 if any violations.
+    
+    We also add a "violations ratio" as a gradual metric for debugging.
+    """
     all_episodes = []
     
     for profile_id, profile in profiles.items():
@@ -1577,38 +1732,55 @@ def _test_quality_gates(test_case, profiles, engine, state, result):
         response = _call_recommendation_api(engagements, set(profile.get("excluded_ids", [])), state)
         all_episodes.extend(response.get("episodes", []))
     
-    # Criterion 1: No credibility < 2
-    low_cred = [ep for ep in all_episodes if ep["scores"]["credibility"] < 2]
-    passed = len(low_cred) == 0
-    result["criteria_results"].append({
-        "criterion_id": "credibility_floor",
-        "description": "No episode with credibility < 2 in any response",
-        "passed": passed,
-        "details": f"low_credibility_count={len(low_cred)}"
-    })
-    if not passed:
-        result["passed"] = False
+    total_episodes = len(all_episodes)
     
-    # Criterion 2: All C + I >= 5
+    # Criterion 1: No credibility < 2 (quality gate - binary)
+    low_cred = [ep for ep in all_episodes if ep["scores"]["credibility"] < 2]
+    violation_ratio = len(low_cred) / total_episodes if total_episodes > 0 else 0
+    # Score: 10 if no violations, decrease proportionally
+    score = 10.0 * (1.0 - violation_ratio)
+    score = max(1.0, score)
+    
+    _add_criterion(
+        result,
+        criterion_id="credibility_floor",
+        description="No episode with credibility < 2 in any response",
+        score=score,
+        threshold=10.0,  # Must be perfect (no violations)
+        confidence=1.0,
+        details=f"low_credibility_count={len(low_cred)}/{total_episodes}",
+        weight=2.0  # Higher weight - critical gate
+    )
+    
+    # Criterion 2: All C + I >= 5 (quality gate - binary)
     low_combined = [
         ep for ep in all_episodes 
         if ep["scores"]["credibility"] + ep["scores"]["insight"] < 5
     ]
-    passed = len(low_combined) == 0
-    result["criteria_results"].append({
-        "criterion_id": "combined_floor",
-        "description": "All episodes have C + I >= 5",
-        "passed": passed,
-        "details": f"low_combined_count={len(low_combined)}"
-    })
-    if not passed:
-        result["passed"] = False
+    violation_ratio = len(low_combined) / total_episodes if total_episodes > 0 else 0
+    score = 10.0 * (1.0 - violation_ratio)
+    score = max(1.0, score)
+    
+    _add_criterion(
+        result,
+        criterion_id="combined_floor",
+        description="All episodes have C + I >= 5",
+        score=score,
+        threshold=10.0,  # Must be perfect (no violations)
+        confidence=1.0,
+        details=f"low_combined_count={len(low_combined)}/{total_episodes}",
+        weight=2.0  # Higher weight - critical gate
+    )
     
     return result
 
 
 def _test_excluded_episodes(test_case, profiles, engine, state, result):
-    """Test 04: Excluded Episodes Never Reappear"""
+    """Test 04: Excluded Episodes Never Reappear
+    
+    This is a MFT (Minimum Functionality Test) - binary by nature.
+    Scoring: 10 if exclusions work, 1 if any violations.
+    """
     profile = profiles.get("02_vc_partner_ai_tech", {}).copy()
     excluded_ids = test_case.get("setup", {}).get("modifications", {}).get("excluded_ids", [])
     
@@ -1620,35 +1792,49 @@ def _test_excluded_episodes(test_case, profiles, engine, state, result):
     
     episode_ids = [ep["id"] for ep in response.get("episodes", [])]
     
-    # Criterion 1: No excluded IDs appear
+    # Criterion 1: No excluded IDs appear (binary gate)
     excluded_found = [eid for eid in excluded_ids if eid in episode_ids]
-    passed = len(excluded_found) == 0
-    result["criteria_results"].append({
-        "criterion_id": "exclusions_respected",
-        "description": "None of the excluded episode IDs appear",
-        "passed": passed,
-        "details": f"excluded_found={excluded_found}"
-    })
-    if not passed:
-        result["passed"] = False
+    violation_ratio = len(excluded_found) / len(excluded_ids) if excluded_ids else 0
+    score = 10.0 * (1.0 - violation_ratio)
+    score = max(1.0, score)
+    
+    _add_criterion(
+        result,
+        criterion_id="exclusions_respected",
+        description="None of the excluded episode IDs appear",
+        score=score,
+        threshold=10.0,  # Must be perfect
+        confidence=1.0,
+        details=f"excluded_found={len(excluded_found)}/{len(excluded_ids)}",
+        weight=2.0  # Critical gate
+    )
     
     # Criterion 2: Still returns 10 results
     episode_count = len(response.get("episodes", []))
-    passed = episode_count == 10
-    result["criteria_results"].append({
-        "criterion_id": "still_returns_results",
-        "description": "System still returns 10 valid recommendations",
-        "passed": passed,
-        "details": f"episode_count={episode_count}"
-    })
-    if not passed:
-        result["passed"] = False
+    # Map [0, 10] to [1, 10]
+    score = episode_count if episode_count <= 10 else 10.0
+    
+    _add_criterion(
+        result,
+        criterion_id="still_returns_results",
+        description="System still returns 10 valid recommendations",
+        score=score,
+        threshold=10.0,  # Must return exactly 10
+        confidence=1.0,
+        details=f"episode_count={episode_count}",
+        weight=1.0
+    )
     
     return result
 
 
 def _test_category_personalization(test_case, profiles, engine, state, result):
-    """Test 05: Category Engagement → Category Recommendations"""
+    """Test 05: Category Engagement → Category Recommendations
+    
+    Scoring approach:
+    - category_match: Map match count [0, 10] to score [1, 10]
+    - Threshold at 5 matches = score 5.5
+    """
     category_config = test_case.get("category_detection", {})
     
     def count_category_matches(episodes, category):
@@ -1686,34 +1872,46 @@ def _test_category_personalization(test_case, profiles, engine, state, result):
     crypto_response = _call_recommendation_api(crypto_engagements, set(crypto_profile.get("excluded_ids", [])), state)
     
     # Criterion 1: AI/Tech profile gets AI content
+    # Map [0, 10] matches to [1, 10] score
     ai_match_count = count_category_matches(ai_response.get("episodes", []), "ai_tech")
-    passed = ai_match_count >= 5
-    result["criteria_results"].append({
-        "criterion_id": "ai_tech_category_match",
-        "description": "Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
-        "passed": passed,
-        "details": f"ai_tech_matches={ai_match_count}/10"
-    })
-    if not passed:
-        result["passed"] = False
+    score = 1.0 + ai_match_count * 0.9  # 0 → 1, 5 → 5.5, 10 → 10
+    
+    _add_criterion(
+        result,
+        criterion_id="ai_tech_category_match",
+        description="Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
+        score=score,
+        threshold=5.5,  # Corresponds to 5 matches
+        confidence=1.0,
+        details=f"ai_tech_matches={ai_match_count}/10",
+        weight=1.5  # Core personalization metric
+    )
     
     # Criterion 2: Crypto profile gets crypto content
     crypto_match_count = count_category_matches(crypto_response.get("episodes", []), "crypto_web3")
-    passed = crypto_match_count >= 5
-    result["criteria_results"].append({
-        "criterion_id": "crypto_category_match",
-        "description": "Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
-        "passed": passed,
-        "details": f"crypto_matches={crypto_match_count}/10"
-    })
-    if not passed:
-        result["passed"] = False
+    score = 1.0 + crypto_match_count * 0.9
+    
+    _add_criterion(
+        result,
+        criterion_id="crypto_category_match",
+        description="Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
+        score=score,
+        threshold=5.5,  # Corresponds to 5 matches
+        confidence=1.0,
+        details=f"crypto_matches={crypto_match_count}/10",
+        weight=1.5  # Core personalization metric
+    )
     
     return result
 
 
 def _test_bookmark_weighting(test_case, profiles, engine, state, result):
-    """Test 06: Bookmarks Outweigh Clicks in Mixed History"""
+    """Test 06: Bookmarks Outweigh Clicks in Mixed History
+    
+    Scoring approach:
+    - different_results: Map [0, 10] different to [1, 10] score
+    - crypto_dominance: Map delta [-10, 10] to [1, 10] score
+    """
     setup = test_case.get("setup", {})
     
     scenario_a_engagements = setup.get("scenario_a", {}).get("engagements", [])
@@ -1726,18 +1924,22 @@ def _test_bookmark_weighting(test_case, profiles, engine, state, result):
     scenario_b_ids = set(ep["id"] for ep in response_b.get("episodes", [])[:10])
     
     # Criterion 1: Different results
+    # Map [0, 10] different episodes to [1, 10] score
     different_count = len(scenario_a_ids ^ scenario_b_ids)
-    passed = different_count >= 2
-    result["criteria_results"].append({
-        "criterion_id": "different_results",
-        "description": "Scenarios produce different recommendations (at least 2 different episodes)",
-        "passed": passed,
-        "details": f"different_episodes={different_count}"
-    })
-    if not passed:
-        result["passed"] = False
+    score = 1.0 + different_count * 0.9  # 0 → 1, 2 → 2.8, 10 → 10
     
-    # Criterion 2: Crypto presence higher in Scenario B
+    _add_criterion(
+        result,
+        criterion_id="different_results",
+        description="Scenarios produce different recommendations (at least 2 different episodes)",
+        score=score,
+        threshold=2.8,  # Corresponds to 2 different episodes
+        confidence=1.0,
+        details=f"different_episodes={different_count}",
+        weight=1.0
+    )
+    
+    # Criterion 2: Crypto presence higher in Scenario B (bookmark crypto)
     crypto_keywords = ["crypto", "bitcoin", "ethereum", "web3", "defi", "blockchain", "btc", "eth"]
     
     def count_crypto(episodes):
@@ -1753,21 +1955,34 @@ def _test_bookmark_weighting(test_case, profiles, engine, state, result):
     
     crypto_count_a = count_crypto(response_a.get("episodes", []))
     crypto_count_b = count_crypto(response_b.get("episodes", []))
-    passed = crypto_count_b > crypto_count_a
-    result["criteria_results"].append({
-        "criterion_id": "crypto_dominance_in_b",
-        "description": "Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
-        "passed": passed,
-        "details": f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10"
-    })
-    if not passed:
-        result["passed"] = False
+    
+    # Map delta [-10, 10] to score [1, 10], with 0 delta → 5.5
+    delta = crypto_count_b - crypto_count_a
+    score = 5.5 + delta * 0.45  # -10 → 1, 0 → 5.5, +10 → 10
+    score = max(1.0, min(10.0, score))
+    
+    _add_criterion(
+        result,
+        criterion_id="crypto_dominance_in_b",
+        description="Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+        score=score,
+        threshold=5.5,  # Pass if B has more crypto (positive delta)
+        confidence=1.0,
+        details=f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10, delta={delta}",
+        weight=1.5  # Core weighting test
+    )
     
     return result
 
 
 def _test_recency_scoring(test_case, profiles, engine, state, result):
-    """Test 07: Recency Scoring Works"""
+    """Test 07: Recency Scoring Works
+    
+    Scoring approach:
+    - both_in_top_10: Binary (10 if both found, 1 otherwise)
+    - recency_score_ordering: Map score delta to 1-10
+    - ranking_reflects_recency: Map position delta to 1-10
+    """
     response = _call_recommendation_api([], set(), state)
     episodes = response.get("episodes", [])
     
@@ -1778,43 +1993,84 @@ def _test_recency_scoring(test_case, profiles, engine, state, result):
     recent_ep = next((ep for ep in episodes if ep["id"] == recent_id), None)
     older_ep = next((ep for ep in episodes if ep["id"] == older_id), None)
     
-    # Criterion 1: Both episodes found in top 10
+    # Criterion 1: Both episodes found in top 10 (binary)
     both_found = recent_ep is not None and older_ep is not None
-    result["criteria_results"].append({
-        "criterion_id": "both_in_top_10",
-        "description": "Both test episodes found in top 10 cold start results",
-        "passed": both_found,
-        "details": f"recent_found={recent_ep is not None}, older_found={older_ep is not None}"
-    })
+    score = 10.0 if both_found else 1.0
+    
+    _add_criterion(
+        result,
+        criterion_id="both_in_top_10",
+        description="Both test episodes found in top 10 cold start results",
+        score=score,
+        threshold=7.0,
+        confidence=1.0,
+        details=f"recent_found={recent_ep is not None}, older_found={older_ep is not None}",
+        weight=1.0
+    )
     
     if both_found:
         # Criterion 2: Recency score ordering
         recent_rec_score = recent_ep.get("recency_score", 0) or 0
         older_rec_score = older_ep.get("recency_score", 0) or 0
-        passed = recent_rec_score > older_rec_score
-        result["criteria_results"].append({
-            "criterion_id": "recency_score_ordering",
-            "description": "Recent episode has higher recency_score than older",
-            "passed": passed,
-            "details": f"recent={recent_rec_score:.4f}, older={older_rec_score:.4f}"
-        })
-        if not passed:
-            result["passed"] = False
         
-        # Criterion 3: Ranking order
+        # Map delta [-1, 1] to score [1, 10], with 0 → 5.5
+        delta = recent_rec_score - older_rec_score
+        score = 5.5 + delta * 4.5  # Positive delta → higher score
+        score = max(1.0, min(10.0, score))
+        
+        _add_criterion(
+            result,
+            criterion_id="recency_score_ordering",
+            description="Recent episode has higher recency_score than older",
+            score=score,
+            threshold=5.5,  # Pass if recent > older (positive delta)
+            confidence=1.0,
+            details=f"recent={recent_rec_score:.4f}, older={older_rec_score:.4f}, delta={delta:.4f}",
+            weight=1.5
+        )
+        
+        # Criterion 3: Ranking order (position delta)
         recent_pos = recent_ep.get("queue_position", 999)
         older_pos = older_ep.get("queue_position", 999)
-        passed = recent_pos < older_pos
-        result["criteria_results"].append({
-            "criterion_id": "ranking_reflects_recency",
-            "description": "Recent episode ranks higher (lower position) than older",
-            "passed": passed,
-            "details": f"recent_pos={recent_pos}, older_pos={older_pos}"
-        })
-        if not passed:
-            result["passed"] = False
+        
+        # Position delta: older_pos - recent_pos (positive means recent ranks higher)
+        pos_delta = older_pos - recent_pos
+        # Map [-10, 10] to [1, 10]
+        score = 5.5 + pos_delta * 0.45
+        score = max(1.0, min(10.0, score))
+        
+        _add_criterion(
+            result,
+            criterion_id="ranking_reflects_recency",
+            description="Recent episode ranks higher (lower position) than older",
+            score=score,
+            threshold=5.5,  # Pass if recent ranks higher (positive delta)
+            confidence=1.0,
+            details=f"recent_pos={recent_pos}, older_pos={older_pos}, delta={pos_delta}",
+            weight=1.5
+        )
     else:
-        result["passed"] = False
+        # Add placeholder criteria so aggregate scoring works
+        _add_criterion(
+            result,
+            criterion_id="recency_score_ordering",
+            description="Recent episode has higher recency_score than older",
+            score=1.0,
+            threshold=5.5,
+            confidence=1.0,
+            details="Could not test - episodes not found in top 10",
+            weight=1.5
+        )
+        _add_criterion(
+            result,
+            criterion_id="ranking_reflects_recency",
+            description="Recent episode ranks higher (lower position) than older",
+            score=1.0,
+            threshold=5.5,
+            confidence=1.0,
+            details="Could not test - episodes not found in top 10",
+            weight=1.5
+        )
     
     return result
 

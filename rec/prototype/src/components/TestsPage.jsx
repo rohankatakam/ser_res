@@ -198,24 +198,27 @@ export default function TestsPage({ geminiKey }) {
 
       {view === 'tests' ? (
         <>
-          {/* Results Summary */}
+          {/* Results Summary with Overall Score */}
           {totalRun > 0 && (
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <StatCard 
-                label="Total Run" 
-                value={totalRun} 
-                color="blue" 
-              />
-              <StatCard 
-                label="Passed" 
-                value={passedCount} 
-                color="green" 
-              />
-              <StatCard 
-                label="Failed" 
-                value={failedCount} 
-                color="red" 
-              />
+            <div className="mb-6">
+              <div className="grid grid-cols-4 gap-4">
+                <StatCard 
+                  label="Total Run" 
+                  value={totalRun} 
+                  color="blue" 
+                />
+                <StatCard 
+                  label="Passed" 
+                  value={passedCount} 
+                  color="green" 
+                />
+                <StatCard 
+                  label="Failed" 
+                  value={failedCount} 
+                  color="red" 
+                />
+                <OverallScoreCard results={results} />
+              </div>
             </div>
           )}
 
@@ -301,6 +304,9 @@ function TestCard({ test, result, running, disabled, onRun }) {
     if (result.passed) return <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded">Passed</span>;
     return <span className="text-xs px-2 py-1 bg-red-500/20 text-red-400 rounded">Failed</span>;
   };
+  
+  // Get aggregate score for display
+  const aggregateScore = result?.scores?.aggregate_score;
 
   return (
     <div className={`bg-slate-800 border rounded-lg overflow-hidden ${getStatusColor()}`}>
@@ -309,6 +315,9 @@ function TestCard({ test, result, running, disabled, onRun }) {
           <div className="flex items-center gap-3 mb-1">
             <span className="font-mono text-sm text-slate-400">{test.id}</span>
             {getStatusBadge()}
+            {aggregateScore !== undefined && (
+              <ScoreBadge score={aggregateScore} />
+            )}
             <span className={`text-xs px-2 py-0.5 rounded ${
               test.evaluation_method === 'deterministic' 
                 ? 'bg-blue-500/20 text-blue-400'
@@ -346,7 +355,7 @@ function TestCard({ test, result, running, disabled, onRun }) {
         </div>
       </div>
       
-      {/* Expanded Details */}
+      {/* Expanded Details with Scalar Scores */}
       {expanded && result && (
         <div className="border-t border-slate-700 p-4 bg-slate-850">
           {result.error && (
@@ -355,28 +364,31 @@ function TestCard({ test, result, running, disabled, onRun }) {
             </div>
           )}
           
-          <h4 className="text-sm font-medium text-slate-300 mb-2">Criteria Results</h4>
-          <div className="space-y-2">
-            {result.criteria_results?.map((cr, idx) => (
-              <div 
-                key={idx}
-                className={`p-2 rounded text-sm ${
-                  cr.passed 
-                    ? 'bg-green-500/10 border border-green-500/20' 
-                    : 'bg-red-500/10 border border-red-500/20'
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={cr.passed ? 'text-green-400' : 'text-red-400'}>
-                    {cr.passed ? '✓' : '✗'}
-                  </span>
-                  <span className="text-white font-mono text-xs">{cr.criterion_id}</span>
-                </div>
-                <p className="text-slate-300">{cr.description}</p>
-                {cr.details && (
-                  <p className="text-slate-500 text-xs mt-1 font-mono">{cr.details}</p>
-                )}
+          {/* Aggregate Score Summary */}
+          {result.scores && (
+            <div className="mb-4 p-3 bg-slate-700/50 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-slate-300 font-medium">Test Aggregate Score</span>
+                <span className={`text-lg font-bold ${getScoreColor(result.scores.aggregate_score)}`}>
+                  {result.scores.aggregate_score?.toFixed(1)}/10
+                </span>
               </div>
+              <ScoreProgressBar 
+                score={result.scores.aggregate_score} 
+                threshold={7.0}
+                showThreshold={true}
+              />
+              <div className="mt-2 flex justify-between text-xs text-slate-500">
+                <span>{result.scores.passed_count}/{result.scores.criteria_count} criteria passed</span>
+                <span>Confidence: {(result.scores.aggregate_confidence * 100).toFixed(0)}%</span>
+              </div>
+            </div>
+          )}
+          
+          <h4 className="text-sm font-medium text-slate-300 mb-2">Criteria Results</h4>
+          <div className="space-y-3">
+            {result.criteria_results?.map((cr, idx) => (
+              <CriterionCard key={idx} criterion={cr} />
             ))}
           </div>
         </div>
@@ -385,7 +397,157 @@ function TestCard({ test, result, running, disabled, onRun }) {
   );
 }
 
+function CriterionCard({ criterion: cr }) {
+  const hasScalarScore = cr.score !== undefined;
+  
+  return (
+    <div 
+      className={`p-3 rounded-lg text-sm ${
+        cr.passed 
+          ? 'bg-green-500/10 border border-green-500/20' 
+          : 'bg-red-500/10 border border-red-500/20'
+      }`}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <span className={cr.passed ? 'text-green-400' : 'text-red-400'}>
+            {cr.passed ? '✓' : '✗'}
+          </span>
+          <span className="text-white font-mono text-xs">{cr.criterion_id}</span>
+          {cr.weight && cr.weight !== 1.0 && (
+            <span className="text-xs text-slate-500">({cr.weight}x weight)</span>
+          )}
+        </div>
+        {hasScalarScore && (
+          <div className="flex items-center gap-2">
+            <span className={`font-bold ${getScoreColor(cr.score)}`}>
+              {cr.score?.toFixed(1)}/10
+            </span>
+            <span className="text-slate-500 text-xs">(min: {cr.threshold})</span>
+          </div>
+        )}
+      </div>
+      
+      <p className="text-slate-300 mb-2">{cr.description}</p>
+      
+      {/* Score Progress Bar */}
+      {hasScalarScore && (
+        <ScoreProgressBar 
+          score={cr.score} 
+          threshold={cr.threshold}
+          showThreshold={true}
+          compact={true}
+        />
+      )}
+      
+      {cr.details && (
+        <p className="text-slate-500 text-xs mt-2 font-mono">{cr.details}</p>
+      )}
+      
+      {/* Confidence indicator for non-deterministic */}
+      {cr.confidence !== undefined && cr.confidence < 1.0 && (
+        <div className="mt-2 flex items-center gap-1 text-xs text-slate-500">
+          <span>Confidence:</span>
+          <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-purple-500 rounded-full"
+              style={{ width: `${cr.confidence * 100}%` }}
+            />
+          </div>
+          <span>{(cr.confidence * 100).toFixed(0)}%</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ScoreProgressBar({ score, threshold = 7.0, showThreshold = false, compact = false }) {
+  const percentage = Math.min(100, Math.max(0, (score / 10) * 100));
+  const thresholdPercentage = (threshold / 10) * 100;
+  
+  return (
+    <div className={`relative ${compact ? 'h-2' : 'h-3'} bg-slate-700 rounded-full overflow-hidden`}>
+      {/* Score bar */}
+      <div 
+        className={`h-full rounded-full transition-all duration-300 ${
+          score >= threshold 
+            ? 'bg-gradient-to-r from-green-600 to-green-400' 
+            : score >= threshold - 1.5 
+            ? 'bg-gradient-to-r from-yellow-600 to-yellow-400'
+            : 'bg-gradient-to-r from-red-600 to-red-400'
+        }`}
+        style={{ width: `${percentage}%` }}
+      />
+      {/* Threshold marker */}
+      {showThreshold && (
+        <div 
+          className="absolute top-0 bottom-0 w-0.5 bg-white/50"
+          style={{ left: `${thresholdPercentage}%` }}
+        />
+      )}
+    </div>
+  );
+}
+
+function ScoreBadge({ score }) {
+  return (
+    <span className={`text-xs px-2 py-0.5 rounded font-mono font-bold ${
+      score >= 8 
+        ? 'bg-green-500/20 text-green-400' 
+        : score >= 6 
+        ? 'bg-yellow-500/20 text-yellow-400'
+        : 'bg-red-500/20 text-red-400'
+    }`}>
+      {score?.toFixed(1)}/10
+    </span>
+  );
+}
+
+function getScoreColor(score) {
+  if (score >= 8) return 'text-green-400';
+  if (score >= 6) return 'text-yellow-400';
+  return 'text-red-400';
+}
+
+function OverallScoreCard({ results }) {
+  // Calculate overall score from all results
+  const resultsArray = Object.values(results);
+  if (resultsArray.length === 0) return null;
+  
+  let totalWeight = 0;
+  let weightedScore = 0;
+  const mftTests = ['03_quality_gates_credibility', '04_excluded_episodes'];
+  
+  for (const r of resultsArray) {
+    if (r?.scores?.aggregate_score !== undefined) {
+      const weight = mftTests.includes(r.test_id) ? 2.0 : 1.0;
+      weightedScore += r.scores.aggregate_score * weight;
+      totalWeight += weight;
+    }
+  }
+  
+  const overallScore = totalWeight > 0 ? weightedScore / totalWeight : 0;
+  
+  return (
+    <div className={`rounded-xl p-4 border ${
+      overallScore >= 8 
+        ? 'bg-green-500/10 border-green-500/30' 
+        : overallScore >= 6 
+        ? 'bg-yellow-500/10 border-yellow-500/30'
+        : 'bg-red-500/10 border-red-500/30'
+    }`}>
+      <div className="text-xs text-slate-400 mb-1">Overall Score</div>
+      <div className={`text-2xl font-bold ${getScoreColor(overallScore)}`}>
+        {overallScore.toFixed(1)}/10
+      </div>
+      <ScoreProgressBar score={overallScore} threshold={7.0} compact={true} />
+    </div>
+  );
+}
+
 function ReportDetail({ report, onBack }) {
+  const overallScore = report.summary?.overall_score;
+  
   return (
     <div>
       <button
@@ -401,7 +563,7 @@ function ReportDetail({ report, onBack }) {
           {new Date(report.timestamp).toLocaleString()}
         </p>
         
-        <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-4 gap-4 mt-4">
           <div className="text-center p-3 bg-slate-700/50 rounded">
             <div className="text-2xl font-bold text-white">{report.summary?.total_tests || 0}</div>
             <div className="text-xs text-slate-400">Total</div>
@@ -414,7 +576,44 @@ function ReportDetail({ report, onBack }) {
             <div className="text-2xl font-bold text-red-400">{report.summary?.failed || 0}</div>
             <div className="text-xs text-slate-400">Failed</div>
           </div>
+          {overallScore !== undefined && (
+            <div className={`text-center p-3 rounded ${
+              overallScore >= 8 
+                ? 'bg-green-500/10' 
+                : overallScore >= 6 
+                ? 'bg-yellow-500/10'
+                : 'bg-red-500/10'
+            }`}>
+              <div className={`text-2xl font-bold ${getScoreColor(overallScore)}`}>
+                {overallScore?.toFixed(1)}
+              </div>
+              <div className="text-xs text-slate-400">Overall Score</div>
+            </div>
+          )}
         </div>
+        
+        {/* Score Breakdown */}
+        {report.summary?.score_breakdown && (
+          <div className="mt-4 pt-4 border-t border-slate-700">
+            <div className="text-xs text-slate-400 mb-2">Score Breakdown by Test</div>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(report.summary.score_breakdown).map(([testId, score]) => (
+                <span 
+                  key={testId}
+                  className={`text-xs px-2 py-1 rounded font-mono ${
+                    score >= 8 
+                      ? 'bg-green-500/20 text-green-400' 
+                      : score >= 6 
+                      ? 'bg-yellow-500/20 text-yellow-400'
+                      : 'bg-red-500/20 text-red-400'
+                  }`}
+                >
+                  {testId.split('_')[0]}: {score?.toFixed(1)}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
         
         {report.context && (
           <div className="mt-4 pt-4 border-t border-slate-700">
@@ -442,7 +641,22 @@ function ReportDetail({ report, onBack }) {
                 <span className="text-white font-medium">{result.name}</span>
                 <span className="text-xs text-slate-500 font-mono">{result.test_id}</span>
               </div>
+              {result.scores?.aggregate_score !== undefined && (
+                <ScoreBadge score={result.scores.aggregate_score} />
+              )}
             </div>
+            
+            {/* Test aggregate score bar */}
+            {result.scores?.aggregate_score !== undefined && (
+              <div className="mb-3">
+                <ScoreProgressBar 
+                  score={result.scores.aggregate_score} 
+                  threshold={7.0}
+                  showThreshold={true}
+                  compact={true}
+                />
+              </div>
+            )}
             
             {result.error && (
               <p className="text-red-400 text-sm mb-2">Error: {result.error}</p>
@@ -457,9 +671,9 @@ function ReportDetail({ report, onBack }) {
                       ? 'bg-green-500/20 text-green-400' 
                       : 'bg-red-500/20 text-red-400'
                   }`}
-                  title={cr.details}
+                  title={`${cr.details} | Score: ${cr.score?.toFixed(1)}/${cr.threshold}`}
                 >
-                  {cr.criterion_id}: {cr.passed ? '✓' : '✗'}
+                  {cr.criterion_id}: {cr.score !== undefined ? `${cr.score?.toFixed(1)}` : (cr.passed ? '✓' : '✗')}
                 </span>
               ))}
             </div>
