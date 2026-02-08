@@ -38,6 +38,7 @@ try:
     from .embedding_cache import EmbeddingCache
     from .embedding_generator import EmbeddingGenerator, EmbeddingProgress, check_openai_available
     from .validator import Validator, CompatibilityResult
+    from .qdrant_store import QdrantEmbeddingStore, check_qdrant_available, compute_strategy_hash
 except ImportError:
     # When running standalone (uvicorn server:app)
     from config import get_config, ServerConfig
@@ -46,6 +47,7 @@ except ImportError:
     from embedding_cache import EmbeddingCache
     from embedding_generator import EmbeddingGenerator, EmbeddingProgress, check_openai_available
     from validator import Validator, CompatibilityResult
+    from qdrant_store import QdrantEmbeddingStore, check_qdrant_available, compute_strategy_hash
 
 
 # ============================================================================
@@ -163,8 +165,13 @@ class AppState:
         # Loaders
         self.algorithm_loader = AlgorithmLoader(config.algorithms_dir)
         self.dataset_loader = DatasetLoader(config.datasets_dir)
-        self.embedding_cache = EmbeddingCache(config.cache_dir / "embeddings")
+        self.embedding_cache = EmbeddingCache(config.cache_dir / "embeddings")  # JSON fallback
         self.validator = Validator(self.algorithm_loader, self.dataset_loader)
+        
+        # Qdrant store (primary storage, with fallback to JSON cache)
+        self.qdrant_store: Optional[QdrantEmbeddingStore] = None
+        self.qdrant_available = False
+        self._init_qdrant(config.qdrant_url)
         
         # Currently loaded
         self.current_algorithm: Optional[LoadedAlgorithm] = None
@@ -174,9 +181,147 @@ class AppState:
         # Session storage
         self.sessions: Dict[str, Dict] = {}
     
+    def _init_qdrant(self, qdrant_url: Optional[str]):
+        """Initialize Qdrant connection with graceful fallback."""
+        if qdrant_url:
+            try:
+                self.qdrant_store = QdrantEmbeddingStore(qdrant_url=qdrant_url)
+                self.qdrant_available = self.qdrant_store.is_available
+                if self.qdrant_available:
+                    print(f"Qdrant connected at {qdrant_url}")
+                else:
+                    print(f"Qdrant not responding at {qdrant_url}, using JSON cache fallback")
+            except Exception as e:
+                print(f"Qdrant connection failed: {e}, using JSON cache fallback")
+                self.qdrant_available = False
+        else:
+            print("No QDRANT_URL configured, using JSON cache only")
+    
     @property
     def is_loaded(self) -> bool:
         return self.current_algorithm is not None and self.current_dataset is not None
+    
+    def has_embeddings_cached(
+        self,
+        algorithm_folder: str,
+        strategy_version: str,
+        dataset_folder: str
+    ) -> bool:
+        """Check if embeddings are cached (Qdrant or JSON)."""
+        # Try Qdrant first
+        if self.qdrant_available and self.qdrant_store:
+            if self.qdrant_store.has_cache(algorithm_folder, strategy_version, dataset_folder):
+                return True
+        # Fall back to JSON cache
+        return self.embedding_cache.has_cache(algorithm_folder, strategy_version, dataset_folder)
+    
+    def load_cached_embeddings(
+        self,
+        algorithm_folder: str,
+        strategy_version: str,
+        dataset_folder: str,
+        strategy_file_path: Optional[Path] = None
+    ) -> Optional[Dict[str, List[float]]]:
+        """Load embeddings from cache (Qdrant or JSON) with hash verification."""
+        # Try Qdrant first
+        if self.qdrant_available and self.qdrant_store:
+            # Verify strategy hash if we have the strategy file
+            if strategy_file_path:
+                current_hash = compute_strategy_hash(strategy_file_path)
+                if current_hash:
+                    matches, stored_hash = self.qdrant_store.verify_strategy_hash(
+                        algorithm_folder, strategy_version, dataset_folder, current_hash
+                    )
+                    if not matches and stored_hash:
+                        print(f"WARNING: embedding_strategy.py has changed!")
+                        print(f"  Stored hash: {stored_hash}")
+                        print(f"  Current hash: {current_hash}")
+                        print(f"  Consider regenerating embeddings with force=true")
+            
+            embeddings = self.qdrant_store.load_embeddings(
+                algorithm_folder, strategy_version, dataset_folder
+            )
+            if embeddings is not None:
+                print(f"Loaded {len(embeddings)} embeddings from Qdrant")
+                return embeddings
+        
+        # Fall back to JSON cache
+        embeddings = self.embedding_cache.load_embeddings(
+            algorithm_folder, strategy_version, dataset_folder
+        )
+        if embeddings:
+            print(f"Loaded {len(embeddings)} embeddings from JSON cache")
+            # Migrate to Qdrant if available
+            if self.qdrant_available and self.qdrant_store:
+                try:
+                    self._migrate_to_qdrant(
+                        algorithm_folder, strategy_version, dataset_folder, embeddings,
+                        strategy_file_path
+                    )
+                except Exception as e:
+                    print(f"Migration to Qdrant failed: {e}")
+        return embeddings
+    
+    def save_embeddings(
+        self,
+        algorithm_folder: str,
+        strategy_version: str,
+        dataset_folder: str,
+        embeddings: Dict[str, List[float]],
+        embedding_model: str,
+        embedding_dimensions: int,
+        strategy_file_path: Optional[Path] = None
+    ):
+        """Save embeddings to cache (Qdrant primary, JSON backup)."""
+        # Compute strategy hash if we have the file path
+        strategy_hash = None
+        if strategy_file_path:
+            strategy_hash = compute_strategy_hash(strategy_file_path)
+        
+        # Save to Qdrant if available
+        if self.qdrant_available and self.qdrant_store:
+            try:
+                self.qdrant_store.save_embeddings(
+                    algorithm_folder, strategy_version, dataset_folder,
+                    embeddings, embedding_model, embedding_dimensions,
+                    strategy_hash=strategy_hash
+                )
+            except Exception as e:
+                print(f"Qdrant save failed: {e}, saving to JSON cache only")
+        
+        # Always save to JSON cache as backup
+        self.embedding_cache.save_embeddings(
+            algorithm_folder, strategy_version, dataset_folder,
+            embeddings, embedding_model, embedding_dimensions
+        )
+    
+    def _migrate_to_qdrant(
+        self,
+        algorithm_folder: str,
+        strategy_version: str,
+        dataset_folder: str,
+        embeddings: Dict[str, List[float]],
+        strategy_file_path: Optional[Path] = None
+    ):
+        """Migrate JSON cache embeddings to Qdrant."""
+        if not embeddings:
+            return
+        
+        # Infer dimensions from first embedding
+        first_embedding = next(iter(embeddings.values()))
+        dimensions = len(first_embedding)
+        
+        # Compute strategy hash if we have the file path
+        strategy_hash = None
+        if strategy_file_path:
+            strategy_hash = compute_strategy_hash(strategy_file_path)
+        
+        self.qdrant_store.save_embeddings(
+            algorithm_folder, strategy_version, dataset_folder,
+            embeddings, "migrated", dimensions,
+            strategy_hash=strategy_hash
+        )
+        print(f"Migrated {len(embeddings)} embeddings to Qdrant")
 
 
 # Initialize state
@@ -245,11 +390,13 @@ def root():
 def health():
     state = get_state()
     openai_ok, openai_msg = check_openai_available()
+    qdrant_ok, qdrant_msg = check_qdrant_available(state.config.qdrant_url)
     
     return {
         "status": "healthy",
         "loaded": state.is_loaded,
         "openai": {"available": openai_ok, "message": openai_msg},
+        "qdrant": {"available": qdrant_ok, "message": qdrant_msg},
     }
 
 
@@ -329,19 +476,22 @@ def load_configuration(request: LoadConfigRequest):
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     
-    # Check for cached embeddings
+    # Check for cached embeddings (Qdrant or JSON)
     embeddings = {}
-    embeddings_cached = state.embedding_cache.has_cache(
+    embeddings_cached = state.has_embeddings_cached(
         algorithm.folder_name,
         algorithm.strategy_version,
         dataset.folder_name
     )
     
     if embeddings_cached:
-        embeddings = state.embedding_cache.load_embeddings(
+        # Pass strategy file path for hash verification
+        strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+        embeddings = state.load_cached_embeddings(
             algorithm.folder_name,
             algorithm.strategy_version,
-            dataset.folder_name
+            dataset.folder_name,
+            strategy_file_path=strategy_file
         ) or {}
     
     # Update state
@@ -445,7 +595,7 @@ def embeddings_status():
             "message": "No algorithm/dataset loaded"
         }
     
-    cached = state.embedding_cache.has_cache(
+    cached = state.has_embeddings_cached(
         state.current_algorithm.folder_name,
         state.current_algorithm.strategy_version,
         state.current_dataset.folder_name
@@ -453,23 +603,33 @@ def embeddings_status():
     
     metadata = None
     if cached:
-        metadata = state.embedding_cache.load_metadata(
-            state.current_algorithm.folder_name,
-            state.current_algorithm.strategy_version,
-            state.current_dataset.folder_name
-        )
+        # Try Qdrant metadata first, then JSON
+        if state.qdrant_available and state.qdrant_store:
+            metadata = state.qdrant_store.load_metadata(
+                state.current_algorithm.folder_name,
+                state.current_algorithm.strategy_version,
+                state.current_dataset.folder_name
+            )
+        if not metadata:
+            metadata = state.embedding_cache.load_metadata(
+                state.current_algorithm.folder_name,
+                state.current_algorithm.strategy_version,
+                state.current_dataset.folder_name
+            )
     
     return {
         "loaded": True,
         "cached": cached,
         "count": len(state.current_embeddings),
         "needs_generation": len(state.current_embeddings) < len(state.current_dataset.episodes),
+        "storage": "qdrant" if state.qdrant_available else "json",
         "metadata": {
             "created_at": metadata.created_at if metadata else None,
             "episode_count": metadata.episode_count if metadata else 0,
             "embedding_model": metadata.embedding_model if metadata else None,
         } if metadata else None,
         "openai_available": check_openai_available()[0],
+        "qdrant_available": state.qdrant_available,
     }
 
 
@@ -503,12 +663,12 @@ def generate_embeddings(
     
     # Check if already cached (unless force)
     if not request.force:
-        if state.embedding_cache.has_cache(
+        if state.has_embeddings_cached(
             algorithm.folder_name,
             algorithm.strategy_version,
             dataset.folder_name
         ):
-            existing = state.embedding_cache.load_embeddings(
+            existing = state.load_cached_embeddings(
                 algorithm.folder_name,
                 algorithm.strategy_version,
                 dataset.folder_name
@@ -517,7 +677,8 @@ def generate_embeddings(
             return {
                 "status": "already_cached",
                 "count": len(existing or {}),
-                "message": "Embeddings already cached. Use force=true to regenerate."
+                "message": "Embeddings already cached. Use force=true to regenerate.",
+                "storage": "qdrant" if state.qdrant_available else "json"
             }
     
     # Generate embeddings
@@ -546,14 +707,16 @@ def generate_embeddings(
     )
     
     if result.success:
-        # Save to cache
-        state.embedding_cache.save_embeddings(
+        # Save to cache (Qdrant + JSON backup) with strategy hash
+        strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+        state.save_embeddings(
             algorithm.folder_name,
             algorithm.strategy_version,
             dataset.folder_name,
             result.embeddings,
             algorithm.embedding_model,
-            algorithm.embedding_dimensions
+            algorithm.embedding_dimensions,
+            strategy_file_path=strategy_file
         )
         
         # Update current state if this is the loaded config
@@ -570,6 +733,7 @@ def generate_embeddings(
         "total": len(result.embeddings),
         "estimated_cost": round(result.estimated_cost, 4),
         "errors": result.errors,
+        "storage": "qdrant" if state.qdrant_available else "json"
     }
 
 

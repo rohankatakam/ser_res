@@ -2,6 +2,20 @@
 # Docker Compose configuration for local development and deployment
 
 services:
+  # Qdrant Vector Database (embeddings, similarity search)
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: serafis-qdrant
+    volumes:
+      - qdrant-data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    # Note: Qdrant minimal image has no curl/wget for health checks
+    # Qdrant starts in <2s and backend handles connection retries
+    restart: unless-stopped
+    networks:
+      - serafis-network
+
   # Backend API Server
   backend:
     build:
@@ -15,7 +29,7 @@ services:
       - ./algorithms:/data/algorithms:ro
       # Mount datasets
       - ./datasets:/data/datasets:ro
-      # Mount cache for embeddings (read-write)
+      # Mount cache for embeddings (read-write, fallback for JSON cache)
       - ./cache:/data/cache
       # Mount evaluation profiles, test cases, and reports
       - ./evaluation:/data/evaluation
@@ -26,9 +40,14 @@ services:
       - DATASETS_DIR=/data/datasets
       - CACHE_DIR=/data/cache
       - EVALUATION_DIR=/data/evaluation
+      # Qdrant connection
+      - QDRANT_URL=http://qdrant:6333
       # API keys can be passed via environment or .env file
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    depends_on:
+      qdrant:
+        condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
@@ -64,7 +83,6 @@ networks:
   serafis-network:
     driver: bridge
 
-# Optional: Named volumes for persistence
-# volumes:
-#   cache-data:
-#   evaluation-data:
+# Named volumes for persistence
+volumes:
+  qdrant-data:

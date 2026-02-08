@@ -40,6 +40,9 @@ class ServerConfig:
     host: str = "0.0.0.0"
     port: int = 8000
     
+    # Database connections
+    qdrant_url: Optional[str] = None
+    
     # Paths
     algorithms_dir: Path = Path(__file__).parent.parent / "algorithms"
     datasets_dir: Path = Path(__file__).parent.parent / "datasets"
@@ -56,6 +59,7 @@ class ServerConfig:
             gemini_api_key=os.getenv("GEMINI_API_KEY"),
             host=os.getenv("HOST", "0.0.0.0"),
             port=int(os.getenv("PORT", "8000")),
+            qdrant_url=os.getenv("QDRANT_URL"),
             algorithms_dir=Path(os.getenv("ALGORITHMS_DIR", base_dir / "algorithms")),
             datasets_dir=Path(os.getenv("DATASETS_DIR", base_dir / "datasets")),
             cache_dir=Path(os.getenv("CACHE_DIR", base_dir / "cache")),
