@@ -29,11 +29,14 @@ todos:
   - id: phase6-qdrant
     content: Add Qdrant to docker-compose, implement qdrant_store.py, migrate embeddings
     status: pending
-  - id: phase6-litellm
-    content: Integrate LiteLLM for unified LLM access (OpenAI, Gemini, Anthropic)
+  - id: phase6-judges-package
+    content: Create evaluation/judges/ package (client.py, orchestrator.py, aggregator.py, prompt_builder.py, config.json)
     status: pending
-  - id: phase6-multi-llm-judge
-    content: Implement multi-LLM judge support with parallel execution and consensus scoring
+  - id: phase6-criteria-package
+    content: Create evaluation/criteria/ package with modular criterion definitions (individual folders per criterion)
+    status: pending
+  - id: phase6-update-runner
+    content: Update runner.py to use judges package, remove --with-llm flag (LLM is core)
     status: pending
   - id: phase6-ui-config
     content: Add UI modal for API key configuration (Embeddings + LLM sections)
@@ -190,8 +193,10 @@ Beyond pass/fail, improve these specific criteria:
 
 ```bash
 cd rec/evaluation
-python runner.py --with-llm --verbose --save
+python runner.py --verbose --save
 ```
+
+*Note: LLM evaluation runs by default (no `--with-llm` flag needed). At least one LLM API key required.*
 
 **Success Criteria:**
 - All 7 tests passing
@@ -246,15 +251,57 @@ qdrant:
     - qdrant_storage:/qdrant/storage
 ```
 
-### 6.2 LiteLLM Integration
+### 6.2 Modular Evaluation Architecture
 
-| Task | Description |
-|------|-------------|
-| Add litellm dependency | `pip install litellm` |
-| Create `server/llm_client.py` | Unified LLM interface |
-| Support 3 providers | `OPENAI_API_KEY`, `GEMINI_API_KEY`, `ANTHROPIC_API_KEY` |
-| Embeddings | OpenAI only (`text-embedding-3-small`) |
-| LLM Judge | Support multiple providers simultaneously |
+**Design Principle:** LLM evaluation is core (not optional). No `--with-llm` flag.
+
+| Package | Purpose |
+|---------|---------|
+| `evaluation/judges/` | Multi-LLM orchestration, LiteLLM client, aggregation |
+| `evaluation/criteria/` | Individual criterion definitions (LLM and deterministic) |
+
+**New Directory Structure:**
+```
+evaluation/
+├── judges/                    # LLM evaluation package
+│   ├── client.py              # LiteLLM async wrapper
+│   ├── orchestrator.py        # Multi-LLM coordination
+│   ├── aggregator.py          # Two-stage aggregation
+│   ├── prompt_builder.py      # Dynamic prompts from criteria
+│   └── config.json            # Model settings
+│
+├── criteria/                  # Modular criterion definitions
+│   ├── relevance/definition.json + README.md
+│   ├── diversity/definition.json + README.md
+│   ├── quality/definition.json + README.md
+│   ├── hypothesis_alignment/definition.json + README.md
+│   ├── avg_credibility/definition.json + logic.py + README.md  (deterministic)
+│   └── ...
+│
+├── deprecated/                # Old code (reference only)
+│   └── llm_judge.py
+```
+
+**Criterion Types:**
+- **LLM Criteria**: Prompt-based evaluation (relevance, diversity, quality, etc.)
+- **Deterministic Criteria**: Python functions (avg_credibility, crypto_count, etc.)
+
+**Scaling:** Add new criteria/tests/providers without code changes.
+
+### 6.3 Multi-LLM Judge System (MVP Feature)
+
+**Problem Solved:** Test 01 has ~50% pass rate due to LLM evaluation variability.
+
+> **Detailed Implementation Plan:** See [multi-llm_judge_infrastructure_474849c6.plan.md](plans/multi-llm_judge_infrastructure_474849c6.plan.md) for complete specification.
+
+**Key Features:**
+- LiteLLM unified interface for OpenAI, Gemini, Anthropic
+- Per-criterion LLM calls (maximum modularity, better debugging)
+- Two-stage aggregation (within-model mean → cross-model mean)
+- Configurable N samples per judge (default: 3)
+- Temperature 0.8 (research-backed for better calibration)
+- Graceful degradation if one LLM provider fails
+- Consensus metrics and uncertainty reporting
 
 **LiteLLM Model Mapping:**
 
@@ -262,27 +309,12 @@ qdrant:
 |----------|------------|-----------|
 | OpenAI | `text-embedding-3-small` | `gpt-4o-mini` |
 | Gemini | N/A | `gemini/gemini-2.0-flash` |
-| Anthropic | N/A | `claude-3-5-sonnet` |
+| Anthropic | N/A | `claude-3-5-sonnet-20241022` |
 
-### 6.3 Multi-LLM Judge Testing (MVP Feature)
-
-**New Capability:** Run LLM-as-a-judge tests with multiple providers simultaneously for robust evaluation.
-
-> **Detailed Implementation Plan:** See [multi-llm_judge_infrastructure_474849c6.plan.md](.cursor/plans/multi-llm_judge_infrastructure_474849c6.plan.md) for complete specification including:
-> - Two-stage aggregation (within-model + cross-model)
-> - N parameter for repeated sampling per judge
-> - Async parallel execution with asyncio
-> - Uncertainty reporting and consensus metrics
-> - Dynamic prompt building from test case `llm_criteria`
-> - Independence architecture for scaling profiles/test cases/LLM judges
-
-**Key Features (Summary):**
-- LiteLLM unified interface for OpenAI, Gemini, Anthropic
-- Configurable N samples per judge (default: 3)
-- Temperature 0.8 (research-backed for better calibration)
-- Graceful degradation if one LLM fails
-- Cost target: <$0.50 per full run
-- Time target: <2-3 minutes with async parallelization
+**Cost/Time Estimates:**
+- ~126 API calls per full run (7 tests × 3 criteria × 2 judges × 3 samples)
+- Cost: ~$0.10-0.20 per full run
+- Time: 60-120 seconds with async parallelization
 
 ### 6.4 Docker Deployment
 
@@ -376,12 +408,13 @@ Update `algorithm_evolution/` with:
 | 6 | 4 | Maximize all criteria scores | Medium |
 | 7 | 5 | Document v1.4, compare with original spec | Medium |
 | 8 | 6 | Add Qdrant to docker-compose | High |
-| 9 | 6 | Implement LiteLLM integration | High |
-| 10 | 6 | Implement multi-LLM judge support | High |
-| 11 | 6 | Add UI model configuration modal | Medium |
-| 12 | 6 | Test end-to-end Docker deployment | High |
-| 13 | 7 | Update algorithm_evolution docs | Medium |
-| 14 | 7 | Create final presentation | Medium |
+| 9 | 6 | Create `evaluation/judges/` package (LiteLLM + orchestrator) | High |
+| 10 | 6 | Create `evaluation/criteria/` package (modular criterion defs) | High |
+| 11 | 6 | Update runner.py (remove --with-llm, use judges package) | High |
+| 12 | 6 | Add UI model configuration modal | Medium |
+| 13 | 6 | Test end-to-end Docker deployment | High |
+| 14 | 7 | Update algorithm_evolution docs | Medium |
+| 15 | 7 | Create final presentation | Medium |
 
 ---
 
@@ -425,9 +458,10 @@ The algorithm correctly follows industry patterns:
 | Algorithm v1.4 (to create) | `algorithms/v1_4_optimized/` |
 | Test Runner | `evaluation/runner.py` |
 | Test Cases | `evaluation/test_cases/*.json` (7 tests) |
+| Judges Package (to create) | `evaluation/judges/` |
+| Criteria Package (to create) | `evaluation/criteria/` |
 | Algorithm Evolution | `algorithm_evolution/` |
 | Docker Config | `docker-compose.yml` |
 | Server | `server/server.py` |
 | Qdrant Store | `server/qdrant_store.py` |
-| LLM Client (to create) | `server/llm_client.py` |
 | Frontend | `prototype/src/` |
