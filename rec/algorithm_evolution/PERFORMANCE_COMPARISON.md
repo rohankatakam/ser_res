@@ -46,11 +46,11 @@ On 2026-02-09, the test suite was reorganized:
 | avg_credibility | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
 | min_credibility | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
 | top_quality_score | ✓ 9.67 | ✓ 9.67 | ✓ 9.67 | ✓ 9.67 |
-| llm_relevance | ✓ 8.00 | ✓ 9.00 | ✓ 9.00 | ✓ 3/5 |
-| llm_diversity | ✓ 7.00 | ✓ 8.00 | ✓ 8.00 | ⚠️ Variable |
-| llm_quality | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 5/5 |
-| llm_hypothesis_alignment | ✓ 8.00 | ✓ 9.00 | ✓ 9.00 | ⚠️ Variable |
-| **AGGREGATE** | **✅ 9.17** | **✅ 9.50** | **✅ 9.50** | **⚠️ LLM Variable** |
+| llm_relevance | ✓ 8.00 | ✓ 9.00 | ✓ 9.00 | ⚠️ 6.00 |
+| llm_diversity | ✓ 7.00 | ✓ 8.00 | ✓ 8.00 | ✗ 4.00 |
+| llm_quality | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| llm_hypothesis_alignment | ✓ 8.00 | ✓ 9.00 | ✓ 9.00 | ✗ 4.00 |
+| **AGGREGATE** | **✅ 9.17** | **✅ 9.50** | **✅ 9.50** | **⚠️ ~7.96** |
 
 **Analysis:** Cold start behavior is stable across all versions. Quality gates ensure high-quality content for new users.
 
@@ -58,6 +58,7 @@ On 2026-02-09, the test suite was reorganized:
 - v1.3 and v1.4 produce **identical cold start recommendations** (verified)
 - Same recommendations pass with v1.3 loaded, sometimes fail with v1.4
 - Root cause: LLM evaluation variability (not algorithm issue)
+- In failing runs: llm_diversity=4.00, llm_hypothesis_alignment=4.00
 - Pass rate: ~50% across runs with same input data
 - **Planned fix:** Multi-LLM consensus in Phase 6
 
@@ -69,16 +70,16 @@ On 2026-02-09, the test suite was reorganized:
 
 | Criterion | v1.0 | v1.2 | v1.3 | v1.4 |
 |-----------|------|------|------|------|
-| episode_difference | ✗ 1.00 | ✓ 6.40 | ✓ 7.30 | ✓ 7/10 |
-| similarity_increase | ✗ 3.00 | ✓ 10.00 | ✓ 5.96 | ✓ PASS |
+| episode_difference | ✗ 1.00 | ✓ 6.40 | ✓ 7.30 | ✓ 7.00 |
+| similarity_increase | ✗ 3.00 | ✓ 10.00 | ✓ 5.96 | ✓ 8.40 |
 | cold_start_flag_off | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
-| llm_relevance | ✓ 7.00 | ✓ 10.00 | ✓ 10.00 | ✓ 5/5 |
-| llm_diversity | ✓ 6.00 | ✓ 7.00 | ✓ 8.00 | ✓ 3/5 |
-| llm_quality | ✓ 9.00 | ✓ 10.00 | ✓ 10.00 | ✓ 5/5 |
-| llm_hypothesis_alignment | ✗ 5.00 | ✓ 8.00 | ✓ 10.00 | ✓ 5/5 |
-| **AGGREGATE** | **❌ 5.53** | **✅ 8.61** | **✅ 8.65** | **✅ PASS** |
+| llm_relevance | ✓ 7.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| llm_diversity | ✓ 6.00 | ✓ 7.00 | ✓ 8.00 | ✓ 10.00 |
+| llm_quality | ✓ 9.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| llm_hypothesis_alignment | ✗ 5.00 | ✓ 8.00 | ✓ 10.00 | ✓ 10.00 |
+| **AGGREGATE** | **❌ 5.53** | **✅ 8.61** | **✅ 8.65** | **✅ ~9.34** |
 
-**Analysis:** v1.0 failed because engaged episodes were appearing in recommendations (no auto-exclusion). Fixed in v1.2. v1.4 maintains passing status.
+**Analysis:** v1.0 failed because engaged episodes were appearing in recommendations (no auto-exclusion). Fixed in v1.2. v1.4 achieves excellent LLM scores (5/5 across all criteria).
 
 ---
 
@@ -88,9 +89,10 @@ On 2026-02-09, the test suite was reorganized:
 
 | Criterion | v1.0 | v1.2 | v1.3 | v1.4 |
 |-----------|------|------|------|------|
-| credibility_floor | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 0 violations |
-| combined_floor | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 0 violations |
-| **AGGREGATE** | **✅ 10.00** | **✅ 10.00** | **✅ 10.00** | **✅ PASS** |
+| credibility_floor | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| combined_floor | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| known_bad_excluded | — | — | — | ✓ 10.00 |
+| **AGGREGATE** | **✅ 10.00** | **✅ 10.00** | **✅ 10.00** | **✅ 10.00** |
 
 **Analysis:** Perfect scores across all versions. Quality gates are correctly implemented.
 
@@ -102,9 +104,9 @@ On 2026-02-09, the test suite was reorganized:
 
 | Criterion | v1.0 | v1.2 | v1.3 | v1.4 |
 |-----------|------|------|------|------|
-| exclusions_respected | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 0 found |
-| still_returns_results | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10 recs |
-| **AGGREGATE** | **✅ 10.00** | **✅ 10.00** | **✅ 10.00** | **✅ PASS** |
+| exclusions_respected | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| still_returns_results | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| **AGGREGATE** | **✅ 10.00** | **✅ 10.00** | **✅ 10.00** | **✅ 10.00** |
 
 **Analysis:** Perfect scores. Exclusion logic works correctly.
 
@@ -116,15 +118,15 @@ On 2026-02-09, the test suite was reorganized:
 
 | Criterion | v1.0 | v1.2 | v1.3 | v1.4 |
 |-----------|------|------|------|------|
-| ai_tech_category_match | ✓ 9.10 | ✓ 10.00 | ✓ 10.00 | ✓ 10/10 |
-| crypto_category_match | ✗ 1.90 | ✓ 5.50 | ✓ 8.20 | ✓ 8/10 |
-| llm_relevance | ✓ 8.00 | ✓ 10.00 | ✓ 9.00 | ✓ 4/5 |
-| llm_diversity | ✓ 7.00 | ✓ 9.00 | ✓ 8.00 | ✓ 3/5 |
-| llm_quality | ✓ 9.00 | ✓ 10.00 | ✓ 10.00 | ✓ 5/5 |
-| llm_hypothesis_alignment | ✓ 6.00 | ✓ 9.00 | ✓ 9.00 | ✓ 4/5 |
-| **AGGREGATE** | **❌ 6.64** | **✅ 8.75** | **✅ 9.04** | **✅ PASS** |
+| ai_tech_category_match | ✓ 9.10 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| crypto_category_match | ✗ 1.90 | ✓ 5.50 | ✓ 8.20 | ✓ 8.00 |
+| llm_relevance | ✓ 8.00 | ✓ 10.00 | ✓ 9.00 | ✓ 10.00 |
+| llm_diversity | ✓ 7.00 | ✓ 9.00 | ✓ 8.00 | ✓ 10.00 |
+| llm_quality | ✓ 9.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| llm_hypothesis_alignment | ✓ 6.00 | ✓ 9.00 | ✓ 9.00 | ✓ 10.00 |
+| **AGGREGATE** | **❌ 6.64** | **✅ 8.75** | **✅ 9.04** | **✅ 9.67** |
 
-**Analysis:** v1.0's crypto detection was poor (1.90). Improved through config loading (v1.2) and stronger personalization (v1.3). v1.4 maintains strong category matching.
+**Analysis:** v1.0's crypto detection was poor (1.90). Improved through config loading (v1.2) and stronger personalization (v1.3). v1.4 achieves perfect LLM scores (5/5 all criteria).
 
 ---
 
@@ -134,12 +136,14 @@ On 2026-02-09, the test suite was reorganized:
 
 | Criterion | v1.0 | v1.2 | v1.3 | v1.4 |
 |-----------|------|------|------|------|
-| both_in_top_10 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ PASS |
-| recency_score_ordering | ✓ 5.73 | ✓ 5.74 | ✓ 5.74 | ✓ Correct |
-| ranking_reflects_recency | ✓ 7.75 | ✓ 7.75 | ✓ 7.75 | ✓ PASS |
-| **AGGREGATE** | **✅ 7.55** | **✅ 7.56** | **✅ 7.56** | **✅ PASS** |
+| both_in_top_10 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 | ✓ 10.00 |
+| recency_score_ordering | ✓ 5.73 | ✓ 5.74 | ✓ 5.74 | ✓ 5.16 |
+| ranking_reflects_recency | ✓ 7.75 | ✓ 7.75 | ✓ 7.75 | ✓ 5.00 |
+| **AGGREGATE** | **✅ 7.55** | **✅ 7.56** | **✅ 7.56** | **✅ 6.72** |
 
-**Analysis:** Stable recency behavior. The exponential decay formula works as expected. v1.4 maintains passing status.
+**Analysis:** Stable recency behavior. The exponential decay formula works as expected. v1.4 has slightly lower scores due to ranking positions (recent_pos=3 vs older_pos=8), but still passes all criteria.
+
+**v1.4 Details:** recent_score=0.8869, older_score=0.8353, recent_pos=3, older_pos=8
 
 ---
 
@@ -149,13 +153,13 @@ On 2026-02-09, the test suite was reorganized:
 
 | Criterion | v1.0 | v1.2 | v1.3 | v1.4 |
 |-----------|------|------|------|------|
-| different_results | ✗ 1.00 | ✓ 4.60 | ✓ 13.60 | ✓ **16** |
-| crypto_dominance_in_b | ✓ 5.50 | ✓ 5.95 | ✓ 7.75 | ✓ 5/10 vs 1/10 |
-| llm_relevance | ✗ 1.00 | ✗ 1.00 | ✓ 6.00 | ✓ 3/5 |
-| llm_diversity | ✗ 3.00 | ✗ 2.00 | ✓ 7.00 | ✓ 3/5 |
-| llm_quality | ✓ 9.00 | ✓ 9.00 | ✓ 9.00 | ✓ 4/5 |
-| llm_hypothesis_alignment | ✗ 1.00 | ✗ 1.00 | ✗ 4.00 | ✓ **PASS** |
-| **AGGREGATE** | **❌ 3.58** | **❌ 4.08** | **❌ 7.88** | **✅ PASS** |
+| different_results | ✗ 1.00 | ✓ 4.60 | ✓ 13.60 | ✓ 16.00 |
+| crypto_dominance_in_b | ✓ 5.50 | ✓ 5.95 | ✓ 7.75 | ✓ 4.00 |
+| llm_relevance | ✗ 1.00 | ✗ 1.00 | ✓ 6.00 | ✓ 6.00 |
+| llm_diversity | ✗ 3.00 | ✗ 2.00 | ✓ 7.00 | ✓ 6.00 |
+| llm_quality | ✓ 9.00 | ✓ 9.00 | ✓ 9.00 | ✓ 10.00 |
+| llm_hypothesis_alignment | ✗ 1.00 | ✗ 1.00 | ✗ 4.00 | ✓ 6.00 |
+| **AGGREGATE** | **❌ 3.58** | **❌ 4.08** | **❌ 7.88** | **✅ 8.00** |
 
 **v1.4 Achievement:** Test 07 finally passes after failing in all previous versions!
 
@@ -163,8 +167,8 @@ On 2026-02-09, the test suite was reorganized:
 
 **Results with v1.4:**
 - 16 different episodes between click vs bookmark scenarios (vs 14 in v1.3)
-- 5/10 crypto in bookmark scenario vs 1/10 in click scenario
-- LLM judge now confirms "bookmarks dominate" behavior
+- 5/10 crypto in bookmark scenario vs 1/10 in click scenario (delta=4)
+- LLM judge confirms "bookmarks dominate" with test_pass=true
 - All criteria passing!
 
 ---
