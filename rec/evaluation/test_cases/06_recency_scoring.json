@@ -1,5 +1,5 @@
 {
-  "test_id": "07_recency_scoring",
+  "test_id": "06_recency_scoring",
   "name": "Recency Scoring Works",
   "type": "DIR",
   "evaluation_method": "deterministic",

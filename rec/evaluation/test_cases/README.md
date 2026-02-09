@@ -1,8 +1,9 @@
 # Evaluation Test Cases
 
-> Test cases for validating the For You recommendation algorithm (V1.2)
+> Test cases for validating the For You recommendation algorithm
 
 **Created:** February 6, 2026  
+**Updated:** February 9, 2026  
 **Total Tests:** 7
 
 ---
@@ -16,8 +17,17 @@
 | 03 | Quality Gates Enforce Credibility Floor | MFT | `deterministic` | All 5 | No C<2 episodes ever |
 | 04 | Excluded Episodes Never Reappear | MFT | `deterministic` | 02 (modified) | Exclusions respected |
 | 05 | Category Engagement → Category Recs | DIR | `deterministic_llm` | 02, 03 | ≥50% category match |
-| 06 | Bookmarks Outweigh Clicks in Mixed History | DIR | `deterministic_llm` | Custom | Crypto dominance in bookmark-crypto scenario |
-| 07 | Recency Scoring Works | DIR | `deterministic` | 01 | Both episodes in top 10, recent ranks higher |
+| 06 | Recency Scoring Works | DIR | `deterministic` | 01 | Both episodes in top 10, recent ranks higher |
+| 07 | Bookmarks Outweigh Clicks | DIR | `deterministic_llm` | Custom | Crypto dominance in bookmark-crypto scenario |
+
+---
+
+## Changelog
+
+### 2026-02-09
+- **Removed Test 06 (Bookmark Weighting - Mixed Quality)**: This test used low-quality crypto episodes that correctly failed quality gates, conflating two behaviors. The test was incorrectly expecting crypto dominance when quality gates were working as designed.
+- **Renumbered Test 07 → 06 (Recency Scoring)**
+- **Renumbered Test 08 → 07 (Bookmark Weighting)**: Now uses high-quality episodes that pass quality gates, isolating bookmark weighting behavior.
 
 ---
 
@@ -25,8 +35,8 @@
 
 | Method | Description | Tests | When to Use |
 |--------|-------------|-------|-------------|
-| `deterministic` | Pure programmatic validation | 03, 04, 07 | Numeric thresholds, functional checks |
-| `deterministic_llm` | Programmatic + LLM qualitative assessment | 01, 02, 05, 06 | Semantic understanding adds value |
+| `deterministic` | Pure programmatic validation | 03, 04, 06 | Numeric thresholds, functional checks |
+| `deterministic_llm` | Programmatic + LLM qualitative assessment | 01, 02, 05, 07 | Semantic understanding adds value |
 | `llm_only` | Pure LLM evaluation (none yet) | — | No objective metric exists |
 
 See **EVALUATION_STRATEGY.md** for detailed guidance on choosing evaluation methods.
@@ -77,10 +87,10 @@ When tests fail, adjust these parameters:
 |------|------------------|
 | 01, 03 | Quality gates (credibility floor=2, combined floor=5) |
 | 01 | Quality weight in cold start (60%) |
-| 02, 05, 06 | Similarity weight (55%), user vector computation |
+| 02, 05, 07 | Similarity weight, user vector computation |
 | 04 | Stage A exclusion filter logic |
-| 06 | Bookmark weight (2.0x) |
-| 07 | Recency weight (15%/40%), lambda decay (0.03) |
+| 06 | Recency weight (15%/40%), lambda decay (0.03) |
+| 07 | Bookmark weight (engagement_weights.bookmark) |
 
 ---
 
@@ -92,8 +102,8 @@ When tests fail, adjust these parameters:
 - `03_quality_gates_credibility.json`
 - `04_excluded_episodes.json`
 - `05_category_personalization.json`
-- `06_bookmark_weighting.json`
-- `07_recency_scoring.json`
+- `06_recency_scoring.json`
+- `07_bookmark_weighting.json`
 
 ### Markdown (Human-Readable)
 - `01_cold_start_quality.md`
@@ -101,21 +111,23 @@ When tests fail, adjust these parameters:
 - `03_quality_gates_credibility.md`
 - `04_excluded_episodes.md`
 - `05_category_personalization.md`
-- `06_bookmark_weighting.md`
-- `07_recency_scoring.md`
+- `06_recency_scoring.md`
 
 ---
 
-## Current Status (Baseline)
+## How Professional Recommendation Engines Handle Bookmarks
 
-| Test | Deterministic | LLM | Status |
-|------|--------------|-----|--------|
-| 01 | ✓ Pass | ✓ Pass (R:4/5 D:4/5 Q:5/5) | **PASS** |
-| 02 | ✓ Pass | ✓ Pass (R:5/5 D:4/5 Q:5/5) | **PASS** |
-| 03 | ✓ Pass | N/A | **PASS** |
-| 04 | ✓ Pass | N/A | **PASS** |
-| 05 | ✓ Pass | ✓ Pass (R:5/5 D:4/5 Q:5/5) | **PASS** |
-| 06 | ✓ Pass | ✓ Pass (R:5/5 D:3/5 Q:5/5) | **PASS** |
-| 07 | ✓ Pass | N/A | **PASS** |
+The algorithm follows industry best practices for bookmark handling:
 
-**Baseline:** 7/7 tests pass (100%)
+| Platform | "Bookmark" Action | Reappears in Feed? | Signal Usage |
+|----------|------------------|-------------------|--------------|
+| **TikTok** | Favorite/Save | No — saved for later | Heavy signal for SIMILAR content |
+| **Netflix** | My List | No — already expressed interest | Boosts similar genres/actors |
+| **Spotify** | Like Song | No — goes to Liked Songs | Influences Discover Weekly, Radio |
+| **Serafis** | Bookmark | No — excluded from new recs | Strong signal for user vector |
+
+**Key Behavior:**
+1. Bookmarked episodes are excluded from future recommendations (already saved)
+2. Bookmark signal influences user interest vector (strong interest indicator)
+3. NEW recommendations must still pass quality gates
+4. Low-quality bookmarked content influences vector, but new recs are quality-filtered

@@ -1,0 +1,538 @@
+{
+  "timestamp": "2026-02-08T23:03:41.748390+00:00",
+  "context": {
+    "algorithm_version": "v1_2_blended",
+    "algorithm_name": "Blended Scoring",
+    "dataset_version": "eval_909_feb2026",
+    "dataset_episode_count": 909
+  },
+  "summary": {
+    "total_tests": 7,
+    "passed": 6,
+    "failed": 1,
+    "pass_rate": 0.857,
+    "overall_score": 8.68,
+    "overall_confidence": 1.0,
+    "score_breakdown": {
+      "01_cold_start_quality": 9.72,
+      "02_personalization_differs": 9.01,
+      "03_quality_gates_credibility": 10.0,
+      "04_excluded_episodes": 10.0,
+      "05_category_personalization": 7.46,
+      "06_bookmark_weighting": 4.39,
+      "07_recency_scoring": 7.56
+    }
+  },
+  "results": [
+    {
+      "test_id": "01_cold_start_quality",
+      "name": "Cold Start Quality & Topic Breadth (First Impression Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "cold_start_flag",
+          "description": "API response includes cold_start: true",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_start=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "avg_credibility",
+          "description": "Average credibility of top 10 >= 3.0",
+          "score": 10.0,
+          "threshold": 7.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "avg_credibility=4.00",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "min_credibility",
+          "description": "No episode in top 10 has credibility < 2",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "min_credibility=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "top_quality_score",
+          "description": "Top 3 episodes have quality_score >= 0.7",
+          "score": 9.67,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "top_3_quality_scores=[1.0, 1.0, 0.9]",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "Recommendations consistently align with key investor interests across technology, finance, startups, and macroeconomics as intended for this user segment.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "The list successfully covers the hypothesized major themes (AI, Crypto, Macro, Startups) with good cross-sector variety for a cold start, avoiding excessive depth in one area.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 10.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "All recommendations feature highly credible hosts and prominent industry-leading guests, such as Elon Musk, Dave Baszucki, and top VCs, confirming exceptional content quality.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 10.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "The recommendations perfectly align with the cold start hypothesis by maximizing initial diversity across major themes with high-quality content to probe user interests.",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "The recommendation system demonstrates exceptional performance in cold start scenarios, delivering a diverse set of high-quality and highly credible episodes that perfectly align with the test's content hypothesis. All criteria were met or exceeded, indicating robust initial user engagement capability.",
+        "quality_score": 5,
+        "observations": [
+          "The system effectively addresses the cold start challenge by presenting a curated list of exceptionally high-quality and credible content, as evidenced by high credibility scores and top-tier episodes.",
+          "Topic breadth is successfully achieved, covering major themes relevant to the user segment (AI, Crypto, Macro, Startups) without excessive depth in one area, which is crucial for probing initial user interests.",
+          "LLM-based evaluations consistently confirm strong alignment with the content hypothesis, high relevance to user interests, and excellent content quality, featuring prominent industry leaders and credible sources."
+        ],
+        "suggestions": [
+          "Given the outstanding performance, focus should now shift to maintaining this high standard and exploring more complex user personas or evolving content landscapes to ensure continued system robustness and adaptability."
+        ],
+        "evaluated_at": "2026-02-08T23:02:46.579266+00:00"
+      },
+      "scores": {
+        "aggregate_score": 9.72,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 8,
+        "passed_count": 8
+      }
+    },
+    {
+      "test_id": "02_personalization_differs",
+      "name": "Personalization Differs from Cold Start (Centroid Shift Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "episode_difference",
+          "description": "At least 5 of top 10 episodes are different",
+          "score": 6.4,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=6",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "similarity_increase",
+          "description": "VC Partner has higher avg similarity_score than cold start",
+          "score": 10.0,
+          "threshold": 5.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_avg=0.500, vc_avg=0.712, delta=0.212",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "cold_start_flag_off",
+          "description": "VC Partner cold_start flag is false",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "vc_cold_start=False",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 10.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "All recommendations are highly focused on AI, AI infrastructure, and investment strategies, aligning perfectly with the user's recent engagements and specialization hypothesis.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 8.0,
+          "threshold": 6.0,
+          "confidence": 0.9,
+          "passed": true,
+          "details": "Recommendations demonstrate good variety within the core AI/Tech infrastructure domain, including space, investment strategy, and macroeconomics, consistent with the specialist profile, with one exact duplicate of a recent bookmark.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 10.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "All recommendations feature highly credible speakers from leading podcasts and organizations within the VC, AI, and tech sectors.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 10.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "The recommendations perfectly align with the 85% AI/Tech infrastructure specialization, featuring strategic analysis and appropriate cross-disciplinary content connected to AI capex and market dynamics.",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "The recommendation system successfully demonstrated a clear shift from cold start to personalized recommendations for an engaged user, showing strong alignment with specific user interests and content quality. All criteria were met with high scores.",
+        "quality_score": 5,
+        "observations": [
+          "The system effectively personalized recommendations, with 6 out of 10 top episodes differing from cold start and a significant increase in average similarity score (0.500 to 0.712).",
+          "LLM evaluations confirm excellent relevance, high content quality, and perfect alignment with the user's specialized content hypothesis (AI/Tech infrastructure, investment strategies).",
+          "While maintaining good variety within the user's niche, one exact duplicate of a recent bookmark was identified, suggesting a minor area for refinement in diversity management."
+        ],
+        "suggestions": [
+          "Implement a mechanism to prevent exact duplicates of recently bookmarked or engaged content from appearing in the top recommendations, as flagged in the LLM diversity assessment.",
+          "Consider analyzing the types of cross-disciplinary content surfaced to ensure the 'appropriate variety for user's exploration/specialization profile' is consistently optimal without sacrificing core relevance."
+        ],
+        "evaluated_at": "2026-02-08T23:03:06.953703+00:00"
+      },
+      "scores": {
+        "aggregate_score": 9.01,
+        "aggregate_confidence": 0.99,
+        "criteria_count": 7,
+        "passed_count": 7
+      }
+    },
+    {
+      "test_id": "03_quality_gates_credibility",
+      "name": "Quality Gates Enforce Credibility Floor",
+      "type": "MFT",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "credibility_floor",
+          "description": "No episode with credibility < 2 in any response",
+          "score": 10.0,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "low_credibility_count=0/80",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "combined_floor",
+          "description": "All episodes have C + I >= 5",
+          "score": 10.0,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "low_combined_count=0/80",
+          "weight": 2.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      }
+    },
+    {
+      "test_id": "04_excluded_episodes",
+      "name": "Excluded Episodes Never Reappear",
+      "type": "MFT",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "exclusions_respected",
+          "description": "None of the excluded episode IDs appear",
+          "score": 10.0,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "excluded_found=0/3",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "still_returns_results",
+          "description": "System still returns 10 valid recommendations",
+          "score": 10,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "episode_count=10",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      }
+    },
+    {
+      "test_id": "05_category_personalization",
+      "name": "Category Personalization & Boundary Cross Test",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "ai_tech_category_match",
+          "description": "Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
+          "score": 10.0,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "ai_tech_matches=10/10",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "crypto_category_match",
+          "description": "Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
+          "score": 5.5,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "crypto_matches=5/10",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 6.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "The recommendations are highly relevant to the user's AI/Tech focus and key figures, but a critical failure to exclude a previously bookmarked item significantly detracts from the score.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 7.0,
+          "threshold": 6.0,
+          "confidence": 0.9,
+          "passed": true,
+          "details": "The recommendations offer good variety within the core AI/VC domain and include appropriate cross-disciplinary 'bridge' content, adhering to the specialization preference.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "All recommended podcasts feature highly credible sources and prominent industry figures, indicating excellent content quality.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 7.0,
+          "threshold": 6.0,
+          "confidence": 0.9,
+          "passed": true,
+          "details": "The recommendations successfully target the specified specialization ratio and preference for strategic analysis, including fitting cross-disciplinary content, but the duplicate item indicates a flaw in recognizing prior consumption.",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "The recommendation system successfully achieved strong category personalization and delivered contextually relevant 'boundary cross' content, aligning well with user interests and content hypotheses. However, a critical flaw was identified in excluding previously consumed or bookmarked items.",
+        "quality_score": 4,
+        "observations": [
+          "Category personalization is highly effective, especially for AI/Tech users, with 100% of top recommendations matching the primary interest, and Crypto users also meeting the required threshold.",
+          "The 'Boundary Cross' objective was well met, with recommendations demonstrating appropriate cross-disciplinary content that is contextually linked to user specializations, enhancing diversity without compromising relevance.",
+          "A significant issue regarding consumption tracking was noted: the system failed to exclude previously bookmarked or consumed items, which is a critical flaw for user experience despite overall high relevance scores."
+        ],
+        "suggestions": [
+          "Prioritize the implementation or refinement of a robust mechanism to track and exclude all previously consumed or bookmarked content, ensuring recommendations are fresh and novel.",
+          "Investigate the specific integration points where the system fails to recognize user consumption history (e.g., bookmarks, viewing history) to prevent duplicate recommendations."
+        ],
+        "evaluated_at": "2026-02-08T23:03:28.291334+00:00"
+      },
+      "scores": {
+        "aggregate_score": 7.46,
+        "aggregate_confidence": 0.97,
+        "criteria_count": 6,
+        "passed_count": 6
+      }
+    },
+    {
+      "test_id": "06_bookmark_weighting",
+      "name": "Bookmarks Outweigh Clicks in Mixed History",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": false,
+      "criteria_results": [
+        {
+          "criterion_id": "different_results",
+          "description": "Scenarios produce different recommendations (at least 2 different episodes)",
+          "score": 4.6,
+          "threshold": 2.8,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "crypto_dominance_in_b",
+          "description": "Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+          "score": 5.95,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "scenario_a_crypto=2/10, scenario_b_crypto=3/10, delta=1",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 2.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": false,
+          "details": "Recommendations overwhelmingly favor AI topics (9/10) despite crypto being the more heavily weighted interest according to the hypothesis (2 bookmarks vs 1 click).",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 3.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": false,
+          "details": "Recommendations lack diversity, heavily focusing on AI and failing to include a sufficient number of crypto-related podcasts to reflect the user's bookmarked interests.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "The recommendations consistently draw from high-credibility and reputable sources within the tech and venture capital domains.",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 1.0,
+          "threshold": 6.0,
+          "confidence": 1.0,
+          "passed": false,
+          "details": "The recommendations directly contradict the hypothesis by heavily leaning towards AI (9/10) rather than crypto, despite the instruction to weight bookmarks more heavily than clicks.",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "The recommendation system failed its core objective by not appropriately weighting bookmarked content (crypto) over clicked content (AI), leading to recommendations that directly contradicted the test hypothesis.",
+        "quality_score": 2,
+        "observations": [
+          "The system demonstrably failed to apply the intended 2x weight for bookmarked episodes, as recommendations overwhelmingly favored AI topics (9/10) over crypto, despite crypto being the more heavily weighted interest.",
+          "Recommendations exhibited a critical lack of diversity and relevance, failing to reflect the user's bookmarked interests and instead over-indexing on clicked content (AI).",
+          "While the system did produce different results and maintained high-quality sources, these positive aspects are overshadowed by its failure to align with the core content hypothesis regarding engagement weighting."
+        ],
+        "suggestions": [
+          "Thoroughly investigate the user vector generation and recommendation ranking algorithms to identify why the 2x weighting for bookmarked content is not effectively influencing the final recommendation list to prioritize crypto.",
+          "Analyze the content similarity model or embedding space to understand if AI and crypto topics are being conflated or if AI content inherently has stronger signals that overpower explicit weighting mechanisms."
+        ],
+        "evaluated_at": "2026-02-08T23:03:41.744668+00:00"
+      },
+      "scores": {
+        "aggregate_score": 4.39,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 6,
+        "passed_count": 3
+      }
+    },
+    {
+      "test_id": "07_recency_scoring",
+      "name": "Recency Scoring Works",
+      "type": "DIR",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "both_in_top_10",
+          "description": "Both test episodes found in top 10 cold start results",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent_found=True, older_found=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "recency_score_ordering",
+          "description": "Recent episode has higher recency_score than older",
+          "score": 5.74,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent=0.9139, older=0.8607, delta=0.0532",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "ranking_reflects_recency",
+          "description": "Recent episode ranks higher (lower position) than older",
+          "score": 7.75,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent_pos=3, older_pos=8, delta=5",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 7.56,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 3,
+        "passed_count": 3
+      }
+    }
+  ]
+}

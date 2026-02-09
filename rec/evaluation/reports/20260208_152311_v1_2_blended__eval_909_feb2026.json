@@ -1,0 +1,2408 @@
+{
+  "timestamp": "2026-02-08T23:23:11.343036+00:00",
+  "context": {
+    "algorithm_version": "v1_2_blended",
+    "algorithm_name": "Blended Scoring",
+    "dataset_version": "eval_909_feb2026",
+    "dataset_episode_count": 909
+  },
+  "summary": {
+    "total_tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "overall_score": 8.45,
+    "overall_confidence": 1.0,
+    "score_breakdown": {
+      "01_cold_start_quality": 9.9,
+      "02_personalization_differs": 8.46,
+      "03_quality_gates_credibility": 10.0,
+      "04_excluded_episodes": 10.0,
+      "05_category_personalization": 7.75,
+      "06_bookmark_weighting": 5.41,
+      "07_recency_scoring": 7.56,
+      "08_bookmark_weighting_high_quality": 5.41
+    }
+  },
+  "results": [
+    {
+      "test_id": "01_cold_start_quality",
+      "name": "Cold Start Quality & Topic Breadth (First Impression Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "cold_start_flag",
+          "description": "API response includes cold_start: true",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_start=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "avg_credibility",
+          "description": "Average credibility of top 10 >= 3.0",
+          "score": 10.0,
+          "threshold": 7.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "avg_credibility=4.00",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "min_credibility",
+          "description": "No episode in top 10 has credibility < 2",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "min_credibility=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "top_quality_score",
+          "description": "Top 3 episodes have quality_score >= 0.7",
+          "score": 9.67,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "top_3_quality_scores=[1.0, 1.0, 0.9]",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 9.9,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 4,
+        "passed_count": 4
+      },
+      "_llm_judge_context": {
+        "profile": {
+          "profile_id": "01_cold_start",
+          "name": "Cold Start New User",
+          "description": "First-time visitor with zero engagement history. Tests quality-only ranking (no personalization signal). Content Hypothesis: Unknown specialization\u2014algorithm should maximize initial diversity to probe user interests across major themes (AI, Crypto, Macro, Startups). First impression should showcase breadth of high-quality content rather than depth in any single category.",
+          "icp_segment": "All segments",
+          "usage_duration": "0 days (first visit)",
+          "expected_behavior": [
+            "Should see highest quality episodes (quality score dominates)",
+            "Recency should be secondary factor",
+            "No personalization - similarity weight should be 0",
+            "API should return cold_start: true",
+            "Section should be labeled 'Highest Signal' not 'For You'"
+          ],
+          "engagements": [],
+          "excluded_ids": [],
+          "created_at": "2026-02-06T00:00:00Z",
+          "notes": "Critical edge case - every new user starts here"
+        },
+        "recommendations": [
+          {
+            "id": "10FJ6iMqTrV0LJul40zA",
+            "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+            "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+            "series": {
+              "id": "cheeky-pint-y9y5dzsl",
+              "name": "Cheeky Pint"
+            },
+            "published_at": "2026-02-05T16:50:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.9655724741084912,
+            "queue_position": 1
+          },
+          {
+            "id": "msiyn7GcqjsjqMvEzgef",
+            "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+            "title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space\u201d",
+            "series": {
+              "id": "dwarkesh-podcast-6fptkm",
+              "name": "Dwarkesh Podcast"
+            },
+            "published_at": "2026-02-05T16:45:08+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the entire conversation, covering AI development, space-based data centers, humanoid robots (Optimus), chip manufacturing, neural networks, and the future of artificial intelligence. The discussion spans AI training, inference, digital human emulation, and the technical challenges of scaling AI infrastructure both on Earth and in space.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.9655724741084912,
+            "queue_position": 2
+          },
+          {
+            "id": "uJLuvlba870Dje0TDoOo",
+            "content_id": "introducing-4d-c-01lbun-dlfv4f",
+            "title": "Introducing 4D Creation Open Beta: NPCs, 4D Worlds, and the Future of Gaming with Roblox CEO Dave Baszucki",
+            "series": {
+              "id": "no-priors-artifi-dlfv4f",
+              "name": "No Priors: Artificial Intelligence | Technology | Startups"
+            },
+            "published_at": "2026-02-05T16:56:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Significant discussion about Roblox's 20-year vision and journey from startup to major platform, Dave's long-term leadership approach, hiring strategies including their unique assessment methods, and how the creator economy has evolved. The conversation covers strategic decision-making, company culture, and scaling challenges in building a platform business.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.9055724741084914,
+            "queue_position": 3
+          },
+          {
+            "id": "X9V2tc18MmM3WMtHBvF4",
+            "content_id": "how-duo-security-kfca1m-cpd1by",
+            "title": "How Duo Security went Zero to $1B ARR in Ann Arbor | Dug Song, Jon Oberheide",
+            "series": {
+              "id": "the-peel-with-tu-cpd1by",
+              "name": "The Peel with Turner Novak"
+            },
+            "published_at": "2026-02-05T11:00:01+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "This is the primary focus of the conversation, covering Duo Security's complete journey from founding in 2010 to $2.35B acquisition by Cisco. The discussion extensively covers founder backgrounds, company building philosophy, scaling challenges, culture development, and the complete startup lifecycle including fundraising, product development, and exit strategy.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.9055724741084914,
+            "queue_position": 4
+          },
+          {
+            "id": "G7mCaIvoiCQIYXBGU95q",
+            "content_id": "uncapped-41-the--857931-7hzkh1",
+            "title": "Uncapped #41 | The Benchmark Partnership",
+            "series": {
+              "id": "uncapped-with-ja-7hzkh1",
+              "name": "Uncapped with Jack Altman"
+            },
+            "published_at": "2026-02-04T10:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed extensively in the final portion as a major investment theme for Benchmark, covering their AI portfolio companies, investment timing during 2022-2023, and thoughts on future AI opportunities. While important, it serves as a case study for their broader investment approach.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8869204367171575,
+            "final_score": 0.894768174686863,
+            "queue_position": 5
+          },
+          {
+            "id": "F0MJ67nIzo8kXCB4fMKp",
+            "content_id": "cryptopunks-crea-0jeue6-t8lspa",
+            "title": "CryptoPunks creators: from art experiment to cultural movement",
+            "series": {
+              "id": "possible-by-reid-t8lspa",
+              "name": "Possible"
+            },
+            "published_at": "2026-02-04T08:01:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "This is the primary focus of the conversation, with extensive discussion of CryptoPunks as pioneering NFTs, blockchain technology, smart contracts, decentralization principles, and the broader crypto ecosystem. The entire interview centers around the creators' experience building one of the first major NFT projects and its impact on digital ownership.",
+            "categories": {
+              "major": [
+                "Crypto & Web3",
+                "Culture, Society & Wellbeing"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8869204367171575,
+            "final_score": 0.894768174686863,
+            "queue_position": 6
+          },
+          {
+            "id": "E7UIhZT52roa1gRzfmyP",
+            "content_id": "unicredit-ceo-th-olv6ny-iujaza",
+            "title": "UniCredit CEO: The Future of European Banking, Digital Transformation and Grit",
+            "series": {
+              "id": "in-good-company--iujaza",
+              "name": "In Good Company with Nicolai Tangen"
+            },
+            "published_at": "2026-02-04T04:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Technology transformation and AI adoption are integral to the banking discussion, with detailed examples of how AI is revolutionizing credit processes (reducing 6-week tasks to 14 minutes), client onboarding, and operational efficiency. The conversation explores how banks must transform digitally to compete with fintech companies and deliver Netflix-like customer experiences.",
+            "categories": {
+              "major": [
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8869204367171575,
+            "final_score": 0.894768174686863,
+            "queue_position": 7
+          },
+          {
+            "id": "JEQEzGoCESXzJtBGb4Dl",
+            "content_id": "palmer-luckey-on-64hmwq-gg14bl",
+            "title": "Palmer Luckey on Hardware, Building, and the Next Frontiers of Innovation",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-02-03T15:01:24+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 3
+            },
+            "key_insight": "The conversation touches on geopolitical trends including US-China rivalry, the end of the 'end of history' period, defense spending inefficiencies, and broader economic themes around technological progress and market dynamics. While supporting the main themes, these macro discussions provide important context rather than being the primary focus.",
+            "categories": {
+              "major": [
+                "Startups, Growth and Founder Journeys",
+                "Regulation & Policy",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.8842831905700232,
+            "queue_position": 8
+          },
+          {
+            "id": "kbkC4okBsbHzQ2llAdri",
+            "content_id": "michael-ovitz-th-9m6kmh-25mkw4",
+            "title": "Michael\u00a0Ovitz: The Business of Relationships",
+            "series": {
+              "id": "knowledge-projec-25mkw4",
+              "name": "The Knowledge Project with Shane Parrish"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 3
+            },
+            "key_insight": "Significant portions discuss Ovitz's transition to tech investing since 1993, his investment philosophy, working with VCs like Andreessen Horowitz, and evaluating startup opportunities. The conversation covers his approach to packaging deals and supporting portfolio companies, making this integral to understanding his current work.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.8842831905700232,
+            "queue_position": 9
+          },
+          {
+            "id": "PkYjeaPx0xbs5prnPEy9",
+            "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "ai-a16z-zgclbsuh",
+              "name": "AI + a16z"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 2,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.8842831905700232,
+            "queue_position": 10
+          }
+        ]
+      }
+    },
+    {
+      "test_id": "02_personalization_differs",
+      "name": "Personalization Differs from Cold Start (Centroid Shift Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "episode_difference",
+          "description": "At least 5 of top 10 episodes are different",
+          "score": 6.4,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=6",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "similarity_increase",
+          "description": "VC Partner has higher avg similarity_score than cold start",
+          "score": 10.0,
+          "threshold": 5.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_avg=0.500, vc_avg=0.712, delta=0.212",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "cold_start_flag_off",
+          "description": "VC Partner cold_start flag is false",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "vc_cold_start=False",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 8.46,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 3,
+        "passed_count": 3
+      },
+      "_llm_judge_context": {
+        "profile": {
+          "profile_id": "02_vc_partner_ai_tech",
+          "name": "VC Partner \u2014 AI/Tech Focus",
+          "description": "Active VC partner tracking AI developments, infrastructure investments, and tech strategy. Heavy consumer of a16z content and technical deep-dives. Content Hypothesis: 85% Specialization in AI/Tech infrastructure with 15% cross-disciplinary curiosity in adjacent sectors (defense-tech, enterprise software). Prefers strategic analysis over pure research papers. Cross-Disciplinary Curiosity: Open to macro content if it connects to AI capex, chip supply chains, or tech regulation. Should see occasional 'bridge' content linking AI to other investment themes.",
+          "icp_segment": "VC / Growth Equity",
+          "usage_duration": "1 week (Jan 30 - Feb 5, 2026)",
+          "expected_behavior": [
+            "High similarity scores for AI/tech infrastructure episodes",
+            "a16z and similar VC-perspective podcasts should rank highly",
+            "Topics like OpenAI, AI infrastructure, enterprise AI should surface",
+            "Should NOT see unrelated content (crypto, pure macro) in top 5",
+            "Bookmarked episodes should have outsized influence on recommendations"
+          ],
+          "engagements": [
+            {
+              "episode_id": "kbGCH0QvC6Tb3t7myipH",
+              "title": "20VC: SpaceX Completes Acquisition of xAI | The 2026 SaaS Massacre...",
+              "series": "The Twenty Minute VC",
+              "type": "click",
+              "timestamp": "2026-02-05T09:00:00Z"
+            },
+            {
+              "episode_id": "ddzQwPxlELoIPRUgzaOd",
+              "title": "Martin Casado on the Demand Forces Behind AI",
+              "series": "AI + a16z",
+              "type": "bookmark",
+              "timestamp": "2026-02-04T14:30:00Z"
+            },
+            {
+              "episode_id": "n9VyjM1Fld6PyZlnrty0",
+              "title": "The Hidden Economics Powering AI",
+              "series": "a16z Podcast",
+              "type": "click",
+              "timestamp": "2026-02-04T10:15:00Z"
+            },
+            {
+              "episode_id": "K5KTy2BR2Of5R9iSIqUI",
+              "title": "Snowflake vs Databricks: The AI Data War | CEO of $SNOW",
+              "series": "Sourcery",
+              "type": "click",
+              "timestamp": "2026-02-03T16:45:00Z"
+            },
+            {
+              "episode_id": "BfNv9w6eYsyH0lSPIhmE",
+              "title": "No Priors Live: Building Durable Software in the AI Age with MongoDB CEO",
+              "series": "No Priors",
+              "type": "click",
+              "timestamp": "2026-02-02T11:00:00Z"
+            },
+            {
+              "episode_id": "1VjDVKCmlYJUgaocQQlq",
+              "title": "Inferact: Building the Infrastructure That Runs Modern AI",
+              "series": "a16z Podcast",
+              "type": "bookmark",
+              "timestamp": "2026-02-02T09:30:00Z"
+            },
+            {
+              "episode_id": "fi1hDUwcFlPR1O21Zc7M",
+              "title": "Michael Truell: How Cursor Builds at the Speed of AI",
+              "series": "AI + a16z",
+              "type": "click",
+              "timestamp": "2026-02-01T15:20:00Z"
+            },
+            {
+              "episode_id": "m5lvLRONK5dP5Nxng6c8",
+              "title": "Marc Andreessen's 2026 Outlook: AI Timelines, US vs. China, and The Price of AI",
+              "series": "a16z Podcast",
+              "type": "bookmark",
+              "timestamp": "2026-01-31T20:00:00Z"
+            },
+            {
+              "episode_id": "OpriGWr5Unvks7U9q67r",
+              "title": "[State of Post-Training] From GPT-4.1 to 5.1: RLVR, Agent & Token Efficiency \u2014 Josh McGrath, OpenAI",
+              "series": "Latent Space",
+              "type": "click",
+              "timestamp": "2026-01-31T14:00:00Z"
+            },
+            {
+              "episode_id": "azcjy2HqnbPneTMU5Ylp",
+              "title": "How Marc Andreessen Actually Uses AI",
+              "series": "a16z Podcast",
+              "type": "click",
+              "timestamp": "2026-01-30T19:45:00Z"
+            }
+          ],
+          "excluded_ids": [],
+          "stats": {
+            "total_engagements": 10,
+            "clicks": 7,
+            "bookmarks": 3,
+            "effective_weight": 13,
+            "avg_credibility": 3.5,
+            "avg_insight": 2.9
+          },
+          "created_at": "2026-02-06T00:00:00Z",
+          "notes": "Primary ICP segment. Tests core personalization for AI/tech focused investor."
+        },
+        "recommendations": [
+          {
+            "id": "msiyn7GcqjsjqMvEzgef",
+            "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+            "title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space\u201d",
+            "series": {
+              "id": "dwarkesh-podcast-6fptkm",
+              "name": "Dwarkesh Podcast"
+            },
+            "published_at": "2026-02-05T16:45:08+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the entire conversation, covering AI development, space-based data centers, humanoid robots (Optimus), chip manufacturing, neural networks, and the future of artificial intelligence. The discussion spans AI training, inference, digital human emulation, and the technical challenges of scaling AI infrastructure both on Earth and in space.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.7071497537756435,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.8260220423672882,
+            "queue_position": 1
+          },
+          {
+            "id": "srbU0weHworZKzfjpmN3",
+            "content_id": "marc-andreessen--1gmgch-jifdtv",
+            "title": "Marc Andreessen: The real AI boom hasn\u2019t even started yet",
+            "series": {
+              "id": "lenny-s-podcast--jifdtv",
+              "name": "Lenny's Podcast: Product | Growth | Career"
+            },
+            "published_at": "2026-01-29T13:32:06+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Substantial discussion about investment strategies in AI, the challenge of identifying moats in rapidly evolving technology, and a16z's approach of 'indeterminate optimism' through portfolio diversification. Andreessen explains their thesis on betting across multiple AI strategies given the uncertainty of outcomes.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed as a leading AI company, particularly in relation to ChatGPT's breakthrough moment three years ago and the competitive landscape of AI models. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI space, particularly for Claude and Claude Code products. The discussion highlighted how Claude Code was able to build Cowork in just a week and a half, demonstrating rapid AI development capabilities."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.796892245806831,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.8194134682960148,
+            "queue_position": 2
+          },
+          {
+            "id": "10FJ6iMqTrV0LJul40zA",
+            "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+            "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+            "series": {
+              "id": "cheeky-pint-y9y5dzsl",
+              "name": "Cheeky Pint"
+            },
+            "published_at": "2026-02-05T16:50:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.6629053038947847,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.8016875949328159,
+            "queue_position": 3
+          },
+          {
+            "id": "J0hQqkWtRe0vCgMytcYd",
+            "content_id": "marc-andreessen--p7g382-gg14bl",
+            "title": "Marc Andreessen on Why This Is the Most Important Moment in Tech History",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-29T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Significant portions discuss venture capital strategy in the AI era, including investment thesis changes, the challenge of identifying defensible moats in AI companies, and how VCs are approaching the rapidly evolving landscape. Andreessen shares insights on portfolio construction and betting strategies during technological transitions.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed in the context of the ChatGPT moment three years ago that sparked the AI revolution, and as part of the competitive landscape of AI model companies. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI model space, particularly for Claude and Claude Code, which were highlighted as examples of rapid AI development and the competitive dynamics in the industry."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.7553039688175742,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.7965399159519235,
+            "queue_position": 4
+          },
+          {
+            "id": "ZO1wTqkFSdwpiHHOI8Dx",
+            "content_id": "ben-horowitz-bac-u76tvy-j397bp",
+            "title": "Ben Horowitz - Backing America\u2019s Future - [Invest Like the Best, EP.457]",
+            "series": {
+              "id": "invest-like-the--j397bp",
+              "name": "Invest Like the Best with Patrick O'Shaughnessy"
+            },
+            "published_at": "2026-02-03T09:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the dominant theme throughout the conversation, with extensive discussion of its transformative impact across industries, the rapid deployment timeline (12-24 months), and specific applications from coding to policing. Horowitz positions AI as a technology that can solve nearly every major problem and discusses how it's changing the fundamental laws of company building.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Regulation & Policy",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.7194335269727099,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.7947946362987491,
+            "queue_position": 5
+          },
+          {
+            "id": "PkYjeaPx0xbs5prnPEy9",
+            "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "ai-a16z-zgclbsuh",
+              "name": "AI + a16z"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 2,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.7165467963495931,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.793206934456035,
+            "queue_position": 6
+          },
+          {
+            "id": "G7mCaIvoiCQIYXBGU95q",
+            "content_id": "uncapped-41-the--857931-7hzkh1",
+            "title": "Uncapped #41 | The Benchmark Partnership",
+            "series": {
+              "id": "uncapped-with-ja-7hzkh1",
+              "name": "Uncapped with Jack Altman"
+            },
+            "published_at": "2026-02-04T10:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed extensively in the final portion as a major investment theme for Benchmark, covering their AI portfolio companies, investment timing during 2022-2023, and thoughts on future AI opportunities. While important, it serves as a case study for their broader investment approach.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.6771734578972256,
+            "quality_score": 0.9,
+            "recency_score": 0.8869204367171575,
+            "final_score": 0.7754834673510478,
+            "queue_position": 7
+          },
+          {
+            "id": "JSRpqGTmtRZMYyWbDA6q",
+            "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+            "title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+            "series": {
+              "id": "the-twenty-minut-rpn37e",
+              "name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch"
+            },
+            "published_at": "2026-02-02T07:07:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed as a major investment theme and transformative force, with significant coverage of how AI impacts investment decisions, company valuations, and business models. Zeev emphasizes that every investment now requires asking whether a company is an AI beneficiary or victim, making this integral to the venture discussion.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.6821409518507255,
+            "quality_score": 0.9,
+            "recency_score": 0.835270211411272,
+            "final_score": 0.7704680552295899,
+            "queue_position": 8
+          },
+          {
+            "id": "89XzesnfBY0ZOy2dQMZs",
+            "content_id": "martin-casado-on-hfmb7v-gg14bl",
+            "title": "Martin Casado on the Demand Forces Behind AI",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-21T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Nvidia is discussed as a key example of the AI hardware revolution, particularly in relation to their acquisition of the Groq team and their role in the current AI infrastructure boom.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "Nvidia",
+                "relevance": 2,
+                "context": "Nvidia is discussed as a key example of the AI hardware revolution, particularly in relation to their acquisition of the Groq team and their role in the current AI infrastructure boom."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.7220961947016621,
+            "quality_score": 0.9,
+            "recency_score": 0.5827482523739896,
+            "final_score": 0.7545651449420125,
+            "queue_position": 9
+          },
+          {
+            "id": "z1xLitlNfoQ9EwSkuoFr",
+            "content_id": "ep-81-ex-openai--600fna-gahfcc",
+            "title": "Ep 81: Ex-OpenAI Researcher On Why He Left, His Honest AGI Timeline, & The Limits of Scaling RL",
+            "series": {
+              "id": "unsupervised-lea-gahfcc",
+              "name": "Unsupervised Learning"
+            },
+            "published_at": "2026-01-29T15:13:20+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 1
+            },
+            "key_insight": "The conversation includes meaningful discussion about OpenAI's evolution from a small 30-40 person research lab to one of the world's largest companies, key strategic decisions like releasing ChatGPT, and the challenges of maintaining focus while pursuing multiple opportunities. There's also discussion about AI application companies like Cursor and Cognition and their competitive positioning against the major labs.",
+            "categories": {
+              "major": [
+                "Startups, Growth and Founder Journeys",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 4,
+                "context": "OpenAI was the primary focus of the conversation, with Jerry Tork discussing his seven years there as VP of research, his work on O1 and O3 models, the company's evolution from a small lab to a major corporation, key decisions like releasing ChatGPT, and his reasons for leaving to pursue different research directions."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was discussed as a major competitor to OpenAI, particularly praised for their success in coding through focused effort. The conversation covered how Anthropic's founders came from OpenAI and their strategic focus on coding capabilities, with their Claude model being highlighted as particularly strong in this domain."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.6755276192423102,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.7526629236855285,
+            "queue_position": 10
+          }
+        ]
+      }
+    },
+    {
+      "test_id": "03_quality_gates_credibility",
+      "name": "Quality Gates Enforce Credibility Floor",
+      "type": "MFT",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "credibility_floor",
+          "description": "No episode with credibility < 2 in any response",
+          "score": 10.0,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "low_credibility_count=0/80",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "combined_floor",
+          "description": "All episodes have C + I >= 5",
+          "score": 10.0,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "low_combined_count=0/80",
+          "weight": 2.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      }
+    },
+    {
+      "test_id": "04_excluded_episodes",
+      "name": "Excluded Episodes Never Reappear",
+      "type": "MFT",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "exclusions_respected",
+          "description": "None of the excluded episode IDs appear",
+          "score": 10.0,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "excluded_found=0/3",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "still_returns_results",
+          "description": "System still returns 10 valid recommendations",
+          "score": 10,
+          "threshold": 10.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "episode_count=10",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      }
+    },
+    {
+      "test_id": "05_category_personalization",
+      "name": "Category Personalization & Boundary Cross Test",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "ai_tech_category_match",
+          "description": "Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
+          "score": 10.0,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "ai_tech_matches=10/10",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "crypto_category_match",
+          "description": "Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
+          "score": 5.5,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "crypto_matches=5/10",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 7.75,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      },
+      "_llm_judge_context": {
+        "profile": {
+          "profile_id": "02_vc_partner_ai_tech",
+          "name": "VC Partner \u2014 AI/Tech Focus",
+          "description": "Active VC partner tracking AI developments, infrastructure investments, and tech strategy. Heavy consumer of a16z content and technical deep-dives. Content Hypothesis: 85% Specialization in AI/Tech infrastructure with 15% cross-disciplinary curiosity in adjacent sectors (defense-tech, enterprise software). Prefers strategic analysis over pure research papers. Cross-Disciplinary Curiosity: Open to macro content if it connects to AI capex, chip supply chains, or tech regulation. Should see occasional 'bridge' content linking AI to other investment themes.",
+          "icp_segment": "VC / Growth Equity",
+          "usage_duration": "1 week (Jan 30 - Feb 5, 2026)",
+          "expected_behavior": [
+            "High similarity scores for AI/tech infrastructure episodes",
+            "a16z and similar VC-perspective podcasts should rank highly",
+            "Topics like OpenAI, AI infrastructure, enterprise AI should surface",
+            "Should NOT see unrelated content (crypto, pure macro) in top 5",
+            "Bookmarked episodes should have outsized influence on recommendations"
+          ],
+          "engagements": [
+            {
+              "episode_id": "kbGCH0QvC6Tb3t7myipH",
+              "title": "20VC: SpaceX Completes Acquisition of xAI | The 2026 SaaS Massacre...",
+              "series": "The Twenty Minute VC",
+              "type": "click",
+              "timestamp": "2026-02-05T09:00:00Z"
+            },
+            {
+              "episode_id": "ddzQwPxlELoIPRUgzaOd",
+              "title": "Martin Casado on the Demand Forces Behind AI",
+              "series": "AI + a16z",
+              "type": "bookmark",
+              "timestamp": "2026-02-04T14:30:00Z"
+            },
+            {
+              "episode_id": "n9VyjM1Fld6PyZlnrty0",
+              "title": "The Hidden Economics Powering AI",
+              "series": "a16z Podcast",
+              "type": "click",
+              "timestamp": "2026-02-04T10:15:00Z"
+            },
+            {
+              "episode_id": "K5KTy2BR2Of5R9iSIqUI",
+              "title": "Snowflake vs Databricks: The AI Data War | CEO of $SNOW",
+              "series": "Sourcery",
+              "type": "click",
+              "timestamp": "2026-02-03T16:45:00Z"
+            },
+            {
+              "episode_id": "BfNv9w6eYsyH0lSPIhmE",
+              "title": "No Priors Live: Building Durable Software in the AI Age with MongoDB CEO",
+              "series": "No Priors",
+              "type": "click",
+              "timestamp": "2026-02-02T11:00:00Z"
+            },
+            {
+              "episode_id": "1VjDVKCmlYJUgaocQQlq",
+              "title": "Inferact: Building the Infrastructure That Runs Modern AI",
+              "series": "a16z Podcast",
+              "type": "bookmark",
+              "timestamp": "2026-02-02T09:30:00Z"
+            },
+            {
+              "episode_id": "fi1hDUwcFlPR1O21Zc7M",
+              "title": "Michael Truell: How Cursor Builds at the Speed of AI",
+              "series": "AI + a16z",
+              "type": "click",
+              "timestamp": "2026-02-01T15:20:00Z"
+            },
+            {
+              "episode_id": "m5lvLRONK5dP5Nxng6c8",
+              "title": "Marc Andreessen's 2026 Outlook: AI Timelines, US vs. China, and The Price of AI",
+              "series": "a16z Podcast",
+              "type": "bookmark",
+              "timestamp": "2026-01-31T20:00:00Z"
+            },
+            {
+              "episode_id": "OpriGWr5Unvks7U9q67r",
+              "title": "[State of Post-Training] From GPT-4.1 to 5.1: RLVR, Agent & Token Efficiency \u2014 Josh McGrath, OpenAI",
+              "series": "Latent Space",
+              "type": "click",
+              "timestamp": "2026-01-31T14:00:00Z"
+            },
+            {
+              "episode_id": "azcjy2HqnbPneTMU5Ylp",
+              "title": "How Marc Andreessen Actually Uses AI",
+              "series": "a16z Podcast",
+              "type": "click",
+              "timestamp": "2026-01-30T19:45:00Z"
+            }
+          ],
+          "excluded_ids": [],
+          "stats": {
+            "total_engagements": 10,
+            "clicks": 7,
+            "bookmarks": 3,
+            "effective_weight": 13,
+            "avg_credibility": 3.5,
+            "avg_insight": 2.9
+          },
+          "created_at": "2026-02-06T00:00:00Z",
+          "notes": "Primary ICP segment. Tests core personalization for AI/tech focused investor."
+        },
+        "recommendations": [
+          {
+            "id": "msiyn7GcqjsjqMvEzgef",
+            "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+            "title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space\u201d",
+            "series": {
+              "id": "dwarkesh-podcast-6fptkm",
+              "name": "Dwarkesh Podcast"
+            },
+            "published_at": "2026-02-05T16:45:08+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the entire conversation, covering AI development, space-based data centers, humanoid robots (Optimus), chip manufacturing, neural networks, and the future of artificial intelligence. The discussion spans AI training, inference, digital human emulation, and the technical challenges of scaling AI infrastructure both on Earth and in space.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.7071497537756435,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.8260220423672882,
+            "queue_position": 1
+          },
+          {
+            "id": "srbU0weHworZKzfjpmN3",
+            "content_id": "marc-andreessen--1gmgch-jifdtv",
+            "title": "Marc Andreessen: The real AI boom hasn\u2019t even started yet",
+            "series": {
+              "id": "lenny-s-podcast--jifdtv",
+              "name": "Lenny's Podcast: Product | Growth | Career"
+            },
+            "published_at": "2026-01-29T13:32:06+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Substantial discussion about investment strategies in AI, the challenge of identifying moats in rapidly evolving technology, and a16z's approach of 'indeterminate optimism' through portfolio diversification. Andreessen explains their thesis on betting across multiple AI strategies given the uncertainty of outcomes.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed as a leading AI company, particularly in relation to ChatGPT's breakthrough moment three years ago and the competitive landscape of AI models. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI space, particularly for Claude and Claude Code products. The discussion highlighted how Claude Code was able to build Cowork in just a week and a half, demonstrating rapid AI development capabilities."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.796892245806831,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.8194134682960148,
+            "queue_position": 2
+          },
+          {
+            "id": "10FJ6iMqTrV0LJul40zA",
+            "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+            "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+            "series": {
+              "id": "cheeky-pint-y9y5dzsl",
+              "name": "Cheeky Pint"
+            },
+            "published_at": "2026-02-05T16:50:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.6629053038947847,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.8016875949328159,
+            "queue_position": 3
+          },
+          {
+            "id": "J0hQqkWtRe0vCgMytcYd",
+            "content_id": "marc-andreessen--p7g382-gg14bl",
+            "title": "Marc Andreessen on Why This Is the Most Important Moment in Tech History",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-29T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Significant portions discuss venture capital strategy in the AI era, including investment thesis changes, the challenge of identifying defensible moats in AI companies, and how VCs are approaching the rapidly evolving landscape. Andreessen shares insights on portfolio construction and betting strategies during technological transitions.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed in the context of the ChatGPT moment three years ago that sparked the AI revolution, and as part of the competitive landscape of AI model companies. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI model space, particularly for Claude and Claude Code, which were highlighted as examples of rapid AI development and the competitive dynamics in the industry."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.7553039688175742,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.7965399159519235,
+            "queue_position": 4
+          },
+          {
+            "id": "ZO1wTqkFSdwpiHHOI8Dx",
+            "content_id": "ben-horowitz-bac-u76tvy-j397bp",
+            "title": "Ben Horowitz - Backing America\u2019s Future - [Invest Like the Best, EP.457]",
+            "series": {
+              "id": "invest-like-the--j397bp",
+              "name": "Invest Like the Best with Patrick O'Shaughnessy"
+            },
+            "published_at": "2026-02-03T09:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the dominant theme throughout the conversation, with extensive discussion of its transformative impact across industries, the rapid deployment timeline (12-24 months), and specific applications from coding to policing. Horowitz positions AI as a technology that can solve nearly every major problem and discusses how it's changing the fundamental laws of company building.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Regulation & Policy",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.7194335269727099,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.7947946362987491,
+            "queue_position": 5
+          },
+          {
+            "id": "PkYjeaPx0xbs5prnPEy9",
+            "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "ai-a16z-zgclbsuh",
+              "name": "AI + a16z"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 2,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.7165467963495931,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.793206934456035,
+            "queue_position": 6
+          },
+          {
+            "id": "G7mCaIvoiCQIYXBGU95q",
+            "content_id": "uncapped-41-the--857931-7hzkh1",
+            "title": "Uncapped #41 | The Benchmark Partnership",
+            "series": {
+              "id": "uncapped-with-ja-7hzkh1",
+              "name": "Uncapped with Jack Altman"
+            },
+            "published_at": "2026-02-04T10:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed extensively in the final portion as a major investment theme for Benchmark, covering their AI portfolio companies, investment timing during 2022-2023, and thoughts on future AI opportunities. While important, it serves as a case study for their broader investment approach.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.6771734578972256,
+            "quality_score": 0.9,
+            "recency_score": 0.8869204367171575,
+            "final_score": 0.7754834673510478,
+            "queue_position": 7
+          },
+          {
+            "id": "JSRpqGTmtRZMYyWbDA6q",
+            "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+            "title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+            "series": {
+              "id": "the-twenty-minut-rpn37e",
+              "name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch"
+            },
+            "published_at": "2026-02-02T07:07:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed as a major investment theme and transformative force, with significant coverage of how AI impacts investment decisions, company valuations, and business models. Zeev emphasizes that every investment now requires asking whether a company is an AI beneficiary or victim, making this integral to the venture discussion.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.6821409518507255,
+            "quality_score": 0.9,
+            "recency_score": 0.835270211411272,
+            "final_score": 0.7704680552295899,
+            "queue_position": 8
+          },
+          {
+            "id": "89XzesnfBY0ZOy2dQMZs",
+            "content_id": "martin-casado-on-hfmb7v-gg14bl",
+            "title": "Martin Casado on the Demand Forces Behind AI",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-21T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Nvidia is discussed as a key example of the AI hardware revolution, particularly in relation to their acquisition of the Groq team and their role in the current AI infrastructure boom.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "Nvidia",
+                "relevance": 2,
+                "context": "Nvidia is discussed as a key example of the AI hardware revolution, particularly in relation to their acquisition of the Groq team and their role in the current AI infrastructure boom."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.7220961947016621,
+            "quality_score": 0.9,
+            "recency_score": 0.5827482523739896,
+            "final_score": 0.7545651449420125,
+            "queue_position": 9
+          },
+          {
+            "id": "z1xLitlNfoQ9EwSkuoFr",
+            "content_id": "ep-81-ex-openai--600fna-gahfcc",
+            "title": "Ep 81: Ex-OpenAI Researcher On Why He Left, His Honest AGI Timeline, & The Limits of Scaling RL",
+            "series": {
+              "id": "unsupervised-lea-gahfcc",
+              "name": "Unsupervised Learning"
+            },
+            "published_at": "2026-01-29T15:13:20+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 1
+            },
+            "key_insight": "The conversation includes meaningful discussion about OpenAI's evolution from a small 30-40 person research lab to one of the world's largest companies, key strategic decisions like releasing ChatGPT, and the challenges of maintaining focus while pursuing multiple opportunities. There's also discussion about AI application companies like Cursor and Cognition and their competitive positioning against the major labs.",
+            "categories": {
+              "major": [
+                "Startups, Growth and Founder Journeys",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 4,
+                "context": "OpenAI was the primary focus of the conversation, with Jerry Tork discussing his seven years there as VP of research, his work on O1 and O3 models, the company's evolution from a small lab to a major corporation, key decisions like releasing ChatGPT, and his reasons for leaving to pursue different research directions."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was discussed as a major competitor to OpenAI, particularly praised for their success in coding through focused effort. The conversation covered how Anthropic's founders came from OpenAI and their strategic focus on coding capabilities, with their Claude model being highlighted as particularly strong in this domain."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.6755276192423102,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.7526629236855285,
+            "queue_position": 10
+          }
+        ]
+      }
+    },
+    {
+      "test_id": "06_bookmark_weighting",
+      "name": "Bookmarks Outweigh Clicks in Mixed History",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "different_results",
+          "description": "Scenarios produce different recommendations (at least 2 different episodes)",
+          "score": 4.6,
+          "threshold": 2.8,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "crypto_dominance_in_b",
+          "description": "Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+          "score": 5.95,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "scenario_a_crypto=2/10, scenario_b_crypto=3/10, delta=1",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 5.41,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      },
+      "_llm_judge_context": {
+        "profile": {
+          "profile_id": "scenario_b_bookmark",
+          "name": "Bookmark Weighting Test - Scenario B",
+          "description": "User who has bookmarked crypto content and clicked AI content. Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto despite mixed engagement patterns.",
+          "icp_segment": "Test Scenario",
+          "engagements": [
+            {
+              "episode_id": "ddzQwPxlELoIPRUgzaOd",
+              "title": "Martin Casado on the Demand Forces Behind AI",
+              "type": "click",
+              "timestamp": "2026-02-05T12:00:00Z"
+            },
+            {
+              "episode_id": "nbpPmxK8WP6byoxAjv3W",
+              "title": "Bits + Bips: Bitcoin Is Deeply Oversold",
+              "type": "bookmark",
+              "timestamp": "2026-02-05T11:00:00Z"
+            },
+            {
+              "episode_id": "vrdJx6BNfkyxFhgOMal6",
+              "title": "The Chopping Block: Market Meltdown, CZ vs. Star Feud",
+              "type": "bookmark",
+              "timestamp": "2026-02-05T10:00:00Z"
+            }
+          ]
+        },
+        "recommendations": [
+          {
+            "id": "PkYjeaPx0xbs5prnPEy9",
+            "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "ai-a16z-zgclbsuh",
+              "name": "AI + a16z"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 2,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5492966623652424,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.7012193607646421,
+            "queue_position": 1
+          },
+          {
+            "id": "7STCXPK9xgvriaefgPr2",
+            "content_id": "ben-horowitz-and-moep3h-gg14bl",
+            "title": "Ben Horowitz and Balaji Srinivasan on Netscape and Network States",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-28T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 1
+            },
+            "key_insight": "Crypto and blockchain technology is the primary focus throughout the conversation, with extensive discussion of Bitcoin, smart contracts, stablecoins, and how crypto enables new forms of governance and economic coordination. The speakers explore crypto's role in network states, its regulatory challenges, and its potential to replace traditional financial and legal systems.",
+            "categories": {
+              "major": [
+                "Crypto & Web3",
+                "Regulation & Policy",
+                "Culture, Society & Wellbeing",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "Tesla",
+                "relevance": 2,
+                "context": "Tesla is mentioned in the context of Elon Musk's companies and the Delaware Chancery Court case where a judge overruled shareholder decisions. It's also discussed as part of the 'Special Elon Zone' concept for regulatory experimentation."
+              }
+            ],
+            "people": [
+              {
+                "name": "Elon Musk",
+                "relevance": 2,
+                "context": "Elon Musk is discussed extensively in the context of the 'Special Elon Zone' concept, where Balaji proposes creating special economic zones that would allow Elon's companies to operate with reduced regulatory constraints. The discussion covers how this could work for Tesla, manufacturing, and other ventures.",
+                "title": ""
+              }
+            ],
+            "similarity_score": 0.5774412164765059,
+            "quality_score": 0.9,
+            "recency_score": 0.7189237334319262,
+            "final_score": 0.6954312290768672,
+            "queue_position": 2
+          },
+          {
+            "id": "n9VyjM1Fld6PyZlnrty0",
+            "content_id": "the-hidden-econo-onz11w-gg14bl",
+            "title": "The Hidden Economics Powering AI",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-26T17:33:24+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 1
+            },
+            "key_insight": "The conversation is fundamentally about venture capital investing in the AI era, discussing A16Z's growth fund strategy, portfolio construction, investment approaches, and how private markets are evolving. Significant time is spent on late-stage investing, company valuations, and the trend of companies staying private longer.",
+            "categories": {
+              "major": [
+                "Startups, Growth and Founder Journeys",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "Google",
+                "relevance": 2,
+                "context": "Google is frequently referenced for comparison with AI companies, particularly regarding search capabilities, user monetization, and historical growth patterns. The discussion includes analysis of Google's Gemini models and competitive positioning against AI startups."
+              },
+              {
+                "name": "OpenAI",
+                "relevance": 3,
+                "context": "OpenAI is extensively discussed as a major AI company and A16Z portfolio investment. The conversation covers OpenAI's business model, user growth, monetization strategy, cash burn, and competitive positioning in the AI market."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.5828063111060812,
+            "quality_score": 0.9,
+            "recency_score": 0.6770568744981647,
+            "final_score": 0.6921020022830694,
+            "queue_position": 3
+          },
+          {
+            "id": "3qbMsfKR6uIfWL9vNyTx",
+            "content_id": "why-this-isn-t-t-91e2qq-gg14bl",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-02-05T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 2,
+              "information": 2,
+              "entertainment": 2
+            },
+            "key_insight": "Significant discussion covers venture capital investment strategies in AI, the structure of VC funding rounds, A16Z's infrastructure investment approach, and how private markets are evolving with companies staying private longer. Martin Casado's role as a VC partner provides extensive insight into private market dynamics.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5709130185002812,
+            "quality_score": 0.8,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.691091837965839,
+            "queue_position": 4
+          },
+          {
+            "id": "G7mCaIvoiCQIYXBGU95q",
+            "content_id": "uncapped-41-the--857931-7hzkh1",
+            "title": "Uncapped #41 | The Benchmark Partnership",
+            "series": {
+              "id": "uncapped-with-ja-7hzkh1",
+              "name": "Uncapped with Jack Altman"
+            },
+            "published_at": "2026-02-04T10:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed extensively in the final portion as a major investment theme for Benchmark, covering their AI portfolio companies, investment timing during 2022-2023, and thoughts on future AI opportunities. While important, it serves as a case study for their broader investment approach.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5222044364494453,
+            "quality_score": 0.9,
+            "recency_score": 0.8869204367171575,
+            "final_score": 0.6902505055547685,
+            "queue_position": 5
+          },
+          {
+            "id": "10FJ6iMqTrV0LJul40zA",
+            "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+            "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+            "series": {
+              "id": "cheeky-pint-y9y5dzsl",
+              "name": "Cheeky Pint"
+            },
+            "published_at": "2026-02-05T16:50:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.4589260745777873,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.6894990188084673,
+            "queue_position": 6
+          },
+          {
+            "id": "JSRpqGTmtRZMYyWbDA6q",
+            "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+            "title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+            "series": {
+              "id": "the-twenty-minut-rpn37e",
+              "name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch"
+            },
+            "published_at": "2026-02-02T07:07:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed as a major investment theme and transformative force, with significant coverage of how AI impacts investment decisions, company valuations, and business models. Zeev emphasizes that every investment now requires asking whether a company is an AI beneficiary or victim, making this integral to the venture discussion.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5341815070405286,
+            "quality_score": 0.9,
+            "recency_score": 0.835270211411272,
+            "final_score": 0.6890903605839815,
+            "queue_position": 7
+          },
+          {
+            "id": "srbU0weHworZKzfjpmN3",
+            "content_id": "marc-andreessen--1gmgch-jifdtv",
+            "title": "Marc Andreessen: The real AI boom hasn\u2019t even started yet",
+            "series": {
+              "id": "lenny-s-podcast--jifdtv",
+              "name": "Lenny's Podcast: Product | Growth | Career"
+            },
+            "published_at": "2026-01-29T13:32:06+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Substantial discussion about investment strategies in AI, the challenge of identifying moats in rapidly evolving technology, and a16z's approach of 'indeterminate optimism' through portfolio diversification. Andreessen explains their thesis on betting across multiple AI strategies given the uncertainty of outcomes.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed as a leading AI company, particularly in relation to ChatGPT's breakthrough moment three years ago and the competitive landscape of AI models. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI space, particularly for Claude and Claude Code products. The discussion highlighted how Claude Code was able to build Cowork in just a week and a half, demonstrating rapid AI development capabilities."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.5591877962280789,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.6886760210277012,
+            "queue_position": 8
+          },
+          {
+            "id": "J0hQqkWtRe0vCgMytcYd",
+            "content_id": "marc-andreessen--p7g382-gg14bl",
+            "title": "Marc Andreessen on Why This Is the Most Important Moment in Tech History",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-29T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Significant portions discuss venture capital strategy in the AI era, including investment thesis changes, the challenge of identifying defensible moats in AI companies, and how VCs are approaching the rapidly evolving landscape. Andreessen shares insights on portfolio construction and betting strategies during technological transitions.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed in the context of the ChatGPT moment three years ago that sparked the AI revolution, and as part of the competitive landscape of AI model companies. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI model space, particularly for Claude and Claude Code, which were highlighted as examples of rapid AI development and the competitive dynamics in the industry."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.5481535439874224,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.6826071822953401,
+            "queue_position": 9
+          },
+          {
+            "id": "7rkYDt4bwAj1ArNpnVlN",
+            "content_id": "501-spotting-the-xkstmg-6odpur",
+            "title": "501. Spotting the Next Big Thing, Why This Cycle Is Different, Acceptable vs Unacceptable Risk, and Why Duration Is a Feature Not a Bug (Jon Callaghan)",
+            "series": {
+              "id": "the-full-ratchet-6odpur",
+              "name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified"
+            },
+            "published_at": "2026-02-02T09:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "This is the primary focus of the conversation, with extensive discussion of venture capital investment strategies, early-stage investing, portfolio construction, fund performance metrics like DPI vs TVPI, and the venture capital business model. John Callahan shares deep insights from his 20+ years in VC and True Ventures' approach to building a successful early-stage firm.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.519409520511541,
+            "quality_score": 0.9,
+            "recency_score": 0.835270211411272,
+            "final_score": 0.6809657679930383,
+            "queue_position": 10
+          }
+        ]
+      }
+    },
+    {
+      "test_id": "07_recency_scoring",
+      "name": "Recency Scoring Works",
+      "type": "DIR",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "both_in_top_10",
+          "description": "Both test episodes found in top 10 cold start results",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent_found=True, older_found=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "recency_score_ordering",
+          "description": "Recent episode has higher recency_score than older",
+          "score": 5.74,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent=0.9139, older=0.8607, delta=0.0532",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "ranking_reflects_recency",
+          "description": "Recent episode ranks higher (lower position) than older",
+          "score": 7.75,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent_pos=3, older_pos=8, delta=5",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 7.56,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 3,
+        "passed_count": 3
+      }
+    },
+    {
+      "test_id": "08_bookmark_weighting_high_quality",
+      "name": "Bookmarks Outweigh Clicks (High-Quality Episodes)",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "different_results",
+          "description": "Scenarios produce different recommendations (at least 2 different episodes)",
+          "score": 4.6,
+          "threshold": 2.8,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "crypto_dominance_in_b",
+          "description": "Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+          "score": 5.95,
+          "threshold": 5.5,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "scenario_a_crypto=2/10, scenario_b_crypto=3/10, delta=1",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 5.41,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      },
+      "_llm_judge_context": {
+        "profile": {
+          "profile_id": "scenario_b_bookmark_hq",
+          "name": "Bookmark Weighting Test (High Quality) - Scenario B",
+          "description": "User who has bookmarked HIGH-QUALITY crypto content and clicked AI content. All test episodes pass quality gates (C>=3, I>=3). Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto.",
+          "icp_segment": "Test Scenario",
+          "engagements": [
+            {
+              "episode_id": "ddzQwPxlELoIPRUgzaOd",
+              "title": "Martin Casado on the Demand Forces Behind AI",
+              "type": "click",
+              "timestamp": "2026-02-05T12:00:00Z"
+            },
+            {
+              "episode_id": "F0MJ67nIzo8kXCB4fMKp",
+              "title": "CryptoPunks creators: from art experiment to cultural movement",
+              "type": "bookmark",
+              "timestamp": "2026-02-05T11:00:00Z"
+            },
+            {
+              "episode_id": "eIWV2Z7g1Rl3NZyAMiRI",
+              "title": "The DAO's Unclaimed ETH Becomes a $250M Ethereum Security Fund",
+              "type": "bookmark",
+              "timestamp": "2026-02-05T10:00:00Z"
+            }
+          ]
+        },
+        "recommendations": [
+          {
+            "id": "10FJ6iMqTrV0LJul40zA",
+            "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+            "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+            "series": {
+              "id": "cheeky-pint-y9y5dzsl",
+              "name": "Cheeky Pint"
+            },
+            "published_at": "2026-02-05T16:50:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.464927126521339,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.6927995973774207,
+            "queue_position": 1
+          },
+          {
+            "id": "PkYjeaPx0xbs5prnPEy9",
+            "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "ai-a16z-zgclbsuh",
+              "name": "AI + a16z"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 2,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5246883145796061,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.687684769482542,
+            "queue_position": 2
+          },
+          {
+            "id": "J0hQqkWtRe0vCgMytcYd",
+            "content_id": "marc-andreessen--p7g382-gg14bl",
+            "title": "Marc Andreessen on Why This Is the Most Important Moment in Tech History",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-29T11:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Significant portions discuss venture capital strategy in the AI era, including investment thesis changes, the challenge of identifying defensible moats in AI companies, and how VCs are approaching the rapidly evolving landscape. Andreessen shares insights on portfolio construction and betting strategies during technological transitions.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed in the context of the ChatGPT moment three years ago that sparked the AI revolution, and as part of the competitive landscape of AI model companies. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI model space, particularly for Claude and Claude Code, which were highlighted as examples of rapid AI development and the competitive dynamics in the industry."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.5536306660104543,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.6856195994080077,
+            "queue_position": 3
+          },
+          {
+            "id": "JSRpqGTmtRZMYyWbDA6q",
+            "content_id": "20vc-50-of-funds-qlra0p-rpn37e",
+            "title": "20VC: 50% of Funds Will Go Out of Business | Why Growth Expectations Today are BS and Will Not Last | Why Oren Zeev Takes $0 Management Fees But 30% Carry | Why GPs Should Not Tell LPs Their Strategy",
+            "series": {
+              "id": "the-twenty-minut-rpn37e",
+              "name": "The Twenty Minute VC (20VC): Venture Capital | Startup Funding | The Pitch"
+            },
+            "published_at": "2026-02-02T07:07:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is discussed as a major investment theme and transformative force, with significant coverage of how AI impacts investment decisions, company valuations, and business models. Zeev emphasizes that every investment now requires asking whether a company is an AI beneficiary or victim, making this integral to the venture discussion.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5268903046826745,
+            "quality_score": 0.9,
+            "recency_score": 0.835270211411272,
+            "final_score": 0.6850801992871618,
+            "queue_position": 4
+          },
+          {
+            "id": "n9VyjM1Fld6PyZlnrty0",
+            "content_id": "the-hidden-econo-onz11w-gg14bl",
+            "title": "The Hidden Economics Powering AI",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-01-26T17:33:24+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 1
+            },
+            "key_insight": "The conversation is fundamentally about venture capital investing in the AI era, discussing A16Z's growth fund strategy, portfolio construction, investment approaches, and how private markets are evolving. Significant time is spent on late-stage investing, company valuations, and the trend of companies staying private longer.",
+            "categories": {
+              "major": [
+                "Startups, Growth and Founder Journeys",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "Google",
+                "relevance": 2,
+                "context": "Google is frequently referenced for comparison with AI companies, particularly regarding search capabilities, user monetization, and historical growth patterns. The discussion includes analysis of Google's Gemini models and competitive positioning against AI startups."
+              },
+              {
+                "name": "OpenAI",
+                "relevance": 3,
+                "context": "OpenAI is extensively discussed as a major AI company and A16Z portfolio investment. The conversation covers OpenAI's business model, user growth, monetization strategy, cash burn, and competitive positioning in the AI market."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.5677546950285398,
+            "quality_score": 0.9,
+            "recency_score": 0.6770568744981647,
+            "final_score": 0.6838236134404216,
+            "queue_position": 5
+          },
+          {
+            "id": "srbU0weHworZKzfjpmN3",
+            "content_id": "marc-andreessen--1gmgch-jifdtv",
+            "title": "Marc Andreessen: The real AI boom hasn\u2019t even started yet",
+            "series": {
+              "id": "lenny-s-podcast--jifdtv",
+              "name": "Lenny's Podcast: Product | Growth | Career"
+            },
+            "published_at": "2026-01-29T13:32:06+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Substantial discussion about investment strategies in AI, the challenge of identifying moats in rapidly evolving technology, and a16z's approach of 'indeterminate optimism' through portfolio diversification. Andreessen explains their thesis on betting across multiple AI strategies given the uncertainty of outcomes.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [
+              {
+                "name": "OpenAI",
+                "relevance": 2,
+                "context": "OpenAI was discussed as a leading AI company, particularly in relation to ChatGPT's breakthrough moment three years ago and the competitive landscape of AI models. The discussion touched on whether OpenAI's lead is defensible given increasing competition."
+              },
+              {
+                "name": "Anthropic",
+                "relevance": 2,
+                "context": "Anthropic was mentioned as a major competitor in the AI space, particularly for Claude and Claude Code products. The discussion highlighted how Claude Code was able to build Cowork in just a week and a half, demonstrating rapid AI development capabilities."
+              }
+            ],
+            "people": [],
+            "similarity_score": 0.5473183426472026,
+            "quality_score": 0.9,
+            "recency_score": 0.7408182206817179,
+            "final_score": 0.6821478215582191,
+            "queue_position": 6
+          },
+          {
+            "id": "uJLuvlba870Dje0TDoOo",
+            "content_id": "introducing-4d-c-01lbun-dlfv4f",
+            "title": "Introducing 4D Creation Open Beta: NPCs, 4D Worlds, and the Future of Gaming with Roblox CEO Dave Baszucki",
+            "series": {
+              "id": "no-priors-artifi-dlfv4f",
+              "name": "No Priors: Artificial Intelligence | Technology | Startups"
+            },
+            "published_at": "2026-02-05T16:56:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "Significant discussion about Roblox's 20-year vision and journey from startup to major platform, Dave's long-term leadership approach, hiring strategies including their unique assessment methods, and how the creator economy has evolved. The conversation covers strategic decision-making, company culture, and scaling challenges in building a platform business.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.4944946826265883,
+            "quality_score": 0.9,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.6790617532353078,
+            "queue_position": 7
+          },
+          {
+            "id": "msiyn7GcqjsjqMvEzgef",
+            "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+            "title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space\u201d",
+            "series": {
+              "id": "dwarkesh-podcast-6fptkm",
+              "name": "Dwarkesh Podcast"
+            },
+            "published_at": "2026-02-05T16:45:08+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "key_insight": "This is the primary focus of the entire conversation, covering AI development, space-based data centers, humanoid robots (Optimus), chip manufacturing, neural networks, and the future of artificial intelligence. The discussion spans AI training, inference, digital human emulation, and the technical challenges of scaling AI infrastructure both on Earth and in space.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.4397304729781272,
+            "quality_score": 1.0,
+            "recency_score": 0.9139311852712282,
+            "final_score": 0.6789414379286542,
+            "queue_position": 8
+          },
+          {
+            "id": "ZO1wTqkFSdwpiHHOI8Dx",
+            "content_id": "ben-horowitz-bac-u76tvy-j397bp",
+            "title": "Ben Horowitz - Backing America\u2019s Future - [Invest Like the Best, EP.457]",
+            "series": {
+              "id": "invest-like-the--j397bp",
+              "name": "Invest Like the Best with Patrick O'Shaughnessy"
+            },
+            "published_at": "2026-02-03T09:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "AI is the dominant theme throughout the conversation, with extensive discussion of its transformative impact across industries, the rapid deployment timeline (12-24 months), and specific applications from coding to policing. Horowitz positions AI as a technology that can solve nearly every major problem and discusses how it's changing the fundamental laws of company building.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Regulation & Policy",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5068055476384046,
+            "quality_score": 0.9,
+            "recency_score": 0.8607079764250578,
+            "final_score": 0.6778492476648812,
+            "queue_position": 9
+          },
+          {
+            "id": "7rkYDt4bwAj1ArNpnVlN",
+            "content_id": "501-spotting-the-xkstmg-6odpur",
+            "title": "501. Spotting the Next Big Thing, Why This Cycle Is Different, Acceptable vs Unacceptable Risk, and Why Duration Is a Feature Not a Bug (Jon Callaghan)",
+            "series": {
+              "id": "the-full-ratchet-6odpur",
+              "name": "The Full Ratchet (TFR): Venture Capital and Startup Investing Demystified"
+            },
+            "published_at": "2026-02-02T09:00:00+00:00",
+            "content_type": "podcast_episodes",
+            "scores": {
+              "credibility": 4,
+              "insight": 3,
+              "information": 3,
+              "entertainment": 2
+            },
+            "key_insight": "This is the primary focus of the conversation, with extensive discussion of venture capital investment strategies, early-stage investing, portfolio construction, fund performance metrics like DPI vs TVPI, and the venture capital business model. John Callahan shares deep insights from his 20+ years in VC and True Ventures' approach to building a successful early-stage firm.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "entities": [],
+            "people": [],
+            "similarity_score": 0.5066653325225539,
+            "quality_score": 0.9,
+            "recency_score": 0.835270211411272,
+            "final_score": 0.6739564645990954,
+            "queue_position": 10
+          }
+        ]
+      }
+    }
+  ]
+}

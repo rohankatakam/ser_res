@@ -1,9 +1,9 @@
 {
-  "test_id": "08_bookmark_weighting_high_quality",
+  "test_id": "07_bookmark_weighting",
   "name": "Bookmarks Outweigh Clicks (High-Quality Episodes)",
   "type": "DIR",
   "evaluation_method": "deterministic_llm",
-  "description": "Same as Test 06 but using high-quality crypto episodes (C>=3, I>=3) that pass all quality gates. This isolates the bookmark weighting behavior from quality gate effects.",
+  "description": "Tests that bookmark engagements are weighted more heavily than click engagements when computing user interest vectors. Uses high-quality crypto episodes (C>=3, I>=3) that pass all quality gates to isolate bookmark weighting behavior from quality gate effects.",
   "profiles": ["custom"],
   "llm_criteria": {
     "enabled": true,
@@ -35,7 +35,7 @@
     },
     "scenario_a": {
       "name": "Bookmark AI + Click Crypto",
-      "description": "User bookmarks the AI episode (2x weight) and clicks crypto episodes (1x weight). AI should dominate.",
+      "description": "User bookmarks the AI episode (higher weight) and clicks crypto episodes (baseline weight). AI should influence more.",
       "engagements": [
         {
           "episode_id": "ddzQwPxlELoIPRUgzaOd",
@@ -56,12 +56,11 @@
           "timestamp": "2026-02-05T10:00:00Z"
         }
       ],
-      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "F0MJ67nIzo8kXCB4fMKp", "eIWV2Z7g1Rl3NZyAMiRI"],
-      "expected_weight_distribution": "AI: 2.0 / Crypto: 2.0 = 50% AI influence"
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "F0MJ67nIzo8kXCB4fMKp", "eIWV2Z7g1Rl3NZyAMiRI"]
     },
     "scenario_b": {
       "name": "Click AI + Bookmark Crypto",
-      "description": "User clicks the AI episode (1x weight) and bookmarks crypto episodes (2x weight). Crypto should dominate.",
+      "description": "User clicks the AI episode (baseline weight) and bookmarks crypto episodes (higher weight). Crypto should dominate.",
       "engagements": [
         {
           "episode_id": "ddzQwPxlELoIPRUgzaOd",
@@ -82,8 +81,7 @@
           "timestamp": "2026-02-05T10:00:00Z"
         }
       ],
-      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "F0MJ67nIzo8kXCB4fMKp", "eIWV2Z7g1Rl3NZyAMiRI"],
-      "expected_weight_distribution": "AI: 1.0 / Crypto: 4.0 = 20% AI influence"
+      "excluded_ids": ["ddzQwPxlELoIPRUgzaOd", "F0MJ67nIzo8kXCB4fMKp", "eIWV2Z7g1Rl3NZyAMiRI"]
     }
   },
   "pass_criteria": [
@@ -100,10 +98,11 @@
   ],
   "validation_method": "Run both scenarios with mixed engagement types, compare category distribution in results",
   "if_fails_adjust": [
-    "Bookmark weight (currently 2.0x in v1.2, tuned in v1.3)",
+    "Bookmark weight (engagement_weights.bookmark)",
     "User vector limit (currently 10)",
-    "Similarity weight"
+    "Similarity weight (weight_similarity)"
   ],
   "created_at": "2026-02-08T00:00:00Z",
-  "related_test": "06_bookmark_weighting (uses lower-quality crypto episodes that may fail quality gates)"
+  "updated_at": "2026-02-09T00:00:00Z",
+  "notes": "Renumbered from Test 08. Original Test 06 was removed because it used low-quality crypto episodes that correctly failed quality gates, conflating bookmark weighting with quality gate behavior."
 }

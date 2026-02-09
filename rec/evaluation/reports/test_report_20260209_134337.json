@@ -1,0 +1,260 @@
+{
+  "timestamp": "2026-02-09T13:43:37.727901",
+  "total_tests": 7,
+  "passed": 6,
+  "failed": 1,
+  "results": [
+    {
+      "test_id": "01_cold_start_quality",
+      "name": "Cold Start Quality & Topic Breadth (First Impression Test)",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "cold_start_flag",
+          "description": "API response includes cold_start: true",
+          "passed": true,
+          "details": "cold_start=True"
+        },
+        {
+          "criterion_id": "avg_credibility",
+          "description": "Average credibility of top 10 >= 3.0",
+          "passed": true,
+          "details": "avg_credibility=4.00"
+        },
+        {
+          "criterion_id": "min_credibility",
+          "description": "No episode in top 10 has credibility < 2",
+          "passed": true,
+          "details": "min_credibility=4"
+        },
+        {
+          "criterion_id": "top_quality_score",
+          "description": "Top 3 episodes have quality_score >= 0.7",
+          "passed": true,
+          "details": "top_3_quality_scores=[1.0, 1.0, 0.9]"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=4"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": true,
+          "details": "pass=True, rationale=The recommendations align well with the content hypothesis by surfacing high-quality content and dem..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 4,
+        "diversity_score": 4,
+        "quality_score": 5,
+        "content_hypothesis_alignment": 4,
+        "test_pass": true,
+        "rationale": "The recommendations align well with the content hypothesis by surfacing high-quality content and demonstrating good topic breadth across major themes like AI, Startups, Crypto, and Macro. While AI is a prominent theme, other categories are sufficiently represented to offer a diverse first impression for a cold start user, successfully probing interests.",
+        "raw_response": "{\n  \"relevance_score\": 4,\n  \"diversity_score\": 4,\n  \"quality_score\": 5,\n  \"content_hypothesis_alignment\": 4,\n  \"test_pass\": true,\n  \"rationale\": \"The recommendations align well with the content hypothesis by surfacing high-quality content and demonstrating good topic breadth across major themes like AI, Startups, Crypto, and Macro. While AI is a prominent theme, other categories are sufficiently represented to offer a diverse first impression for a cold start user, successfully probing interests.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "02_personalization_differs",
+      "name": "Personalization Differs from Cold Start (Centroid Shift Test)",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "episode_difference",
+          "description": "At least 5 of top 10 episodes are different",
+          "passed": true,
+          "details": "different_episodes=7"
+        },
+        {
+          "criterion_id": "similarity_increase",
+          "description": "VC Partner has higher avg similarity_score than cold start",
+          "passed": true,
+          "details": "cold_avg=0.500, vc_avg=0.542"
+        },
+        {
+          "criterion_id": "cold_start_flag_off",
+          "description": "VC Partner cold_start flag is false",
+          "passed": true,
+          "details": "vc_cold_start=False"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": true,
+          "details": "pass=True, rationale=The recommendations demonstrate exceptional alignment with the user's content hypothesis, providing ..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 5,
+        "diversity_score": 5,
+        "quality_score": 5,
+        "content_hypothesis_alignment": 5,
+        "test_pass": true,
+        "rationale": "The recommendations demonstrate exceptional alignment with the user's content hypothesis, providing deep specialization in AI/Tech infrastructure (85%) and appropriate cross-disciplinary content linking AI to macroeconomics and investment themes. The strong preference for strategic analysis over research papers is also perfectly met, indicating a successful personalization shift from a cold start.",
+        "raw_response": "{\n  \"relevance_score\": 5,\n  \"diversity_score\": 5,\n  \"quality_score\": 5,\n  \"content_hypothesis_alignment\": 5,\n  \"test_pass\": true,\n  \"rationale\": \"The recommendations demonstrate exceptional alignment with the user's content hypothesis, providing deep specialization in AI/Tech infrastructure (85%) and appropriate cross-disciplinary content linking AI to macroeconomics and investment themes. The strong preference for strategic analysis over research papers is also perfectly met, indicating a successful personalization shift from a cold start.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "03_quality_gates_credibility",
+      "name": "Quality Gates Enforce Credibility Floor",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "credibility_floor",
+          "description": "No episode with credibility < 2 in any response",
+          "passed": true,
+          "details": "low_credibility_count=0"
+        },
+        {
+          "criterion_id": "combined_floor",
+          "description": "All episodes have C + I >= 5",
+          "passed": true,
+          "details": "low_combined_count=0"
+        },
+        {
+          "criterion_id": "known_bad_excluded",
+          "description": "Known low-credibility episode LexVsfaBFuk0MWokZOhY never appears",
+          "passed": true,
+          "details": "found=False"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null
+    },
+    {
+      "test_id": "04_excluded_episodes",
+      "name": "Excluded Episodes Never Reappear",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "exclusions_respected",
+          "description": "None of the excluded episode IDs appear",
+          "passed": true,
+          "details": "excluded_found=[]"
+        },
+        {
+          "criterion_id": "still_returns_results",
+          "description": "System still returns 10 valid recommendations",
+          "passed": true,
+          "details": "episode_count=10"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null
+    },
+    {
+      "test_id": "05_category_personalization",
+      "name": "Category Personalization & Boundary Cross Test",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "ai_tech_category_match",
+          "description": "Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
+          "passed": true,
+          "details": "ai_tech_matches=10/10"
+        },
+        {
+          "criterion_id": "crypto_category_match",
+          "description": "Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
+          "passed": true,
+          "details": "crypto_matches=8/10"
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM relevance score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM quality score (1-5)",
+          "passed": true,
+          "details": "score=5"
+        },
+        {
+          "criterion_id": "llm_test_pass",
+          "description": "LLM judge test pass",
+          "passed": true,
+          "details": "pass=True, rationale=The recommendations perfectly align with the content hypothesis, showing 100% specialization in AI/T..."
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "relevance_score": 5,
+        "diversity_score": 5,
+        "quality_score": 5,
+        "content_hypothesis_alignment": 5,
+        "test_pass": true,
+        "rationale": "The recommendations perfectly align with the content hypothesis, showing 100% specialization in AI/Tech infrastructure and strategic analysis. The system successfully includes 'bridge' content like space-based AI and American Dynamism, which fulfills the cross-disciplinary curiosity for macro connections to AI capex and tech regulation.",
+        "raw_response": "{\n  \"relevance_score\": 5,\n  \"diversity_score\": 5,\n  \"quality_score\": 5,\n  \"content_hypothesis_alignment\": 5,\n  \"test_pass\": true,\n  \"rationale\": \"The recommendations perfectly align with the content hypothesis, showing 100% specialization in AI/Tech infrastructure and strategic analysis. The system successfully includes 'bridge' content like space-based AI and American Dynamism, which fulfills the cross-disciplinary curiosity for macro connections to AI capex and tech regulation.\"\n}",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    {
+      "test_id": "06_recency_scoring",
+      "name": "Recency Scoring Works",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "both_in_top_10",
+          "description": "Both test episodes found in top 10 cold start results",
+          "passed": true,
+          "details": "recent_found=True, older_found=True"
+        },
+        {
+          "criterion_id": "recency_score_ordering",
+          "description": "Recent episode has higher recency_score than older",
+          "passed": true,
+          "details": "recent=0.8869, older=0.8353"
+        },
+        {
+          "criterion_id": "ranking_reflects_recency",
+          "description": "Recent episode ranks higher (lower position) than older",
+          "passed": true,
+          "details": "recent_pos=3, older_pos=8"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null
+    },
+    {
+      "test_id": "07_bookmark_weighting",
+      "name": "Bookmarks Outweigh Clicks (High-Quality Episodes)",
+      "evaluation_method": "deterministic_llm",
+      "passed": false,
+      "criteria_results": [],
+      "error": "TestResult.add_criterion() got an unexpected keyword argument 'threshold'",
+      "llm_evaluation": null
+    }
+  ]
+}

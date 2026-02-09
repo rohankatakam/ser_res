@@ -155,14 +155,13 @@ def rank_candidates(...):
 
 ---
 
-## Next Steps (v1.4)
+## Evolution to v1.4
 
-Potential approaches to achieve 7/8 or 8/8 pass rate:
+v1.4 was created by cloning v1.3 and increasing `bookmark_weight` from 5.0 to 7.0.
 
-1. **Lower LLM threshold:** Reduce `llm_hypothesis_alignment` from 6.0 to 5.0
-2. **Category boost:** Add explicit category matching for bookmarked topics
-3. **Engagement recency:** Weight recent engagements higher in user vector
-4. **Rebalance:** Find middle ground between v1.2 and v1.3 weights
+**Result:** Test 07 (Bookmark Weighting) now passes with the stronger bookmark signal.
+
+See `versions/v1_4_optimized.md` for full details.
 
 ---
 

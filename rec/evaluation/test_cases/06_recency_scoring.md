@@ -1,4 +1,4 @@
-# Test 07: Recency Scoring Works
+# Test 06: Recency Scoring Works
 
 **Type:** DIR (Directional Expectation Test)  
 **Profile:** `01_cold_start`
