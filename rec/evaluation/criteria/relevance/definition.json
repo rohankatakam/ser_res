@@ -1,0 +1,17 @@
+{
+  "id": "relevance",
+  "type": "llm",
+  "name": "Relevance",
+  "version": "1.0",
+  "description": "Evaluates if recommendations match the user's content hypothesis and engagement patterns",
+  "scoring": {
+    "scale": [1, 10],
+    "default_threshold": 6.0
+  },
+  "prompt_template": "Evaluate RELEVANCE on a scale of 1-10:\n\nDo the recommendations match the user's content hypothesis and interests?\n\n## User Profile\n{profile_summary}\n\n## Content Hypothesis\n{content_hypothesis}\n\n## Recent Engagements\n{engagements_summary}\n\n## Recommendations\n{recommendations_summary}\n\n## Evaluation Criteria\n- Consider their Specialization vs. Exploration ratio\n- Consider their Cross-Disciplinary Curiosity level\n- How well do recommendations align with demonstrated interests?\n\n## Scoring Guide\n- 10: Recommendations perfectly match the content hypothesis\n- 7-9: Strong alignment with minor gaps\n- 4-6: Partial alignment, some content doesn't fit\n- 1-3: Recommendations conflict with user preferences\n\nRespond with JSON: {\"score\": <1-10>, \"reasoning\": \"<brief explanation>\"}",
+  "response_schema": {
+    "score": "number",
+    "reasoning": "string"
+  },
+  "tags": ["core", "personalization"]
+}

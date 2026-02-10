@@ -1,0 +1,16 @@
+{
+  "id": "avg_credibility",
+  "type": "deterministic",
+  "name": "Average Credibility",
+  "version": "1.0",
+  "description": "Computes average credibility score of top N episodes",
+  "scoring": {
+    "scale": [0, 5],
+    "default_threshold": 3.0
+  },
+  "function": "compute_avg_credibility",
+  "parameters": {
+    "top_n": 10
+  },
+  "tags": ["quality", "deterministic"]
+}

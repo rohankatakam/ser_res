@@ -1,0 +1,17 @@
+{
+  "id": "crypto_count",
+  "type": "deterministic",
+  "name": "Crypto Episode Count",
+  "version": "1.0",
+  "description": "Counts the number of crypto/web3 related episodes in top N recommendations",
+  "scoring": {
+    "scale": [0, 10],
+    "default_threshold": 5
+  },
+  "function": "compute_crypto_count",
+  "parameters": {
+    "top_n": 10,
+    "keywords": ["crypto", "bitcoin", "ethereum", "web3", "blockchain", "defi", "btc", "eth", "stablecoin", "nft"]
+  },
+  "tags": ["category", "deterministic"]
+}

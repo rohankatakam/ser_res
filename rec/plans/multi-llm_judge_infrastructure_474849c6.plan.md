@@ -317,7 +317,9 @@ Test cases reference criteria by ID. The runner loads criteria definitions and e
 | Criterion Types | Deterministic + LLM | Support both computed metrics and qualitative LLM judgment |
 | Aggregation | Two-stage mean | Research-backed: mean within model, then mean across models |
 | Temperature | 0.8 | Research shows temp>0 gives better calibration |
-| Default N | 3 per judge | Balance between reliability and cost/time |
+| Default N | 3 per judge | Balance between reliability and cost/time (configurable via UI) |
+| N Configurable | Yes | Users can adjust N (1-10) via UI settings for reliability vs cost tradeoff |
+| Model Selection | UI-configurable | Users can enable/disable LLM providers via settings modal |
 | Async | Python asyncio | Required for reasonable run times with many API calls |
 | LLM Mode | Always on | LLM is core to the system, not optional |
 | Fallback | Graceful degradation | If one LLM provider fails, continue with others |
@@ -337,9 +339,9 @@ import litellm
 from litellm import acompletion
 
 SUPPORTED_MODELS = {
-    "openai": "gpt-4o-mini",
-    "gemini": "gemini/gemini-2.0-flash",
-    "anthropic": "claude-3-5-sonnet-20241022"
+    "openai": "gpt-5-mini",
+    "gemini": "gemini/gemini-2.5-flash",
+    "anthropic": "claude-sonnet-4-5"
 }
 
 async def call_llm(
@@ -624,23 +626,21 @@ def get_threshold(criterion: dict, test_case: dict) -> float:
   "judges": [
     {
       "provider": "openai",
-      "model": "gpt-4o-mini",
-      "enabled": true,
-      "n": 3
+      "model": "gpt-5-mini",
+      "enabled": true
     },
     {
       "provider": "gemini",
-      "model": "gemini/gemini-2.0-flash",
-      "enabled": true,
-      "n": 3
+      "model": "gemini/gemini-2.5-flash",
+      "enabled": true
     },
     {
       "provider": "anthropic",
-      "model": "claude-3-5-sonnet-20241022",
-      "enabled": false,
-      "n": 3
+      "model": "claude-sonnet-4-5",
+      "enabled": false
     }
   ],
+  "default_n": 3,
   "temperature": 0.8,
   "consensus_threshold": 1.5,
   "flag_low_consensus": true,
@@ -648,26 +648,39 @@ def get_threshold(criterion: dict, test_case: dict) -> float:
 }
 ```
 
+**UI-Configurable Settings:**
+- `judges[].enabled` - Toggle each LLM provider on/off
+- `default_n` - Number of samples per judge (1-10, default 3)
+- API keys for each provider (stored securely, not in config.json)
+```
+
 ---
 
 ## Cost & Time Estimates
 
-With per-criterion LLM calls:
+With per-criterion LLM calls (N is UI-configurable, default=3):
 
 **Assumptions:**
 - 7 tests
 - Average 3 LLM criteria per test
 - 2 enabled judges (OpenAI + Gemini)
-- N = 3 samples per judge
+- N = 3 samples per judge (configurable 1-10)
 
-**Calculation:**
+**Calculation (at N=3):**
 - LLM calls per criterion: 2 judges × 3 samples = 6 calls
 - LLM calls per test: 3 criteria × 6 = 18 calls
 - Total LLM calls: 7 tests × 18 = 126 calls
 
-**Estimated cost:** ~$0.10-0.20 per full run (gpt-4o-mini + gemini-flash are cheap)
+**Scaling with N:**
+| N | Total Calls | Est. Cost | Est. Time |
+|---|-------------|-----------|-----------|
+| 1 | 42 | ~$0.03-0.05 | 20-40s |
+| 3 | 126 | ~$0.10-0.20 | 60-120s |
+| 5 | 210 | ~$0.15-0.30 | 90-180s |
 
-**Estimated time:** 60-120 seconds with async parallelization
+**Estimated cost (N=3):** ~$0.10-0.20 per full run (gpt-5-mini + gemini-2.5-flash are cost-effective)
+
+**Estimated time (N=3):** 60-120 seconds with async parallelization
 
 ---
 

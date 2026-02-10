@@ -1,0 +1,35 @@
+{
+  "judges": [
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "enabled": true,
+      "description": "OpenAI GPT-5 Mini - Fast and cost-effective"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini/gemini-2.5-flash",
+      "enabled": true,
+      "description": "Google Gemini 2.5 Flash - Fast multimodal model"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-5",
+      "enabled": false,
+      "_note": "Disabled - no API key available",
+      "description": "Anthropic Claude Sonnet 4.5 - High quality reasoning"
+    }
+  ],
+  "default_n": 3,
+  "temperature": 0.8,
+  "consensus_threshold": 1.5,
+  "flag_low_consensus": true,
+  "report_uncertainty": true,
+  "_comment": {
+    "default_n": "Number of samples per judge (1-10). Higher = more reliable but slower/costlier. Configurable via UI.",
+    "temperature": "LLM sampling temperature. 0.8 is research-backed for better calibration than 0.0.",
+    "consensus_threshold": "Cross-model std above this triggers flag_for_review.",
+    "flag_low_consensus": "If true, results with std > consensus_threshold are flagged.",
+    "report_uncertainty": "If true, include std, consensus_level in results."
+  }
+}

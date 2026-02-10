@@ -1,0 +1,17 @@
+{
+  "id": "diversity",
+  "type": "llm",
+  "name": "Diversity",
+  "version": "1.0",
+  "description": "Evaluates if recommendation diversity matches what the user's Content Hypothesis prescribes",
+  "scoring": {
+    "scale": [1, 10],
+    "default_threshold": 6.0
+  },
+  "prompt_template": "Evaluate DIVERSITY on a scale of 1-10:\n\nDoes the diversity level match what the Content Hypothesis prescribes?\n\n## User Profile\n{profile_summary}\n\n## Content Hypothesis\n{content_hypothesis}\n\n## Recommendations\n{recommendations_summary}\n\n## Evaluation Criteria\n- For specialists (high specialization %): variety WITHIN their domain is good, scattered recommendations are bad\n- For explorers (high exploration %): cross-sector diversity is expected and good\n- For cold start: maximum diversity to probe interests across major themes\n\n## Scoring Guide\n- 10: Diversity level perfectly matches the user's exploration/specialization ratio\n- 7-9: Good diversity match with minor issues\n- 4-6: Some mismatch in diversity expectations\n- 1-3: Major mismatch (e.g., scattered content for a specialist, or narrow content for an explorer)\n\nRespond with JSON: {\"score\": <1-10>, \"reasoning\": \"<brief explanation>\"}",
+  "response_schema": {
+    "score": "number",
+    "reasoning": "string"
+  },
+  "tags": ["core", "personalization"]
+}

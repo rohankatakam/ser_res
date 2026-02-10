@@ -1,0 +1,17 @@
+{
+  "id": "quality",
+  "type": "llm",
+  "name": "Quality",
+  "version": "1.0",
+  "description": "Evaluates if high-quality episodes (credibility >= 3) are being surfaced prominently",
+  "scoring": {
+    "scale": [1, 10],
+    "default_threshold": 6.0
+  },
+  "prompt_template": "Evaluate QUALITY on a scale of 1-10:\n\nAre high-quality episodes being surfaced prominently?\n\n## Recommendations\n{recommendations_summary}\n\n## Quality Indicators\nEach episode has:\n- Credibility score (1-5): Source authority, expertise level\n- Insight score (1-5): Depth of analysis, actionable takeaways\n- Quality score (0-1): Computed quality metric\n\n## Evaluation Criteria\n- Are top recommendations from credible sources (credibility >= 3)?\n- Do recommendations offer substantive insights (not shallow content)?\n- Is there a good mix of established and emerging voices?\n\n## Scoring Guide\n- 10: Top recommendations are all high-quality, credible sources\n- 7-9: Mostly high-quality with 1-2 moderate entries\n- 4-6: Mix of quality levels, some questionable sources\n- 1-3: Low-quality content is prominent, credibility issues\n\nRespond with JSON: {\"score\": <1-10>, \"reasoning\": \"<brief explanation>\"}",
+  "response_schema": {
+    "score": "number",
+    "reasoning": "string"
+  },
+  "tags": ["core", "quality"]
+}

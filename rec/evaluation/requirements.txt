@@ -4,8 +4,16 @@
 requests>=2.28.0
 python-dotenv>=1.0.0
 
-# LLM evaluation (Gemini)
+# Multi-LLM evaluation (LiteLLM unified interface)
+litellm>=1.30.0
+
+# Legacy: Direct Gemini SDK (kept for backwards compatibility)
 google-generativeai>=0.8.0
 
 # Note: The API server (mock_api) has its own requirements.txt
 # This file is only for the evaluation framework
+#
+# Required API keys (at least one):
+#   - OPENAI_API_KEY (for gpt-5-mini)
+#   - GEMINI_API_KEY (for gemini-2.5-flash)
+#   - ANTHROPIC_API_KEY (for claude-sonnet-4-5)

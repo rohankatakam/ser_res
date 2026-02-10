@@ -1,0 +1,18 @@
+{
+  "id": "topic_breadth",
+  "type": "llm",
+  "name": "Topic Breadth",
+  "version": "1.0",
+  "description": "Evaluates if recommendations span multiple major themes to probe user interests (especially for cold start)",
+  "scoring": {
+    "scale": [1, 10],
+    "default_threshold": 6.0
+  },
+  "prompt_template": "Evaluate TOPIC BREADTH on a scale of 1-10:\n\nDo recommendations span multiple major themes?\n\n## Context\n{test_description}\n\n## Recommendations\n{recommendations_summary}\n\n## Major Themes\nThe content universe includes these major themes:\n- AI/Tech: AI, machine learning, OpenAI, Anthropic, tech industry\n- Crypto/Web3: Bitcoin, Ethereum, DeFi, blockchain, stablecoins\n- Macro/Markets: Fed, economy, credit, rates, market analysis\n- Startups/Founders: Founder stories, growth, product, fundraising\n- Venture/PE: VC, funds, portfolio management, capital allocation\n\n## Evaluation Criteria\n- How many distinct major themes are represented?\n- Is there at least one episode from each major theme?\n- For cold start: breadth is essential to discover user interests\n\n## Scoring Guide\n- 10: All 5 major themes represented with balance\n- 8-9: 4 themes represented well\n- 6-7: 3 themes represented\n- 4-5: Only 2 themes\n- 1-3: Dominated by single theme\n\nRespond with JSON: {\"score\": <1-10>, \"reasoning\": \"<brief explanation>\", \"themes_found\": [<list of themes>]}",
+  "response_schema": {
+    "score": "number",
+    "reasoning": "string",
+    "themes_found": "array"
+  },
+  "tags": ["cold_start", "diversity"]
+}
