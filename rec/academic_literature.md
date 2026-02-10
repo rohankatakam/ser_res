@@ -39,6 +39,54 @@ The following papers are the most direct academic influences on the current spec
 
 ---
 
+## Evaluation Framework (Multi-LLM Judge System)
+
+The evaluation infrastructure is grounded in the latest research on LLM-as-a-Judge systems, specifically addressing reliability, bias correction, and aggregation strategies for multi-model ensembles.
+
+### 6. Bias-Corrected Aggregation for Multi-LLM Judges
+*   **Paper:** [How to Correctly Report LLM-as-a-Judge Evaluations (2025)](https://arxiv.org/abs/2511.21140)
+*   **Influence:** Demonstrates that uncalibrated LLM judges systematically bias results due to position bias, verbosity bias, and model-specific quirks. Simple averaging across models is suboptimal.
+*   **Application in Spec:** The **two-stage aggregation pipeline** (within-model mean → cross-model mean) and the plan for future bias-corrected aggregation are directly informed by this research. We report standard deviation alongside scores to quantify uncertainty.
+
+### 7. Distribution-Calibrated Inference
+*   **Paper:** [Distribution-Calibrated BTD (Bradley-Terry-Dawid) Inference (2025)](https://arxiv.org/abs/2512.03019)
+*   **Influence:** Shows that repeated sampling from a judge with temperature > 0 produces a judgment distribution that better captures uncertainty than single greedy decoding.
+*   **Application in Spec:** The **N parameter** (default N=3 samples per judge) with **temperature=0.8** is based on this work. Within-model aggregation uses the mean of the judgment distribution rather than a single sample.
+
+### 8. Confidence-Weighted Voting
+*   **Paper:** [Confidence Improves Self-Consistency in LLM Reasoning (2025)](https://arxiv.org/abs/2502.06233)
+*   **Influence:** Demonstrates that weighting judge outputs by their self-assessed confidence improves aggregate reliability, especially for ambiguous cases.
+*   **Application in Spec:** While not yet implemented (Phase 6.B future enhancement), the infrastructure supports confidence-weighted aggregation. Current consensus metrics (STRONG/GOOD/PARTIAL/LOW) provide a foundation for this.
+
+### 9. Optimal Sampling Without Verifiers
+*   **Paper:** [Large Language Monkeys: Scaling Inference Compute with Repeated Sampling (2024)](https://arxiv.org/abs/2407.21787)
+*   **Influence:** Key finding: for qualitative evaluation tasks without automatic verifiers, performance plateaus at N=5-10 samples. Beyond this, additional samples provide diminishing returns.
+*   **Application in Spec:** The **default N=3** (configurable up to N=10) is informed by this research. We use repeated sampling for reliability rather than coverage, avoiding unnecessary API costs.
+
+### 10. Temperature and Stochastic Sampling
+*   **Paper:** [Improving LLM-as-a-Judge Inference: Distributional Decoding and Temperature Tuning (2025)](https://arxiv.org/abs/2503.03064)
+*   **Influence:** Critical finding: **temperature=0.0 (greedy decoding) is worst for judges**. Optimal range is 0.7-1.0. Also shows that Chain-of-Thought "collapses" the judgment distribution and should be avoided for evaluation.
+*   **Application in Spec:** All judges use **temperature=0.8** with **no CoT prompting**. This enables diverse sampling while maintaining consistent scoring across runs.
+
+### 11. Inter-Model Consensus as Reliability Signal
+*   **Paper:** [Enhancing Answer Reliability Through Inter-Model Consensus (2024)](https://arxiv.org/abs/2411.16797)
+*   **Influence:** Shows that cross-model standard deviation is a strong predictor of answer reliability. Low consensus (high std) should trigger human review.
+*   **Application in Spec:** The **consensus categorization system** (FULL/GOOD/PARTIAL/LOW based on cross-model std) and **flag_for_review** mechanism are direct implementations. UI displays per-model breakdowns to surface disagreements.
+
+### Summary of Evaluation Framework Influences
+
+| Evaluation Component | Primary Academic Support |
+| :--- | :--- |
+| **Two-stage Aggregation** | [Bias-Corrected Reporting (2025)](https://arxiv.org/abs/2511.21140) |
+| **N=3 Samples, temp=0.8** | [Distribution-Calibrated BTD (2025)](https://arxiv.org/abs/2512.03019) + [Improving Inference (2025)](https://arxiv.org/abs/2503.03064) |
+| **Optimal N Range (5-10)** | [Large Language Monkeys (2024)](https://arxiv.org/abs/2407.21787) |
+| **Consensus Metrics** | [Inter-Model Consensus (2024)](https://arxiv.org/abs/2411.16797) |
+| **Future: Confidence Weighting** | [Confidence Improves Self-Consistency (2025)](https://arxiv.org/abs/2502.06233) |
+
+**Key Insight:** The multi-LLM approach captures different "perspectives" on quality—OpenAI, Gemini, and Anthropic models have different biases and evaluation styles. By aggregating across models with proper uncertainty quantification, we achieve more robust and reliable evaluation than any single judge, while surfacing genuinely ambiguous cases for human review.
+
+---
+
 ## Commercial Precedents
 
 The spec architecture mirrors proven patterns from successful commercial products:
@@ -95,6 +143,8 @@ The spec architecture mirrors proven patterns from successful commercial product
 | **Cold Start Handling** | Semantic IDs | Spotify Release Radar |
 | **Stage 3 Diversity** | Generative Ranking | MMR (Elasticsearch, Google) |
 | **Contrarian Boost** | User Feedback Alignment | Twitter Bridging |
+| **Multi-LLM Evaluation** | Distribution-Calibrated BTD | A/B Testing Ensembles (Google, Meta) |
+| **Consensus Metrics** | Inter-Model Consensus | ML Model Ensembles (Production Systems) |
 
 ---
 
