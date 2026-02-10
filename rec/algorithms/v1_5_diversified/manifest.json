@@ -1,0 +1,59 @@
+{
+  "version": "1.5",
+  "name": "Diversified Cold Start + Enhanced Bookmarks",
+  "description": "V1.5 diversified: Increased bookmark weight (10.0) and added cold start category diversity to ensure balanced representation across all 7 major categories. Achieved highest overall multi-LLM evaluation score.",
+  "created_at": "2026-02-10",
+  "based_on": "v1_4_optimized",
+  "tuning_rationale": {
+    "bookmark_weight_10.0": "Increased from 7.0 to strengthen bookmark signal for hypothesis alignment (improved Test 07)",
+    "cold_start_category_diversity": "NEW: Ensures at least 1 episode from each of 7 major categories in cold start recommendations (improved Test 01)",
+    "weight_similarity_0.85": "Maintained near-maximum personalization",
+    "weight_quality_0.10": "Minimal quality influence to let personalization dominate",
+    "weight_recency_0.05": "Minimal recency influence",
+    "use_sum_similarities_true": "Preserves interest diversity better than mean-pooling"
+  },
+  "embedding_strategy_version": "1.0",
+  "embedding_model": "text-embedding-3-small",
+  "embedding_dimensions": 1536,
+  "requires_schema": "1.0",
+  "required_fields": [
+    "id",
+    "title",
+    "scores",
+    "key_insight",
+    "published_at",
+    "categories"
+  ],
+  "optional_fields": [
+    "series",
+    "content_id",
+    "entities",
+    "people"
+  ],
+  "default_parameters": {
+    "credibility_floor": 2,
+    "combined_floor": 5,
+    "freshness_window_days": 90,
+    "candidate_pool_size": 150,
+    "user_vector_limit": 10,
+    "weight_similarity": 0.85,
+    "weight_quality": 0.10,
+    "weight_recency": 0.05,
+    "credibility_multiplier": 1.5,
+    "recency_lambda": 0.03,
+    "use_sum_similarities": true,
+    "engagement_weights": {
+      "bookmark": 10.0,
+      "listen": 1.5,
+      "click": 1.0
+    },
+    "cold_start": {
+      "weight_quality": 0.60,
+      "weight_recency": 0.40,
+      "category_diversity": {
+        "enabled": true,
+        "min_per_category": 1
+      }
+    }
+  }
+}

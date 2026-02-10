@@ -1,0 +1,1389 @@
+{
+  "timestamp": "2026-02-09T17:20:51.919082",
+  "context": {
+    "algorithm_version": "v1_2_blended",
+    "dataset_version": "eval_909_feb2026",
+    "llm_providers": [
+      "openai",
+      "gemini"
+    ],
+    "evaluation_mode": "multi_llm"
+  },
+  "summary": {
+    "total_tests": 7,
+    "passed": 5,
+    "failed": 2,
+    "pass_rate": 0.714,
+    "overall_score": 9.33,
+    "overall_confidence": 0.93,
+    "score_breakdown": {
+      "01_cold_start_quality": 8.73,
+      "02_personalization_differs": 9.29,
+      "03_quality_gates_credibility": 10.0,
+      "04_excluded_episodes": 10.0,
+      "05_category_personalization": 9.26,
+      "06_recency_scoring": 10.0,
+      "07_bookmark_weighting": 8.05
+    }
+  },
+  "results": [
+    {
+      "test_id": "01_cold_start_quality",
+      "name": "Cold Start Quality & Topic Breadth (First Impression Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": false,
+      "criteria_results": [
+        {
+          "criterion_id": "cold_start_flag",
+          "description": "API response includes cold_start: true",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_start=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "avg_credibility",
+          "description": "Average credibility of top 10 >= 3.0",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "avg_credibility=4.00",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "min_credibility",
+          "description": "No episode in top 10 has credibility < 2",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "min_credibility=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "top_quality_score",
+          "description": "Top 3 episodes have quality_score >= 0.7",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "top_3_quality_scores=[1.0, 1.0, 0.9]",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 7.0,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=7.0, consensus=PARTIAL, std=1.00",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 6.33,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=6.3, consensus=LOW, std=1.67",
+          "weight": 1.0,
+          "consensus_level": "LOW",
+          "flag_for_review": true
+        },
+        {
+          "criterion_id": "llm_topic_breadth",
+          "description": "LLM Judge: Topic breadth covers major themes",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 0.9,
+          "passed": true,
+          "details": "score=9.0, consensus=STRONG, std=0.33",
+          "weight": 1.0,
+          "consensus_level": "STRONG"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 9.16,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=9.2, consensus=GOOD, std=0.83",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 5.83,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": false,
+          "details": "score=5.8, consensus=GOOD, std=0.50",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "Partial pass: the slate is high-quality and includes all major themes, but it fails hypothesis alignment because it is overly concentrated on AI/tech with near-duplicate items, reducing the intended balanced first impression.",
+        "quality_score": 3,
+        "observations": [
+          "High overall quality: recommended items show strong credibility (>=4) and reasonable insight scores, producing high computed quality metrics.",
+          "Topic breadth achieved: all five major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are present, enabling discovery across areas.",
+          "Skew and redundancy: slate is heavily weighted toward AI/tech (including two near-duplicate Elon Musk items and several similar AI/startup episodes) with only one clear crypto and one macro item; hypothesis_alignment failed."
+        ],
+        "suggestions": [
+          "Enforce per-theme sampling or caps for cold-start slates (e.g., max 2 items per theme) and boost selections from underrepresented themes to ensure balanced first impressions.",
+          "Add deduplication/similarity filtering (host/guest/topic clustering or embedding cosine threshold) to remove near-duplicate episodes within popular themes and increase intra-theme variety."
+        ],
+        "evaluated_at": "2026-02-09T17:18:39.872415"
+      },
+      "scores": {
+        "aggregate_score": 8.73,
+        "aggregate_confidence": 0.89,
+        "criteria_count": 9,
+        "passed_count": 8
+      },
+      "llm_results": [
+        {
+          "criterion_id": "relevance",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                5.0,
+                6.0,
+                7.0
+              ],
+              "mean_score": 6.0,
+              "std": 0.82,
+              "n": 3,
+              "reasoning_samples": [
+                "Partial alignment. The slate is high-quality and covers AI and startups well, but it\u2019s skewed heavily toward AI/tech (including two very similar Elon Musk items), reducing exploratory breadth. Crypto and macro are underrepresented (only CryptoPunks and a UniCredit CEO episode touch those areas), so it doesn\u2019t fully match the cold-start hypothesis of maximizing diversity across AI, Crypto, Macro, and Startups.",
+                "Partial alignment. The list clearly favors AI and startup content (\u224860\u201370% of items: Musk x2, Roblox, Duo, Benchmark, Palmer Luckey, Casado), with only one clear crypto pick (CryptoPunks) and one macro/finance pick (UniCredit). For a cold-start user whose hypothesis asks for maximal breadth across AI, Crypto, Macro, and Startups, this set leans too specialized toward AI/startups and underrepresents macro and crypto. Good quality and cross-disciplinary touches, but not the broad initial exploration requested.",
+                "The list covers the four target themes (AI, Crypto, Macro/Banking, Startups) so it achieves breadth, but it is heavily skewed toward AI/tech (multiple Elon Musk items, AI-focused podcasts, and tech founders). Crypto and macro are underrepresented (only CryptoPunks and the UniCredit CEO items), so the exploration/specialization balance leans toward specialization. Overall good coverage but could be more evenly distributed to match the cold-start diversity hypothesis."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations successfully introduce content from the major themes (AI, Crypto, Macro, Startups) as hypothesized for a cold start user, demonstrating good breadth. However, the top two recommendations are very similar (both Elon Musk on AI/Space), which slightly reduces the 'maximal initial diversity' on first impression and leans a bit more into 'depth in a single category' (AI) than ideal for a purely exploratory cold start.",
+                "The recommendations successfully cover the specified major themes (AI, Crypto, Macro, Startups) and showcase a good breadth of high-quality content as requested for a cold start user. However, the first two recommendations are very similar (both featuring Elon Musk on AI/Space), which slightly detracts from maximizing initial diversity for the immediate first impression, leading to a minor gap in perfect alignment with the hypothesis.",
+                "The recommendations successfully cover the specified major themes (AI, Crypto, Macro, Startups) showcasing good breadth. However, the initial diversity is slightly hampered by the first two recommendations being very similar Elon Musk/AI topics, which doesn't fully 'maximize initial diversity to probe user interests' at the very top of the list. The overall list quickly diversifies, aligning well with the content hypothesis."
+              ]
+            }
+          },
+          "final_score": 7.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.0,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Partial alignment. The slate is high-quality and covers AI and startups well, but it\u2019s skewed heavily toward AI/tech (including two very similar Elon Musk items), reducing exploratory breadth. Crypto and macro are underrepresented (only CryptoPunks and a UniCredit CEO episode touch those areas), so it doesn\u2019t fully match the cold-start hypothesis of maximizing diversity across AI, Crypto, Macro, and Startups.",
+            "[gemini] The recommendations successfully introduce content from the major themes (AI, Crypto, Macro, Startups) as hypothesized for a cold start user, demonstrating good breadth. However, the top two recommendations are very similar (both Elon Musk on AI/Space), which slightly reduces the 'maximal initial diversity' on first impression and leans a bit more into 'depth in a single category' (AI) than ideal for a purely exploratory cold start."
+          ]
+        },
+        {
+          "criterion_id": "diversity",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                5.0,
+                5.0,
+                4.0
+              ],
+              "mean_score": 4.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Moderate mismatch. The slate is AI/startup heavy (multiple near-duplicate Musk/AI items plus other tech/startup episodes), with only one clear crypto item and one macro/finance item. For a cold-start that should probe broadly across AI, Crypto, Macro, and Startups, this list underrepresents crypto and macro and duplicates theme coverage\u2014more balanced cross-sector picks (and fewer near-duplicates) are needed.",
+                "List skews heavily toward AI/tech (multiple similar Musk items and several AI-focused episodes), with only one clear crypto item and one macro/banking pick. For a cold-start user who should see maximal cross-sector breadth (AI, Crypto, Macro, Startups), this is only a partial match \u2014 some startup and macro representation exists but AI is overrepresented and there\u2019s a duplicate-theme risk. Increase coverage of non-AI themes and remove near-duplicates to better match the Content Hypothesis.",
+                "List is heavily skewed toward AI/tech/startups (multiple Elon/AI picks plus VC/infra/startup stories). Crypto is represented once and macro/economy is barely covered (only UniCredit). For a cold-start user who needs maximal breadth across AI, Crypto, Macro, and Startups, this set under-delivers on cross-sector balance."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                7.0,
+                9.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.82,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations cover all major themes prescribed by the Content Hypothesis (AI, Crypto, Macro, Startups), demonstrating good breadth for a cold start user. However, the distribution is imbalanced, with a heavy concentration on AI/Tech content (at least 6-7 items heavily feature AI) and only a single item dedicated to Crypto. To truly 'maximize initial diversity to probe user interests across major themes,' a more even spread would be expected, especially given the explicit mention of Crypto as a major theme.",
+                "The recommendations successfully achieve broad diversity across the prescribed major themes: AI (1, 2, 3, 5, 7, 10), Crypto (6), Macro (7, 8, 9, 10), and Startups (3, 4, 5, 9). This aligns well with the 'Cold Start New User' profile and the content hypothesis to maximize initial diversity to probe user interests. The only minor issue preventing a perfect score is the high similarity between the top two recommendations (both Elon Musk on AI/Space), which slightly reduces the immediate perceived diversity, but the overall list of 10 items demonstrates excellent breadth.",
+                "The recommendations cover all prescribed major themes (AI, Crypto, Macro, Startups), demonstrating good breadth for a cold start user. However, the distribution is skewed, with a heavy emphasis on AI and only one recommendation for Crypto. To truly 'maximize initial diversity' as the hypothesis states, a more balanced representation across all specified themes would be ideal."
+              ]
+            }
+          },
+          "final_score": 6.33,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.67,
+          "consensus_level": "LOW",
+          "flag_for_review": true,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Moderate mismatch. The slate is AI/startup heavy (multiple near-duplicate Musk/AI items plus other tech/startup episodes), with only one clear crypto item and one macro/finance item. For a cold-start that should probe broadly across AI, Crypto, Macro, and Startups, this list underrepresents crypto and macro and duplicates theme coverage\u2014more balanced cross-sector picks (and fewer near-duplicates) are needed.",
+            "[gemini] The recommendations cover all major themes prescribed by the Content Hypothesis (AI, Crypto, Macro, Startups), demonstrating good breadth for a cold start user. However, the distribution is imbalanced, with a heavy concentration on AI/Tech content (at least 6-7 items heavily feature AI) and only a single item dedicated to Crypto. To truly 'maximize initial diversity to probe user interests across major themes,' a more even spread would be expected, especially given the explicit mention of Crypto as a major theme."
+          ]
+        },
+        {
+          "criterion_id": "topic_breadth",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                9.0,
+                9.0,
+                8.0
+              ],
+              "mean_score": 8.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "All five major themes are present (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE), so the cold-start list enables discovery across themes. However the slate is heavily skewed toward AI/Tech (multiple entries) with only one clear Crypto and one clear Macro pick, so breadth exists but balance is uneven.",
+                "All five major themes are present (AI/Tech dominates, with multiple startup and VC episodes), but the list is skewed heavily toward AI/Tech. Crypto and Macro are represented only once each and Venture overlaps with Startups, so breadth exists but is not evenly balanced.",
+                "All five major themes are present (AI/Tech, Startups, Crypto/Web3, Macro/Markets, Venture/PE), so the list achieves topic breadth. However the set is heavily skewed toward AI/Tech (roughly 6/10 items), while Crypto and Macro are each represented by only one episode and Venture is lightly covered\u2014so breadth exists but not balanced for an optimal cold start."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                9.0,
+                9.0
+              ],
+              "mean_score": 9.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented in the recommendations. While AI/Tech is a recurring element, other themes have distinct episodes or significant mentions, demonstrating excellent breadth for a cold start scenario.",
+                "All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented in the top 10 recommendations. While AI/Tech is heavily featured across multiple items, the presence of at least one item from each of the other themes ensures good breadth for discovering user interests in a cold start scenario. The distribution is not perfectly balanced, with Crypto/Web3 having only one explicit entry, preventing a perfect 10.",
+                "All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented in the top 10 recommendations, which is excellent for topic breadth. However, the distribution is imbalanced, with a significant dominance of AI/Tech content (appearing in 7 out of 10 items) compared to other themes like Crypto/Web3 (1 item) and Macro/Markets (3 items). This robust coverage of all defined themes, despite the imbalance, warrants a high score."
+              ]
+            }
+          },
+          "final_score": 9.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.33,
+          "consensus_level": "STRONG",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] All five major themes are present (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE), so the cold-start list enables discovery across themes. However the slate is heavily skewed toward AI/Tech (multiple entries) with only one clear Crypto and one clear Macro pick, so breadth exists but balance is uneven.",
+            "[gemini] All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented in the recommendations. While AI/Tech is a recurring element, other themes have distinct episodes or significant mentions, demonstrating excellent breadth for a cold start scenario."
+          ]
+        },
+        {
+          "criterion_id": "quality",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                9.0
+              ],
+              "mean_score": 8.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Overall the recommendations are high-quality: all items show strong credibility (>=4) and reasonable insight scores (3\u20134), and the computed quality metrics are high. However the list shows content concentration/duplication (two Elon Musk entries with high similarity) and leans heavily on tech/AI voices, reducing topical diversity. With credible sources and substantive takeaways but some redundancy and narrowness, an 8/10 is appropriate.",
+                "Overall the top recommendations are from credible sources (all credibility >=4) and offer substantive insights (insight scores 3\u20134) with high computed quality scores. The list shows a strong focus on high-quality tech/a11y episodes and a mix of established and emerging voices. Deduction: points lost for duplication (two Musk entries with high similarity), limited diversity outside tech/business, and no entries rated at the highest credibility tier (5).",
+                "The top recommendations are largely from credible sources (all credibility = 4) and offer substantive insights (insight = 3\u20134) with high computed quality scores. There's a healthy mix of established outlets (a16z, WSJ, Knowledge Project) and emerging/industry voices. Minor issues: apparent redundancy (two Elon entries with similar focus) and a couple of series that may vary in production polish, but overall the surfacing favors high-quality, informative episodes."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                10.0,
+                10.0
+              ],
+              "mean_score": 10.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "All top recommendations exhibit high quality. Every entry has a credibility score of 4 and an insight score of 3 or 4, indicating credible sources and substantive content. The computed quality scores are consistently high (0.90-1.00). The mix of series and prominent guests also suggests a strong curation of valuable episodes.",
+                "All top recommendations exhibit high credibility (4/5) and strong insight scores (3-4/5), with computed quality metrics of 0.90-1.00. The sources are reputable, and the content appears substantive, indicating that high-quality episodes are indeed being surfaced prominently.",
+                "All top 10 recommendations are of very high quality, with every episode having a Credibility score of 4 (well above the threshold of 3) and a Quality score of 0.90 or 1.00. The Insight scores are also strong (3 or 4). The content features prominent figures and covers substantive topics, indicating that high-quality episodes are prominently surfaced."
+              ]
+            }
+          },
+          "final_score": 9.16,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.83,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Overall the recommendations are high-quality: all items show strong credibility (>=4) and reasonable insight scores (3\u20134), and the computed quality metrics are high. However the list shows content concentration/duplication (two Elon Musk entries with high similarity) and leans heavily on tech/AI voices, reducing topical diversity. With credible sources and substantive takeaways but some redundancy and narrowness, an 8/10 is appropriate.",
+            "[gemini] All top recommendations exhibit high quality. Every entry has a credibility score of 4 and an insight score of 3 or 4, indicating credible sources and substantive content. The computed quality scores are consistently high (0.90-1.00). The mix of series and prominent guests also suggests a strong curation of valuable episodes."
+          ]
+        },
+        {
+          "criterion_id": "hypothesis_alignment",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                5.0,
+                5.0,
+                6.0
+              ],
+              "mean_score": 5.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Recommendations contain high-quality, credible tech/entrepreneur content but are overly concentrated on AI/tech (two near-duplicate Musk items plus multiple AI-focused episodes) with only one clear crypto item and one macro/finance item. That yields reasonable quality but insufficient breadth for a cold-start probing across AI, Crypto, Macro, and Startups as the hypothesis requires.",
+                "Partial alignment. The list is high-quality and avoids low-credibility items, but it over-indexes on AI/tech (two near-duplicate Elon Musk entries + several other AI-heavy items) and gives only token coverage to Crypto (1), Macro (1), and broader non-tech themes. For a cold-start first impression the recommendations should show clearer, more balanced representation across AI, Crypto, Macro, and Startups (and avoid near-duplicate episodes) to better probe user interests.",
+                "Partial alignment. Strengths: recommendations are high-quality and credible and do cover the four target themes (AI, Crypto, Macro, Startups) in the top 10. Weaknesses: heavy skew toward AI/startups (several overlapping startup/AI picks) and an obvious duplication (two Elon items) which reduces initial topic breadth. To better match the cold-start hypothesis, reduce redundancy and replace with more distinct high-quality picks in Crypto and Macro to increase exploration."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                6.0,
+                7.0,
+                6.0
+              ],
+              "mean_score": 6.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations successfully provide high-quality, credible content. However, the stated goal to 'maximize initial diversity to probe user interests across major themes (AI, Crypto, Macro, Startups)' is only partially met. While AI, Startups, and Macro are represented, AI dominates the list (6 out of 10 items), and Crypto is severely underrepresented (only 1 item). This imbalance indicates a lack of sufficient breadth across all specified themes, falling short of the 'maximize initial diversity' objective for a cold start user.",
+                "Recommendations demonstrate strong quality and credibility. They cover AI, Startups, and Macro themes well, aligning with the goal of probing interests. However, the 'maximize initial diversity' aspect is not fully met as Crypto is significantly underrepresented with only one item out of ten, suggesting an imbalance in theme distribution rather than maximal breadth across all explicitly mentioned major themes.",
+                "The recommendations successfully deliver high-quality content and avoid low credibility. They also touch upon multiple major themes (AI, Startups, Macro, Crypto). However, the hypothesis explicitly emphasizes 'maximize initial diversity across major themes' and 'showcase breadth... rather than depth in any single category.' The current list leans heavily into AI (6/10 items, with similar topics as #1 and #2), while Crypto is significantly underrepresented (only 1/10 items). This imbalance indicates that diversity was not truly maximized across the specified themes, detracting from the 'first impression should showcase breadth' goal."
+              ]
+            }
+          },
+          "final_score": 5.83,
+          "threshold": 6.0,
+          "passed": false,
+          "cross_model_std": 0.5,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Recommendations contain high-quality, credible tech/entrepreneur content but are overly concentrated on AI/tech (two near-duplicate Musk items plus multiple AI-focused episodes) with only one clear crypto item and one macro/finance item. That yields reasonable quality but insufficient breadth for a cold-start probing across AI, Crypto, Macro, and Startups as the hypothesis requires.",
+            "[gemini] The recommendations successfully provide high-quality, credible content. However, the stated goal to 'maximize initial diversity to probe user interests across major themes (AI, Crypto, Macro, Startups)' is only partially met. While AI, Startups, and Macro are represented, AI dominates the list (6 out of 10 items), and Crypto is severely underrepresented (only 1 item). This imbalance indicates a lack of sufficient breadth across all specified themes, falling short of the 'maximize initial diversity' objective for a cold start user."
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "02_personalization_differs",
+      "name": "Personalization Differs from Cold Start (Centroid Shift Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "episode_difference",
+          "description": "At least 5 of top 10 episodes are different",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=7",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "similarity_increase",
+          "description": "VC Partner has higher avg similarity_score than cold start",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_avg=0.500, vc_avg=0.542",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "cold_start_flag_off",
+          "description": "VC Partner cold_start flag is false",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "vc_cold_start=False",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=9.0, consensus=PARTIAL, std=1.00",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 7.83,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=7.8, consensus=GOOD, std=0.83",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=9.0, consensus=PARTIAL, std=1.00",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 8.84,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=8.8, consensus=PARTIAL, std=1.17",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "PASS \u2014 The personalized top-10 meaningfully shifted from cold-start and strongly matches the VC Partner's AI/tech focus, showing high relevance and quality. All measured criteria passed with particularly strong relevance, quality, and hypothesis alignment.",
+        "quality_score": 5,
+        "observations": [
+          "The personalized slate is tightly aligned to the user's profile: high relevance (9.0) and hypothesis alignment (8.84) with heavy representation of a16z/VC voices and AI infrastructure themes.",
+          "Recommendation quality is excellent (9.0) with uniformly high credibility sources, indicating the model surfaces substantive, authoritative content.",
+          "Diversity is acceptable but somewhat narrow (7.83); ~85% specialization toward AI/tech/VC creates limited serendipity and risks over-concentration on familiar sources/topics given only 10 engagements."
+        ],
+        "suggestions": [
+          "Introduce a controlled serendipity boost (e.g., 10\u201320% of slate) that surfaces adjacent domains or contrarian voices to broaden perspective without diluting core relevance.",
+          "Calibrate sensitivity-to-engagements for low-volume users: ensure centroid-shift thresholds and recency weighting are tuned so 5\u201315 engagements produce measurable but not overfitted rank shifts; monitor drift and adjust explore/exploit balance accordingly."
+        ],
+        "evaluated_at": "2026-02-09T17:19:14.242729"
+      },
+      "scores": {
+        "aggregate_score": 9.29,
+        "aggregate_confidence": 0.85,
+        "criteria_count": 7,
+        "passed_count": 7
+      },
+      "llm_results": [
+        {
+          "criterion_id": "relevance",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong alignment: the list is heavy on a16z/VC voices (Andreessen, Casado, Horowitz), strategic analysis, and AI infrastructure/hardware themes (Nvidia, AI sovereignty, space-based compute) which matches the 85% specialization and the user\u2019s podcast/policy preferences. Minor gaps: a few picks are higher-level investor conversations rather than deep technical infrastructure dives (and there\u2019s limited explicit defense-tech/enterprise-software coverage), so it misses a small portion of the user\u2019s 15% cross-disciplinary curiosity and preference for technical infrastructure deep-dives.",
+                "Strong alignment. The recommendations skew heavily to strategic, VC-focused AI content (a16z, Marc Andreessen, Ben Horowitz, Martin Casado) and include cross-disciplinary pieces that match recent engagements (Elon/space AI, sovereignty and chips). That fits the user\u2019s 85% AI/tech infrastructure + 15% adjacent curiosity and preference for strategy. Minor gaps: fewer deep technical/infrastructure deep-dives (chip-level, post-training/ops, low-level infra guests like Inferact-style episodes) and limited explicit defense-tech or enterprise software bridge pieces, so not a perfect match but very close.",
+                "Overall strong fit: the list is heavily VC/AI-focused and emphasizes strategic investment conversations (Andreessen, Casado, Horowitz, a16z), with several items addressing AI infrastructure, chips, and macro implications (space, sovereignty) that match the user\u2019s preference for strategy over pure research. Minor gaps: some redundancy in speakers/topics, a few items are more generalist VC chat (Uncapped, Lenny) rather than deep technical/infrastructure dives, and there\u2019s limited content explicitly on chip supply-chain or defense-tech \u2014 so it\u2019s not a perfect 85/15 specialization split but closely aligned."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                10.0,
+                10.0
+              ],
+              "mean_score": 10.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations perfectly align with the user's content hypothesis and demonstrated interests. They heavily feature AI/Tech infrastructure and investment strategies (85% specialization), frequently include key figures like Marc Andreessen, Ben Horowitz, and Martin Casado, and draw from preferred sources like a16z. The 'cross-disciplinary curiosity' is well-addressed with content linking AI to macro trends, national strategy, and chip supply chains, without deviating from the core AI focus. All content is strategic analysis, matching the user's preference over pure research.",
+                "The recommendations perfectly align with the user's content hypothesis and demonstrated interests. All content is focused on AI/Tech infrastructure and VC strategy, fulfilling the 85% specialization. The recommendations also include 'bridge' content (e.g., space-based AI, AI sovereignty, American Dynamism) that connects to AI capex, chip supply chains, or tech regulation, satisfying the 15% cross-disciplinary curiosity. The strong presence of a16z content and strategic analysis over pure research papers directly matches the user's preferences and recent engagements.",
+                "The recommendations perfectly match the user's content hypothesis and demonstrated interests. They heavily feature AI/Tech infrastructure and investment strategy (85% specialization), frequently include a16z content and key VC figures (Andreessen, Casado, Horowitz), and prioritize strategic analysis over technical research. The 'cross-disciplinary curiosity' is addressed with macro content connecting to AI capex, chip supply chains, and tech regulation, aligning with the user's conditional openness to such topics."
+              ]
+            }
+          },
+          "final_score": 9.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.0,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong alignment: the list is heavy on a16z/VC voices (Andreessen, Casado, Horowitz), strategic analysis, and AI infrastructure/hardware themes (Nvidia, AI sovereignty, space-based compute) which matches the 85% specialization and the user\u2019s podcast/policy preferences. Minor gaps: a few picks are higher-level investor conversations rather than deep technical infrastructure dives (and there\u2019s limited explicit defense-tech/enterprise-software coverage), so it misses a small portion of the user\u2019s 15% cross-disciplinary curiosity and preference for technical infrastructure deep-dives.",
+            "[gemini] The recommendations perfectly align with the user's content hypothesis and demonstrated interests. They heavily feature AI/Tech infrastructure and investment strategies (85% specialization), frequently include key figures like Marc Andreessen, Ben Horowitz, and Martin Casado, and draw from preferred sources like a16z. The 'cross-disciplinary curiosity' is well-addressed with content linking AI to macro trends, national strategy, and chip supply chains, without deviating from the core AI focus. All content is strategic analysis, matching the user's preference over pure research."
+          ]
+        },
+        {
+          "criterion_id": "diversity",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                9.0,
+                8.0,
+                9.0
+              ],
+              "mean_score": 8.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "The slate is tightly focused on AI/tech infrastructure and VC strategy (matching the 85% specialization) while including a couple adjacent-angle episodes (space, American dynamism/policy) that satisfy the ~15% cross-disciplinary curiosity. Minor deduction for repeated a16z/VC voices limiting internal variety within the domain.",
+                "Good match to the Content Hypothesis: the list is strongly concentrated on AI/tech infrastructure (hardware, chips, infra, VC strategy) with a few adjacent ties (space, national tech policy) that approximate the 85%/15% split. Minor issues: heavy reliance on a16z-style voices and podcast formats reduces within-domain variety, and true adjacent sectors like defense-tech and enterprise software are underrepresented. Overall fits the specialist profile with small room for broader cross-disciplinary picks.",
+                "Strong match. ~8\u20139 of 10 items focus squarely on AI/tech infrastructure and VC strategy (meets the 85% specialization), with 1\u20132 items providing bridge content (space, national competitiveness) that serve the 15% cross-disciplinary curiosity. Minor gap: fewer explicit picks on enterprise software or defense-tech \u2014 adding 1\u20132 items in those adjacent sectors would fully align to the stated 15% target."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                5.0,
+                9.0,
+                7.0
+              ],
+              "mean_score": 7.0,
+              "std": 1.63,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations are almost 100% focused on AI/Tech infrastructure, fulfilling the specialization aspect but largely missing the prescribed 15% cross-disciplinary content in adjacent sectors like defense-tech or enterprise software. While some recommendations touch on related themes like American Dynamism or chip supply chains, they remain primarily AI-centric rather than exploring adjacent sectors with an AI connection, leading to a mismatch in the prescribed diversity ratio.",
+                "The recommendations align well with the 85% specialization in AI/Tech infrastructure, with all content deeply rooted in the domain. The inclusion of topics like 'American Dynamism' and 'space-based AI' fulfills the 15% cross-disciplinary curiosity for adjacent sectors (e.g., defense-tech), providing the requested 'bridge' content connected to AI investment themes.",
+                "The recommendations align strongly with the 85% specialization in AI/Tech infrastructure and strategic analysis within the VC domain. However, the 15% cross-disciplinary curiosity in explicit adjacent sectors (defense-tech, enterprise software) and 'bridge' content is minimally represented. While some macro connections to AI capex and chip supply chains are present, the overall content leans very heavily into the core AI/Tech VC area, making the diversity slightly narrower than the hypothesis prescribed for the curiosity component."
+              ]
+            }
+          },
+          "final_score": 7.83,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.83,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] The slate is tightly focused on AI/tech infrastructure and VC strategy (matching the 85% specialization) while including a couple adjacent-angle episodes (space, American dynamism/policy) that satisfy the ~15% cross-disciplinary curiosity. Minor deduction for repeated a16z/VC voices limiting internal variety within the domain.",
+            "[gemini] The recommendations are almost 100% focused on AI/Tech infrastructure, fulfilling the specialization aspect but largely missing the prescribed 15% cross-disciplinary content in adjacent sectors like defense-tech or enterprise software. While some recommendations touch on related themes like American Dynamism or chip supply chains, they remain primarily AI-centric rather than exploring adjacent sectors with an AI connection, leading to a mismatch in the prescribed diversity ratio."
+          ]
+        },
+        {
+          "criterion_id": "quality",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong \u2014 top recommendations are from highly credible sources (all credibility = 4) and the computed quality scores are high (0.90\u20131.00). The episodes contain substantive AI-focused discussion (insight scores mostly 3, a few 4). Deductions: solid surfacing of high-quality content but somewhat narrow in voice (heavy VC/a16z/established-founder representation and moderate \u2014 not deep \u2014 insight ratings), so not perfect diversity or depth.",
+                "Top recommendations are consistently from credible sources (all credibility=4) and have high computed quality scores (0.9\u20131.0) with substantive insights (mostly 3\u20134). That yields a generally high-quality surfacing. Minor deductions because the slate leans heavily on established VC/tech figures and lacks a broader mix of emerging or contrarian voices, and insight depth is solid but not uniformly exceptional.",
+                "All top recommendations come from credible sources (credibility = 4) and have high computed quality scores (0.90\u20131.00), so high-quality episodes are being prioritized. However, most items have only moderate insight ratings (mostly 3), and the list skews toward established VC/industry voices with limited emerging or contrarian perspectives. Solid curation overall but could improve depth and diversity of voices."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                10.0,
+                10.0
+              ],
+              "mean_score": 10.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "All recommended episodes feature high credibility (score of 4), offer substantive insights (score of 3 or 4), and have strong computed quality metrics (0.90-1.00). The sources are well-regarded, indicating that high-quality content is being prominently surfaced.",
+                "All top recommendations consistently demonstrate high quality. Every episode has a 'Credibility' score of 4 (out of 5), indicating highly authoritative sources. 'Insight' scores are 3 or 4 (out of 5), confirming substantive, non-shallow content. The computed 'Quality' metric is 0.90 or 1.00 for all entries. While the speakers are predominantly established figures in tech and venture capital, their discussions are on cutting-edge AI topics, and the overall quality and credibility criteria are exceptionally well met.",
+                "All recommendations originate from highly credible sources (Credibility score of 4) and offer substantive insights (Insight score of 3 or 4). The computed Quality score for each episode is also consistently very high (0.90-1.00). The speakers are established and leading experts in the field. This aligns perfectly with the highest score in the scoring guide: 'Top recommendations are all high-quality, credible sources'."
+              ]
+            }
+          },
+          "final_score": 9.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.0,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong \u2014 top recommendations are from highly credible sources (all credibility = 4) and the computed quality scores are high (0.90\u20131.00). The episodes contain substantive AI-focused discussion (insight scores mostly 3, a few 4). Deductions: solid surfacing of high-quality content but somewhat narrow in voice (heavy VC/a16z/established-founder representation and moderate \u2014 not deep \u2014 insight ratings), so not perfect diversity or depth.",
+            "[gemini] All recommended episodes feature high credibility (score of 4), offer substantive insights (score of 3 or 4), and have strong computed quality metrics (0.90-1.00). The sources are well-regarded, indicating that high-quality content is being prominently surfaced."
+          ]
+        },
+        {
+          "criterion_id": "hypothesis_alignment",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                7.0,
+                8.0
+              ],
+              "mean_score": 7.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong alignment: 8/10. The top-10 is tightly focused on AI/tech infrastructure and strategic podcast-style analysis (Nvidia, OpenAI, AI spend, sovereignty, investment theses), matching the 85% specialization and format preference. Minor gaps: limited cross-disciplinary \u2018bridge\u2019 picks (defense-tech, enterprise software, regulation/chip-supply deep dives are underrepresented), some topic redundancy, and similarity scores imply only moderate centroid shift vs. a cold start (so Model Selection Agreement evidence is partial). Overall a solid but not perfect fit to the Content Hypothesis.",
+                "Strong alignment with the Content Hypothesis: the list is heavily AI/tech infrastructure and VC\u2011strategic (Nvidia, OpenAI, AI infra spend, sovereignty), delivered in investor\u2011focused podcast formats that match the user\u2019s preference for strategy over pure research. Minor shortcomings prevent a higher score: the slate leans toward high\u2011profile, mainstream thought leaders (a16z/Andreessen/Horowitz) which risks looking similar to a cold\u2011start top10 rather than clearly personalized; cross\u2011disciplinary coverage is present but thin (space/sovereignty appear, but little on defense\u2011tech, enterprise software, or detailed chip\u2011supply\u2011chain/datacenter capex analysis). Also, it\u2019s unclear from these items whether model selection shifts proportionally with engagement signals. To reach 9\u201310, include more niche infra deep dives (chip fabs, datacenter economics, supply\u2011chain analysis) and 1\u20132 deliberate bridge pieces into defense/enterprise software per the 85/15 split.",
+                "Strong alignment: the top-10 is heavily AI/tech infrastructure and VC-strategy focused (Nvidia, OpenAI, AI capex, investment thesis), matching the user's preference for strategic analysis over pure research. Personalization appears to have shifted toward AI/infra voice (likely meaningfully different from a cold start), and there are a few cross-disciplinary items (space, \u2018American Dynamism\u2019) that serve as bridges. Minor gaps: the set is somewhat homogenous (high-profile pundits/a16z-heavy) and slightly underweights deeper supply-chain/regulation or enterprise/defense-tech pieces that the 15% cross-disciplinary curiosity and infrastructure specificity would imply."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                10.0
+              ],
+              "mean_score": 10.0,
+              "std": 0.0,
+              "n": 2,
+              "reasoning_samples": [
+                "The recommendations perfectly align with the Content Hypothesis. All 10 recommendations are heavily focused on AI/Tech infrastructure and investment strategy, fulfilling the 85% specialization. The cross-disciplinary curiosity (15%) is met by 'bridge' content that links AI to macro themes, national strategy, and investment implications (e.g., AI sovereignty, American Dynamism, AI in space), as specified in the hypothesis. All content is strategic analysis (podcasts from VCs) rather than pure research papers, matching the format preference. The selections strongly reflect the user's profile as an AI/Tech focused VC partner and heavy consumer of a16z content.",
+                "The recommendations demonstrate an exceptional alignment with the Content Hypothesis. All 10 recommendations are precisely focused on AI/Tech infrastructure and investment strategy, perfectly fulfilling the 85% specialization. The 'cross-disciplinary curiosity' is well-addressed with content touching on space-based AI (adjacent to defense-tech/new frontiers) and 'American Dynamism' which clearly connects AI to defense-tech and national strategy. The preference for strategic analysis over pure research is met by the podcast format and discussion themes. Furthermore, several recommendations serve as 'bridge content' linking AI to macro themes like capex, chip supply chains (Nvidia mentions), tech regulation (AI sovereignty), and broader investment themes, exactly as hypothesized. This shows a clear and nuanced understanding of the user's content preferences."
+              ],
+              "partial_errors": [
+                "litellm.ServiceUnavailableError: GeminiException - {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"The service is currently unavailable.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
+              ]
+            }
+          },
+          "final_score": 8.84,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.17,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong alignment: 8/10. The top-10 is tightly focused on AI/tech infrastructure and strategic podcast-style analysis (Nvidia, OpenAI, AI spend, sovereignty, investment theses), matching the 85% specialization and format preference. Minor gaps: limited cross-disciplinary \u2018bridge\u2019 picks (defense-tech, enterprise software, regulation/chip-supply deep dives are underrepresented), some topic redundancy, and similarity scores imply only moderate centroid shift vs. a cold start (so Model Selection Agreement evidence is partial). Overall a solid but not perfect fit to the Content Hypothesis.",
+            "[gemini] The recommendations perfectly align with the Content Hypothesis. All 10 recommendations are heavily focused on AI/Tech infrastructure and investment strategy, fulfilling the 85% specialization. The cross-disciplinary curiosity (15%) is met by 'bridge' content that links AI to macro themes, national strategy, and investment implications (e.g., AI sovereignty, American Dynamism, AI in space), as specified in the hypothesis. All content is strategic analysis (podcasts from VCs) rather than pure research papers, matching the format preference. The selections strongly reflect the user's profile as an AI/Tech focused VC partner and heavy consumer of a16z content."
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "03_quality_gates_credibility",
+      "name": "Quality Gates Enforce Credibility Floor",
+      "type": "MFT",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "credibility_floor",
+          "description": "No episode with credibility < 2 in any response",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "low_credibility_count=0",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "combined_floor",
+          "description": "All episodes have C + I >= 5",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "low_combined_count=0",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "known_bad_excluded",
+          "description": "Known low-credibility episode LexVsfaBFuk0MWokZOhY never appears",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "found=False",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 3,
+        "passed_count": 3
+      }
+    },
+    {
+      "test_id": "04_excluded_episodes",
+      "name": "Excluded Episodes Never Reappear",
+      "type": "MFT",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "exclusions_respected",
+          "description": "None of the excluded episode IDs appear",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "excluded_found=[]",
+          "weight": 2.0
+        },
+        {
+          "criterion_id": "still_returns_results",
+          "description": "System still returns 10 valid recommendations",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "episode_count=10",
+          "weight": 1.0
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 2,
+        "passed_count": 2
+      }
+    },
+    {
+      "test_id": "05_category_personalization",
+      "name": "Category Personalization & Boundary Cross Test",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "ai_tech_category_match",
+          "description": "Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "ai_tech_matches=10/10",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "crypto_category_match",
+          "description": "Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "crypto_matches=8/10",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 8.84,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=8.8, consensus=GOOD, std=0.83",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 8.17,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=8.2, consensus=GOOD, std=0.50",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 9.0,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=9.0, consensus=PARTIAL, std=1.00",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 8.84,
+          "threshold": 6.0,
+          "confidence": 0.9,
+          "passed": true,
+          "details": "score=8.8, consensus=STRONG, std=0.17",
+          "weight": 1.0,
+          "consensus_level": "STRONG"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "Test PASSED: the top-10 recommendations are overwhelmingly AI/tech infrastructure and VC-strategy content, meeting the category-personalization requirement and providing contextually linked outside-category items. Overall signal quality, relevance, diversity and hypothesis alignment are strong, though insight depth is moderate.",
+        "quality_score": 5,
+        "observations": [
+          "Category match requirement met: >50% of top-10 focus on AI/tech infrastructure and VC strategy, aligning with the user\u2019s 80%+ category engagements.",
+          "Strength in relevance, diversity and source credibility: recommendations are focused on AI hardware, infrastructure, investment strategy and high-quality publishers (a16z, influencers, technical deep-dives).",
+          "Weakness: insight/analysis depth is only moderate and a few outside-category picks (the boundary-cross items) could be more explicitly justified or more tightly tied to the user\u2019s investment context."
+        ],
+        "suggestions": [
+          "Increase insight value by adding short contextual summaries or key takeaways for each recommendation that explain why it matters to an AI/Tech VC (e.g., deal implications, technology risk, commercialization timelines).",
+          "Make boundary-cross selections explicit: attach brief justification metadata (category tag + rationale) and enforce a cap of 1\u20132 outside-category items that are explicitly linked to core interests (e.g., defense-tech for AI infra, macro-stablecoin for crypto-adjacent investing)."
+        ],
+        "evaluated_at": "2026-02-09T17:19:52.478554"
+      },
+      "scores": {
+        "aggregate_score": 9.26,
+        "aggregate_confidence": 0.89,
+        "criteria_count": 6,
+        "passed_count": 6
+      },
+      "llm_results": [
+        {
+          "criterion_id": "relevance",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong match overall: the list focuses on VC/AI strategy and infrastructure themes (a16z, Martin Casado, Nvidia/hardware discussions) and even includes cross-disciplinary items (Elon on space) that align with the user\u2019s adjacent interests. It favors strategic podcast-format content the user prefers. Minor gaps: some redundancy (multiple Andreessen/Horowitz items), and it lacks a few deeper, technical infrastructure pieces (chip supply-chain deep dives, post\u2011training/ops-level technical sessions) and more enterprise software/defense-tech bridge content.",
+                "Strong match to the profile: the list is VC- and a16z-heavy, focuses on AI investment strategy, infrastructure winners (Nvidia, OpenAI), and sovereignty/sovereign-capex themes the user engages with. It also includes bridge content (Musk/space, Horowitz on US tech) that fits cross-disciplinary curiosity. Minor gaps: fewer deep technical or chip-level deep-dives and limited coverage of enterprise data infra (e.g., Snowflake/Databricks) despite the user\u2019s recent clicks\u2014so alignment is strong but not perfect.",
+                "Strong alignment \u2014 the list focuses on VC/strategy conversations about AI, infrastructure (Nvidia, OpenAI), and frontier plays (space AI) that match the user's AI/tech infra specialization and preference for strategic analysis. It also includes cross-disciplinary bridge content (space, sovereignty) consistent with the user's curiosity. Minor gaps: some redundancy (multiple episodes with the same high-profile VCs), relatively few deep technical or supply\u2011chain deep dives (chip fabrication, defense\u2011tech specifics, or enterprise infra case studies) and limited breadth beyond VC/industry thought leaders. Overall a close fit with small room for more technical and adjacent\u2011sector variety."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                9.0,
+                10.0
+              ],
+              "mean_score": 9.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations perfectly match the user's content hypothesis and demonstrated interests. All content is highly focused on AI/Tech infrastructure, investment strategy, and the broader impact of AI, aligning with the 85% specialization. The inclusion of Elon Musk discussing space-based AI and Ben Horowitz on American Dynamism serves as excellent 'bridge' content, fulfilling the 15% cross-disciplinary curiosity linked to AI capex and tech regulation. The heavy presence of a16z content and key figures (Marc Andreessen, Martin Casado, Ben Horowitz) directly reflects the user's recent engagements. One recommendation is even a repeat of a recently bookmarked item, indicating exceptional alignment.",
+                "The recommendations align exceptionally well with the user's content hypothesis and demonstrated interests. The overwhelming majority focus on AI/Tech infrastructure, strategic analysis, and VC perspectives, with a strong emphasis on a16z content and key figures like Marc Andreessen, Martin Casado, and Ben Horowitz. Cross-disciplinary curiosity is addressed by content linking AI to space infrastructure, economic impact, and 'American Dynamism,' which aligns with the user's openness to macro topics connected to AI capex or regulation. The inclusion of a previously bookmarked item (Martin Casado on Demand Forces Behind AI) further validates the strong relevance, though it could be seen as a minor gap in providing novel content.",
+                "The recommendations perfectly match the user's content hypothesis and interests. All recommendations are heavily focused on AI/Tech infrastructure, investment strategy, and market outlooks, aligning with the 85% specialization. Key figures like Marc Andreessen and Martin Casado, and the a16z podcast, are prominently featured, directly reflecting recent engagements. The 15% cross-disciplinary curiosity is met with 'bridge' content linking AI to macro themes, national strategy (American Dynamism), and new infrastructure (space-based AI), all presented as strategic analysis rather than pure research."
+              ]
+            }
+          },
+          "final_score": 8.84,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.83,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong match overall: the list focuses on VC/AI strategy and infrastructure themes (a16z, Martin Casado, Nvidia/hardware discussions) and even includes cross-disciplinary items (Elon on space) that align with the user\u2019s adjacent interests. It favors strategic podcast-format content the user prefers. Minor gaps: some redundancy (multiple Andreessen/Horowitz items), and it lacks a few deeper, technical infrastructure pieces (chip supply-chain deep dives, post\u2011training/ops-level technical sessions) and more enterprise software/defense-tech bridge content.",
+            "[gemini] The recommendations perfectly match the user's content hypothesis and demonstrated interests. All content is highly focused on AI/Tech infrastructure, investment strategy, and the broader impact of AI, aligning with the 85% specialization. The inclusion of Elon Musk discussing space-based AI and Ben Horowitz on American Dynamism serves as excellent 'bridge' content, fulfilling the 15% cross-disciplinary curiosity linked to AI capex and tech regulation. The heavy presence of a16z content and key figures (Marc Andreessen, Martin Casado, Ben Horowitz) directly reflects the user's recent engagements. One recommendation is even a repeat of a recently bookmarked item, indicating exceptional alignment."
+          ]
+        },
+        {
+          "criterion_id": "diversity",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                9.0,
+                9.0
+              ],
+              "mean_score": 8.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong alignment with the 85% AI/tech-infrastructure specialization: nearly all recommendations focus on AI hardware, infrastructure, investment strategy and platform trends, with good variety within that domain (chips, infra, investment thesis, sovereignty). Cross-disciplinary content is present but limited\u2014only a few items tangentially address adjacent areas (space, industrial policy/sovereignty). Slightly more explicit 'bridge' pieces to defense-tech, regulation, or enterprise software would bring this to a perfect match.",
+                "Strong match to the Content Hypothesis: ~8\u20139/10 items are strategic AI/tech infrastructure (high specialization) and 1\u20132 items provide adjacent cross-disciplinary bridges (space, industrial/policy themes) \u2014 roughly the targeted ~15% cross-over. Minor issues: heavy source concentration (a16z/podcasts) and some thematic repetition (Nvidia/OpenAI), so intra-domain variety could be slightly higher.",
+                "The list is tightly focused on AI/tech infrastructure and VC strategy\u2014exactly the user\u2019s primary interest\u2014while including a couple of bridge pieces (space/sovereignty/American dynamism) that serve the 15% cross-disciplinary need. It slightly leans on similar sources (a16z/VC voices) and could add one explicit chip supply\u2011chain or defense\u2011tech piece to hit the ideal ratio perfectly, so not a perfect 10."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                5.0,
+                9.0,
+                9.0
+              ],
+              "mean_score": 7.67,
+              "std": 1.89,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations heavily align with the 85% specialization in AI/Tech infrastructure. However, the 15% cross-disciplinary curiosity in adjacent sectors (defense-tech, enterprise software) is largely unaddressed. All 10 recommendations remain deeply within the core AI/Tech infrastructure domain, missing the intentional 'bridge' content to other investment themes or distinct adjacent sectors, thus creating a mismatch in the prescribed diversity.",
+                "The recommendations align very well with the 85% specialization in AI/Tech infrastructure. Almost all content is deeply focused on AI investment, strategy, and infrastructure. The 15% cross-disciplinary curiosity is addressed by content like Ben Horowitz discussing 'American Dynamism' (connecting to defense-tech) and Elon Musk on 'AI in space,' which serve as the prescribed 'bridge content.' The diversity is appropriate for a specialist, focusing within their domain while providing relevant adjacent content.",
+                "The content predominantly focuses on AI/Tech infrastructure, aligning with the 85% specialization. Crucially, the recommendations also include 'bridge' content like 'American Dynamism' and 'AI sovereignty' (items 5, 7, 10), which perfectly match the prescribed 15% cross-disciplinary curiosity in adjacent sectors like defense-tech and macro connections to AI capex/regulation. While the exact 85/15 ratio might vary slightly (e.g., closer to 70/30 or 80/20), the *type* of diversity is exceptionally well-matched to the hypothesis, demonstrating relevant variety within the specialist domain and targeted cross-disciplinary exploration."
+              ]
+            }
+          },
+          "final_score": 8.17,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.5,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong alignment with the 85% AI/tech-infrastructure specialization: nearly all recommendations focus on AI hardware, infrastructure, investment strategy and platform trends, with good variety within that domain (chips, infra, investment thesis, sovereignty). Cross-disciplinary content is present but limited\u2014only a few items tangentially address adjacent areas (space, industrial policy/sovereignty). Slightly more explicit 'bridge' pieces to defense-tech, regulation, or enterprise software would bring this to a perfect match.",
+            "[gemini] The recommendations heavily align with the 85% specialization in AI/Tech infrastructure. However, the 15% cross-disciplinary curiosity in adjacent sectors (defense-tech, enterprise software) is largely unaddressed. All 10 recommendations remain deeply within the core AI/Tech infrastructure domain, missing the intentional 'bridge' content to other investment themes or distinct adjacent sectors, thus creating a mismatch in the prescribed diversity."
+          ]
+        },
+        {
+          "criterion_id": "quality",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "Mostly high-quality: every top recommendation is from a credible source (credibility=4) and the computed quality scores are uniformly high (0.90\u20131.00). However, insight scores are only moderate (mostly 3), and the list is heavy on established VC/tech voices (some repetition of a16z/Andreessen/Horowitz) with limited representation of diverse or emerging perspectives. Overall the surfacing favors credible, high-production episodes but could improve depth and variety.",
+                "Top recommendations are from credible sources (all credibility = 4) and the computed quality scores are high (~0.90\u20131.00), so high-quality episodes are being surfaced prominently. However insight scores are mostly moderate (3), and the list leans toward established, recurring voices (several a16z/Andreessen/Horowitz entries) with limited diversity of emerging perspectives. Overall strong curation but room to increase depth and variety.",
+                "Recommendations are from consistently credible sources (all credibility \u22654) and show high computed quality scores, so strong signal-to-noise. However most items have only moderate insight ratings (3) and the list leans toward established voices and repeated outlets (a16z, Andreessen/Horowitz), so depth and diversity could be improved\u2014hence not a perfect 10."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                10.0,
+                10.0
+              ],
+              "mean_score": 10.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "All top recommendations feature highly credible sources (credibility 4/5), offer substantial insights (insight 3-4/5), and have excellent computed quality scores (0.90-1.00). The list prominently surfaces episodes from established and respected voices and podcasts in the tech and VC space, indicating high-quality content is being prioritized and presented effectively.",
+                "All top recommendations feature highly credible sources (Credibility 4), offer substantive insights (Insight 3-4), and are rated with very high internal Quality scores (0.90-1.00). The speakers are established leaders in their fields, ensuring high-quality content is prominently surfaced.",
+                "All top recommendations are from highly credible sources (Credibility score of 4 for all), offer substantive insights (Insight scores of 3 or 4), and have very high computed Quality scores (0.90 or 1.00). The list primarily features established and respected voices in the tech and VC space, fulfilling the criteria for high-quality content."
+              ]
+            }
+          },
+          "final_score": 9.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.0,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Mostly high-quality: every top recommendation is from a credible source (credibility=4) and the computed quality scores are uniformly high (0.90\u20131.00). However, insight scores are only moderate (mostly 3), and the list is heavy on established VC/tech voices (some repetition of a16z/Andreessen/Horowitz) with limited representation of diverse or emerging perspectives. Overall the surfacing favors credible, high-production episodes but could improve depth and variety.",
+            "[gemini] All top recommendations feature highly credible sources (credibility 4/5), offer substantial insights (insight 3-4/5), and have excellent computed quality scores (0.90-1.00). The list prominently surfaces episodes from established and respected voices and podcasts in the tech and VC space, indicating high-quality content is being prioritized and presented effectively."
+          ]
+        },
+        {
+          "criterion_id": "hypothesis_alignment",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                9.0,
+                9.0
+              ],
+              "mean_score": 8.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong alignment with the Content Hypothesis: the top-10 are overwhelmingly AI/tech infrastructure and strategic (VC/podcast) content, matching the user\u2019s primary preferences and format. There are some contextual bridges (AI sovereignty, space-based AI, chip/infrastructure discussions) that touch adjacent policy/space themes. Minor shortcoming: zero clearly outside-category picks (the hypothesis expects ~1\u20132 cross-disciplinary items like defense-tech, macro/regulatory deep dives), so cross-disciplinary diversity is underrepresented.",
+                "Strong alignment: 9/10 recommendations are squarely AI/tech infrastructure and VC-strategy focused (well above the 50% top\u201110 threshold), with strategic-format content (podcasts/interviews) rather than pure research. Several picks explicitly cover hardware/chips, AI infrastructure, sovereignty, and even a space\u2011as\u2011infrastructure angle (useful cross\u2011boundary bridge). Minor shortcoming: almost no explicit defense\u2011tech or other adjacent sector picks \u2014 cross\u2011disciplinary coverage exists but could more directly include the specific adjacent sectors called out in the hypothesis.",
+                "Strong alignment \u2014 100% of the top-10 focus on AI/tech infrastructure and investment (well above the 50% requirement), with several items providing cross-disciplinary bridges (space-based AI, AI sovereignty/American dynamism, infrastructure and chip discussions). Minor shortfall: the set lacks an explicit defense-tech or enterprise-software outside pick (and an occasional macro piece explicitly tied to chip supply chains/regulation) that would better match the stated 15% cross-disciplinary curiosity."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                7.0,
+                10.0
+              ],
+              "mean_score": 9.0,
+              "std": 1.41,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations demonstrate an exceptional understanding of the user's content preferences. All 10 recommendations align strongly with the primary focus on AI/Tech infrastructure and strategic analysis, exceeding the 85% specialization requirement. Recommendation #10 serves as a perfect example of 'bridge content,' linking AI investment to the 'American Dynamism' vertical, which aligns precisely with the user's explicit cross-disciplinary interest in defense-tech and tech regulation, fulfilling the 15% curiosity without being random or irrelevant. The strong presence of a16z content also aligns with the user's stated consumption habits. This flawlessly meets both the category personalization and boundary cross test criteria.",
+                "The recommendations show strong alignment with the user's primary AI/Tech focus and preference for strategic analysis from sources like a16z. All 10 recommendations are highly relevant to AI investment and infrastructure, fulfilling the 85% specialization aspect. However, the recommendations fall short on the explicit 15% cross-disciplinary curiosity component. There are no clear 'bridge' recommendations explicitly linking AI to defense-tech, enterprise software, or macro topics as distinct adjacent sectors, as requested by the hypothesis and the 'Boundary Cross Test'. The content is too specialized, missing the intended exploration of adjacent themes.",
+                "The recommendations demonstrate exceptional alignment with the content hypothesis. All 10 items are highly specialized in AI/Tech infrastructure and investment strategy, far exceeding the 85% primary focus. Crucially, the 'cross-disciplinary curiosity' and 'bridge' content requirements are perfectly met by recommendations linking AI to space infrastructure (Elon Musk), AI sovereignty (Navin Chaddha), and national tech strategy/American Dynamism (Ben Horowitz). These are contextually linked, not random, and align with strategic analysis preferences. The inclusion of multiple a16z podcasts also matches the user's stated preference."
+              ]
+            }
+          },
+          "final_score": 8.84,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.17,
+          "consensus_level": "STRONG",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong alignment with the Content Hypothesis: the top-10 are overwhelmingly AI/tech infrastructure and strategic (VC/podcast) content, matching the user\u2019s primary preferences and format. There are some contextual bridges (AI sovereignty, space-based AI, chip/infrastructure discussions) that touch adjacent policy/space themes. Minor shortcoming: zero clearly outside-category picks (the hypothesis expects ~1\u20132 cross-disciplinary items like defense-tech, macro/regulatory deep dives), so cross-disciplinary diversity is underrepresented.",
+            "[gemini] The recommendations demonstrate an exceptional understanding of the user's content preferences. All 10 recommendations align strongly with the primary focus on AI/Tech infrastructure and strategic analysis, exceeding the 85% specialization requirement. Recommendation #10 serves as a perfect example of 'bridge content,' linking AI investment to the 'American Dynamism' vertical, which aligns precisely with the user's explicit cross-disciplinary interest in defense-tech and tech regulation, fulfilling the 15% curiosity without being random or irrelevant. The strong presence of a16z content also aligns with the user's stated consumption habits. This flawlessly meets both the category personalization and boundary cross test criteria."
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "06_recency_scoring",
+      "name": "Recency Scoring Works",
+      "type": "DIR",
+      "evaluation_method": "deterministic",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "both_in_top_10",
+          "description": "Both test episodes found in top 10 cold start results",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent_found=True, older_found=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "recency_score_ordering",
+          "description": "Recent episode has higher recency_score than older",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent=0.8869, older=0.8353",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "ranking_reflects_recency",
+          "description": "Recent episode ranks higher (lower position) than older",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "recent_pos=3, older_pos=8",
+          "weight": 1.5
+        }
+      ],
+      "error": null,
+      "llm_evaluation": null,
+      "scores": {
+        "aggregate_score": 10.0,
+        "aggregate_confidence": 1.0,
+        "criteria_count": 3,
+        "passed_count": 3
+      }
+    },
+    {
+      "test_id": "07_bookmark_weighting",
+      "name": "Bookmarks Outweigh Clicks (High-Quality Episodes)",
+      "type": "DIR",
+      "evaluation_method": "deterministic_llm",
+      "passed": false,
+      "criteria_results": [
+        {
+          "criterion_id": "different_results",
+          "description": "Scenarios produce different recommendations (at least 2 different episodes)",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "different_episodes=16",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "crypto_dominance_in_b",
+          "description": "Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "scenario_a_crypto=1/10, scenario_b_crypto=5/10, delta=4",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 6.83,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=6.8, consensus=LOW, std=1.50",
+          "weight": 1.0,
+          "consensus_level": "LOW"
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 5.83,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": false,
+          "details": "score=5.8, consensus=LOW, std=1.83",
+          "weight": 1.0,
+          "consensus_level": "LOW",
+          "flag_for_review": true
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 8.66,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=8.7, consensus=GOOD, std=0.67",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 6.0,
+          "threshold": 6.0,
+          "confidence": 0.9,
+          "passed": true,
+          "details": "score=6.0, consensus=STRONG, std=0.33",
+          "weight": 1.0,
+          "consensus_level": "STRONG"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "Partial pass \u2014 bookmark-weighting is evident (top items are high-quality crypto episodes and all items pass quality gates), but relevance and diversity are weaker than expected: only ~2\u20133 of 10 recommendations are clearly crypto and topical coverage within crypto is limited.",
+        "quality_score": 4,
+        "observations": [
+          "Bookmark-weighting behavior is visible: top-ranked items prioritize high-quality crypto episodes and all recommendations passed quality gates.",
+          "Relevance was only partial: although the profile is a crypto bookmark specialist, only ~2\u20133 of the 10 recommendations are clearly crypto-focused.",
+          "Diversity failed: recommendations are concentrated in crypto/venture/tech/AI and show limited coverage across distinct crypto subtopics (e.g., NFTs, DAOs, regulation)."
+        ],
+        "suggestions": [
+          "Increase the effective weight of bookmarks in the user-interest vector (or normalize signals so bookmarks dominate clicks) and improve topic/entity extraction from bookmark content so more top-N recommendations match the user\u2019s crypto intent.",
+          "Add topical diversity constraints within the user\u2019s primary domain (e.g., require top-10 to include multiple crypto subtopics such as NFTs, DAOs, and regulatory content) while preserving quality gating to avoid surfacing low-quality items."
+        ],
+        "evaluated_at": "2026-02-09T17:20:51.912588"
+      },
+      "scores": {
+        "aggregate_score": 8.05,
+        "aggregate_confidence": 0.86,
+        "criteria_count": 6,
+        "passed_count": 5
+      },
+      "llm_results": [
+        {
+          "criterion_id": "relevance",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                5.0,
+                6.0,
+                5.0
+              ],
+              "mean_score": 5.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Partial alignment. The user\u2019s bookmarks show a clear crypto/NFT and DAO/regulatory interest; only ~2\u20133 of the 10 recommendations are clearly crypto-focused (Brian Armstrong, Jeremy Allaire, possibly the Ben Horowitz/Balaji item), while the majority lean toward VC/AI/gaming. That fits the user\u2019s cross-disciplinary click on an AI piece but misses stronger specialization on crypto/NFT/governance topics, so relevance is moderate.",
+                "Partial alignment. The user\u2019s bookmarks show a clear crypto/NFT/DAO focus; a few recommendations (Brian Armstrong, Jeremy Allaire, Ben Horowitz/Balaji) are directly relevant, but the majority skew toward AI/VC/startup and gaming topics. Given the click on an AI piece, some cross-disciplinary exploration is reasonable, but the specialization vs exploration balance is tilted too far from crypto. Increase crypto/NFT/regulation/DeFi content to improve relevance.",
+                "Partial alignment. The user has bookmarked crypto/NFT/DAO content, and 3 of 10 recommendations are clearly crypto-focused (items 1\u20133) while the majority are VC/AI/tech (venture, AI, gaming) that only loosely overlap with crypto. This suggests too high an exploration tilt versus the user\u2019s demonstrated crypto specialization \u2014 acceptable cross-disciplinary coverage given an AI click, but more direct crypto/NFT/DeFi/ethereum governance items would improve relevance."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                9.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "The user explicitly bookmarked crypto content and is described as a 'User who has bookmarked crypto content'. The top three recommendations are perfectly aligned with this strong crypto interest. The user also clicked on an AI-related piece, and several other recommendations align with AI/VC topics. The remaining recommendations are general VC/tech, which are reasonable explorations for a user interested in crypto and AI within the tech space. This shows strong alignment with demonstrated interests.",
+                "The recommendations align strongly with the user's demonstrated interests. The top three recommendations are directly related to crypto, which the user bookmarked twice. Additionally, several recommendations focus on AI, matching the user's single click engagement. Minor gaps exist with a few general venture capital topics and one recommendation about gaming, which do not directly align with the explicit engagement patterns.",
+                "The recommendations show strong alignment with the user's demonstrated interests. The user bookmarked two crypto-related pieces and clicked one AI-related piece. The top three recommendations are perfectly aligned with crypto/blockchain content. Recommendations 6, 7, and 8 align well with the user's interest in AI. While recommendations 4, 5, 9, and 10 are less directly relevant to the specific crypto/AI topics, some are from related VC podcasts (a16z, 20VC) which the user has engaged with, suggesting a broader interest in the tech/VC space. The strong relevance of the top 6 recommendations indicates strong alignment, with minor gaps towards the end of the list."
+              ]
+            }
+          },
+          "final_score": 6.83,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.5,
+          "consensus_level": "LOW",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Partial alignment. The user\u2019s bookmarks show a clear crypto/NFT and DAO/regulatory interest; only ~2\u20133 of the 10 recommendations are clearly crypto-focused (Brian Armstrong, Jeremy Allaire, possibly the Ben Horowitz/Balaji item), while the majority lean toward VC/AI/gaming. That fits the user\u2019s cross-disciplinary click on an AI piece but misses stronger specialization on crypto/NFT/governance topics, so relevance is moderate.",
+            "[gemini] The user explicitly bookmarked crypto content and is described as a 'User who has bookmarked crypto content'. The top three recommendations are perfectly aligned with this strong crypto interest. The user also clicked on an AI-related piece, and several other recommendations align with AI/VC topics. The remaining recommendations are general VC/tech, which are reasonable explorations for a user interested in crypto and AI within the tech space. This shows strong alignment with demonstrated interests."
+          ]
+        },
+        {
+          "criterion_id": "diversity",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                7.0
+              ],
+              "mean_score": 7.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Profile shows a specialist (bookmarked crypto). The recommendations are concentrated in crypto/venture/tech/AI\u2014a focused set that provides useful variety within the user\u2019s domain. Minor issues: limited coverage of distinct crypto subtopics (e.g., DeFi, NFTs, protocol design, trading/regulation) and a couple of off-domain picks (gaming) that slightly dilute the focus.",
+                "User appears specialized (bookmarked crypto). Recommendations are concentrated in crypto/tech/VC with some adjacent AI and one gaming item \u2014 providing healthy variety within the user's domain without being overly scattered. A couple items (e.g., Roblox) are slightly outside core crypto focus, but overall diversity matches a specialist profile with minor room for tighter relevance.",
+                "User appears specialized in crypto (bookmarked crypto content). The list is moderately focused on crypto and adjacent tech/VC themes (3 clearly crypto-focused items plus several VC/AI pieces that overlap the space), so it provides useful within-domain variety. However ~70% of recommendations drift into broader VC/AI/gaming topics (Roblox, general AI podcasts, venture-centric episodes) rather than deepening crypto-specific angles (regulation, tokens, layer\u20111s, DeFi), so diversity is slightly off-match for a crypto specialist \u2014 minor mismatch rather than major."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                5.0,
+                4.0,
+                3.0
+              ],
+              "mean_score": 4.0,
+              "std": 0.82,
+              "n": 3,
+              "reasoning_samples": [
+                "The user has explicitly bookmarked crypto content, indicating a specialization in this domain. While the top 3 recommendations are highly relevant to crypto, the list quickly diversifies into broader venture capital, AI, and even gaming topics. For a specialist, the expectation is variety *within* their domain. These recommendations offer variety in *adjacent* domains rather than deep dives or different facets of crypto, leading to a moderate mismatch in diversity expectations.",
+                "The user has a demonstrated interest in crypto content (bookmarked). For a specialist, variety within their domain is good, but scattered recommendations are bad. While the first three recommendations are highly relevant to crypto, the subsequent seven recommendations quickly diverge into general venture capital, AI, and broader tech topics, rather than offering variety specifically within the crypto domain. This represents a mismatch, as the content becomes scattered outside the user's primary demonstrated interest.",
+                "The user has bookmarked crypto content, indicating a specialist interest in this domain. While the top 3 recommendations are highly relevant to crypto, the remaining 7 recommendations are scattered across broader venture capital, AI, and general tech/startup topics, which do not align with a specialist's expectation of variety within their core domain."
+              ]
+            }
+          },
+          "final_score": 5.83,
+          "threshold": 6.0,
+          "passed": false,
+          "cross_model_std": 1.83,
+          "consensus_level": "LOW",
+          "flag_for_review": true,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Profile shows a specialist (bookmarked crypto). The recommendations are concentrated in crypto/venture/tech/AI\u2014a focused set that provides useful variety within the user\u2019s domain. Minor issues: limited coverage of distinct crypto subtopics (e.g., DeFi, NFTs, protocol design, trading/regulation) and a couple of off-domain picks (gaming) that slightly dilute the focus.",
+            "[gemini] The user has explicitly bookmarked crypto content, indicating a specialization in this domain. While the top 3 recommendations are highly relevant to crypto, the list quickly diversifies into broader venture capital, AI, and even gaming topics. For a specialist, the expectation is variety *within* their domain. These recommendations offer variety in *adjacent* domains rather than deep dives or different facets of crypto, leading to a moderate mismatch in diversity expectations."
+          ]
+        },
+        {
+          "criterion_id": "quality",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "mean_score": 8.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "Recommendations are from credible sources (all credibility = 4) and the computed quality scores are high, so high-quality episodes are being surfaced prominently. However, insight ratings are mostly moderate (3) with one lower (2), and the lineup leans toward established VC/crypto/AI voices rather than a broader mix of emerging perspectives\u2014so solid but not perfect.",
+                "Most top picks are from credible, well-known sources (credibility=4 across the board) and many show strong quality metrics and substantive insights. There are a small number of moderately shallow entries (insight=2) and some repetition of the same outlets (a16z/20VC), so diversity and depth are slightly imperfect \u2014 overall mostly high-quality with 1\u20132 moderate items.",
+                "Overall this slate is strong: every top recommendation is from a credible source (credibility \u22654) and most items have solid insight/quality metrics (quality mostly 0.9). The line-up includes well-known, authoritative shows and speakers, so high-quality episodes are being surfaced prominently. Minor negatives: one episode has a lower insight score (2) and several picks cluster on similar topics (crypto/VC/a16z), so there\u2019s some topical redundancy and limited representation of emerging or contrarian voices."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                9.0,
+                10.0,
+                9.0
+              ],
+              "mean_score": 9.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations consistently feature high credibility (all scores are 4) and strong computed quality metrics (mostly 0.90, with one at 0.80). The insights are substantive, ranging from 2 to 3, covering relevant topics like crypto, AI, and venture capital. While the mix leans heavily towards established voices, this aligns with surfacing high-quality, authoritative content. The presence of a few entries with slightly lower insight (2) or computed quality (0.80) prevents a perfect 10, but overall, high-quality episodes are prominently displayed.",
+                "All recommended episodes exhibit consistently high quality across all provided indicators. Every recommendation has a Credibility score of 4 (out of 5), indicating highly authoritative sources. The computed 'Quality' metric is exceptionally high, ranging from 0.80 to 0.90 (out of 1.0). Insight scores are predominantly 3 (out of 5), with one entry at 2, all of which represent substantive content. Based on these strong metrics, high-quality episodes are indeed being surfaced prominently.",
+                "All recommendations come from highly credible sources (credibility 4/5) and offer substantive insights (insight 3/5). The computed quality scores are consistently high (0.80-0.90), indicating that high-quality episodes are prominently featured. The slight moderation from a perfect 10 is due to the insight score being 3/5 rather than higher, and one episode having a slightly lower computed quality score (0.80)."
+              ]
+            }
+          },
+          "final_score": 8.66,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.67,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Recommendations are from credible sources (all credibility = 4) and the computed quality scores are high, so high-quality episodes are being surfaced prominently. However, insight ratings are mostly moderate (3) with one lower (2), and the lineup leans toward established VC/crypto/AI voices rather than a broader mix of emerging perspectives\u2014so solid but not perfect.",
+            "[gemini] The recommendations consistently feature high credibility (all scores are 4) and strong computed quality metrics (mostly 0.90, with one at 0.80). The insights are substantive, ranging from 2 to 3, covering relevant topics like crypto, AI, and venture capital. While the mix leans heavily towards established voices, this aligns with surfacing high-quality, authoritative content. The presence of a few entries with slightly lower insight (2) or computed quality (0.80) prevents a perfect 10, but overall, high-quality episodes are prominently displayed."
+          ]
+        },
+        {
+          "criterion_id": "hypothesis_alignment",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                5.0,
+                6.0
+              ],
+              "mean_score": 6.33,
+              "std": 1.25,
+              "n": 3,
+              "reasoning_samples": [
+                "Strong alignment: top recommendations prioritize high-quality crypto episodes (items 1\u20133) and all items pass quality gates, reflecting bookmark-weighting. Recommendations also include adjacent tech/VC/AI content, which is a reasonable cross-disciplinary exploration given crypto\u2019s overlap with those areas. Not perfect because fewer pure-crypto picks appear across the full top-10 than a strictly specialized hypothesis might expect, showing minor exploration bias.",
+                "Partial alignment. The top 2\u20133 recommendations are clearly crypto-focused (matching bookmarked interest), but 70% of the list drifts into VC/AI/gaming rather than being dominated by crypto. Given the test context (bookmarks should outweigh clicks and cause the bookmarked topic to dominate), the recommendations should show a much stronger crypto concentration and larger score separation for crypto items. The mix suggests bookmark weighting is having some effect but not enough to produce a clear specialization.",
+                "Partial alignment. The top-ranked recommendations do reflect the bookmarked crypto interest (items 1\u20133 are explicitly crypto and have the highest final scores), but crypto does not clearly dominate the list \u2014 the majority of items are venture/AI/startup content. Similarity and final scores for crypto are only marginally higher than non-crypto items, so the bookmark signal appears to be weighted but not strongly dominant. Format preferences and fine-grained boundaries aren\u2019t addressed, and cross-disciplinary items suggest a higher exploration ratio than a strict crypto specialization would imply."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                6.0,
+                5.0,
+                6.0
+              ],
+              "mean_score": 5.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Although no explicit Content Hypothesis is provided, the implicit hypothesis derived from the user profile ('bookmarked crypto content') and test context ('bookmark engagements are weighted more heavily... bookmarked topic dominates') suggests that recommendations should heavily feature crypto content. The top 3 recommendations are highly aligned with crypto. However, recommendations 4-10 primarily focus on general venture capital, AI, and other tech topics, indicating that the bookmarked crypto interest does not fully dominate the entire recommendation list as implied by the test's evaluation focus.",
+                "The inferred Content Hypothesis, based on the user's bookmarking of crypto content and the 'Bookmarks Outweigh Clicks' test context, is a strong preference for crypto-related content. While the top three recommendations are directly aligned with crypto, the majority of the remaining seven recommendations diverge into general venture capital, AI, or broader tech topics. This indicates that the bookmarked topic does not 'dominate' the recommendations as expected by the evaluation focus, suggesting only partial alignment with the user's primary inferred interest.",
+                "No explicit content hypothesis was provided, so evaluation is based on the inferred hypothesis from the user profile and test context: the user is interested in high-quality crypto content, and this interest should dominate due to bookmark weighting. The top three recommendations are perfectly aligned with crypto content. However, recommendations 4-10 quickly deviate to general venture capital, AI, and broader tech topics, indicating that the bookmarked crypto topic does not fully dominate the entire list. This shows partial alignment, as the initial signal is understood but not consistently reflected throughout the recommendations."
+              ]
+            }
+          },
+          "final_score": 6.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.33,
+          "consensus_level": "STRONG",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Strong alignment: top recommendations prioritize high-quality crypto episodes (items 1\u20133) and all items pass quality gates, reflecting bookmark-weighting. Recommendations also include adjacent tech/VC/AI content, which is a reasonable cross-disciplinary exploration given crypto\u2019s overlap with those areas. Not perfect because fewer pure-crypto picks appear across the full top-10 than a strictly specialized hypothesis might expect, showing minor exploration bias.",
+            "[gemini] Although no explicit Content Hypothesis is provided, the implicit hypothesis derived from the user profile ('bookmarked crypto content') and test context ('bookmark engagements are weighted more heavily... bookmarked topic dominates') suggests that recommendations should heavily feature crypto content. The top 3 recommendations are highly aligned with crypto. However, recommendations 4-10 primarily focus on general venture capital, AI, and other tech topics, indicating that the bookmarked crypto interest does not fully dominate the entire recommendation list as implied by the test's evaluation focus."
+          ]
+        }
+      ]
+    }
+  ]
+}

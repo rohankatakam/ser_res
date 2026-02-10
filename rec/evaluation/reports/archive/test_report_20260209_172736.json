@@ -1,0 +1,733 @@
+{
+  "timestamp": "2026-02-09T17:27:36.700370",
+  "context": {
+    "algorithm_version": "v1_2_blended",
+    "algorithm_name": "Blended Scoring",
+    "dataset_version": "eval_909_feb2026",
+    "dataset_episode_count": 909,
+    "llm_providers": [
+      "openai",
+      "gemini"
+    ],
+    "evaluation_mode": "multi_llm"
+  },
+  "summary": {
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "overall_score": 8.82,
+    "overall_confidence": 0.88,
+    "score_breakdown": {
+      "01_cold_start_quality": 8.82
+    }
+  },
+  "results": [
+    {
+      "test_id": "01_cold_start_quality",
+      "name": "Cold Start Quality & Topic Breadth (First Impression Test)",
+      "type": "MFT",
+      "evaluation_method": "deterministic_llm",
+      "passed": true,
+      "criteria_results": [
+        {
+          "criterion_id": "cold_start_flag",
+          "description": "API response includes cold_start: true",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "cold_start=True",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "avg_credibility",
+          "description": "Average credibility of top 10 >= 3.0",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "avg_credibility=4.00",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "min_credibility",
+          "description": "No episode in top 10 has credibility < 2",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "min_credibility=4",
+          "weight": 1.0
+        },
+        {
+          "criterion_id": "top_quality_score",
+          "description": "Top 3 episodes have quality_score >= 0.7",
+          "score": 10.0,
+          "threshold": 7.0,
+          "confidence": 1.0,
+          "passed": true,
+          "details": "top_3_quality_scores=[1.0, 1.0, 0.9]",
+          "weight": 1.5
+        },
+        {
+          "criterion_id": "llm_relevance",
+          "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
+          "score": 7.83,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=7.8, consensus=PARTIAL, std=1.17",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        },
+        {
+          "criterion_id": "llm_hypothesis_alignment",
+          "description": "LLM Judge: Recommendations align with Content Hypothesis",
+          "score": 6.17,
+          "threshold": 6.0,
+          "confidence": 0.7,
+          "passed": true,
+          "details": "score=6.2, consensus=PARTIAL, std=1.17",
+          "weight": 1.0,
+          "consensus_level": "PARTIAL"
+        },
+        {
+          "criterion_id": "llm_topic_breadth",
+          "description": "LLM Judge: Topic breadth covers major themes",
+          "score": 8.83,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=8.8, consensus=GOOD, std=0.50",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_quality",
+          "description": "LLM Judge: High-quality, credible sources surfaced",
+          "score": 9.34,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=9.3, consensus=GOOD, std=0.67",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        },
+        {
+          "criterion_id": "llm_diversity",
+          "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
+          "score": 6.0,
+          "threshold": 6.0,
+          "confidence": 0.8,
+          "passed": true,
+          "details": "score=6.0, consensus=GOOD, std=0.67",
+          "weight": 1.0,
+          "consensus_level": "GOOD"
+        }
+      ],
+      "error": null,
+      "llm_evaluation": {
+        "summary": "Pass with reservations: the slate delivers high-quality, credible episodes and covers all major themes, but the top picks are skewed toward AI/tech and include duplicate guests, weakening the first-impression topic balance.",
+        "quality_score": 4,
+        "observations": [
+          "Overall test criteria passed (cold_start: true); recommendations are high-quality and credible with strong insight scores.",
+          "All five major themes (AI/Tech, Startups, Venture/PE, Crypto, Macro) are present, enabling initial discovery across topics.",
+          "Slate is heavily skewed toward AI/Tech and founder/startup stories (multiple Elon items and repeats), with weak macro and crypto depth and limited guest diversity."
+        ],
+        "suggestions": [
+          "Enforce diversity constraints for cold-start slates: limit repeats of the same guest (max 1) and cap AI/Tech items to avoid dominance\u2014allocate minimum slots for other major themes (e.g., at least 2 non-AI picks in the top 10).",
+          "Boost underrepresented themes with flagship, high-credibility episodes and varied formats (macro roundtable, crypto explainer, VC deep-dive) to better probe user interests on first impression."
+        ],
+        "evaluated_at": "2026-02-09T17:27:36.696601"
+      },
+      "scores": {
+        "aggregate_score": 8.82,
+        "aggregate_confidence": 0.88,
+        "criteria_count": 9,
+        "passed_count": 9
+      },
+      "llm_results": [
+        {
+          "criterion_id": "relevance",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                6.0,
+                8.0,
+                6.0
+              ],
+              "mean_score": 6.67,
+              "std": 0.94,
+              "n": 3,
+              "reasoning_samples": [
+                "Partial alignment. The list contains high-quality, relevant content across AI and startups and includes at least one crypto and one macro/finance pick, so it begins to probe multiple themes. However it is overly concentrated on AI/tech (and even duplicates Elon Musk entries), reducing initial diversity. For a true cold-start exploration the mix should be more balanced across AI, Crypto, Macro, and Startups and avoid near-duplicates to better probe cross-disciplinary interests.",
+                "Strong initial breadth with high\u2011quality picks across AI and startups and at least one clear crypto and one macro/finance item, which fits a probe-style cold start. However the slate is skewed toward AI/tech (roughly two\u2011thirds of items) rather than evenly sampling the four target themes (AI, Crypto, Macro, Startups). A more balanced mix (additional macro and crypto pieces and perhaps one more non\u2011tech business story) would better match the stated exploration hypothesis.",
+                "Partial alignment. The slate strongly favors AI/tech/startups (7\u20138 items) and does include representative startup and crypto pieces, plus one banking/macro conversation, but it\u2019s skewed toward AI-heavy guests and formats. For a true cold-start diversity probe (AI, Crypto, Macro, Startups equally), the set should include more non-AI crypto and macro/economics entries and fewer near-duplicate AI-focused items."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                9.0,
+                9.0,
+                9.0
+              ],
+              "mean_score": 9.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations align strongly with the content hypothesis for a cold start user. They successfully maximize initial diversity across the major requested themes (AI, Crypto, Macro, Startups). While the first two items are very similar (Elon Musk on AI/Space), the subsequent recommendations effectively branch out to cover a good breadth of topics like startup journeys, crypto art, banking transformation, and tech investing, thus probing user interests rather than specializing too early.",
+                "The recommendations align very well with the content hypothesis for a cold start user. They successfully cover the major themes of AI, Crypto, Macro, and Startups, showcasing breadth rather than depth in a single category. While the top two recommendations are quite similar AI topics, the subsequent items quickly diversify across the specified interest areas, effectively probing for user interests as intended.",
+                "The recommendations align very well with the content hypothesis for a cold start user. They successfully maximize initial diversity by covering all major themes requested: AI (1, 2, 3, 5, 7, 10), Crypto (6), Macro (7, 8, 10), and Startups (3, 4, 5, 9). The breadth of high-quality content is evident. The only minor point preventing a perfect score is the very similar nature of the first two recommendations (both Elon Musk on AI/Space), which slightly reduces immediate diversity, but the rest of the list quickly diversifies."
+              ]
+            }
+          },
+          "final_score": 7.83,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.17,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Partial alignment. The list contains high-quality, relevant content across AI and startups and includes at least one crypto and one macro/finance pick, so it begins to probe multiple themes. However it is overly concentrated on AI/tech (and even duplicates Elon Musk entries), reducing initial diversity. For a true cold-start exploration the mix should be more balanced across AI, Crypto, Macro, and Startups and avoid near-duplicates to better probe cross-disciplinary interests.",
+            "[gemini] The recommendations align strongly with the content hypothesis for a cold start user. They successfully maximize initial diversity across the major requested themes (AI, Crypto, Macro, Startups). While the first two items are very similar (Elon Musk on AI/Space), the subsequent recommendations effectively branch out to cover a good breadth of topics like startup journeys, crypto art, banking transformation, and tech investing, thus probing user interests rather than specializing too early."
+          ]
+        },
+        {
+          "criterion_id": "hypothesis_alignment",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                5.0,
+                5.0,
+                5.0
+              ],
+              "mean_score": 5.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "Recommendations are uniformly high-quality and credible, but they skew heavily to AI/tech/startups (including two Elon repeats) with only one clear crypto item and a weak macro representation. For a cold-start that should probe broad interests across AI, Crypto, Macro, and Startups, this list only partially satisfies the hypothesis: good quality and credibility but insufficient topical breadth and redundancy reduce its effectiveness as a first-impression diversity probe.",
+                "Recommendations are mostly high-quality and avoid low-credibility content, but they over-index on AI (notably two near-duplicate Elon items) and cluster around AI/startup themes. Crypto and Macro are underrepresented (only one clear Crypto piece and one Macro/banking piece), so the list fails to maximally probe breadth across the four target themes for a true cold-start first impression.",
+                "Partial alignment. Strengths: high-quality, credible episodes and strong startup/AI representation that surface expert voices. Weaknesses: heavy concentration on AI (multiple Elon entries/redundancy) reduces probing breadth; crypto is only lightly represented (one episode) and macro/economics is underrepresented (UniCredit is more banking/tech than broad macro). For a cold start, the list should replace duplicates and add clearer, high-quality picks focused on Macro and Crypto to better span the four target themes."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                8.0,
+                7.0,
+                7.0
+              ],
+              "mean_score": 7.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations align well with the hypothesis: they are high-quality, avoid low-credibility content, and cover all specified major themes (AI, Crypto, Macro, Startups). However, the distribution is skewed, with AI heavily represented (6 out of 10 items) and Crypto only having one item. While breadth is achieved, the hypothesis emphasizes 'maximize initial diversity' and 'showcase breadth of high-quality content rather than depth in any single category.' The strong weighting towards AI could be seen as a minor deviation from maximizing even diversity across the specified themes.",
+                "The recommendations align well with the quality and credibility requirements. However, while diversity across major themes (AI, Crypto, Macro, Startups) is present, it is not maximally balanced. There is a strong emphasis on AI/Tech content, with Crypto and Macro topics being notably underrepresented compared to AI. The hypothesis requested maximizing initial diversity across these themes to probe user interests, but the current selection shows more depth in AI/Tech rather than equal breadth across all specified categories.",
+                "Recommendations are high-quality and high-credibility, aligning with those aspects of the hypothesis. They cover AI, Startups, and Macro themes. However, the diversity across the explicit 'major themes' (AI, Crypto, Macro, Startups) is skewed; AI is heavily represented (6/10), while Crypto has only one item (1/10). This underrepresentation of a key theme means it doesn't fully 'maximize initial diversity' as strongly as the hypothesis suggests for a cold start user."
+              ]
+            }
+          },
+          "final_score": 6.17,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 1.17,
+          "consensus_level": "PARTIAL",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Recommendations are uniformly high-quality and credible, but they skew heavily to AI/tech/startups (including two Elon repeats) with only one clear crypto item and a weak macro representation. For a cold-start that should probe broad interests across AI, Crypto, Macro, and Startups, this list only partially satisfies the hypothesis: good quality and credibility but insufficient topical breadth and redundancy reduce its effectiveness as a first-impression diversity probe.",
+            "[gemini] The recommendations align well with the hypothesis: they are high-quality, avoid low-credibility content, and cover all specified major themes (AI, Crypto, Macro, Startups). However, the distribution is skewed, with AI heavily represented (6 out of 10 items) and Crypto only having one item. While breadth is achieved, the hypothesis emphasizes 'maximize initial diversity' and 'showcase breadth of high-quality content rather than depth in any single category.' The strong weighting towards AI could be seen as a minor deviation from maximizing even diversity across the specified themes."
+          ]
+        },
+        {
+          "criterion_id": "topic_breadth",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                8.0,
+                9.0,
+                8.0
+              ],
+              "mean_score": 8.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "All five major themes are present (AI/Tech, Startups, Venture/PE, Crypto, Macro), so coverage exists for discovery. However the slate is heavily skewed toward AI/Tech and Founder/Startup stories (most items), with only one clear Crypto entry and one Macro/Banking entry. That imbalance reduces true cold-start breadth even though each theme is represented.",
+                "All five major themes are present (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE), so breadth is strong. However the list is skewed toward AI/Tech (multiple Elon Musk entries and several AI-focused episodes) and includes some near-duplicates, so balance across themes is imperfect.",
+                "All five major themes appear at least once (AI/Tech, Startups, Crypto, Macro, Venture), but the list is heavily skewed toward AI/Tech and founder/startup stories. Crypto and Macro are represented by only one item each and Venture/PE mostly overlaps with Startups, so breadth exists but is unbalanced for a cold-start."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                9.0,
+                9.0
+              ],
+              "mean_score": 9.33,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented within the top 10 recommendations. While AI/Tech has a slightly higher representation (4 items), the distribution across the other themes (Macro/Markets: 2, Venture/PE: 2, Startups/Founders: 1, Crypto/Web3: 1) demonstrates good balance and effectively probes diverse user interests, fulfilling the 'cold start' objective.",
+                "All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented in the recommendations, indicating excellent topic breadth. However, the distribution is imbalanced, with AI/Tech heavily dominating (7 out of 10 recommendations) while Crypto/Web3 is represented by only one episode. This lack of balance, preventing a perfect showcase of each theme, slightly reduces the score from a 10.",
+                "All 5 major themes (AI/Tech, Startups/Founders, Crypto/Web3, Macro/Markets, Venture/PE) are represented in the top 10 recommendations, demonstrating strong topic breadth. However, AI/Tech is significantly more represented (5 primary mentions) compared to the other themes (1-2 primary mentions each), preventing a perfect score for 'balance'."
+              ]
+            }
+          },
+          "final_score": 8.83,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.5,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] All five major themes are present (AI/Tech, Startups, Venture/PE, Crypto, Macro), so coverage exists for discovery. However the slate is heavily skewed toward AI/Tech and Founder/Startup stories (most items), with only one clear Crypto entry and one Macro/Banking entry. That imbalance reduces true cold-start breadth even though each theme is represented.",
+            "[gemini] All 5 major themes (AI/Tech, Crypto/Web3, Macro/Markets, Startups/Founders, Venture/PE) are represented within the top 10 recommendations. While AI/Tech has a slightly higher representation (4 items), the distribution across the other themes (Macro/Markets: 2, Venture/PE: 2, Startups/Founders: 1, Crypto/Web3: 1) demonstrates good balance and effectively probes diverse user interests, fulfilling the 'cold start' objective."
+          ]
+        },
+        {
+          "criterion_id": "quality",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                9.0,
+                8.0,
+                9.0
+              ],
+              "mean_score": 8.67,
+              "std": 0.47,
+              "n": 3,
+              "reasoning_samples": [
+                "Yes \u2014 the top recommendations are from credible sources (all credibility=4) and offer substantive insights (insight=3\u20134; quality scores 0.9\u20131.0). The list favors established, high-value guests (Musk, Roblox CEO, a16z/WSJ) while including some emerging voices, so overall quality is high. Minor issues: some redundancy (two Musk episodes with overlapping themes) and limited diversity across formats, so I withhold a perfect 10.",
+                "Overall the surfaced episodes are high-quality: most items have credibility >=4, solid insight scores, and high computed quality metrics. The list includes a good mix of established voices and insightful topics. Minor issues: some redundancy (similar Elon Musk entries) and no entries marked at the top-tier credibility (5), so diversity of source authority could be improved.",
+                "Top recommendations are from credible sources (all credibility = 4) and generally offer substantive insights (insight = 3\u20134). The list includes strong, established voices across tech, AI, security, and finance. Minor issues: some topical duplication (multiple Elon entries with identical similarity = 0.5) and a few episodes have slightly lower computed quality (0.90), but overall the surfaced episodes are high-quality and relevant."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                10.0,
+                10.0,
+                10.0
+              ],
+              "mean_score": 10.0,
+              "std": 0.0,
+              "n": 3,
+              "reasoning_samples": [
+                "All top recommendations exhibit high credibility (score 4) and substantive insights (score 3-4). The computed quality scores are consistently high (0.90-1.00), with the highest-quality episodes appearing at the top of the list. The content appears to be from reputable sources and offers depth, aligning perfectly with a high-quality surfacing.",
+                "All top recommendations consistently exhibit high credibility (score 4/5), offer substantive insights (score 3-4/5), and have excellent computed quality scores (0.90-1.00). The guests are prominent figures and the series are reputable, indicating a strong focus on surfacing high-quality content from credible sources.",
+                "All top recommendations consistently exhibit high credibility (score of 4), significant insight (scores of 3-4), and strong computed quality (0.90-1.00). The speakers are established leaders and the podcast series are reputable, indicating that high-quality episodes are prominently surfaced."
+              ]
+            }
+          },
+          "final_score": 9.34,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.67,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Yes \u2014 the top recommendations are from credible sources (all credibility=4) and offer substantive insights (insight=3\u20134; quality scores 0.9\u20131.0). The list favors established, high-value guests (Musk, Roblox CEO, a16z/WSJ) while including some emerging voices, so overall quality is high. Minor issues: some redundancy (two Musk episodes with overlapping themes) and limited diversity across formats, so I withhold a perfect 10.",
+            "[gemini] All top recommendations exhibit high credibility (score 4) and substantive insights (score 3-4). The computed quality scores are consistently high (0.90-1.00), with the highest-quality episodes appearing at the top of the list. The content appears to be from reputable sources and offers depth, aligning perfectly with a high-quality surfacing."
+          ]
+        },
+        {
+          "criterion_id": "diversity",
+          "criterion_type": "llm",
+          "model_results": {
+            "openai": {
+              "samples": [
+                6.0,
+                6.0,
+                4.0
+              ],
+              "mean_score": 5.33,
+              "std": 0.94,
+              "n": 3,
+              "reasoning_samples": [
+                "Partial match \u2014 the slate includes cross-sector items (AI, startups, crypto, banking) but is skewed toward AI (multiple Elon Musk / AI items and several AI-heavy picks) and even duplicates the same Musk theme. Crypto is underrepresented (only one clear item) and macro content is present but light. For a cold-start probe this is somewhat diverse but should reduce repeats and add more distinct crypto and macro episodes to better maximize breadth.",
+                "Moderate diversity but not maximal: the slate covers AI/tech/startups heavily (multiple similar Musk items and several AI-focused episodes), with only a single strong crypto pick and one banking/macro item. For a cold-start user who should be probed across AI, Crypto, Macro, and Startups, this leans too AI-heavy and includes near-duplicates, so it falls short of the maximum exploration goal.",
+                "Recommendations are heavily concentrated on AI/tech/startups (multiple near-duplicate Elon Musk items plus several venture/startup pieces) with only one clear crypto item and one macro/finance item. For a cold-start user the list should more evenly sample the four target themes (AI, Crypto, Macro, Startups) and avoid near-duplicates; the current slate shows a notable mismatch with the Content Hypothesis."
+              ]
+            },
+            "gemini": {
+              "samples": [
+                8.0,
+                5.0,
+                7.0
+              ],
+              "mean_score": 6.67,
+              "std": 1.25,
+              "n": 3,
+              "reasoning_samples": [
+                "The recommendations effectively cover the prescribed major themes (AI, Crypto, Macro, Startups) for a cold start user, aligning with the goal to maximize initial diversity and probe interests. While the first two recommendations are highly similar, slightly impacting the immediate 'first impression of breadth,' the overall list of 10 items quickly diversifies across the target categories, showcasing a good range of high-quality content.",
+                "For a cold start user, the content hypothesis prescribes maximizing initial diversity across major themes (AI, Crypto, Macro, Startups). While all themes are present, AI content is heavily dominant, appearing in 6 out of 10 recommendations, including the top two. Crypto and Macro are underrepresented with only 1-2 items each, failing to provide the intended breadth and balance for probing interests effectively across all major themes.",
+                "The recommendations cover all major themes prescribed by the Content Hypothesis (AI, Crypto, Macro, Startups). However, the diversity is not maximized, especially for a 'cold start' user. The first two recommendations are highly similar, focusing on Elon Musk and AI/Space, which creates an initial impression of depth in one area rather than broad exploration. AI is also significantly overrepresented (6 out of 10 items) compared to Crypto (1 out of 10 items), indicating an imbalance rather than a balanced breadth across all specified major themes."
+              ]
+            }
+          },
+          "final_score": 6.0,
+          "threshold": 6.0,
+          "passed": true,
+          "cross_model_std": 0.67,
+          "consensus_level": "GOOD",
+          "flag_for_review": false,
+          "n_models": 2,
+          "reasoning_summary": [
+            "[openai] Partial match \u2014 the slate includes cross-sector items (AI, startups, crypto, banking) but is skewed toward AI (multiple Elon Musk / AI items and several AI-heavy picks) and even duplicates the same Musk theme. Crypto is underrepresented (only one clear item) and macro content is present but light. For a cold-start probe this is somewhat diverse but should reduce repeats and add more distinct crypto and macro episodes to better maximize breadth.",
+            "[gemini] The recommendations effectively cover the prescribed major themes (AI, Crypto, Macro, Startups) for a cold start user, aligning with the goal to maximize initial diversity and probe interests. While the first two recommendations are highly similar, slightly impacting the immediate 'first impression of breadth,' the overall list of 10 items quickly diversifies across the target categories, showcasing a good range of high-quality content."
+          ]
+        }
+      ],
+      "_llm_judge_context": {
+        "profile": {
+          "profile_id": "01_cold_start",
+          "name": "Cold Start New User",
+          "description": "First-time visitor with zero engagement history. Tests quality-only ranking (no personalization signal). Content Hypothesis: Unknown specialization\u2014algorithm should maximize initial diversity to probe user interests across major themes (AI, Crypto, Macro, Startups). First impression should showcase breadth of high-quality content rather than depth in any single category.",
+          "icp_segment": "All segments",
+          "usage_duration": "0 days (first visit)",
+          "expected_behavior": [
+            "Should see highest quality episodes (quality score dominates)",
+            "Recency should be secondary factor",
+            "No personalization - similarity weight should be 0",
+            "API should return cold_start: true",
+            "Section should be labeled 'Highest Signal' not 'For You'"
+          ],
+          "engagements": [],
+          "excluded_ids": [],
+          "created_at": "2026-02-06T00:00:00Z",
+          "notes": "Critical edge case - every new user starts here"
+        },
+        "recommendations": [
+          {
+            "id": "10FJ6iMqTrV0LJul40zA",
+            "content_id": "elon-musk-on-spa-nfuz1q-y5dzsl",
+            "title": "Elon Musk on Space GPUs, AI, Optimus, and his manufacturing method",
+            "series": {
+              "id": "cheeky-pint-y9y5dzsl",
+              "name": "Cheeky Pint"
+            },
+            "published_at": "2026-02-05T16:50:00+00:00",
+            "scores": {
+              "insight": 4,
+              "credibility": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "This is the primary focus of the conversation, covering AI development, space-based computing, humanoid robots (Optimus), chip manufacturing, and the future of artificial intelligence. The discussion extensively covers technical details of AI systems, hardware requirements, and the trajectory toward AGI.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 1.0,
+            "recency_score": 0.8869,
+            "final_score": 0.9548,
+            "queue_position": 1
+          },
+          {
+            "id": "msiyn7GcqjsjqMvEzgef",
+            "content_id": "elon-musk-in-36--gfbu3e-6fptkm",
+            "title": "Elon Musk - \"In 36 months, the cheapest place to put AI will be space\u201d",
+            "series": {
+              "id": "dwarkesh-podcast-6fptkm",
+              "name": "Dwarkesh Podcast"
+            },
+            "published_at": "2026-02-05T16:45:08+00:00",
+            "scores": {
+              "insight": 4,
+              "credibility": 4,
+              "information": 4,
+              "entertainment": 3
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "This is the primary focus of the entire conversation, covering AI development, space-based data centers, humanoid robots (Optimus), chip manufacturing, neural networks, and the future of artificial intelligence. The discussion spans AI training, inference, digital human emulation, and the technical challenges of scaling AI infrastructure both on Earth and in space.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 1.0,
+            "recency_score": 0.8869,
+            "final_score": 0.9548,
+            "queue_position": 2
+          },
+          {
+            "id": "uJLuvlba870Dje0TDoOo",
+            "content_id": "introducing-4d-c-01lbun-dlfv4f",
+            "title": "Introducing 4D Creation Open Beta: NPCs, 4D Worlds, and the Future of Gaming with Roblox CEO Dave Baszucki",
+            "series": {
+              "id": "no-priors-artifi-dlfv4f",
+              "name": "No Priors: Artificial Intelligence | Technology | Startups"
+            },
+            "published_at": "2026-02-05T16:56:00+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 2
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "Significant discussion about Roblox's 20-year vision and journey from startup to major platform, Dave's long-term leadership approach, hiring strategies including their unique assessment methods, and how the creator economy has evolved. The conversation covers strategic decision-making, company culture, and scaling challenges in building a platform business.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8869,
+            "final_score": 0.8948,
+            "queue_position": 3
+          },
+          {
+            "id": "X9V2tc18MmM3WMtHBvF4",
+            "content_id": "how-duo-security-kfca1m-cpd1by",
+            "title": "How Duo Security went Zero to $1B ARR in Ann Arbor | Dug Song, Jon Oberheide",
+            "series": {
+              "id": "the-peel-with-tu-cpd1by",
+              "name": "The Peel with Turner Novak"
+            },
+            "published_at": "2026-02-05T11:00:01+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 2
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "This is the primary focus of the conversation, covering Duo Security's complete journey from founding in 2010 to $2.35B acquisition by Cisco. The discussion extensively covers founder backgrounds, company building philosophy, scaling challenges, culture development, and the complete startup lifecycle including fundraising, product development, and exit strategy.",
+            "categories": {
+              "major": [],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8869,
+            "final_score": 0.8948,
+            "queue_position": 4
+          },
+          {
+            "id": "G7mCaIvoiCQIYXBGU95q",
+            "content_id": "uncapped-41-the--857931-7hzkh1",
+            "title": "Uncapped #41 | The Benchmark Partnership",
+            "series": {
+              "id": "uncapped-with-ja-7hzkh1",
+              "name": "Uncapped with Jack Altman"
+            },
+            "published_at": "2026-02-04T10:00:00+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 2
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "AI is discussed extensively in the final portion as a major investment theme for Benchmark, covering their AI portfolio companies, investment timing during 2022-2023, and thoughts on future AI opportunities. While important, it serves as a case study for their broader investment approach.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8607,
+            "final_score": 0.8843,
+            "queue_position": 5
+          },
+          {
+            "id": "F0MJ67nIzo8kXCB4fMKp",
+            "content_id": "cryptopunks-crea-0jeue6-t8lspa",
+            "title": "CryptoPunks creators: from art experiment to cultural movement",
+            "series": {
+              "id": "possible-by-reid-t8lspa",
+              "name": "Possible"
+            },
+            "published_at": "2026-02-04T08:01:00+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 2
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "This is the primary focus of the conversation, with extensive discussion of CryptoPunks as pioneering NFTs, blockchain technology, smart contracts, decentralization principles, and the broader crypto ecosystem. The entire interview centers around the creators' experience building one of the first major NFT projects and its impact on digital ownership.",
+            "categories": {
+              "major": [
+                "Crypto & Web3",
+                "Culture, Society & Wellbeing"
+              ],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8607,
+            "final_score": 0.8843,
+            "queue_position": 6
+          },
+          {
+            "id": "E7UIhZT52roa1gRzfmyP",
+            "content_id": "unicredit-ceo-th-olv6ny-iujaza",
+            "title": "UniCredit CEO: The Future of European Banking, Digital Transformation and Grit",
+            "series": {
+              "id": "in-good-company--iujaza",
+              "name": "In Good Company with Nicolai Tangen"
+            },
+            "published_at": "2026-02-04T04:00:00+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 2
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "Technology transformation and AI adoption are integral to the banking discussion, with detailed examples of how AI is revolutionizing credit processes (reducing 6-week tasks to 14 minutes), client onboarding, and operational efficiency. The conversation explores how banks must transform digitally to compete with fintech companies and deliver Netflix-like customer experiences.",
+            "categories": {
+              "major": [
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8607,
+            "final_score": 0.8843,
+            "queue_position": 7
+          },
+          {
+            "id": "JEQEzGoCESXzJtBGb4Dl",
+            "content_id": "palmer-luckey-on-64hmwq-gg14bl",
+            "title": "Palmer Luckey on Hardware, Building, and the Next Frontiers of Innovation",
+            "series": {
+              "id": "a16z-podcast-gg14bl",
+              "name": "a16z Podcast"
+            },
+            "published_at": "2026-02-03T15:01:24+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 3
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "The conversation touches on geopolitical trends including US-China rivalry, the end of the 'end of history' period, defense spending inefficiencies, and broader economic themes around technological progress and market dynamics. While supporting the main themes, these macro discussions provide important context rather than being the primary focus.",
+            "categories": {
+              "major": [
+                "Startups, Growth and Founder Journeys",
+                "Regulation & Policy",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8353,
+            "final_score": 0.8741,
+            "queue_position": 8
+          },
+          {
+            "id": "kbkC4okBsbHzQ2llAdri",
+            "content_id": "michael-ovitz-th-9m6kmh-25mkw4",
+            "title": "Michael\u00a0Ovitz: The Business of Relationships",
+            "series": {
+              "id": "knowledge-projec-25mkw4",
+              "name": "The Knowledge Project with Shane Parrish"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 3,
+              "entertainment": 3
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "Significant portions discuss Ovitz's transition to tech investing since 1993, his investment philosophy, working with VCs like Andreessen Horowitz, and evaluating startup opportunities. The conversation covers his approach to packaging deals and supporting portfolio companies, making this integral to understanding his current work.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Startups, Growth and Founder Journeys",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8353,
+            "final_score": 0.8741,
+            "queue_position": 9
+          },
+          {
+            "id": "PkYjeaPx0xbs5prnPEy9",
+            "content_id": "why-this-isn-t-t-fm1b6j-clbsuh",
+            "title": "Why This Isn't the Dot-Com Bubble | Martin Casado on WSJ's BOLD NAMES",
+            "series": {
+              "id": "ai-a16z-zgclbsuh",
+              "name": "AI + a16z"
+            },
+            "published_at": "2026-02-03T11:00:00+00:00",
+            "scores": {
+              "insight": 3,
+              "credibility": 4,
+              "information": 2,
+              "entertainment": 2
+            },
+            "badges": [
+              "high_insight",
+              "high_credibility"
+            ],
+            "key_insight": "AI is the primary focus throughout the entire conversation, covering AI infrastructure spending, generative AI capabilities, AI company valuations, and the transformative potential of AI technology. The discussion extensively explores AI's economic impact, technical capabilities, and comparison to previous technology waves like the internet.",
+            "categories": {
+              "major": [
+                "Venture & Private Markets",
+                "Macro, Investing & Market Trends",
+                "Technology & AI"
+              ],
+              "subcategories": []
+            },
+            "similarity_score": 0.5,
+            "quality_score": 0.9,
+            "recency_score": 0.8353,
+            "final_score": 0.8741,
+            "queue_position": 10
+          }
+        ]
+      }
+    }
+  ]
+}
