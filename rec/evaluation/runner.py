@@ -18,6 +18,7 @@ Usage:
     python runner.py --verbose          # Show detailed output
     python runner.py --save             # Save report to file
     python runner.py --deterministic-only  # Skip LLM evaluation (for quick checks)
+    python runner.py --legacy           # Use legacy single-LLM evaluation (for comparison)
 
 Note: LLM evaluation is enabled by default. At least one LLM API key required
 (OPENAI_API_KEY or GEMINI_API_KEY).
@@ -48,6 +49,16 @@ try:
 except ImportError as e:
     HAS_JUDGES = False
     _JUDGES_IMPORT_ERROR = str(e)
+
+# Import legacy single-LLM evaluation (for comparison)
+import warnings
+try:
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from deprecated.llm_judge import evaluate_with_llm as legacy_evaluate_with_llm
+    HAS_LEGACY = True
+except ImportError:
+    HAS_LEGACY = False
 
 # ============================================================================
 # Standard LLM Criteria and Weights
@@ -145,11 +156,84 @@ def load_all_test_cases() -> Dict[str, Dict]:
 
 
 # ============================================================================
-# API Client
+# Engine Context and Direct Execution
+# ============================================================================
+
+class EngineContext:
+    """Context for running tests with direct engine access (no API calls)."""
+    
+    def __init__(
+        self,
+        engine_module,
+        episodes: List[Dict],
+        embeddings: Dict[str, List[float]],
+        episode_by_content_id: Dict[str, Dict],
+        algo_config: Optional[Any] = None
+    ):
+        self.engine_module = engine_module
+        self.episodes = episodes
+        self.embeddings = embeddings
+        self.episode_by_content_id = episode_by_content_id
+        self.algo_config = algo_config
+
+
+def call_engine_directly(
+    engagements: List[Dict],
+    excluded_ids: set,
+    engine_context: EngineContext
+) -> Dict:
+    """
+    Call the recommendation engine directly (no API).
+    
+    This is used when runner.py is imported by server.py.
+    Returns the same format as the API would return.
+    """
+    # Auto-exclude engaged episodes
+    all_excluded = excluded_ids.copy()
+    for eng in engagements:
+        all_excluded.add(eng.get("episode_id", ""))
+    
+    # Convert dict config to RecommendationConfig object if needed
+    config = engine_context.algo_config
+    if config is not None and isinstance(config, dict):
+        # Call the engine's RecommendationConfig.from_dict() method
+        config = engine_context.engine_module.RecommendationConfig.from_dict(config)
+    
+    # Call engine
+    queue, cold_start, user_vector_episodes = engine_context.engine_module.create_recommendation_queue(
+        engagements=engagements,
+        excluded_ids=all_excluded,
+        episodes=engine_context.episodes,
+        embeddings=engine_context.embeddings,
+        episode_by_content_id=engine_context.episode_by_content_id,
+        config=config,
+    )
+    
+    # Convert to API response format
+    episodes = []
+    for i, scored_ep in enumerate(queue[:10]):
+        ep = scored_ep.episode.copy()
+        ep["similarity_score"] = scored_ep.similarity_score
+        ep["quality_score"] = scored_ep.quality_score
+        ep["recency_score"] = scored_ep.recency_score
+        ep["final_score"] = scored_ep.final_score
+        ep["queue_position"] = i + 1
+        episodes.append(ep)
+    
+    return {
+        "episodes": episodes,
+        "cold_start": cold_start,
+        "user_vector_episodes": user_vector_episodes,
+        "total_in_queue": len(queue)
+    }
+
+
+# ============================================================================
+# API Client (for CLI standalone mode)
 # ============================================================================
 
 def call_api(engagements: List[Dict], excluded_ids: List[str]) -> Dict:
-    """Call the recommendation API."""
+    """Call the recommendation API (for CLI mode only)."""
     url = f"{API_BASE_URL}/api/sessions/create"
     payload = {
         "engagements": engagements,
@@ -167,7 +251,7 @@ def call_api(engagements: List[Dict], excluded_ids: List[str]) -> Dict:
 
 
 def call_api_with_profile(profile: Dict) -> Dict:
-    """Call the API using a profile's engagements."""
+    """Call the API using a profile's engagements (for CLI mode only)."""
     engagements = []
     for eng in profile.get("engagements", []):
         engagements.append({
@@ -198,6 +282,14 @@ class TestResult:
         self.api_response = None
         self.llm_results = []  # Multi-LLM results
         self.llm_evaluation = None  # Per-test LLM summary with observations/suggestions
+        self._llm_judge_context = None  # Profile + recommendations context for debugging
+    
+    def set_llm_judge_context(self, profile: Optional[Dict], recommendations: List[Dict]):
+        """Store profile and recommendations for debugging/analysis."""
+        self._llm_judge_context = {
+            "profile": profile,
+            "recommendations": recommendations
+        }
     
     def add_criterion(self, criterion_id: str, description: str, passed: bool, 
                       details: str = "", score: Optional[float] = None,
@@ -205,7 +297,9 @@ class TestResult:
                       confidence: float = 1.0,
                       weight: Optional[float] = None,
                       consensus_level: Optional[str] = None,
-                      flag_for_review: bool = False):
+                      flag_for_review: bool = False,
+                      model_results: Optional[Dict] = None,
+                      cross_model_std: Optional[float] = None):
         """Add a criterion result with weights and confidence."""
         # Compute score from pass/fail if not provided (10 for pass, 1 for fail)
         if score is None:
@@ -234,6 +328,11 @@ class TestResult:
             result["consensus_level"] = consensus_level
         if flag_for_review:
             result["flag_for_review"] = True
+        if model_results:
+            result["model_results"] = model_results
+            result["criterion_type"] = "llm"  # Mark as LLM criterion
+        if cross_model_std is not None:
+            result["cross_model_std"] = cross_model_std
         
         self.criteria_results.append(result)
         if not passed:
@@ -285,7 +384,9 @@ class TestResult:
                 threshold=threshold,
                 confidence=confidence,
                 consensus_level=consensus,
-                flag_for_review=r.get("flag_for_review", False)
+                flag_for_review=r.get("flag_for_review", False),
+                model_results=r.get("model_results"),  # Per-provider breakdown
+                cross_model_std=r.get("cross_model_std")  # Cross-model standard deviation
             )
     
     def set_llm_evaluation(self, evaluation: Dict[str, Any]):
@@ -349,6 +450,8 @@ class TestResult:
         }
         if self.llm_results:
             result["llm_results"] = self.llm_results
+        if self._llm_judge_context:
+            result["_llm_judge_context"] = self._llm_judge_context
         return result
 
 
@@ -429,11 +532,12 @@ def validate_personalization_differs(cold_response: Dict, vc_response: Dict, tes
     avg_cold_sim = sum(cold_sim) / len(cold_sim) if cold_sim else 0
     avg_vc_sim = sum(vc_sim) / len(vc_sim) if vc_sim else 0
     
+    delta_sim = avg_vc_sim - avg_cold_sim
     result.add_criterion(
         "similarity_increase",
         "VC Partner has higher avg similarity_score than cold start",
         avg_vc_sim > avg_cold_sim,
-        f"cold_avg={avg_cold_sim:.3f}, vc_avg={avg_vc_sim:.3f}"
+        f"cold_avg={avg_cold_sim:.3f}, vc_avg={avg_vc_sim:.3f}, delta={delta_sim:.3f}"
     )
     
     # Criterion 3: VC cold_start flag is false
@@ -591,20 +695,22 @@ def validate_recency_scoring(response: Dict, test_case: Dict) -> TestResult:
     if both_found:
         recent_rec_score = recent_ep.get("recency_score", 0) or 0
         older_rec_score = older_ep.get("recency_score", 0) or 0
+        recency_delta = recent_rec_score - older_rec_score
         result.add_criterion(
             "recency_score_ordering",
             "Recent episode has higher recency_score than older",
             recent_rec_score > older_rec_score,
-            f"recent={recent_rec_score:.4f}, older={older_rec_score:.4f}"
+            f"recent={recent_rec_score:.4f}, older={older_rec_score:.4f}, delta={recency_delta:.4f}"
         )
         
         recent_pos = recent_ep.get("queue_position", 999)
         older_pos = older_ep.get("queue_position", 999)
+        pos_delta = older_pos - recent_pos  # Positive means recent ranks better
         result.add_criterion(
             "ranking_reflects_recency",
             "Recent episode ranks higher (lower position) than older",
             recent_pos < older_pos,
-            f"recent_pos={recent_pos}, older_pos={older_pos}"
+            f"recent_pos={recent_pos}, older_pos={older_pos}, delta={pos_delta}"
         )
     
     return result
@@ -862,6 +968,110 @@ Respond with ONLY the JSON object, no markdown."""
 
 
 # ============================================================================
+# Legacy Single-LLM Evaluation (for comparison)
+# ============================================================================
+
+def run_legacy_llm_evaluation(
+    test_case: Dict,
+    profile: Optional[Dict],
+    response: Dict,
+    verbose: bool = False
+) -> tuple[List[Dict[str, Any]], Optional[Dict[str, Any]]]:
+    """
+    Run legacy single-LLM evaluation using the deprecated llm_judge.
+    
+    This matches the original infrastructure output format for comparison.
+    
+    Returns:
+        Tuple of (criterion_results, llm_evaluation)
+    """
+    if not HAS_LEGACY:
+        if verbose:
+            print("  [LEGACY] Not available - deprecated/llm_judge.py not found")
+        return [], None
+    
+    if verbose:
+        print("  [LEGACY] Running single-LLM evaluation (Gemini)")
+    
+    try:
+        # Call legacy evaluation
+        llm_result = legacy_evaluate_with_llm(profile or {}, response, test_case)
+        
+        if llm_result.get("error"):
+            if verbose:
+                print(f"  [LEGACY] Error: {llm_result.get('error')}")
+            return [], None
+        
+        # Convert legacy scores (1-5) to new format (1-10) with confidence
+        criterion_results = []
+        
+        # Map legacy scores to criterion results
+        legacy_mapping = {
+            "relevance": ("relevance_score", "LLM Judge: Recommendations match user interests and Content Hypothesis"),
+            "diversity": ("diversity_score", "LLM Judge: Appropriate variety for user's exploration/specialization profile"),
+            "quality": ("quality_score", "LLM Judge: High-quality, credible sources surfaced"),
+            "hypothesis_alignment": ("content_hypothesis_alignment", "LLM Judge: Recommendations align with Content Hypothesis"),
+        }
+        
+        for criterion_id, (legacy_key, description) in legacy_mapping.items():
+            score_1_5 = llm_result.get(legacy_key)
+            if score_1_5 is not None:
+                # Convert 1-5 to 1-10 scale
+                score_1_10 = score_1_5 * 2
+                threshold = 6.0
+                passed = score_1_10 >= threshold
+                
+                criterion_results.append({
+                    "criterion_id": criterion_id,
+                    "criterion_type": "llm",
+                    "final_score": score_1_10,
+                    "threshold": threshold,
+                    "passed": passed,
+                    "confidence": 0.9,  # Legacy has no multi-model consensus
+                    "consensus_level": "SINGLE_MODEL",
+                    "n_models": 1,
+                    "reasoning_summary": [f"[gemini] {llm_result.get('rationale', '')}"],
+                    "model_results": {
+                        "gemini": {
+                            "samples": [score_1_10],
+                            "mean_score": score_1_10,
+                            "std": 0.0,
+                            "n": 1
+                        }
+                    }
+                })
+        
+        # Build llm_evaluation summary (legacy format already has this)
+        llm_evaluation = {
+            "summary": llm_result.get("rationale", ""),
+            "quality_score": llm_result.get("quality_score", 3),
+            "observations": [
+                f"Relevance: {llm_result.get('relevance_score', 'N/A')}/5",
+                f"Diversity: {llm_result.get('diversity_score', 'N/A')}/5",
+                f"Quality: {llm_result.get('quality_score', 'N/A')}/5",
+                f"Hypothesis Alignment: {llm_result.get('content_hypothesis_alignment', 'N/A')}/5"
+            ],
+            "suggestions": [],
+            "test_pass": llm_result.get("test_pass", False),
+            "evaluated_at": datetime.now().isoformat(),
+            "mode": "legacy_single_llm"
+        }
+        
+        if verbose:
+            for r in criterion_results:
+                score = r.get("final_score", 0)
+                passed = "✓" if r.get("passed") else "✗"
+                print(f"  [LEGACY] {r.get('criterion_id')}: {passed} score={score:.1f}")
+        
+        return criterion_results, llm_evaluation
+    
+    except Exception as e:
+        if verbose:
+            print(f"  [LEGACY] Error: {e}")
+        return [], None
+
+
+# ============================================================================
 # Test Runner
 # ============================================================================
 
@@ -869,28 +1079,58 @@ async def run_test_async(
     test_id: str,
     profiles: Dict[str, Dict],
     verbose: bool = False,
-    skip_llm: bool = False
+    skip_llm: bool = False,
+    legacy_mode: bool = False,
+    engine_context: Optional[EngineContext] = None
 ) -> TestResult:
-    """Run a single test case with async LLM evaluation."""
+    """
+    Run a single test case with async LLM evaluation.
+    
+    Args:
+        test_id: Test case identifier
+        profiles: Dict of profile_id -> profile data
+        verbose: Show detailed output
+        skip_llm: Skip LLM evaluation (deterministic only)
+        legacy_mode: Use legacy single-LLM evaluation
+        engine_context: If provided, use direct engine calls. If None, use API calls.
+    """
     test_case = load_test_case(test_id)
     evaluation_method = test_case.get("evaluation_method", "deterministic_llm")
     
+    mode_str = " [LEGACY]" if legacy_mode else ""
     if verbose:
         print(f"\n{'='*60}")
-        print(f"Running: {test_case['name']}")
+        print(f"Running: {test_case['name']}{mode_str}")
         print(f"Type: {test_case['type']} | Method: {evaluation_method}")
         print(f"{'='*60}")
+    
+    # Helper to get recommendations (either via engine or API)
+    def get_recommendations(profile: Dict) -> Dict:
+        """Get recommendations using engine context or API."""
+        if engine_context:
+            engagements = [
+                {"episode_id": e["episode_id"], "type": e.get("type", "click"), "timestamp": e.get("timestamp", "")}
+                for e in profile.get("engagements", [])
+            ]
+            excluded_ids = set(profile.get("excluded_ids", []))
+            return call_engine_directly(engagements, excluded_ids, engine_context)
+        else:
+            return call_api_with_profile(profile)
     
     try:
         # Run deterministic validation first
         if test_id == "01_cold_start_quality":
             profile = profiles.get("01_cold_start", {"engagements": [], "excluded_ids": []})
-            response = call_api_with_profile(profile)
+            response = get_recommendations(profile)
             result = validate_cold_start_quality(response, test_case)
             result.test_type = test_case.get("type", "MFT")
+            result.set_llm_judge_context(profile, response.get("episodes", []))
             
             if not skip_llm and evaluation_method in ("deterministic_llm", "llm_only"):
-                llm_results, llm_evaluation = await run_llm_evaluation(test_case, profile, response, verbose)
+                if legacy_mode:
+                    llm_results, llm_evaluation = run_legacy_llm_evaluation(test_case, profile, response, verbose)
+                else:
+                    llm_results, llm_evaluation = await run_llm_evaluation(test_case, profile, response, verbose)
                 if llm_results:
                     result.add_llm_results(llm_results)
                 if llm_evaluation:
@@ -900,14 +1140,18 @@ async def run_test_async(
             cold_profile = profiles.get("01_cold_start", {"engagements": [], "excluded_ids": []})
             vc_profile = profiles.get("02_vc_partner_ai_tech")
             
-            cold_response = call_api_with_profile(cold_profile)
-            vc_response = call_api_with_profile(vc_profile)
+            cold_response = get_recommendations(cold_profile)
+            vc_response = get_recommendations(vc_profile)
             
             result = validate_personalization_differs(cold_response, vc_response, test_case)
             result.test_type = test_case.get("type", "MFT")
+            result.set_llm_judge_context(vc_profile, vc_response.get("episodes", []))
             
             if not skip_llm and evaluation_method in ("deterministic_llm", "llm_only"):
-                llm_results, llm_evaluation = await run_llm_evaluation(test_case, vc_profile, vc_response, verbose)
+                if legacy_mode:
+                    llm_results, llm_evaluation = run_legacy_llm_evaluation(test_case, vc_profile, vc_response, verbose)
+                else:
+                    llm_results, llm_evaluation = await run_llm_evaluation(test_case, vc_profile, vc_response, verbose)
                 if llm_results:
                     result.add_llm_results(llm_results)
                 if llm_evaluation:
@@ -916,7 +1160,7 @@ async def run_test_async(
         elif test_id == "03_quality_gates_credibility":
             responses = {}
             for profile_id, profile in profiles.items():
-                responses[profile_id] = call_api_with_profile(profile)
+                responses[profile_id] = get_recommendations(profile)
             result = validate_quality_gates(responses, test_case)
             result.test_type = test_case.get("type", "MFT")
         
@@ -924,7 +1168,7 @@ async def run_test_async(
             profile = profiles.get("02_vc_partner_ai_tech").copy()
             excluded_ids = test_case["setup"]["modifications"]["excluded_ids"]
             profile["excluded_ids"] = excluded_ids
-            response = call_api_with_profile(profile)
+            response = get_recommendations(profile)
             result = validate_excluded_episodes(response, excluded_ids, test_case)
             result.test_type = test_case.get("type", "MFT")
         
@@ -932,14 +1176,18 @@ async def run_test_async(
             ai_profile = profiles.get("02_vc_partner_ai_tech")
             crypto_profile = profiles.get("03_crypto_web3_investor")
             
-            ai_response = call_api_with_profile(ai_profile)
-            crypto_response = call_api_with_profile(crypto_profile)
+            ai_response = get_recommendations(ai_profile)
+            crypto_response = get_recommendations(crypto_profile)
             
             result = validate_category_personalization(ai_response, crypto_response, test_case)
             result.test_type = test_case.get("type", "DIR")
+            result.set_llm_judge_context(ai_profile, ai_response.get("episodes", []))
             
             if not skip_llm and evaluation_method in ("deterministic_llm", "llm_only"):
-                llm_results, llm_evaluation = await run_llm_evaluation(test_case, ai_profile, ai_response, verbose)
+                if legacy_mode:
+                    llm_results, llm_evaluation = run_legacy_llm_evaluation(test_case, ai_profile, ai_response, verbose)
+                else:
+                    llm_results, llm_evaluation = await run_llm_evaluation(test_case, ai_profile, ai_response, verbose)
                 if llm_results:
                     result.add_llm_results(llm_results)
                 if llm_evaluation:
@@ -947,34 +1195,44 @@ async def run_test_async(
         
         elif test_id == "06_recency_scoring":
             profile = profiles.get("01_cold_start", {"engagements": [], "excluded_ids": []})
-            response = call_api_with_profile(profile)
+            response = get_recommendations(profile)
             result = validate_recency_scoring(response, test_case)
             result.test_type = test_case.get("type", "DIR")
         
         elif test_id == "07_bookmark_weighting":
             setup = test_case["setup"]
             
-            bookmark_response = call_api(
-                setup["scenario_a"]["engagements"],
-                setup["scenario_a"]["excluded_ids"]
-            )
-            click_response = call_api(
-                setup["scenario_b"]["engagements"],
-                setup["scenario_b"]["excluded_ids"]
-            )
+            # Create temporary profiles for scenarios
+            scenario_a_profile = {
+                "engagements": setup["scenario_a"]["engagements"],
+                "excluded_ids": setup["scenario_a"]["excluded_ids"]
+            }
+            scenario_b_profile = {
+                "engagements": setup["scenario_b"]["engagements"],
+                "excluded_ids": setup["scenario_b"]["excluded_ids"]
+            }
+            
+            bookmark_response = get_recommendations(scenario_a_profile)
+            click_response = get_recommendations(scenario_b_profile)
             
             result = validate_bookmark_weighting(bookmark_response, click_response, test_case)
             result.test_type = test_case.get("type", "DIR")
             
+            # Build profile for LLM context
+            scenario_b_profile = {
+                "profile_id": "scenario_b_bookmark",
+                "name": "Bookmark Weighting Test - Scenario B",
+                "description": "User who has bookmarked crypto content.",
+                "icp_segment": "Test Scenario",
+                "engagements": setup["scenario_b"]["engagements"]
+            }
+            result.set_llm_judge_context(scenario_b_profile, click_response.get("episodes", []))
+            
             if not skip_llm and evaluation_method in ("deterministic_llm", "llm_only"):
-                scenario_b_profile = {
-                    "profile_id": "scenario_b_bookmark",
-                    "name": "Bookmark Weighting Test - Scenario B",
-                    "description": "User who has bookmarked crypto content.",
-                    "icp_segment": "Test Scenario",
-                    "engagements": setup["scenario_b"]["engagements"]
-                }
-                llm_results, llm_evaluation = await run_llm_evaluation(test_case, scenario_b_profile, click_response, verbose)
+                if legacy_mode:
+                    llm_results, llm_evaluation = run_legacy_llm_evaluation(test_case, scenario_b_profile, click_response, verbose)
+                else:
+                    llm_results, llm_evaluation = await run_llm_evaluation(test_case, scenario_b_profile, click_response, verbose)
                 if llm_results:
                     result.add_llm_results(llm_results)
                 if llm_evaluation:
@@ -993,17 +1251,28 @@ async def run_test_async(
         return result
 
 
-def run_test(test_id: str, profiles: Dict[str, Dict], verbose: bool = False, skip_llm: bool = False) -> TestResult:
+def run_test(test_id: str, profiles: Dict[str, Dict], verbose: bool = False, skip_llm: bool = False, legacy_mode: bool = False, engine_context: Optional[EngineContext] = None) -> TestResult:
     """Synchronous wrapper for run_test_async."""
-    return asyncio.run(run_test_async(test_id, profiles, verbose, skip_llm))
+    return asyncio.run(run_test_async(test_id, profiles, verbose, skip_llm, legacy_mode, engine_context))
 
 
 async def run_all_tests_async(
     verbose: bool = False,
     skip_llm: bool = False,
-    method_filter: Optional[str] = None
+    method_filter: Optional[str] = None,
+    legacy_mode: bool = False,
+    engine_context: Optional[EngineContext] = None
 ) -> List[TestResult]:
-    """Run all test cases."""
+    """
+    Run all test cases.
+    
+    Args:
+        verbose: Show detailed output
+        skip_llm: Skip LLM evaluation (deterministic only)
+        method_filter: Filter tests by evaluation method
+        legacy_mode: Use legacy single-LLM evaluation
+        engine_context: If provided, use direct engine calls. If None, use API calls.
+    """
     profiles = load_all_profiles()
     test_cases = load_all_test_cases()
     
@@ -1019,7 +1288,7 @@ async def run_all_tests_async(
             elif method_filter == "llm" and evaluation_method not in ("deterministic_llm", "llm_only"):
                 continue
         
-        result = await run_test_async(test_id, profiles, verbose, skip_llm)
+        result = await run_test_async(test_id, profiles, verbose, skip_llm, legacy_mode, engine_context)
         results.append(result)
         
         if verbose:
@@ -1035,16 +1304,16 @@ async def run_all_tests_async(
     return results
 
 
-def run_all_tests(verbose: bool = False, skip_llm: bool = False, method_filter: Optional[str] = None) -> List[TestResult]:
+def run_all_tests(verbose: bool = False, skip_llm: bool = False, method_filter: Optional[str] = None, legacy_mode: bool = False, engine_context: Optional[EngineContext] = None) -> List[TestResult]:
     """Synchronous wrapper for run_all_tests_async."""
-    return asyncio.run(run_all_tests_async(verbose, skip_llm, method_filter))
+    return asyncio.run(run_all_tests_async(verbose, skip_llm, method_filter, legacy_mode, engine_context))
 
 
 # ============================================================================
 # Output
 # ============================================================================
 
-def print_summary(results: List[TestResult]):
+def print_summary(results: List[TestResult], legacy_mode: bool = False):
     """Print test summary with LLM consensus metrics."""
     passed = sum(1 for r in results if r.passed)
     failed = len(results) - passed
@@ -1085,12 +1354,30 @@ def print_summary(results: List[TestResult]):
                 print(f"    [LLM] {', '.join(llm_scores)}")
 
 
-def save_report(results: List[TestResult]) -> Path:
-    """Save test results to a JSON report matching old infrastructure format."""
+def save_report(
+    results: List[TestResult], 
+    legacy_mode: bool = False,
+    algorithm_version: Optional[str] = None,
+    algorithm_name: Optional[str] = None,
+    dataset_version: Optional[str] = None,
+    dataset_episode_count: Optional[int] = None
+) -> Path:
+    """
+    Save test results to a JSON report matching old infrastructure format.
+    
+    Args:
+        results: List of test results
+        legacy_mode: Whether legacy single-LLM mode was used
+        algorithm_version: Algorithm folder name (defaults to ALGORITHM_VERSION env var)
+        algorithm_name: Algorithm display name (defaults to loading from manifest.json)
+        dataset_version: Dataset folder name (defaults to env var)
+        dataset_episode_count: Number of episodes in dataset (defaults to env var)
+    """
     REPORTS_DIR.mkdir(exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    report_path = REPORTS_DIR / f"test_report_{timestamp}.json"
+    mode_suffix = "_legacy" if legacy_mode else ""
+    report_path = REPORTS_DIR / f"test_report_{timestamp}{mode_suffix}.json"
     
     # Compute overall statistics
     passed = sum(1 for r in results if r.passed)
@@ -1111,12 +1398,49 @@ def save_report(results: List[TestResult]) -> Path:
     overall_score = round(sum(all_scores) / len(all_scores), 2) if all_scores else 0.0
     overall_confidence = round(sum(all_confidences) / len(all_confidences), 2) if all_confidences else 0.0
     
+    # Get algorithm metadata (from parameters or env vars)
+    algo_version = algorithm_version or os.getenv("ALGORITHM_VERSION", "unknown")
+    algo_name = algorithm_name
+    
+    # If algorithm_name not provided, try to load from manifest.json
+    if not algo_name:
+        try:
+            algo_path = Path(__file__).parent.parent / "algorithms" / algo_version / "manifest.json"
+            if algo_path.exists():
+                with open(algo_path) as f:
+                    manifest = json.load(f)
+                    algo_name = manifest.get("name", algo_version)
+            else:
+                algo_name = algo_version
+        except Exception:
+            algo_name = algo_version
+    
+    # Get dataset metadata (from parameters or env vars)
+    dataset_ver = dataset_version or os.getenv("DATASET_VERSION", "eval_909_feb2026")
+    episode_count = dataset_episode_count
+    
+    # If episode_count not provided, try to load from dataset
+    if episode_count is None:
+        try:
+            dataset_path = Path(__file__).parent.parent / "datasets" / dataset_ver / "data.json"
+            if dataset_path.exists():
+                with open(dataset_path) as f:
+                    data = json.load(f)
+                    episode_count = len(data.get("episodes", []))
+            else:
+                episode_count = 909  # Fallback
+        except Exception:
+            episode_count = 909  # Fallback
+    
     report = {
         "timestamp": datetime.now().isoformat(),
         "context": {
-            "algorithm_version": os.getenv("ALGORITHM_VERSION", "unknown"),
-            "dataset_version": "eval_909_feb2026",
-            "llm_providers": get_available_providers() if HAS_JUDGES else []
+            "algorithm_version": algo_version,
+            "algorithm_name": algo_name,
+            "dataset_version": dataset_ver,
+            "dataset_episode_count": episode_count,
+            "llm_providers": ["gemini (legacy)"] if legacy_mode else (get_available_providers() if HAS_JUDGES else []),
+            "evaluation_mode": "legacy_single_llm" if legacy_mode else "multi_llm"
         },
         "summary": {
             "total_tests": len(results),
@@ -1148,6 +1472,8 @@ def main():
     parser.add_argument("--save", "-s", action="store_true", help="Save report to file")
     parser.add_argument("--deterministic-only", action="store_true", 
                         help="Skip LLM evaluation (for quick checks)")
+    parser.add_argument("--legacy", action="store_true",
+                        help="Use legacy single-LLM evaluation (Gemini only, for comparison)")
     parser.add_argument("--method", type=str, choices=["deterministic", "llm", "all"], 
                         default="all", help="Filter tests by evaluation method")
     args = parser.parse_args()
@@ -1155,24 +1481,35 @@ def main():
     print("Serafis Evaluation Test Runner")
     print(f"API: {API_BASE_URL}")
     
-    # Check LLM availability
-    if HAS_JUDGES:
-        providers = get_available_providers()
-        if providers:
-            print(f"LLM Judges: {', '.join(providers)}")
-        else:
-            print("LLM Judges: No API keys configured (set OPENAI_API_KEY or GEMINI_API_KEY)")
-            if not args.deterministic_only:
-                print("  → Running with --deterministic-only")
-                args.deterministic_only = True
+    # Check for legacy mode
+    if args.legacy:
+        if not HAS_LEGACY:
+            print("ERROR: Legacy evaluation not available (deprecated/llm_judge.py not found)")
+            sys.exit(1)
+        print("Mode: LEGACY (single-LLM Gemini evaluation)")
+        # Set global flag for legacy mode
+        global USE_LEGACY_MODE
+        USE_LEGACY_MODE = True
     else:
-        print(f"LLM Judges: Not available ({_JUDGES_IMPORT_ERROR})")
-        args.deterministic_only = True
+        USE_LEGACY_MODE = False
+        # Check LLM availability
+        if HAS_JUDGES:
+            providers = get_available_providers()
+            if providers:
+                print(f"LLM Judges: {', '.join(providers)}")
+            else:
+                print("LLM Judges: No API keys configured (set OPENAI_API_KEY or GEMINI_API_KEY)")
+                if not args.deterministic_only:
+                    print("  → Running with --deterministic-only")
+                    args.deterministic_only = True
+        else:
+            print(f"LLM Judges: Not available ({_JUDGES_IMPORT_ERROR})")
+            args.deterministic_only = True
     
     profiles = load_all_profiles()
     print(f"Loaded {len(profiles)} profiles")
     
-    if HAS_JUDGES:
+    if HAS_JUDGES and not args.legacy:
         print(f"Available criteria: {', '.join(list_criteria())}")
     
     # Determine method filter
@@ -1187,14 +1524,14 @@ def main():
             print(f"No test found matching: {args.test}")
             sys.exit(1)
         
-        results = [run_test(matching[0], profiles, args.verbose, args.deterministic_only)]
+        results = [run_test(matching[0], profiles, args.verbose, args.deterministic_only, args.legacy)]
     else:
-        results = run_all_tests(args.verbose, args.deterministic_only, method_filter)
+        results = run_all_tests(args.verbose, args.deterministic_only, method_filter, args.legacy)
     
-    print_summary(results)
+    print_summary(results, legacy_mode=args.legacy)
     
     if args.save:
-        save_report(results)
+        save_report(results, legacy_mode=args.legacy)
     
     # Exit with error code if any tests failed
     failed = sum(1 for r in results if not r.passed)

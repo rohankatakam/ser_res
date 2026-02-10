@@ -34,6 +34,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [geminiKey, setGeminiKey] = useState(() => localStorage.getItem('serafis_gemini_key') || '');
   const [openaiKey, setOpenaiKey] = useState(() => localStorage.getItem('serafis_openai_key') || '');
+  const [anthropicKey, setAnthropicKey] = useState(() => localStorage.getItem('serafis_anthropic_key') || '');
   const [configLoaded, setConfigLoaded] = useState(false);
   
   // Persist API keys to localStorage when they change
@@ -45,6 +46,11 @@ function App() {
   const handleOpenaiKeyChange = useCallback((key) => {
     setOpenaiKey(key);
     localStorage.setItem('serafis_openai_key', key);
+  }, []);
+  
+  const handleAnthropicKeyChange = useCallback((key) => {
+    setAnthropicKey(key);
+    localStorage.setItem('serafis_anthropic_key', key);
   }, []);
   
   // Session state tracking user activity (resets on page refresh)
@@ -323,7 +329,9 @@ function App() {
             viewedEpisodes={viewedEpisodes}
             bookmarkedEpisodes={bookmarkedEpisodes}
             onReset={handleReset}
+            openaiKey={openaiKey}
             geminiKey={geminiKey}
+            anthropicKey={anthropicKey}
           />
         )}
       </main>
@@ -336,6 +344,8 @@ function App() {
         onGeminiKeyChange={handleGeminiKeyChange}
         openaiKey={openaiKey}
         onOpenaiKeyChange={handleOpenaiKeyChange}
+        anthropicKey={anthropicKey}
+        onAnthropicKeyChange={handleAnthropicKeyChange}
         onConfigLoaded={(result) => {
           setConfigLoaded(true);
           setShowSettings(false);

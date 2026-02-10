@@ -15,8 +15,7 @@
     {
       "provider": "anthropic",
       "model": "claude-sonnet-4-5",
-      "enabled": false,
-      "_note": "Disabled - no API key available",
+      "enabled": true,
       "description": "Anthropic Claude Sonnet 4.5 - High quality reasoning"
     }
   ],

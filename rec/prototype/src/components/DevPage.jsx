@@ -17,7 +17,9 @@ export default function DevPage({
   viewedEpisodes,
   bookmarkedEpisodes,
   onReset,
-  geminiKey
+  openaiKey,
+  geminiKey,
+  anthropicKey
 }) {
   const [subTab, setSubTab] = useState('insights'); // 'insights' or 'tests'
   const [apiStats, setApiStats] = useState(null);
@@ -80,7 +82,7 @@ export default function DevPage({
       
       {/* Tests Sub-tab */}
       {subTab === 'tests' && (
-        <TestsPage geminiKey={geminiKey} />
+        <TestsPage openaiKey={openaiKey} geminiKey={geminiKey} anthropicKey={anthropicKey} />
       )}
       
       {/* Insights Sub-tab */}

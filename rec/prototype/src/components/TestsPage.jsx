@@ -16,10 +16,11 @@ import {
   runAllTests, 
   listReports,
   getReport,
-  getConfigStatus 
+  getConfigStatus,
+  getJudgeConfig
 } from '../api';
 
-export default function TestsPage({ geminiKey }) {
+export default function TestsPage({ openaiKey, geminiKey, anthropicKey }) {
   const [testCases, setTestCases] = useState([]);
   const [results, setResults] = useState({});
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ export default function TestsPage({ geminiKey }) {
   const [configStatus, setConfigStatus] = useState(null);
   const [view, setView] = useState('tests'); // 'tests' or 'reports'
   const [error, setError] = useState(null);
+  const [judgeConfig, setJudgeConfig] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -38,15 +40,17 @@ export default function TestsPage({ geminiKey }) {
     setLoading(true);
     setError(null);
     try {
-      const [testsRes, reportsRes, configRes] = await Promise.all([
+      const [testsRes, reportsRes, configRes, judgeRes] = await Promise.all([
         listTestCases().catch(() => ({ test_cases: [] })),
         listReports().catch(() => ({ reports: [] })),
-        getConfigStatus().catch(() => ({ loaded: false }))
+        getConfigStatus().catch(() => ({ loaded: false })),
+        getJudgeConfig().catch(() => null)
       ]);
       
       setTestCases(testsRes.test_cases || []);
       setReports(reportsRes.reports || []);
       setConfigStatus(configRes);
+      setJudgeConfig(judgeRes);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -64,15 +68,11 @@ export default function TestsPage({ geminiKey }) {
     setError(null);
     
     try {
-      // Check if test supports LLM evaluation
-      const testCase = testCases.find(t => t.id === testId);
-      const supportsLlm = testCase?.evaluation_method?.includes('llm');
-      // Always enable LLM for supported tests - backend will use its configured key as fallback
-      const enableLlm = supportsLlm;
-      
+      // LLM evaluation always runs (multi-LLM via judges package)
       const result = await runTest(testId, { 
+        openaiKey,
         geminiKey,
-        withLlm: enableLlm 
+        anthropicKey
       });
       setResults(prev => ({ ...prev, [testId]: result }));
     } catch (err) {
@@ -93,12 +93,11 @@ export default function TestsPage({ geminiKey }) {
     setResults({});
     
     try {
-      // Always enable LLM evaluation - backend will use its configured key as fallback
-      const enableLlm = true;
-      
+      // LLM evaluation always runs (multi-LLM via judges package)
       const report = await runAllTests({ 
+        openaiKey,
         geminiKey,
-        withLlm: enableLlm,
+        anthropicKey,
         saveReport: true
       });
       
@@ -152,6 +151,15 @@ export default function TestsPage({ geminiKey }) {
               : 'No configuration loaded'
             }
           </p>
+          {judgeConfig && (
+            <p className="text-slate-500 text-xs mt-1">
+              LLM Judges: {judgeConfig.judges
+                .filter(j => j.enabled)
+                .map(j => j.provider)
+                .join(', ') || 'None'} 
+              {judgeConfig.default_n > 1 && ` (N=${judgeConfig.default_n})`}
+            </p>
+          )}
         </div>
         
         <div className="flex gap-2">
@@ -467,7 +475,10 @@ function LlmEvaluationCard({ evaluation }) {
 }
 
 function CriterionCard({ criterion: cr }) {
+  const [showModelBreakdown, setShowModelBreakdown] = useState(false);
   const hasScalarScore = cr.score !== undefined;
+  const isMultiLlm = cr.criterion_type === 'llm' && cr.model_results;
+  const hasLowConsensus = cr.flag_for_review || (cr.consensus_level && !['STRONG', 'GOOD'].includes(cr.consensus_level));
   
   return (
     <div 
@@ -489,14 +500,25 @@ function CriterionCard({ criterion: cr }) {
               LLM Judge
             </span>
           )}
+          {/* Consensus level badge */}
+          {cr.consensus_level && (
+            <span className={`text-xs px-1.5 py-0.5 rounded ${
+              cr.consensus_level === 'STRONG' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+              cr.consensus_level === 'GOOD' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+              cr.consensus_level === 'PARTIAL' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+              'bg-red-500/20 text-red-400 border border-red-500/30'
+            }`}>
+              {cr.consensus_level}
+            </span>
+          )}
+          {/* Low consensus warning */}
+          {hasLowConsensus && (
+            <span className="text-yellow-400" title="Low consensus between models - review recommended">
+              ⚠️
+            </span>
+          )}
           {cr.weight && cr.weight !== 1.0 && (
             <span className="text-xs text-slate-500">({cr.weight}x weight)</span>
-          )}
-          {/* Confidence indicator - always show for LLM criteria, or when < 1.0 */}
-          {cr.confidence != null && (cr.criterion_id?.startsWith('llm_') || cr.confidence < 1.0) && (
-            <span className={`text-xs ${cr.confidence >= 0.9 ? 'text-green-500' : cr.confidence >= 0.7 ? 'text-yellow-500' : 'text-orange-500'}`}>
-              ({Math.round(cr.confidence * 100)}% conf)
-            </span>
           )}
         </div>
         {hasScalarScore && (
@@ -525,25 +547,54 @@ function CriterionCard({ criterion: cr }) {
         <p className="text-slate-500 text-xs mt-2 font-mono">{cr.details}</p>
       )}
       
-      {/* Confidence indicator - always show for LLM criteria */}
-      {cr.confidence !== undefined && cr.criterion_id?.startsWith('llm_') && (
-        <div className="mt-2 flex items-center gap-2 text-xs">
-          <span className="text-slate-500">Confidence:</span>
-          <div className="w-20 h-1.5 bg-slate-700 rounded-full overflow-hidden">
-            <div 
-              className={`h-full rounded-full ${
-                cr.confidence >= 0.9 ? 'bg-green-500' : 
-                cr.confidence >= 0.7 ? 'bg-yellow-500' : 'bg-orange-500'
-              }`}
-              style={{ width: `${cr.confidence * 100}%` }}
-            />
-          </div>
-          <span className={
-            cr.confidence >= 0.9 ? 'text-green-400' : 
-            cr.confidence >= 0.7 ? 'text-yellow-400' : 'text-orange-400'
-          }>
-            {(cr.confidence * 100).toFixed(0)}%
-          </span>
+      {/* Multi-Model Breakdown */}
+      {isMultiLlm && (
+        <div className="mt-2">
+          <button
+            onClick={() => setShowModelBreakdown(!showModelBreakdown)}
+            className="text-xs text-purple-400 hover:text-purple-300"
+          >
+            {showModelBreakdown ? '▼' : '▶'} Model Breakdown ({Object.keys(cr.model_results).length} models)
+          </button>
+          
+          {showModelBreakdown && (
+            <div className="mt-2 space-y-3 pl-3 border-l-2 border-purple-500/30">
+              {Object.entries(cr.model_results).map(([provider, modelResult]) => {
+                const samples = modelResult.samples || [];
+                const meanScore = modelResult.mean_score || 0;
+                const std = modelResult.std || 0;
+                const reasoningSamples = modelResult.reasoning_samples || [];
+                
+                return (
+                  <div key={provider} className="text-xs border-b border-slate-700/50 pb-2 last:border-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-slate-300 capitalize font-semibold">{provider}:</span>
+                      <span className="text-slate-200 font-mono">
+                        {meanScore.toFixed(1)}/10 (σ={std.toFixed(2)})
+                      </span>
+                    </div>
+                    <div className="text-slate-500 text-xs mb-1">
+                      Samples: {samples.map(s => s.toFixed(1)).join(', ')}
+                    </div>
+                    {reasoningSamples.length > 0 && (
+                      <div className="mt-2 space-y-1">
+                        {reasoningSamples.map((reasoning, idx) => (
+                          <div key={idx} className="text-slate-400 text-xs italic bg-slate-800/50 p-2 rounded">
+                            <span className="text-slate-500 font-semibold">Sample {idx + 1}:</span> {reasoning}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              {cr.cross_model_std !== undefined && (
+                <div className="text-xs text-purple-400 mt-1 pt-1 border-t border-purple-500/20">
+                  Cross-model std: {cr.cross_model_std.toFixed(2)} (final score is mean of model means)
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -710,6 +761,11 @@ function ReportDetail({ report, onBack }) {
               Algorithm: {report.context.algorithm_name} ({report.context.algorithm_version}) |
               Dataset: {report.context.dataset_version} ({report.context.dataset_episode_count} episodes)
             </p>
+            {report.context.llm_providers && report.context.llm_providers.length > 0 && (
+              <p className="text-xs text-purple-400 mt-1">
+                LLM Judges: {report.context.llm_providers.join(', ')} ({report.context.evaluation_mode || 'multi_llm'})
+              </p>
+            )}
           </div>
         )}
       </div>

@@ -77,8 +77,8 @@ evaluation/
 │   ├── 03_quality_gates_credibility.json/md
 │   ├── 04_excluded_episodes.json/md
 │   ├── 05_category_personalization.json/md
-│   ├── 06_bookmark_weighting.json/md
-│   └── 07_recency_scoring.json/md
+│   ├── 06_recency_scoring.json/md
+│   └── 07_bookmark_weighting.json
 ├── reports/                     # Test reports (generated)
 └── data/raw/                    # Raw dataset files
 ```
@@ -106,8 +106,8 @@ evaluation/
 | 03 | Quality Gates Credibility | MFT | No C<2 episodes ever |
 | 04 | Excluded Episodes | MFT | Exclusions respected |
 | 05 | Category Personalization | DIR | ≥50% category match |
-| 06 | Bookmark Weighting | DIR | Bookmarks > clicks |
-| 07 | Recency Scoring | DIR | Recent > older |
+| 06 | Recency Scoring | DIR | Recent > older |
+| 07 | Bookmark Weighting | DIR | Bookmarks > clicks |
 
 **Test Types:**
 - **MFT** = Minimum Functionality Test (must pass)
@@ -179,10 +179,10 @@ When tests fail, use this guide to adjust parameters:
 |------|------------------|
 | 01, 03 | Quality gates (credibility_floor, combined_floor) |
 | 01 | Cold start quality weight (60%) |
-| 02, 05, 06 | Similarity weight (55%), user vector |
+| 02, 05, 07 | Similarity weight, user vector computation |
 | 04 | Exclusion filter logic |
-| 06 | Bookmark weight (2.0x) |
-| 07 | Recency weight (15%/40%), lambda (0.03) |
+| 06 | Recency weight (15%/40%), lambda (0.03) |
+| 07 | Bookmark weight (engagement_weights.bookmark) |
 
 ---
 

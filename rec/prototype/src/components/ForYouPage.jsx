@@ -9,7 +9,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { createSession, loadMore as loadMoreApi, fetchStats } from '../api';
+import { createSession, loadMore as loadMoreApi, fetchStats, getConfigStatus } from '../api';
 
 export default function ForYouPage({ 
   engagements,
@@ -103,9 +103,26 @@ export default function ForYouPage({
     }
   }, [engagements, excludedIds, onSessionChange]);
   
-  // Initialize on mount
+  // Initialize on mount - check if config is loaded first
   useEffect(() => {
-    fetchSession(true);
+    const initSession = async () => {
+      try {
+        // Check if configuration is loaded before trying to create session
+        const configStatus = await getConfigStatus();
+        if (configStatus.loaded) {
+          fetchSession(true);
+        } else {
+          setError('No configuration loaded. Click Settings to load an algorithm and dataset.');
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('[ForYouPage] Failed to check config status:', err);
+        setError('Failed to connect to backend. Is the server running?');
+        setLoading(false);
+      }
+    };
+    
+    initSession();
   }, []); // Only on mount
   
   // Handle Refresh button click

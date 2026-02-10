@@ -9,7 +9,9 @@ import {
   validateCompatibility,
   loadConfiguration,
   getConfigStatus,
-  getEmbeddingStatus
+  getEmbeddingStatus,
+  getJudgeConfig,
+  updateJudgeConfig
 } from '../api';
 
 export default function SettingsModal({ 
@@ -19,6 +21,8 @@ export default function SettingsModal({
   onGeminiKeyChange,
   openaiKey,
   onOpenaiKeyChange,
+  anthropicKey,
+  onAnthropicKeyChange,
   onConfigLoaded 
 }) {
   const [algorithms, setAlgorithms] = useState([]);
@@ -31,6 +35,8 @@ export default function SettingsModal({
   const [loadingConfig, setLoadingConfig] = useState(false);
   const [error, setError] = useState(null);
   const [configStatus, setConfigStatus] = useState(null);
+  const [judgeConfig, setJudgeConfig] = useState(null);
+  const [judgeConfigModified, setJudgeConfigModified] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -51,15 +57,17 @@ export default function SettingsModal({
     setLoading(true);
     setError(null);
     try {
-      const [algosRes, datasetsRes, configRes] = await Promise.all([
+      const [algosRes, datasetsRes, configRes, judgeRes] = await Promise.all([
         listAlgorithms(),
         listDatasets(),
-        getConfigStatus().catch(() => ({ loaded: false }))
+        getConfigStatus().catch(() => ({ loaded: false })),
+        getJudgeConfig().catch(() => null)
       ]);
       
       setAlgorithms(algosRes.algorithms || []);
       setDatasets(datasetsRes.datasets || []);
       setConfigStatus(configRes);
+      setJudgeConfig(judgeRes);
       
       // Pre-select if already loaded
       if (configRes.loaded) {
@@ -94,6 +102,12 @@ export default function SettingsModal({
     setError(null);
     
     try {
+      // Save judge config if modified
+      if (judgeConfigModified && judgeConfig) {
+        await updateJudgeConfig(judgeConfig);
+        setJudgeConfigModified(false);
+      }
+      
       const result = await loadConfiguration(selectedAlgorithm, selectedDataset, {
         openaiKey,
         generateEmbeddings: true
@@ -114,6 +128,24 @@ export default function SettingsModal({
     } finally {
       setLoadingConfig(false);
     }
+  };
+  
+  const handleJudgeToggle = (provider) => {
+    if (!judgeConfig) return;
+    
+    const newJudges = judgeConfig.judges.map(j => 
+      j.provider === provider ? { ...j, enabled: !j.enabled } : j
+    );
+    
+    setJudgeConfig({ ...judgeConfig, judges: newJudges });
+    setJudgeConfigModified(true);
+  };
+  
+  const handleNSamplesChange = (value) => {
+    if (!judgeConfig) return;
+    
+    setJudgeConfig({ ...judgeConfig, default_n: parseInt(value) });
+    setJudgeConfigModified(true);
   };
 
   if (!isOpen) return null;
@@ -155,8 +187,76 @@ export default function SettingsModal({
                 />
                 <p className="text-xs text-slate-500 mt-1">Used for LLM-as-a-judge evaluation</p>
               </div>
+              
+              <div>
+                <label className="block text-sm text-slate-400 mb-1">Anthropic API Key</label>
+                <input
+                  type="password"
+                  value={anthropicKey}
+                  onChange={(e) => onAnthropicKeyChange(e.target.value)}
+                  placeholder="sk-ant..."
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
+                />
+                <p className="text-xs text-slate-500 mt-1">Used for LLM-as-a-judge evaluation</p>
+              </div>
             </div>
           </div>
+          
+          {/* LLM Judge Configuration */}
+          {judgeConfig && (
+            <div>
+              <h3 className="text-sm font-medium text-slate-300 mb-3">LLM Judge Configuration</h3>
+              
+              <div className="space-y-3">
+                {/* Provider Toggles */}
+                <div className="space-y-2">
+                  <label className="block text-xs text-slate-400 mb-2">Enabled Providers</label>
+                  {judgeConfig.judges.map(judge => (
+                    <label 
+                      key={judge.provider}
+                      className="flex items-center gap-3 p-2 bg-slate-800 rounded-lg border border-slate-700 hover:border-slate-600 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={judge.enabled}
+                        onChange={() => handleJudgeToggle(judge.provider)}
+                        className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-indigo-600 focus:ring-indigo-500"
+                      />
+                      <div className="flex-1">
+                        <div className="text-sm text-white capitalize">{judge.provider}</div>
+                        <div className="text-xs text-slate-500">{judge.description || judge.model}</div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+                
+                {/* N Samples Slider */}
+                <div>
+                  <label className="block text-xs text-slate-400 mb-2">
+                    Samples per Judge (N = {judgeConfig.default_n})
+                  </label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={judgeConfig.default_n}
+                    onChange={(e) => handleNSamplesChange(e.target.value)}
+                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                  <div className="flex justify-between text-xs text-slate-500 mt-1">
+                    <span>1 (faster)</span>
+                    <span>10 (more reliable)</span>
+                  </div>
+                </div>
+                
+                {judgeConfigModified && (
+                  <div className="p-2 bg-yellow-500/10 border border-yellow-500/30 rounded text-yellow-400 text-xs">
+                    Judge config modified. Changes will be saved when you load configuration.
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           
           {/* Algorithm/Dataset Selection */}
           <div>

@@ -321,20 +321,26 @@ export async function getTestCase(testId) {
 }
 
 /**
- * Run a single test
+ * Run a single test with multi-LLM evaluation
  */
 export async function runTest(testId, options = {}) {
   const headers = { 'Content-Type': 'application/json' };
+  if (options.openaiKey) {
+    headers['X-OpenAI-Key'] = options.openaiKey;
+  }
   if (options.geminiKey) {
     headers['X-Gemini-Key'] = options.geminiKey;
+  }
+  if (options.anthropicKey) {
+    headers['X-Anthropic-Key'] = options.anthropicKey;
   }
   
   const response = await fetch(`${API_BASE}/api/evaluation/run`, {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      test_id: testId,
-      with_llm: options.withLlm || false
+      test_id: testId
+      // Note: LLM evaluation always runs (no with_llm flag)
     })
   });
   if (!response.ok) {
@@ -345,25 +351,56 @@ export async function runTest(testId, options = {}) {
 }
 
 /**
- * Run all tests
+ * Run all tests with multi-LLM evaluation
  */
 export async function runAllTests(options = {}) {
   const headers = { 'Content-Type': 'application/json' };
+  if (options.openaiKey) {
+    headers['X-OpenAI-Key'] = options.openaiKey;
+  }
   if (options.geminiKey) {
     headers['X-Gemini-Key'] = options.geminiKey;
+  }
+  if (options.anthropicKey) {
+    headers['X-Anthropic-Key'] = options.anthropicKey;
   }
   
   const response = await fetch(`${API_BASE}/api/evaluation/run-all`, {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      with_llm: options.withLlm || false,
       save_report: options.saveReport !== false
+      // Note: LLM evaluation always runs (no with_llm flag)
     })
   });
   if (!response.ok) {
     const err = await response.json();
     throw new Error(err.detail || 'Failed to run tests');
+  }
+  return response.json();
+}
+
+/**
+ * Get judge configuration (which LLM providers are enabled, N samples, etc.)
+ */
+export async function getJudgeConfig() {
+  const response = await fetch(`${API_BASE}/api/evaluation/judge-config`);
+  if (!response.ok) throw new Error('Failed to get judge configuration');
+  return response.json();
+}
+
+/**
+ * Update judge configuration
+ */
+export async function updateJudgeConfig(config) {
+  const response = await fetch(`${API_BASE}/api/evaluation/judge-config`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(config)
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.detail || 'Failed to update judge configuration');
   }
   return response.json();
 }

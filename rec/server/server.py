@@ -17,6 +17,7 @@ Usage:
 """
 
 import json
+import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -48,6 +49,20 @@ except ImportError:
     from embedding_generator import EmbeddingGenerator, EmbeddingProgress, check_openai_available
     from validator import Validator, CompatibilityResult
     from qdrant_store import QdrantEmbeddingStore, check_qdrant_available, compute_strategy_hash
+
+# Import runner library for test execution
+import sys
+from pathlib import Path
+
+# Add evaluation directory to Python path
+# In Docker: /data/evaluation, Local: ../evaluation
+evaluation_dir = os.getenv("EVALUATION_DIR")
+if evaluation_dir:
+    sys.path.insert(0, str(Path(evaluation_dir)))
+else:
+    sys.path.insert(0, str(Path(__file__).parent.parent / "evaluation"))
+
+from runner import run_test_async, run_all_tests_async, EngineContext, load_all_profiles, load_test_case
 
 
 # ============================================================================
@@ -1138,23 +1153,30 @@ def get_test_case(test_id: str):
 
 class RunTestRequest(BaseModel):
     test_id: str
-    with_llm: bool = False
+    # Note: LLM evaluation always runs (no with_llm flag)
 
 
 class RunAllTestsRequest(BaseModel):
-    with_llm: bool = False
     save_report: bool = True
+    # Note: LLM evaluation always runs (no with_llm flag)
 
 
 @app.post("/api/evaluation/run")
-def run_single_test(
+async def run_single_test(
     request: RunTestRequest,
-    x_gemini_key: Optional[str] = Header(None, alias="X-Gemini-Key")
+    x_openai_key: Optional[str] = Header(None, alias="X-OpenAI-Key"),
+    x_gemini_key: Optional[str] = Header(None, alias="X-Gemini-Key"),
+    x_anthropic_key: Optional[str] = Header(None, alias="X-Anthropic-Key")
 ):
     """
-    Run a single test case.
+    Run a single test case with multi-LLM evaluation.
     
-    Pass Gemini API key via X-Gemini-Key header for LLM evaluation.
+    Pass API keys via headers:
+    - X-OpenAI-Key: For OpenAI judge (optional, falls back to env var)
+    - X-Gemini-Key: For Gemini judge (optional, falls back to env var)
+    - X-Anthropic-Key: For Anthropic judge (optional, falls back to env var)
+    
+    LLM evaluation always runs (based on judges/config.json).
     """
     state = get_state()
     
@@ -1164,46 +1186,55 @@ def run_single_test(
             detail="No algorithm/dataset loaded. Call /api/config/load first."
         )
     
-    # Load test case
-    test_path = state.config.evaluation_dir / "test_cases" / f"{request.test_id}.json"
-    if not test_path.exists():
-        raise HTTPException(status_code=404, detail=f"Test case not found: {request.test_id}")
+    # Set API keys as environment variables for judges package
+    if x_openai_key:
+        os.environ["OPENAI_API_KEY"] = x_openai_key
+    if x_gemini_key:
+        os.environ["GEMINI_API_KEY"] = x_gemini_key
+    if x_anthropic_key:
+        os.environ["ANTHROPIC_API_KEY"] = x_anthropic_key
     
-    with open(test_path) as f:
-        test_case = json.load(f)
+    # Load profiles
+    profiles = load_all_profiles()
     
-    # Load required profiles
-    profiles = {}
-    profiles_dir = state.config.evaluation_dir / "profiles"
-    for path in profiles_dir.glob("*.json"):
-        try:
-            with open(path) as f:
-                profile = json.load(f)
-                profiles[profile["profile_id"]] = profile
-        except (json.JSONDecodeError, IOError, KeyError):
-            continue
-    
-    # Run the test
-    result = _execute_test(
-        test_id=request.test_id,
-        test_case=test_case,
-        profiles=profiles,
-        state=state,
-        with_llm=request.with_llm,
-        gemini_key=x_gemini_key or state.config.gemini_api_key
+    # Create engine context from loaded state
+    engine_context = EngineContext(
+        engine_module=state.current_algorithm.engine_module,
+        episodes=state.current_dataset.episodes,
+        embeddings=state.current_embeddings,
+        episode_by_content_id=state.current_dataset.episode_by_content_id,
+        algo_config=state.current_algorithm.config
     )
     
-    return result
+    # Run test using runner library
+    result = await run_test_async(
+        test_id=request.test_id,
+        profiles=profiles,
+        verbose=False,
+        skip_llm=False,
+        legacy_mode=False,
+        engine_context=engine_context
+    )
+    
+    return result.to_dict()
 
 
 @app.post("/api/evaluation/run-all")
-def run_all_tests(
+async def run_all_tests_endpoint(
     request: RunAllTestsRequest,
-    x_gemini_key: Optional[str] = Header(None, alias="X-Gemini-Key")
+    x_openai_key: Optional[str] = Header(None, alias="X-OpenAI-Key"),
+    x_gemini_key: Optional[str] = Header(None, alias="X-Gemini-Key"),
+    x_anthropic_key: Optional[str] = Header(None, alias="X-Anthropic-Key")
 ):
     """
-    Run all test cases sequentially.
+    Run all test cases with multi-LLM evaluation.
     
+    Pass API keys via headers:
+    - X-OpenAI-Key: For OpenAI judge (optional, falls back to env var)
+    - X-Gemini-Key: For Gemini judge (optional, falls back to env var)
+    - X-Anthropic-Key: For Anthropic judge (optional, falls back to env var)
+    
+    LLM evaluation always runs (based on judges/config.json).
     Results are saved to a report file if save_report is true.
     """
     state = get_state()
@@ -1214,44 +1245,41 @@ def run_all_tests(
             detail="No algorithm/dataset loaded. Call /api/config/load first."
         )
     
-    # Load all profiles
-    profiles = {}
-    profiles_dir = state.config.evaluation_dir / "profiles"
-    for path in profiles_dir.glob("*.json"):
-        try:
-            with open(path) as f:
-                profile = json.load(f)
-                profiles[profile["profile_id"]] = profile
-        except (json.JSONDecodeError, IOError, KeyError):
-            continue
+    # Set API keys as environment variables for judges package
+    if x_openai_key:
+        os.environ["OPENAI_API_KEY"] = x_openai_key
+    if x_gemini_key:
+        os.environ["GEMINI_API_KEY"] = x_gemini_key
+    if x_anthropic_key:
+        os.environ["ANTHROPIC_API_KEY"] = x_anthropic_key
     
-    # Load all test cases
-    test_cases = {}
-    tests_dir = state.config.evaluation_dir / "test_cases"
-    for path in tests_dir.glob("*.json"):
-        try:
-            with open(path) as f:
-                test = json.load(f)
-                test_cases[test["test_id"]] = test
-        except (json.JSONDecodeError, IOError, KeyError):
-            continue
+    # Load profiles
+    profiles = load_all_profiles()
     
-    # Run tests sequentially
-    results = []
-    for test_id in sorted(test_cases.keys()):
-        result = _execute_test(
-            test_id=test_id,
-            test_case=test_cases[test_id],
-            profiles=profiles,
-            state=state,
-            with_llm=request.with_llm,
-            gemini_key=x_gemini_key or state.config.gemini_api_key
-        )
-        results.append(result)
+    # Create engine context from loaded state
+    engine_context = EngineContext(
+        engine_module=state.current_algorithm.engine_module,
+        episodes=state.current_dataset.episodes,
+        embeddings=state.current_embeddings,
+        episode_by_content_id=state.current_dataset.episode_by_content_id,
+        algo_config=state.current_algorithm.config
+    )
+    
+    # Run all tests using runner library
+    results = await run_all_tests_async(
+        verbose=False,
+        skip_llm=False,
+        method_filter=None,
+        legacy_mode=False,
+        engine_context=engine_context
+    )
+    
+    # Convert TestResult objects to dicts
+    results_dicts = [r.to_dict() for r in results]
     
     # Build report with aggregate scoring
-    passed = sum(1 for r in results if r.get("passed", False))
-    failed = len(results) - passed
+    passed = sum(1 for r in results_dicts if r.get("passed", False))
+    failed = len(results_dicts) - passed
     
     # Compute overall algorithm score (weighted by test type)
     # MFT tests (quality gates, exclusions) are weighted higher
@@ -1261,7 +1289,7 @@ def run_all_tests(
     weighted_score = 0.0
     total_confidence = 0.0
     
-    for r in results:
+    for r in results_dicts:
         test_scores = r.get("scores", {})
         if test_scores and test_scores.get("aggregate_score") is not None:
             # MFT tests get 2x weight
@@ -1273,6 +1301,13 @@ def run_all_tests(
     overall_score = round(weighted_score / total_weight, 2) if total_weight > 0 else 0.0
     overall_confidence = round(total_confidence / total_weight, 2) if total_weight > 0 else 0.0
     
+    # Get active LLM providers from judge config
+    try:
+        from judges import get_available_providers
+        llm_providers = get_available_providers()
+    except:
+        llm_providers = []
+    
     report = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "context": {
@@ -1280,20 +1315,22 @@ def run_all_tests(
             "algorithm_name": state.current_algorithm.manifest.name if state.current_algorithm else None,
             "dataset_version": state.current_dataset.folder_name if state.current_dataset else None,
             "dataset_episode_count": len(state.current_dataset.episodes) if state.current_dataset else 0,
+            "llm_providers": llm_providers,
+            "evaluation_mode": "multi_llm"
         },
         "summary": {
-            "total_tests": len(results),
+            "total_tests": len(results_dicts),
             "passed": passed,
             "failed": failed,
-            "pass_rate": round(passed / len(results), 3) if results else 0,
+            "pass_rate": round(passed / len(results_dicts), 3) if results_dicts else 0,
             "overall_score": overall_score,
             "overall_confidence": overall_confidence,
             "score_breakdown": {
                 r.get("test_id"): r.get("scores", {}).get("aggregate_score", 0)
-                for r in results
+                for r in results_dicts
             }
         },
-        "results": results
+        "results": results_dicts
     }
     
     # Save report if requested
@@ -1316,1121 +1353,88 @@ def run_all_tests(
     return report
 
 
-def _llm_evaluate(
-    test_case: Dict,
-    result: Dict,
-    gemini_key: str
-) -> Dict:
+# ============================================================================
+# Judge Configuration Endpoints
+# ============================================================================
+
+@app.get("/api/evaluation/judge-config")
+def get_judge_config():
     """
-    Use Gemini to provide qualitative evaluation of test results.
+    Get current judge configuration from judges/config.json.
     
-    Returns a dict with:
-    - summary: Brief overall assessment
-    - quality_score: 1-5 rating
-    - observations: List of specific insights
-    - suggestions: Improvement recommendations
+    Returns configuration for which LLM providers are enabled,
+    number of samples per judge (N), temperature, etc.
     """
-    try:
-        genai.configure(api_key=gemini_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        
-        # Build prompt with test context
-        prompt = f"""You are evaluating the results of a recommendation system test.
-
-TEST CASE: {test_case.get('name', 'Unknown')}
-DESCRIPTION: {test_case.get('description', 'No description')}
-TEST TYPE: {test_case.get('type', 'Unknown')}
-
-DETERMINISTIC RESULTS:
-- Overall Passed: {result.get('passed', False)}
-- Criteria Results:
-{json.dumps(result.get('criteria_results', []), indent=2)}
-
-Based on these test results, provide a qualitative evaluation:
-
-1. SUMMARY: A 1-2 sentence overall assessment
-2. QUALITY_SCORE: Rate 1-5 (1=poor, 5=excellent)
-3. OBSERVATIONS: 2-3 specific insights about the recommendation quality
-4. SUGGESTIONS: 1-2 actionable improvements if any
-
-Respond in JSON format:
-{{
-    "summary": "...",
-    "quality_score": N,
-    "observations": ["...", "..."],
-    "suggestions": ["..."]
-}}"""
-
-        response = model.generate_content(prompt)
-        
-        # Parse JSON from response
-        response_text = response.text.strip()
-        # Handle markdown code blocks
-        if response_text.startswith("```"):
-            lines = response_text.split("\n")
-            response_text = "\n".join(lines[1:-1])
-        
-        llm_result = json.loads(response_text)
-        llm_result["evaluated_at"] = datetime.now(timezone.utc).isoformat()
-        
-        return llm_result
-        
-    except Exception as e:
-        return {
-            "summary": f"LLM evaluation failed: {str(e)}",
-            "quality_score": None,
-            "observations": [],
-            "suggestions": [],
-            "error": str(e)
-        }
-
-
-def _llm_judge_criteria(
-    profile: Dict,
-    recommendations: List[Dict],
-    test_case: Dict,
-    gemini_key: str
-) -> List[Dict]:
-    """
-    LLM-as-Judge: Evaluate recommendations and return scalar criteria.
+    state = get_state()
+    config_path = state.config.evaluation_dir / "judges" / "config.json"
     
-    This function uses the LLM to evaluate the actual recommendations
-    against the user's profile and Content Hypothesis, returning scores
-    that can be added as criteria alongside deterministic ones.
-    
-    Returns list of criterion dicts ready to be added to results.
-    """
-    try:
-        genai.configure(api_key=gemini_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        
-        # Extract Content Hypothesis from profile description
-        description = profile.get('description', '')
-        if 'Content Hypothesis:' in description:
-            content_hypothesis = description.split('Content Hypothesis:')[1].strip()
-        else:
-            content_hypothesis = "No explicit Content Hypothesis. Evaluate based on engagement patterns."
-        
-        # Format recommendations for the prompt
-        rec_lines = []
-        for i, ep in enumerate(recommendations[:10], 1):
-            title = ep.get("title", "Unknown")
-            series = ep.get("series", {}).get("name", "Unknown")
-            cred = ep.get("scores", {}).get("credibility", 0)
-            sim = ep.get("similarity_score", 0) or 0
-            key_insight = (ep.get("key_insight", "") or "")[:100]
-            rec_lines.append(f"{i}. {title} ({series}) - Cred:{cred}, Sim:{sim:.2f}")
-            if key_insight:
-                rec_lines.append(f"   Insight: {key_insight}...")
-        
-        # Format engagements
-        eng_lines = []
-        for eng in profile.get("engagements", [])[-10:]:
-            eng_type = eng.get("type", "click").upper()
-            title = eng.get("title", eng.get("episode_id", "Unknown"))
-            eng_lines.append(f"- [{eng_type}] {title}")
-        
-        prompt = f"""You are an expert recommendation system evaluator. Evaluate these podcast recommendations for an investor user.
-
-## User Profile
-Name: {profile.get('name', 'Unknown')}
-Segment: {profile.get('icp_segment', 'Unknown')}
-Total Engagements: {len(profile.get('engagements', []))}
-
-## Content Hypothesis
-{content_hypothesis}
-
-## Recent Engagements (last 10)
-{chr(10).join(eng_lines) if eng_lines else 'No engagements (cold start)'}
-
-## Recommendations (Top 10)
-{chr(10).join(rec_lines)}
-
-## Test Being Evaluated
-{test_case.get('name', 'Unknown')}: {test_case.get('description', '')}
-
-## Evaluation Instructions
-
-Score each dimension on a 1-10 scale where:
-- 1-3: Poor (fails to meet expectations)
-- 4-6: Acceptable (meets minimum expectations)  
-- 7-8: Good (exceeds expectations)
-- 9-10: Excellent (exceptional quality)
-
-For each dimension, also provide your CONFIDENCE (0.0-1.0) in your score:
-- 1.0: Completely certain (clear evidence in the data)
-- 0.7-0.9: High confidence (strong signals but some ambiguity)
-- 0.5-0.7: Moderate confidence (mixed signals or limited data)
-- <0.5: Low confidence (insufficient information to judge reliably)
-
-Evaluate these dimensions:
-
-1. **RELEVANCE**: Do recommendations match the user's interests based on their engagements and Content Hypothesis?
-2. **DIVERSITY**: Is there appropriate variety? (For specialists: variety within domain. For explorers: cross-sector diversity)
-3. **QUALITY**: Are high-quality, credible sources being surfaced?
-4. **HYPOTHESIS_ALIGNMENT**: Do recommendations align with the user's stated Exploration/Specialization ratio and Cross-Disciplinary Curiosity?
-
-Respond in JSON format ONLY:
-{{
-    "relevance_score": <1-10>,
-    "relevance_confidence": <0.0-1.0>,
-    "diversity_score": <1-10>,
-    "diversity_confidence": <0.0-1.0>,
-    "quality_score": <1-10>,
-    "quality_confidence": <0.0-1.0>,
-    "hypothesis_alignment_score": <1-10>,
-    "hypothesis_alignment_confidence": <0.0-1.0>,
-    "relevance_rationale": "<1 sentence>",
-    "diversity_rationale": "<1 sentence>",
-    "quality_rationale": "<1 sentence>",
-    "hypothesis_rationale": "<1 sentence>"
-}}"""
-
-        response = model.generate_content(prompt)
-        response_text = response.text.strip()
-        
-        # Handle markdown code blocks
-        if response_text.startswith("```"):
-            lines = response_text.split("\n")
-            response_text = "\n".join(lines[1:-1])
-        
-        llm_result = json.loads(response_text)
-        
-        # Convert LLM scores to criteria (scale 1-10, threshold 6.0 for LLM criteria)
-        # Use LLM-reported confidence, with 0.7 as fallback if not provided
-        criteria = []
-        
-        # Relevance criterion
-        relevance_score = float(llm_result.get("relevance_score", 5))
-        relevance_confidence = float(llm_result.get("relevance_confidence", 0.7))
-        relevance_confidence = max(0.0, min(1.0, relevance_confidence))  # Clamp to 0-1
-        criteria.append({
-            "criterion_id": "llm_relevance",
-            "description": "LLM Judge: Recommendations match user interests and Content Hypothesis",
-            "score": round(relevance_score, 1),
-            "threshold": 6.0,
-            "confidence": round(relevance_confidence, 2),
-            "passed": relevance_score >= 6.0,
-            "details": llm_result.get("relevance_rationale", ""),
-            "weight": 1.0
-        })
-        
-        # Diversity criterion
-        diversity_score = float(llm_result.get("diversity_score", 5))
-        diversity_confidence = float(llm_result.get("diversity_confidence", 0.7))
-        diversity_confidence = max(0.0, min(1.0, diversity_confidence))
-        criteria.append({
-            "criterion_id": "llm_diversity",
-            "description": "LLM Judge: Appropriate variety for user's exploration/specialization profile",
-            "score": round(diversity_score, 1),
-            "threshold": 6.0,
-            "confidence": round(diversity_confidence, 2),
-            "passed": diversity_score >= 6.0,
-            "details": llm_result.get("diversity_rationale", ""),
-            "weight": 1.0
-        })
-        
-        # Quality criterion
-        quality_score = float(llm_result.get("quality_score", 5))
-        quality_confidence = float(llm_result.get("quality_confidence", 0.7))
-        quality_confidence = max(0.0, min(1.0, quality_confidence))
-        criteria.append({
-            "criterion_id": "llm_quality",
-            "description": "LLM Judge: High-quality, credible sources surfaced",
-            "score": round(quality_score, 1),
-            "threshold": 6.0,
-            "confidence": round(quality_confidence, 2),
-            "passed": quality_score >= 6.0,
-            "details": llm_result.get("quality_rationale", ""),
-            "weight": 1.0
-        })
-        
-        # Content Hypothesis Alignment criterion
-        hypothesis_score = float(llm_result.get("hypothesis_alignment_score", 5))
-        hypothesis_confidence = float(llm_result.get("hypothesis_alignment_confidence", 0.7))
-        hypothesis_confidence = max(0.0, min(1.0, hypothesis_confidence))
-        criteria.append({
-            "criterion_id": "llm_hypothesis_alignment",
-            "description": "LLM Judge: Recommendations align with Content Hypothesis",
-            "score": round(hypothesis_score, 1),
-            "threshold": 6.0,
-            "confidence": round(hypothesis_confidence, 2),
-            "passed": hypothesis_score >= 6.0,
-            "details": llm_result.get("hypothesis_rationale", ""),
-            "weight": 1.0
-        })
-        
-        return criteria
-        
-    except Exception as e:
-        # Return a single error criterion
-        return [{
-            "criterion_id": "llm_evaluation_error",
-            "description": "LLM Judge evaluation failed",
-            "score": 0.0,
-            "threshold": 6.0,
-            "confidence": 0.0,
-            "passed": False,
-            "details": f"Error: {str(e)}",
-            "weight": 0.0  # Don't count failed LLM in aggregate
-        }]
-
-
-def _add_criterion(
-    result: Dict,
-    criterion_id: str,
-    description: str,
-    score: float,
-    threshold: float = 7.0,
-    confidence: float = 1.0,
-    details: str = "",
-    weight: float = 1.0
-) -> None:
-    """
-    Add a criterion result with scalar scoring.
-    
-    Args:
-        result: The test result dict to add to
-        criterion_id: Unique identifier for this criterion
-        description: Human-readable description
-        score: Score on 1-10 scale
-        threshold: Minimum score to pass (default 7.0)
-        confidence: 0.0-1.0 confidence in the score (1.0 for deterministic)
-        details: Additional details string
-        weight: Weight for aggregate scoring (default 1.0)
-    """
-    passed = score >= threshold
-    result["criteria_results"].append({
-        "criterion_id": criterion_id,
-        "description": description,
-        "score": round(score, 2),
-        "threshold": threshold,
-        "confidence": confidence,
-        "passed": passed,
-        "details": details,
-        "weight": weight
-    })
-    if not passed:
-        result["passed"] = False
-
-
-def _compute_aggregate_score(result: Dict) -> Dict:
-    """
-    Compute aggregate scores for a test result.
-    
-    Returns dict with:
-        - aggregate_score: Weighted mean of all criteria (1-10)
-        - aggregate_confidence: Weighted mean confidence
-        - criteria_count: Number of criteria
-        - passed_count: Number of passing criteria
-    """
-    criteria = result.get("criteria_results", [])
-    if not criteria:
-        return {
-            "aggregate_score": 0.0,
-            "aggregate_confidence": 0.0,
-            "criteria_count": 0,
-            "passed_count": 0
-        }
-    
-    total_weight = sum(c.get("weight", 1.0) for c in criteria)
-    weighted_score = sum(c.get("score", 0) * c.get("weight", 1.0) for c in criteria)
-    weighted_confidence = sum(c.get("confidence", 1.0) * c.get("weight", 1.0) for c in criteria)
-    passed_count = sum(1 for c in criteria if c.get("passed", False))
-    
-    return {
-        "aggregate_score": round(weighted_score / total_weight, 2) if total_weight > 0 else 0.0,
-        "aggregate_confidence": round(weighted_confidence / total_weight, 2) if total_weight > 0 else 0.0,
-        "criteria_count": len(criteria),
-        "passed_count": passed_count
-    }
-
-
-def _execute_test(
-    test_id: str,
-    test_case: Dict,
-    profiles: Dict[str, Dict],
-    state: AppState,
-    with_llm: bool = False,
-    gemini_key: Optional[str] = None
-) -> Dict:
-    """
-    Execute a single test and return the result.
-    
-    This implements the core test validation logic.
-    Returns results with scalar scoring (1-10 scale).
-    """
-    result = {
-        "test_id": test_id,
-        "name": test_case.get("name", test_id),
-        "type": test_case.get("type", ""),
-        "evaluation_method": test_case.get("evaluation_method", "deterministic"),
-        "passed": True,
-        "criteria_results": [],
-        "error": None,
-        "llm_evaluation": None,
-        "scores": None  # Will be populated with aggregate scores
-    }
+    if not config_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Judge configuration file not found"
+        )
     
     try:
-        # Get engine module
-        engine = state.current_algorithm.engine_module
-        if not engine:
-            result["error"] = "Algorithm engine not loaded"
-            result["passed"] = False
-            return result
-        
-        # Execute based on test type
-        if test_id == "01_cold_start_quality":
-            result = _test_cold_start_quality(test_case, profiles, engine, state, result)
-        
-        elif test_id == "02_personalization_differs":
-            result = _test_personalization_differs(test_case, profiles, engine, state, result)
-        
-        elif test_id == "03_quality_gates_credibility":
-            result = _test_quality_gates(test_case, profiles, engine, state, result)
-        
-        elif test_id == "04_excluded_episodes":
-            result = _test_excluded_episodes(test_case, profiles, engine, state, result)
-        
-        elif test_id == "05_category_personalization":
-            result = _test_category_personalization(test_case, profiles, engine, state, result)
-        
-        elif test_id == "06_bookmark_weighting":
-            result = _test_bookmark_weighting(test_case, profiles, engine, state, result)
-        
-        elif test_id == "07_recency_scoring":
-            result = _test_recency_scoring(test_case, profiles, engine, state, result)
-        
-        elif test_id == "08_bookmark_weighting_high_quality":
-            # Same logic as test 06, just with high-quality crypto episodes
-            result = _test_bookmark_weighting_high_quality(test_case, profiles, engine, state, result)
-        
-        else:
-            result["error"] = f"Unknown test: {test_id}"
-            result["passed"] = False
-        
+        with open(config_path) as f:
+            config = json.load(f)
+        return config
+    except json.JSONDecodeError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to parse judge configuration: {str(e)}"
+        )
+
+
+@app.post("/api/evaluation/judge-config")
+def update_judge_config(config: Dict[str, Any]):
+    """
+    Update judge configuration in judges/config.json.
+    
+    Expects a JSON object with:
+    - judges: Array of judge configurations
+    - default_n: Number of samples per judge
+    - temperature: LLM sampling temperature
+    - etc.
+    """
+    state = get_state()
+    config_path = state.config.evaluation_dir / "judges" / "config.json"
+    
+    # Validate basic structure
+    if "judges" not in config:
+        raise HTTPException(
+            status_code=400,
+            detail="Configuration must include 'judges' array"
+        )
+    
+    if not isinstance(config["judges"], list):
+        raise HTTPException(
+            status_code=400,
+            detail="'judges' must be an array"
+        )
+    
+    # Validate each judge has required fields
+    for judge in config["judges"]:
+        if not isinstance(judge, dict):
+            raise HTTPException(
+                status_code=400,
+                detail="Each judge must be an object"
+            )
+        if "provider" not in judge or "model" not in judge or "enabled" not in judge:
+            raise HTTPException(
+                status_code=400,
+                detail="Each judge must have 'provider', 'model', and 'enabled' fields"
+            )
+    
+    # Write to disk
+    try:
+        with open(config_path, "w") as f:
+            json.dump(config, f, indent=2)
+        return {"status": "success", "message": "Judge configuration updated"}
     except Exception as e:
-        result["error"] = str(e)
-        result["passed"] = False
-    
-    # Run LLM-as-Judge if requested and applicable (BEFORE aggregating)
-    eval_method = test_case.get("evaluation_method", "deterministic")
-    if with_llm and gemini_key and "llm" in eval_method:
-        # Get the profile and recommendations for LLM evaluation
-        llm_context = result.get("_llm_judge_context")
-        if llm_context:
-            profile = llm_context.get("profile")
-            recommendations = llm_context.get("recommendations", [])
-            
-            if profile and recommendations:
-                # Call LLM judge to get criteria
-                llm_criteria = _llm_judge_criteria(profile, recommendations, test_case, gemini_key)
-                
-                # Add LLM criteria to results (before aggregating)
-                for criterion in llm_criteria:
-                    result["criteria_results"].append(criterion)
-                    if not criterion.get("passed", True):
-                        result["passed"] = False
-        
-        # Remove internal context from result
-        result.pop("_llm_judge_context", None)
-    
-    # Compute aggregate scores (now includes LLM criteria)
-    result["scores"] = _compute_aggregate_score(result)
-    
-    # Run LLM summarizer for qualitative commentary
-    if with_llm and gemini_key and "llm" in eval_method:
-        result["llm_evaluation"] = _llm_evaluate(test_case, result, gemini_key)
-    
-    return result
-
-
-def _call_recommendation_api(engagements: List[Dict], excluded_ids: set, state: AppState) -> Dict:
-    """Helper to call the recommendation engine directly."""
-    engine = state.current_algorithm.engine_module
-    
-    # Auto-exclude engaged episodes (consistent with create_session behavior)
-    all_excluded = excluded_ids.copy()
-    for eng in engagements:
-        all_excluded.add(eng.get("episode_id", ""))
-    
-    # Load algorithm-specific config
-    algo_config = None
-    if state.current_algorithm.config and hasattr(engine, 'RecommendationConfig'):
-        algo_config = engine.RecommendationConfig.from_dict(state.current_algorithm.config)
-    
-    queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
-        engagements=engagements,
-        excluded_ids=all_excluded,
-        episodes=state.current_dataset.episodes,
-        embeddings=state.current_embeddings,
-        episode_by_content_id=state.current_dataset.episode_by_content_id,
-        config=algo_config,
-    )
-    
-    # Convert to response format
-    episodes = []
-    for i, scored_ep in enumerate(queue[:10]):
-        ep = scored_ep.episode.copy()
-        ep["similarity_score"] = scored_ep.similarity_score
-        ep["quality_score"] = scored_ep.quality_score
-        ep["recency_score"] = scored_ep.recency_score
-        ep["final_score"] = scored_ep.final_score
-        ep["queue_position"] = i + 1
-        episodes.append(ep)
-    
-    return {
-        "episodes": episodes,
-        "cold_start": cold_start,
-        "user_vector_episodes": user_vector_episodes,
-        "total_in_queue": len(queue)
-    }
-
-
-def _test_cold_start_quality(test_case, profiles, engine, state, result):
-    """Test 01: Cold Start Returns Quality Content
-    
-    Scoring approach:
-    - cold_start_flag: Binary (10 if true, 1 if false)
-    - avg_credibility: Map credibility 2.0-4.0 to score 5-10
-    - min_credibility: Binary gate (10 if >=2, 1 otherwise)
-    - top_quality_score: Map avg quality 0.5-1.0 to score 5-10
-    """
-    response = _call_recommendation_api([], set(), state)
-    episodes = response.get("episodes", [])
-    
-    # Criterion 1: cold_start flag (binary)
-    cold_start = response.get("cold_start", False)
-    _add_criterion(
-        result,
-        criterion_id="cold_start_flag",
-        description="API response includes cold_start: true",
-        score=10.0 if cold_start else 1.0,
-        threshold=7.0,
-        confidence=1.0,
-        details=f"cold_start={cold_start}",
-        weight=1.0
-    )
-    
-    # Criterion 2: Average credibility >= 3.0
-    # Score mapping: 2.0 → 5, 3.0 → 7.5, 4.0 → 10
-    if episodes:
-        credibilities = [ep["scores"]["credibility"] for ep in episodes[:10]]
-        avg_cred = sum(credibilities) / len(credibilities)
-        # Map [2.0, 4.0] to [5, 10]
-        score = 5.0 + (avg_cred - 2.0) * 2.5
-        score = max(1.0, min(10.0, score))
-        
-        _add_criterion(
-            result,
-            criterion_id="avg_credibility",
-            description="Average credibility of top 10 >= 3.0",
-            score=score,
-            threshold=7.5,  # Corresponds to avg_cred >= 3.0
-            confidence=1.0,
-            details=f"avg_credibility={avg_cred:.2f}",
-            weight=1.5  # Higher weight - core quality metric
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to write configuration: {str(e)}"
         )
-    
-    # Criterion 3: No episode with credibility < 2 (gate check)
-    if episodes:
-        min_cred = min(ep["scores"]["credibility"] for ep in episodes[:10])
-        # Binary: either passes the gate or doesn't
-        score = 10.0 if min_cred >= 2 else 1.0
-        
-        _add_criterion(
-            result,
-            criterion_id="min_credibility",
-            description="No episode in top 10 has credibility < 2",
-            score=score,
-            threshold=7.0,
-            confidence=1.0,
-            details=f"min_credibility={min_cred}",
-            weight=1.0
-        )
-    
-    # Criterion 4: Top 3 quality scores >= 0.7
-    # Map avg quality [0.5, 1.0] to score [5, 10]
-    if episodes:
-        top_3_quality = [ep.get("quality_score", 0) for ep in episodes[:3]]
-        avg_quality = sum(top_3_quality) / len(top_3_quality) if top_3_quality else 0
-        # Map [0.5, 1.0] to [5, 10]
-        score = 5.0 + (avg_quality - 0.5) * 10.0
-        score = max(1.0, min(10.0, score))
-        
-        _add_criterion(
-            result,
-            criterion_id="top_quality_score",
-            description="Top 3 episodes have quality_score >= 0.7",
-            score=score,
-            threshold=7.0,  # Corresponds to avg_quality >= 0.7
-            confidence=1.0,
-            details=f"top_3_quality_scores={[round(q, 3) for q in top_3_quality]}",
-            weight=1.5  # Higher weight - core quality metric
-        )
-    
-    # Store context for LLM-as-Judge evaluation
-    cold_profile = profiles.get("01_cold_start", {})
-    result["_llm_judge_context"] = {
-        "profile": cold_profile,
-        "recommendations": episodes[:10]
-    }
-    
-    return result
-
-
-def _test_personalization_differs(test_case, profiles, engine, state, result):
-    """Test 02: Personalization Differs from Cold Start
-    
-    Scoring approach:
-    - episode_difference: Map different count [0, 10] to score [1, 10]
-    - similarity_increase: Map delta [0, 0.2+] to score [5, 10]
-    - cold_start_flag_off: Binary (10 if false, 1 if true)
-    """
-    cold_response = _call_recommendation_api([], set(), state)
-    
-    vc_profile = profiles.get("02_vc_partner_ai_tech", {})
-    vc_engagements = [
-        {"episode_id": e["episode_id"], "type": e.get("type", "click"), "timestamp": e.get("timestamp", "")}
-        for e in vc_profile.get("engagements", [])
-    ]
-    vc_response = _call_recommendation_api(vc_engagements, set(vc_profile.get("excluded_ids", [])), state)
-    
-    cold_ids = set(ep["id"] for ep in cold_response.get("episodes", [])[:10])
-    vc_ids = set(ep["id"] for ep in vc_response.get("episodes", [])[:10])
-    
-    # Criterion 1: Episode difference
-    # Map [0, 10] different episodes to score [1, 10]
-    different_count = len(vc_ids - cold_ids)
-    score = 1.0 + different_count * 0.9  # 0 → 1, 5 → 5.5, 10 → 10
-    score = max(1.0, min(10.0, score))
-    
-    _add_criterion(
-        result,
-        criterion_id="episode_difference",
-        description="At least 5 of top 10 episodes are different",
-        score=score,
-        threshold=5.5,  # Corresponds to 5 different episodes
-        confidence=1.0,
-        details=f"different_episodes={different_count}",
-        weight=1.5  # Core personalization metric
-    )
-    
-    # Criterion 2: VC has higher similarity scores
-    cold_sim = [ep.get("similarity_score", 0) or 0 for ep in cold_response.get("episodes", [])[:10]]
-    vc_sim = [ep.get("similarity_score", 0) or 0 for ep in vc_response.get("episodes", [])[:10]]
-    avg_cold_sim = sum(cold_sim) / len(cold_sim) if cold_sim else 0
-    avg_vc_sim = sum(vc_sim) / len(vc_sim) if vc_sim else 0
-    
-    # Map delta [-0.1, 0.2+] to score [3, 10]
-    delta = avg_vc_sim - avg_cold_sim
-    if delta <= 0:
-        score = 3.0 + delta * 20  # Negative delta reduces score
-    else:
-        score = 5.0 + delta * 25  # Positive delta increases score
-    score = max(1.0, min(10.0, score))
-    
-    _add_criterion(
-        result,
-        criterion_id="similarity_increase",
-        description="VC Partner has higher avg similarity_score than cold start",
-        score=score,
-        threshold=5.0,  # Pass if any positive delta
-        confidence=1.0,
-        details=f"cold_avg={avg_cold_sim:.3f}, vc_avg={avg_vc_sim:.3f}, delta={delta:.3f}",
-        weight=1.0
-    )
-    
-    # Criterion 3: VC cold_start flag is false (binary)
-    vc_cold_start = vc_response.get("cold_start", True)
-    score = 10.0 if not vc_cold_start else 1.0
-    
-    _add_criterion(
-        result,
-        criterion_id="cold_start_flag_off",
-        description="VC Partner cold_start flag is false",
-        score=score,
-        threshold=7.0,
-        confidence=1.0,
-        details=f"vc_cold_start={vc_cold_start}",
-        weight=1.0
-    )
-    
-    # Store context for LLM-as-Judge (use VC profile as the personalized user)
-    result["_llm_judge_context"] = {
-        "profile": vc_profile,
-        "recommendations": vc_response.get("episodes", [])[:10]
-    }
-    
-    return result
-
-
-def _test_quality_gates(test_case, profiles, engine, state, result):
-    """Test 03: Quality Gates Enforce Credibility Floor
-    
-    This is a MFT (Minimum Functionality Test) - binary by nature.
-    Scoring: 10 if gate holds, 1 if any violations.
-    
-    We also add a "violations ratio" as a gradual metric for debugging.
-    """
-    all_episodes = []
-    
-    for profile_id, profile in profiles.items():
-        engagements = [
-            {"episode_id": e["episode_id"], "type": e.get("type", "click"), "timestamp": e.get("timestamp", "")}
-            for e in profile.get("engagements", [])
-        ]
-        response = _call_recommendation_api(engagements, set(profile.get("excluded_ids", [])), state)
-        all_episodes.extend(response.get("episodes", []))
-    
-    total_episodes = len(all_episodes)
-    
-    # Criterion 1: No credibility < 2 (quality gate - binary)
-    low_cred = [ep for ep in all_episodes if ep["scores"]["credibility"] < 2]
-    violation_ratio = len(low_cred) / total_episodes if total_episodes > 0 else 0
-    # Score: 10 if no violations, decrease proportionally
-    score = 10.0 * (1.0 - violation_ratio)
-    score = max(1.0, score)
-    
-    _add_criterion(
-        result,
-        criterion_id="credibility_floor",
-        description="No episode with credibility < 2 in any response",
-        score=score,
-        threshold=10.0,  # Must be perfect (no violations)
-        confidence=1.0,
-        details=f"low_credibility_count={len(low_cred)}/{total_episodes}",
-        weight=2.0  # Higher weight - critical gate
-    )
-    
-    # Criterion 2: All C + I >= 5 (quality gate - binary)
-    low_combined = [
-        ep for ep in all_episodes 
-        if ep["scores"]["credibility"] + ep["scores"]["insight"] < 5
-    ]
-    violation_ratio = len(low_combined) / total_episodes if total_episodes > 0 else 0
-    score = 10.0 * (1.0 - violation_ratio)
-    score = max(1.0, score)
-    
-    _add_criterion(
-        result,
-        criterion_id="combined_floor",
-        description="All episodes have C + I >= 5",
-        score=score,
-        threshold=10.0,  # Must be perfect (no violations)
-        confidence=1.0,
-        details=f"low_combined_count={len(low_combined)}/{total_episodes}",
-        weight=2.0  # Higher weight - critical gate
-    )
-    
-    return result
-
-
-def _test_excluded_episodes(test_case, profiles, engine, state, result):
-    """Test 04: Excluded Episodes Never Reappear
-    
-    This is a MFT (Minimum Functionality Test) - binary by nature.
-    Scoring: 10 if exclusions work, 1 if any violations.
-    """
-    profile = profiles.get("02_vc_partner_ai_tech", {}).copy()
-    excluded_ids = test_case.get("setup", {}).get("modifications", {}).get("excluded_ids", [])
-    
-    engagements = [
-        {"episode_id": e["episode_id"], "type": e.get("type", "click"), "timestamp": e.get("timestamp", "")}
-        for e in profile.get("engagements", [])
-    ]
-    response = _call_recommendation_api(engagements, set(excluded_ids), state)
-    
-    episode_ids = [ep["id"] for ep in response.get("episodes", [])]
-    
-    # Criterion 1: No excluded IDs appear (binary gate)
-    excluded_found = [eid for eid in excluded_ids if eid in episode_ids]
-    violation_ratio = len(excluded_found) / len(excluded_ids) if excluded_ids else 0
-    score = 10.0 * (1.0 - violation_ratio)
-    score = max(1.0, score)
-    
-    _add_criterion(
-        result,
-        criterion_id="exclusions_respected",
-        description="None of the excluded episode IDs appear",
-        score=score,
-        threshold=10.0,  # Must be perfect
-        confidence=1.0,
-        details=f"excluded_found={len(excluded_found)}/{len(excluded_ids)}",
-        weight=2.0  # Critical gate
-    )
-    
-    # Criterion 2: Still returns 10 results
-    episode_count = len(response.get("episodes", []))
-    # Map [0, 10] to [1, 10]
-    score = episode_count if episode_count <= 10 else 10.0
-    
-    _add_criterion(
-        result,
-        criterion_id="still_returns_results",
-        description="System still returns 10 valid recommendations",
-        score=score,
-        threshold=10.0,  # Must return exactly 10
-        confidence=1.0,
-        details=f"episode_count={episode_count}",
-        weight=1.0
-    )
-    
-    return result
-
-
-def _test_category_personalization(test_case, profiles, engine, state, result):
-    """Test 05: Category Engagement → Category Recommendations
-    
-    Scoring approach:
-    - category_match: Map match count [0, 10] to score [1, 10]
-    - Threshold at 5 matches = score 5.5
-    """
-    category_config = test_case.get("category_detection", {})
-    
-    def count_category_matches(episodes, category):
-        config = category_config.get(category, {})
-        series_keywords = [k.lower() for k in config.get("series_keywords", [])]
-        content_keywords = [k.lower() for k in config.get("content_keywords", [])]
-        
-        count = 0
-        for ep in episodes[:10]:
-            series_name = ep.get("series", {}).get("name", "").lower()
-            key_insight = (ep.get("key_insight") or "").lower()
-            
-            series_match = any(kw in series_name for kw in series_keywords)
-            content_match = any(kw in key_insight for kw in content_keywords)
-            
-            if series_match or content_match:
-                count += 1
-        
-        return count
-    
-    # AI/Tech profile
-    ai_profile = profiles.get("02_vc_partner_ai_tech", {})
-    ai_engagements = [
-        {"episode_id": e["episode_id"], "type": e.get("type", "click"), "timestamp": e.get("timestamp", "")}
-        for e in ai_profile.get("engagements", [])
-    ]
-    ai_response = _call_recommendation_api(ai_engagements, set(ai_profile.get("excluded_ids", [])), state)
-    
-    # Crypto profile
-    crypto_profile = profiles.get("03_crypto_web3_investor", {})
-    crypto_engagements = [
-        {"episode_id": e["episode_id"], "type": e.get("type", "click"), "timestamp": e.get("timestamp", "")}
-        for e in crypto_profile.get("engagements", [])
-    ]
-    crypto_response = _call_recommendation_api(crypto_engagements, set(crypto_profile.get("excluded_ids", [])), state)
-    
-    # Criterion 1: AI/Tech profile gets AI content
-    # Map [0, 10] matches to [1, 10] score
-    ai_match_count = count_category_matches(ai_response.get("episodes", []), "ai_tech")
-    score = 1.0 + ai_match_count * 0.9  # 0 → 1, 5 → 5.5, 10 → 10
-    
-    _add_criterion(
-        result,
-        criterion_id="ai_tech_category_match",
-        description="Profile 02 (AI/Tech): At least 5 of top 10 are AI/Tech related",
-        score=score,
-        threshold=5.5,  # Corresponds to 5 matches
-        confidence=1.0,
-        details=f"ai_tech_matches={ai_match_count}/10",
-        weight=1.5  # Core personalization metric
-    )
-    
-    # Criterion 2: Crypto profile gets crypto content
-    crypto_match_count = count_category_matches(crypto_response.get("episodes", []), "crypto_web3")
-    score = 1.0 + crypto_match_count * 0.9
-    
-    _add_criterion(
-        result,
-        criterion_id="crypto_category_match",
-        description="Profile 03 (Crypto): At least 5 of top 10 are Crypto/Web3 related",
-        score=score,
-        threshold=5.5,  # Corresponds to 5 matches
-        confidence=1.0,
-        details=f"crypto_matches={crypto_match_count}/10",
-        weight=1.5  # Core personalization metric
-    )
-    
-    # Store context for LLM-as-Judge (use AI profile as primary)
-    result["_llm_judge_context"] = {
-        "profile": ai_profile,
-        "recommendations": ai_response.get("episodes", [])[:10]
-    }
-    
-    return result
-
-
-def _test_bookmark_weighting(test_case, profiles, engine, state, result):
-    """Test 06: Bookmarks Outweigh Clicks in Mixed History
-    
-    Scoring approach:
-    - different_results: Map [0, 10] different to [1, 10] score
-    - crypto_dominance: Map delta [-10, 10] to [1, 10] score
-    """
-    setup = test_case.get("setup", {})
-    
-    scenario_a_engagements = setup.get("scenario_a", {}).get("engagements", [])
-    scenario_b_engagements = setup.get("scenario_b", {}).get("engagements", [])
-    
-    response_a = _call_recommendation_api(scenario_a_engagements, set(setup.get("scenario_a", {}).get("excluded_ids", [])), state)
-    response_b = _call_recommendation_api(scenario_b_engagements, set(setup.get("scenario_b", {}).get("excluded_ids", [])), state)
-    
-    scenario_a_ids = set(ep["id"] for ep in response_a.get("episodes", [])[:10])
-    scenario_b_ids = set(ep["id"] for ep in response_b.get("episodes", [])[:10])
-    
-    # Criterion 1: Different results
-    # Map [0, 10] different episodes to [1, 10] score
-    different_count = len(scenario_a_ids ^ scenario_b_ids)
-    score = 1.0 + different_count * 0.9  # 0 → 1, 2 → 2.8, 10 → 10
-    
-    _add_criterion(
-        result,
-        criterion_id="different_results",
-        description="Scenarios produce different recommendations (at least 2 different episodes)",
-        score=score,
-        threshold=2.8,  # Corresponds to 2 different episodes
-        confidence=1.0,
-        details=f"different_episodes={different_count}",
-        weight=1.0
-    )
-    
-    # Criterion 2: Crypto presence higher in Scenario B (bookmark crypto)
-    crypto_keywords = ["crypto", "bitcoin", "ethereum", "web3", "defi", "blockchain", "btc", "eth"]
-    
-    def count_crypto(episodes):
-        count = 0
-        for ep in episodes[:10]:
-            title = ep.get("title", "").lower()
-            key_insight = (ep.get("key_insight") or "").lower()
-            series = ep.get("series", {}).get("name", "").lower()
-            text = f"{title} {key_insight} {series}"
-            if any(kw in text for kw in crypto_keywords):
-                count += 1
-        return count
-    
-    crypto_count_a = count_crypto(response_a.get("episodes", []))
-    crypto_count_b = count_crypto(response_b.get("episodes", []))
-    
-    # Map delta [-10, 10] to score [1, 10], with 0 delta → 5.5
-    delta = crypto_count_b - crypto_count_a
-    score = 5.5 + delta * 0.45  # -10 → 1, 0 → 5.5, +10 → 10
-    score = max(1.0, min(10.0, score))
-    
-    _add_criterion(
-        result,
-        criterion_id="crypto_dominance_in_b",
-        description="Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
-        score=score,
-        threshold=5.5,  # Pass if B has more crypto (positive delta)
-        confidence=1.0,
-        details=f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10, delta={delta}",
-        weight=1.5  # Core weighting test
-    )
-    
-    # Store context for LLM-as-Judge (use scenario B - bookmark weighted)
-    # Create a synthetic profile from the scenario for LLM evaluation
-    synthetic_profile = {
-        "profile_id": "scenario_b_bookmark",
-        "name": "Bookmark Weighting Test - Scenario B",
-        "description": "User who has bookmarked crypto content and clicked AI content. Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto despite mixed engagement patterns.",
-        "icp_segment": "Test Scenario",
-        "engagements": scenario_b_engagements
-    }
-    result["_llm_judge_context"] = {
-        "profile": synthetic_profile,
-        "recommendations": response_b.get("episodes", [])[:10]
-    }
-    
-    return result
-
-
-def _test_bookmark_weighting_high_quality(test_case, profiles, engine, state, result):
-    """Test 08: Bookmarks Outweigh Clicks (High-Quality Episodes)
-    
-    Same logic as Test 06 but uses high-quality crypto episodes (C>=3, I>=3)
-    that pass all quality gates. This isolates bookmark weighting from quality gate effects.
-    
-    Scoring approach:
-    - different_results: Map [0, 10] different to [1, 10] score
-    - crypto_dominance: Map delta [-10, 10] to [1, 10] score
-    """
-    setup = test_case.get("setup", {})
-    
-    scenario_a_engagements = setup.get("scenario_a", {}).get("engagements", [])
-    scenario_b_engagements = setup.get("scenario_b", {}).get("engagements", [])
-    
-    response_a = _call_recommendation_api(scenario_a_engagements, set(setup.get("scenario_a", {}).get("excluded_ids", [])), state)
-    response_b = _call_recommendation_api(scenario_b_engagements, set(setup.get("scenario_b", {}).get("excluded_ids", [])), state)
-    
-    scenario_a_ids = set(ep["id"] for ep in response_a.get("episodes", [])[:10])
-    scenario_b_ids = set(ep["id"] for ep in response_b.get("episodes", [])[:10])
-    
-    # Criterion 1: Different results
-    # Map [0, 10] different episodes to [1, 10] score
-    different_count = len(scenario_a_ids ^ scenario_b_ids)
-    score = 1.0 + different_count * 0.9  # 0 → 1, 2 → 2.8, 10 → 10
-    
-    _add_criterion(
-        result,
-        criterion_id="different_results",
-        description="Scenarios produce different recommendations (at least 2 different episodes)",
-        score=score,
-        threshold=2.8,  # Corresponds to 2 different episodes
-        confidence=1.0,
-        details=f"different_episodes={different_count}",
-        weight=1.0
-    )
-    
-    # Criterion 2: Crypto presence higher in Scenario B (bookmark crypto)
-    crypto_keywords = ["crypto", "bitcoin", "ethereum", "web3", "defi", "blockchain", "btc", "eth", "cryptopunks", "nft", "dao"]
-    
-    def count_crypto(episodes):
-        count = 0
-        for ep in episodes[:10]:
-            title = ep.get("title", "").lower()
-            key_insight = (ep.get("key_insight") or "").lower()
-            series = ep.get("series", {}).get("name", "").lower()
-            text = f"{title} {key_insight} {series}"
-            if any(kw in text for kw in crypto_keywords):
-                count += 1
-        return count
-    
-    crypto_count_a = count_crypto(response_a.get("episodes", []))
-    crypto_count_b = count_crypto(response_b.get("episodes", []))
-    
-    # Map delta [-10, 10] to score [1, 10], with 0 delta → 5.5
-    delta = crypto_count_b - crypto_count_a
-    score = 5.5 + delta * 0.45  # -10 → 1, 0 → 5.5, +10 → 10
-    score = max(1.0, min(10.0, score))
-    
-    _add_criterion(
-        result,
-        criterion_id="crypto_dominance_in_b",
-        description="Scenario B (bookmark crypto) has more crypto episodes than Scenario A",
-        score=score,
-        threshold=5.5,  # Pass if B has more crypto (positive delta)
-        confidence=1.0,
-        details=f"scenario_a_crypto={crypto_count_a}/10, scenario_b_crypto={crypto_count_b}/10, delta={delta}",
-        weight=1.5  # Core weighting test
-    )
-    
-    # Store context for LLM-as-Judge (use scenario B - bookmark weighted)
-    synthetic_profile = {
-        "profile_id": "scenario_b_bookmark_hq",
-        "name": "Bookmark Weighting Test (High Quality) - Scenario B",
-        "description": "User who has bookmarked HIGH-QUALITY crypto content and clicked AI content. All test episodes pass quality gates (C>=3, I>=3). Content Hypothesis: Bookmarks should be weighted more heavily than clicks, so recommendations should lean toward crypto.",
-        "icp_segment": "Test Scenario",
-        "engagements": scenario_b_engagements
-    }
-    result["_llm_judge_context"] = {
-        "profile": synthetic_profile,
-        "recommendations": response_b.get("episodes", [])[:10]
-    }
-    
-    return result
-
-
-def _test_recency_scoring(test_case, profiles, engine, state, result):
-    """Test 07: Recency Scoring Works
-    
-    Scoring approach:
-    - both_in_top_10: Binary (10 if both found, 1 otherwise)
-    - recency_score_ordering: Map score delta to 1-10
-    - ranking_reflects_recency: Map position delta to 1-10
-    """
-    response = _call_recommendation_api([], set(), state)
-    episodes = response.get("episodes", [])
-    
-    test_pair = test_case.get("setup", {}).get("test_episode_pair", {})
-    recent_id = test_pair.get("recent", {}).get("id", "")
-    older_id = test_pair.get("older", {}).get("id", "")
-    
-    recent_ep = next((ep for ep in episodes if ep["id"] == recent_id), None)
-    older_ep = next((ep for ep in episodes if ep["id"] == older_id), None)
-    
-    # Criterion 1: Both episodes found in top 10 (binary)
-    both_found = recent_ep is not None and older_ep is not None
-    score = 10.0 if both_found else 1.0
-    
-    _add_criterion(
-        result,
-        criterion_id="both_in_top_10",
-        description="Both test episodes found in top 10 cold start results",
-        score=score,
-        threshold=7.0,
-        confidence=1.0,
-        details=f"recent_found={recent_ep is not None}, older_found={older_ep is not None}",
-        weight=1.0
-    )
-    
-    if both_found:
-        # Criterion 2: Recency score ordering
-        recent_rec_score = recent_ep.get("recency_score", 0) or 0
-        older_rec_score = older_ep.get("recency_score", 0) or 0
-        
-        # Map delta [-1, 1] to score [1, 10], with 0 → 5.5
-        delta = recent_rec_score - older_rec_score
-        score = 5.5 + delta * 4.5  # Positive delta → higher score
-        score = max(1.0, min(10.0, score))
-        
-        _add_criterion(
-            result,
-            criterion_id="recency_score_ordering",
-            description="Recent episode has higher recency_score than older",
-            score=score,
-            threshold=5.5,  # Pass if recent > older (positive delta)
-            confidence=1.0,
-            details=f"recent={recent_rec_score:.4f}, older={older_rec_score:.4f}, delta={delta:.4f}",
-            weight=1.5
-        )
-        
-        # Criterion 3: Ranking order (position delta)
-        recent_pos = recent_ep.get("queue_position", 999)
-        older_pos = older_ep.get("queue_position", 999)
-        
-        # Position delta: older_pos - recent_pos (positive means recent ranks higher)
-        pos_delta = older_pos - recent_pos
-        # Map [-10, 10] to [1, 10]
-        score = 5.5 + pos_delta * 0.45
-        score = max(1.0, min(10.0, score))
-        
-        _add_criterion(
-            result,
-            criterion_id="ranking_reflects_recency",
-            description="Recent episode ranks higher (lower position) than older",
-            score=score,
-            threshold=5.5,  # Pass if recent ranks higher (positive delta)
-            confidence=1.0,
-            details=f"recent_pos={recent_pos}, older_pos={older_pos}, delta={pos_delta}",
-            weight=1.5
-        )
-    else:
-        # Add placeholder criteria so aggregate scoring works
-        _add_criterion(
-            result,
-            criterion_id="recency_score_ordering",
-            description="Recent episode has higher recency_score than older",
-            score=1.0,
-            threshold=5.5,
-            confidence=1.0,
-            details="Could not test - episodes not found in top 10",
-            weight=1.5
-        )
-        _add_criterion(
-            result,
-            criterion_id="ranking_reflects_recency",
-            description="Recent episode ranks higher (lower position) than older",
-            score=1.0,
-            threshold=5.5,
-            confidence=1.0,
-            details="Could not test - episodes not found in top 10",
-            weight=1.5
-        )
-    
-    return result
 
 
 # ============================================================================

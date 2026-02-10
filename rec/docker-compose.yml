@@ -43,8 +43,12 @@ services:
       # Qdrant connection
       - QDRANT_URL=http://qdrant:6333
       # API keys can be passed via environment or .env file
+      # OpenAI: Required for embeddings, optional for LLM judge
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      # Gemini: Optional for LLM judge
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      # Anthropic: Optional for LLM judge
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
     depends_on:
       qdrant:
         condition: service_started
