@@ -58,6 +58,10 @@ class RecommendationConfig:
     # Sum-of-similarities mode (alternative to mean-pooling)
     use_sum_similarities: bool = False
     
+    # Cold start scoring weights
+    cold_start_weight_quality: float = 0.60
+    cold_start_weight_recency: float = 0.40
+    
     def __post_init__(self):
         if self.engagement_weights is None:
             self.engagement_weights = {
@@ -447,8 +451,8 @@ def rank_candidates(
         
         # Compute blended final score
         if cold_start:
-            # Cold start: weight quality and recency more heavily
-            final = 0.0 * sim_score + 0.6 * qual_score + 0.4 * rec_score
+            # Cold start: use configured weights for quality and recency
+            final = 0.0 * sim_score + config.cold_start_weight_quality * qual_score + config.cold_start_weight_recency * rec_score
         else:
             final = (
                 config.weight_similarity * sim_score +

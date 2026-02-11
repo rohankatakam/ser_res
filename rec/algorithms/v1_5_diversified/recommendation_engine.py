@@ -63,6 +63,10 @@ class RecommendationConfig:
     cold_start_category_min_per_category: int = 1
     cold_start_categories: List[str] = None
     
+    # Cold start scoring weights
+    cold_start_weight_quality: float = 0.60
+    cold_start_weight_recency: float = 0.40
+    
     def __post_init__(self):
         if self.engagement_weights is None:
             self.engagement_weights = {
@@ -94,9 +98,15 @@ class RecommendationConfig:
         if "engagement_weights" in config_dict:
             flat["engagement_weights"] = config_dict["engagement_weights"]
         
-        # Handle cold_start category diversity
+        # Handle cold_start category diversity and weights
         if "cold_start" in config_dict:
             cs = config_dict["cold_start"]
+            # Cold start scoring weights
+            if "weight_quality" in cs:
+                flat["cold_start_weight_quality"] = cs["weight_quality"]
+            if "weight_recency" in cs:
+                flat["cold_start_weight_recency"] = cs["weight_recency"]
+            # Category diversity
             if "category_diversity" in cs:
                 cd = cs["category_diversity"]
                 flat["cold_start_category_diversity_enabled"] = cd.get("enabled", False)
@@ -549,8 +559,8 @@ def rank_candidates(
         
         # Compute blended final score
         if cold_start:
-            # Cold start: weight quality and recency more heavily
-            final = 0.0 * sim_score + 0.6 * qual_score + 0.4 * rec_score
+            # Cold start: use configured weights for quality and recency
+            final = 0.0 * sim_score + config.cold_start_weight_quality * qual_score + config.cold_start_weight_recency * rec_score
         else:
             final = (
                 config.weight_similarity * sim_score +
