@@ -1,0 +1,478 @@
+{
+  "schema_version": "2.0",
+  "description": "v1_5_diversified parameter schema with base/computed split and category diversity",
+  "constraints": [
+    {
+      "type": "sum_to_one",
+      "params": [
+        "stage_b.weight_similarity",
+        "stage_b.weight_quality",
+        "stage_b.weight_recency"
+      ],
+      "message": "Stage B scoring weights must sum to 1.0"
+    }
+  ],
+  "groups": [
+    {
+      "id": "stage_a",
+      "label": "Stage A: Quality Filtering",
+      "description": "Parameters controlling the quality gate and candidate pool filtering",
+      "collapsed": false,
+      "params": [
+        {
+          "key": "stage_a.credibility_floor",
+          "label": "Credibility Floor",
+          "description": "Minimum credibility score (1-5) to include in candidate pool",
+          "type": "int",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "key": "stage_a.combined_floor",
+          "label": "Combined Floor (C+I)",
+          "description": "Minimum sum of credibility + insight scores to pass quality gate",
+          "type": "int",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "key": "stage_a.freshness_window_days",
+          "label": "Freshness Window (days)",
+          "description": "Only consider episodes published within this many days",
+          "type": "int",
+          "min": 7,
+          "max": 365,
+          "step": 7,
+          "default": 90
+        },
+        {
+          "key": "stage_a.candidate_pool_size",
+          "label": "Candidate Pool Size",
+          "description": "Maximum number of episodes to consider for ranking",
+          "type": "int",
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "default": 150
+        }
+      ]
+    },
+    {
+      "id": "stage_b",
+      "label": "Stage B: Personalized Ranking",
+      "description": "Weights and parameters for personalized scoring of candidates",
+      "collapsed": false,
+      "params": [
+        {
+          "key": "stage_b.weight_similarity",
+          "label": "Similarity Weight",
+          "description": "Weight for user-content similarity in final score (0-1)",
+          "type": "float",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "default": 0.85
+        },
+        {
+          "key": "stage_b.weight_quality",
+          "label": "Quality Weight",
+          "description": "Weight for content quality in final score (0-1)",
+          "type": "float",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "default": 0.10
+        },
+        {
+          "key": "stage_b.weight_recency",
+          "label": "Recency Weight",
+          "description": "Weight for content recency in final score (0-1)",
+          "type": "float",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "default": 0.05
+        },
+        {
+          "key": "stage_b.user_vector_limit",
+          "label": "User Vector Limit",
+          "description": "Maximum number of engagements to use for user vector",
+          "type": "int",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "default": 10
+        },
+        {
+          "key": "stage_b.credibility_multiplier",
+          "label": "Credibility Multiplier",
+          "description": "Bonus multiplier applied to credibility in quality score",
+          "type": "float",
+          "min": 1,
+          "max": 3,
+          "step": 0.1,
+          "default": 1.5
+        },
+        {
+          "key": "stage_b.recency_lambda",
+          "label": "Recency Decay Lambda",
+          "description": "Exponential decay rate for recency scoring (higher = faster decay)",
+          "type": "float",
+          "min": 0.01,
+          "max": 0.1,
+          "step": 0.01,
+          "default": 0.03
+        },
+        {
+          "key": "stage_b.use_weighted_engagements",
+          "label": "Use Weighted Engagements",
+          "description": "Weight engagements by type (bookmark > listen > click)",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "stage_b.use_sum_similarities",
+          "label": "Use Sum-of-Similarities",
+          "description": "Sum similarities to all engaged items (preserves diverse interests)",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "engagement_weights",
+      "label": "Engagement Weights",
+      "description": "Relative weights for different engagement types",
+      "collapsed": false,
+      "params": [
+        {
+          "key": "engagement_weights.bookmark",
+          "label": "Bookmark Weight",
+          "description": "Weight multiplier for bookmark engagements",
+          "type": "float",
+          "min": 1,
+          "max": 20,
+          "step": 0.5,
+          "default": 10.0
+        },
+        {
+          "key": "engagement_weights.listen",
+          "label": "Listen Weight",
+          "description": "Weight multiplier for listen engagements",
+          "type": "float",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "default": 1.5
+        },
+        {
+          "key": "engagement_weights.click",
+          "label": "Click Weight",
+          "description": "Weight multiplier for click engagements (baseline)",
+          "type": "float",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "default": 1.0
+        }
+      ]
+    },
+    {
+      "id": "cold_start",
+      "label": "Cold Start Behavior",
+      "description": "Parameters for users with no engagement history",
+      "collapsed": true,
+      "params": [
+        {
+          "key": "cold_start.weight_quality",
+          "label": "Quality Weight (Cold Start)",
+          "description": "Weight for quality in cold start ranking (0-1)",
+          "type": "float",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "default": 0.60
+        },
+        {
+          "key": "cold_start.weight_recency",
+          "label": "Recency Weight (Cold Start)",
+          "description": "Weight for recency in cold start ranking (0-1)",
+          "type": "float",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "default": 0.40
+        },
+        {
+          "key": "cold_start.category_diversity.min_per_category",
+          "label": "Min Episodes Per Category",
+          "description": "Minimum episodes from each category in cold start results",
+          "type": "int",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "computed_weights",
+      "label": "📊 Normalized Weights (Computed)",
+      "description": "Auto-normalized weights that sum to 1.0 - used in actual scoring",
+      "collapsed": false,
+      "section": "computed",
+      "params": [
+        {
+          "key": "normalized_weight_similarity",
+          "label": "Normalized Similarity Weight",
+          "description": "Similarity weight normalized to sum to 1.0 with quality and recency",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.weight_similarity", "stage_b.weight_quality", "stage_b.weight_recency"]
+        },
+        {
+          "key": "normalized_weight_quality",
+          "label": "Normalized Quality Weight",
+          "description": "Quality weight normalized to sum to 1.0 with similarity and recency",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.weight_similarity", "stage_b.weight_quality", "stage_b.weight_recency"]
+        },
+        {
+          "key": "normalized_weight_recency",
+          "label": "Normalized Recency Weight",
+          "description": "Recency weight normalized to sum to 1.0 with similarity and quality",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.weight_similarity", "stage_b.weight_quality", "stage_b.weight_recency"]
+        }
+      ]
+    },
+    {
+      "id": "computed_cold_start_weights",
+      "label": "📊 Cold Start Normalized Weights (Computed)",
+      "description": "Normalized quality and recency weights for cold start mode",
+      "collapsed": true,
+      "section": "computed",
+      "params": [
+        {
+          "key": "cold_start_normalized_weight_quality",
+          "label": "Normalized Quality Weight (Cold Start)",
+          "description": "Quality weight normalized with recency for cold start scoring",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["cold_start.weight_quality", "cold_start.weight_recency"]
+        },
+        {
+          "key": "cold_start_normalized_weight_recency",
+          "label": "Normalized Recency Weight (Cold Start)",
+          "description": "Recency weight normalized with quality for cold start scoring",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["cold_start.weight_quality", "cold_start.weight_recency"]
+        }
+      ]
+    },
+    {
+      "id": "computed_quality",
+      "label": "📊 Quality Score Range (Computed)",
+      "description": "Computed quality score bounds based on credibility multiplier",
+      "collapsed": true,
+      "section": "computed",
+      "params": [
+        {
+          "key": "max_quality_score",
+          "label": "Max Quality Score",
+          "description": "Maximum possible quality score = 4 * credibility_multiplier + 4",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.credibility_multiplier"]
+        },
+        {
+          "key": "min_quality_score",
+          "label": "Min Quality Score",
+          "description": "Minimum possible quality score = 1 * credibility_multiplier + 1",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.credibility_multiplier"]
+        }
+      ]
+    },
+    {
+      "id": "computed_recency",
+      "label": "📊 Recency Half-Life (Computed)",
+      "description": "Computed recency decay characteristics",
+      "collapsed": true,
+      "section": "computed",
+      "params": [
+        {
+          "key": "recency_half_life_days",
+          "label": "Recency Half-Life (days)",
+          "description": "Number of days for content to decay to 50% recency score = ln(2) / lambda",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.recency_lambda"]
+        }
+      ]
+    },
+    {
+      "id": "computed_engagement",
+      "label": "📊 Engagement Weights (Computed)",
+      "description": "Normalized engagement weights and ratios",
+      "collapsed": true,
+      "section": "computed",
+      "params": [
+        {
+          "key": "effective_bookmark_weight",
+          "label": "Effective Bookmark Weight",
+          "description": "Bookmark weight as proportion of total engagement weights",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["engagement_weights.bookmark", "engagement_weights.listen", "engagement_weights.click"]
+        },
+        {
+          "key": "effective_listen_weight",
+          "label": "Effective Listen Weight",
+          "description": "Listen weight as proportion of total engagement weights",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["engagement_weights.bookmark", "engagement_weights.listen", "engagement_weights.click"]
+        },
+        {
+          "key": "effective_click_weight",
+          "label": "Effective Click Weight",
+          "description": "Click weight as proportion of total engagement weights",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["engagement_weights.bookmark", "engagement_weights.listen", "engagement_weights.click"]
+        },
+        {
+          "key": "bookmark_to_click_ratio",
+          "label": "Bookmark-to-Click Ratio",
+          "description": "How many times stronger bookmarks are vs clicks",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["engagement_weights.bookmark", "engagement_weights.click"]
+        }
+      ]
+    },
+    {
+      "id": "computed_category_diversity",
+      "label": "📊 Category Diversity (Computed)",
+      "description": "Computed category diversity configuration metrics",
+      "collapsed": true,
+      "section": "computed",
+      "params": [
+        {
+          "key": "category_diversity_enabled",
+          "label": "Diversity Enabled",
+          "description": "Whether category diversity is enabled",
+          "type": "boolean",
+          "readonly": true,
+          "computed_from": ["cold_start.category_diversity.enabled"]
+        },
+        {
+          "key": "min_per_category",
+          "label": "Min Per Category",
+          "description": "Minimum episodes per category",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["cold_start.category_diversity.min_per_category"]
+        },
+        {
+          "key": "total_categories",
+          "label": "Total Categories",
+          "description": "Number of categories defined",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["cold_start.category_diversity.categories"]
+        },
+        {
+          "key": "min_diverse_episodes",
+          "label": "Min Diverse Episodes",
+          "description": "Minimum total episodes needed = categories * min_per_category",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["cold_start.category_diversity.min_per_category", "cold_start.category_diversity.categories"]
+        },
+        {
+          "key": "diversity_strategy",
+          "label": "Diversity Strategy",
+          "description": "Human-readable summary of diversity configuration",
+          "type": "string",
+          "readonly": true,
+          "computed_from": ["cold_start.category_diversity"]
+        }
+      ]
+    },
+    {
+      "id": "computed_user_vector",
+      "label": "📊 User Vector (Computed)",
+      "description": "Computed user vector metrics - requires profile",
+      "collapsed": true,
+      "section": "computed",
+      "params": [
+        {
+          "key": "user_vector_size",
+          "label": "User Vector Size",
+          "description": "Actual number of engagements used in user vector (min of total and limit)",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["stage_b.user_vector_limit", "profile.engagements"]
+        },
+        {
+          "key": "total_engagements",
+          "label": "Total Engagements",
+          "description": "Total number of engagements in user profile",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["profile.engagements"]
+        },
+        {
+          "key": "vector_utilization",
+          "label": "Vector Utilization",
+          "description": "Percentage of user vector limit being used (0-1)",
+          "type": "float",
+          "readonly": true,
+          "computed_from": ["stage_b.user_vector_limit", "profile.engagements"]
+        },
+        {
+          "key": "vector_bookmark_count",
+          "label": "Bookmarks in Vector",
+          "description": "Number of bookmark engagements in user vector",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["profile.engagements"]
+        },
+        {
+          "key": "vector_listen_count",
+          "label": "Listens in Vector",
+          "description": "Number of listen engagements in user vector",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["profile.engagements"]
+        },
+        {
+          "key": "vector_click_count",
+          "label": "Clicks in Vector",
+          "description": "Number of click engagements in user vector",
+          "type": "int",
+          "readonly": true,
+          "computed_from": ["profile.engagements"]
+        },
+        {
+          "key": "is_cold_start",
+          "label": "Is Cold Start",
+          "description": "Whether this profile would trigger cold start mode",
+          "type": "boolean",
+          "readonly": true,
+          "computed_from": ["profile.engagements"]
+        }
+      ]
+    }
+  ]
+}

@@ -280,6 +280,128 @@ export async function getEmbeddingStatus(algorithmFolder, datasetFolder) {
   return response.json();
 }
 
+/**
+ * Poll embedding status until embeddings are ready or timeout.
+ * 
+ * @param {string} algorithmFolder - Algorithm folder name
+ * @param {string} datasetFolder - Dataset folder name
+ * @param {number} maxWaitMs - Maximum time to wait in milliseconds (default: 120000ms = 2 minutes)
+ * @param {number} pollIntervalMs - Interval between polls in milliseconds (default: 2000ms)
+ * @returns {Promise<Object>} Final embedding status
+ */
+export async function pollEmbeddingStatus(algorithmFolder, datasetFolder, maxWaitMs = 120000, pollIntervalMs = 2000) {
+  const startTime = Date.now();
+  
+  while (Date.now() - startTime < maxWaitMs) {
+    const status = await getEmbeddingStatus(algorithmFolder, datasetFolder);
+    
+    // Check if embeddings are ready
+    if (status.cached && status.count > 0) {
+      return status;
+    }
+    
+    // Wait before next poll
+    await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+  }
+  
+  // Timeout reached
+  throw new Error('Embedding generation timeout - please check status manually');
+}
+
+// ============================================================================
+// Algorithm Config Endpoints (for UI parameter tuning)
+// ============================================================================
+
+/**
+ * Get current algorithm config and schema.
+ * 
+ * Returns the current parameter values and schema for UI rendering.
+ * Schema includes parameter types, ranges, labels, and grouping.
+ * 
+ * @returns {Promise<Object>} { algorithm, algorithm_name, algorithm_version, config, schema }
+ */
+export async function getAlgorithmConfig() {
+  const response = await fetch(`${API_BASE}/api/algorithm/config`);
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to get algorithm config');
+  }
+  return response.json();
+}
+
+/**
+ * Update algorithm config at runtime.
+ * 
+ * Changes are applied to the current algorithm state and affect
+ * new recommendation sessions. Existing sessions are cleared.
+ * Changes are NOT persisted to file (lost on server restart).
+ * 
+ * @param {Object} configUpdates - Partial config update (merged with current)
+ * @returns {Promise<Object>} { success, message, config }
+ */
+export async function updateAlgorithmConfig(configUpdates) {
+  const response = await fetch(`${API_BASE}/api/algorithm/config/update`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ config: configUpdates })
+  });
+  
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    // Handle validation errors
+    if (err.detail?.validation_errors) {
+      throw new Error(`Validation failed: ${err.detail.validation_errors.join(', ')}`);
+    }
+    throw new Error(err.detail?.message || err.detail || 'Failed to update config');
+  }
+  return response.json();
+}
+
+/**
+ * Get diff between current config and defaults.
+ * 
+ * Shows which parameters have been modified from their default values.
+ * Used by Tests page to display tuning warnings.
+ * 
+ * @returns {Promise<Object>} { has_changes, changed_params, change_count, algorithm, algorithm_version }
+ */
+export async function getAlgorithmConfigDiff() {
+  const response = await fetch(`${API_BASE}/api/algorithm/config/diff`);
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to get config diff');
+  }
+  return response.json();
+}
+
+/**
+ * Compute derived parameters from base parameters.
+ * 
+ * This endpoint computes readonly derived parameters (e.g., normalized weights,
+ * quality score ranges, recency half-life) from user-tunable base parameters.
+ * Used by the UI to show computed values in real-time as user adjusts sliders.
+ * 
+ * @param {Object} baseParams - Base parameter values from user input
+ * @param {Object|null} profile - Optional user profile for computing user vector metrics
+ * @returns {Promise<Object>} { computed, success, timestamp }
+ */
+export async function computeParameters(baseParams, profile = null) {
+  const response = await fetch(`${API_BASE}/api/algorithm/compute`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      base_params: baseParams,
+      profile: profile 
+    })
+  });
+  
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to compute parameters');
+  }
+  return response.json();
+}
+
 // ============================================================================
 // Evaluation Endpoints
 // ============================================================================

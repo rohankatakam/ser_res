@@ -17,7 +17,9 @@ import {
   listReports,
   getReport,
   getConfigStatus,
-  getJudgeConfig
+  getJudgeConfig,
+  getTestCase,
+  getAlgorithmConfigDiff
 } from '../api';
 
 export default function TestsPage({ openaiKey, geminiKey, anthropicKey }) {
@@ -31,9 +33,23 @@ export default function TestsPage({ openaiKey, geminiKey, anthropicKey }) {
   const [view, setView] = useState('tests'); // 'tests' or 'reports'
   const [error, setError] = useState(null);
   const [judgeConfig, setJudgeConfig] = useState(null);
+  const [configDiff, setConfigDiff] = useState(null);
 
   useEffect(() => {
     loadData();
+    loadConfigDiff();
+  }, []);
+  
+  // Listen for config changes from ParameterSidebar
+  useEffect(() => {
+    const handleConfigChange = () => {
+      loadConfigDiff();
+    };
+    
+    window.addEventListener('algorithm-config-changed', handleConfigChange);
+    return () => {
+      window.removeEventListener('algorithm-config-changed', handleConfigChange);
+    };
   }, []);
 
   const loadData = async () => {
@@ -55,6 +71,16 @@ export default function TestsPage({ openaiKey, geminiKey, anthropicKey }) {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const loadConfigDiff = async () => {
+    try {
+      const diff = await getAlgorithmConfigDiff();
+      setConfigDiff(diff);
+    } catch (err) {
+      console.error('Failed to load config diff:', err);
+      // Don't set error state - this is non-critical
     }
   };
 
@@ -204,6 +230,52 @@ export default function TestsPage({ openaiKey, geminiKey, anthropicKey }) {
           No algorithm/dataset loaded. Go to Settings to load a configuration before running tests.
         </div>
       )}
+      
+      {/* Tuning Warning Banner */}
+      {configDiff?.has_changes && (
+        <div className="mb-4 p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xl">⚙️</span>
+            <strong className="text-amber-400">
+              Testing on Tuned Algorithm
+            </strong>
+            <span className="bg-amber-500 text-white px-2 py-0.5 rounded-full text-xs font-semibold">
+              {configDiff.change_count} parameter{configDiff.change_count !== 1 ? 's' : ''} modified
+            </span>
+          </div>
+          
+          <p className="text-amber-300 text-sm mb-3">
+            Tests are running on a modified configuration. Results may differ from baseline.
+          </p>
+          
+          {/* Collapsible parameter diff */}
+          <details className="text-amber-300 text-xs">
+            <summary className="cursor-pointer font-medium mb-2 hover:text-amber-200">
+              View Modified Parameters
+            </summary>
+            <div className="bg-slate-800/50 p-3 rounded border border-amber-500/20 max-h-48 overflow-y-auto">
+              {configDiff.changed_params.map(param => (
+                <div 
+                  key={param.key} 
+                  className="flex justify-between py-1 border-b border-amber-500/10 last:border-0"
+                >
+                  <span className="font-medium">{param.key}:</span>
+                  <span>
+                    <span className="text-slate-500">{JSON.stringify(param.default)}</span>
+                    {' → '}
+                    <span className="text-amber-400 font-semibold">{JSON.stringify(param.current)}</span>
+                    {param.diff_percent !== null && (
+                      <span className="text-amber-300 ml-2">
+                        ({param.diff_percent > 0 ? '+' : ''}{param.diff_percent.toFixed(1)}%)
+                      </span>
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
+      )}
 
       {view === 'tests' ? (
         <>
@@ -301,6 +373,25 @@ export default function TestsPage({ openaiKey, geminiKey, anthropicKey }) {
 
 function TestCard({ test, result, running, disabled, onRun }) {
   const [expanded, setExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('results'); // 'results' or 'definition'
+  const [definition, setDefinition] = useState(null);
+  const [loadingDefinition, setLoadingDefinition] = useState(false);
+  
+  // Load definition when Definition tab is clicked
+  const handleTabChange = async (tab) => {
+    setActiveTab(tab);
+    if (tab === 'definition' && !definition) {
+      setLoadingDefinition(true);
+      try {
+        const def = await getTestCase(test.id);
+        setDefinition(def);
+      } catch (err) {
+        console.error('Failed to load test definition:', err);
+      } finally {
+        setLoadingDefinition(false);
+      }
+    }
+  };
   
   const getStatusColor = () => {
     if (!result) return 'border-slate-700';
@@ -364,47 +455,242 @@ function TestCard({ test, result, running, disabled, onRun }) {
         </div>
       </div>
       
-      {/* Expanded Details with Scalar Scores */}
-      {expanded && result && (
-        <div className="border-t border-slate-700 p-4 bg-slate-850">
-          {result.error && (
-            <div className="mb-3 p-2 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-sm">
-              Error: {result.error}
-            </div>
-          )}
-          
-          {/* Aggregate Score Summary */}
-          {result.scores && (
-            <div className="mb-4 p-3 bg-slate-700/50 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-300 font-medium">Test Aggregate Score</span>
-                <span className={`text-lg font-bold ${getScoreColor(result.scores.aggregate_score)}`}>
-                  {result.scores.aggregate_score?.toFixed(1)}/10
-                </span>
-              </div>
-              <ScoreProgressBar 
-                score={result.scores.aggregate_score} 
-                threshold={7.0}
-                showThreshold={true}
-              />
-              <div className="mt-2 flex justify-between text-xs text-slate-500">
-                <span>{result.scores.passed_count}/{result.scores.criteria_count} criteria passed</span>
-                <span>Confidence: {(result.scores.aggregate_confidence * 100).toFixed(0)}%</span>
-              </div>
-            </div>
-          )}
-          
-          <h4 className="text-sm font-medium text-slate-300 mb-2">Criteria Results</h4>
-          <div className="space-y-3">
-            {result.criteria_results?.map((cr, idx) => (
-              <CriterionCard key={idx} criterion={cr} />
-            ))}
+      {/* Expanded Details with Tabs */}
+      {expanded && (
+        <div className="border-t border-slate-700 bg-slate-850">
+          {/* Tab Bar */}
+          <div className="flex border-b border-slate-700">
+            <button
+              onClick={() => handleTabChange('results')}
+              className={`px-4 py-2 text-sm font-medium ${
+                activeTab === 'results'
+                  ? 'text-indigo-400 border-b-2 border-indigo-400'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Results
+            </button>
+            <button
+              onClick={() => handleTabChange('definition')}
+              className={`px-4 py-2 text-sm font-medium ${
+                activeTab === 'definition'
+                  ? 'text-indigo-400 border-b-2 border-indigo-400'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Definition
+            </button>
           </div>
           
-          {/* LLM Evaluation Section */}
-          {result.llm_evaluation && (
-            <LlmEvaluationCard evaluation={result.llm_evaluation} />
+          <div className="p-4">
+            {activeTab === 'results' && result && (
+              <>
+                {result.error && (
+                  <div className="mb-3 p-2 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-sm">
+                    Error: {result.error}
+                  </div>
+                )}
+                
+                {/* Aggregate Score Summary */}
+                {result.scores && (
+                  <div className="mb-4 p-3 bg-slate-700/50 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-300 font-medium">Test Aggregate Score</span>
+                      <span className={`text-lg font-bold ${getScoreColor(result.scores.aggregate_score)}`}>
+                        {result.scores.aggregate_score?.toFixed(1)}/10
+                      </span>
+                    </div>
+                    <ScoreProgressBar 
+                      score={result.scores.aggregate_score} 
+                      threshold={7.0}
+                      showThreshold={true}
+                    />
+                    <div className="mt-2 flex justify-between text-xs text-slate-500">
+                      <span>{result.scores.passed_count}/{result.scores.criteria_count} criteria passed</span>
+                      <span>Confidence: {(result.scores.aggregate_confidence * 100).toFixed(0)}%</span>
+                    </div>
+                  </div>
+                )}
+                
+                <h4 className="text-sm font-medium text-slate-300 mb-2">Criteria Results</h4>
+                <div className="space-y-3">
+                  {result.criteria_results?.map((cr, idx) => (
+                    <CriterionCard key={idx} criterion={cr} />
+                  ))}
+                </div>
+                
+                {/* LLM Evaluation Section */}
+                {result.llm_evaluation && (
+                  <LlmEvaluationCard evaluation={result.llm_evaluation} />
+                )}
+              </>
+            )}
+            
+            {activeTab === 'results' && !result && (
+              <div className="text-center text-slate-500 py-8">
+                No results yet. Run the test to see results.
+              </div>
+            )}
+            
+            {activeTab === 'definition' && (
+              <TestDefinitionView 
+                definition={definition}
+                loading={loadingDefinition}
+              />
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TestDefinitionView({ definition, loading }) {
+  if (loading) {
+    return <div className="text-center text-slate-500 py-4">Loading definition...</div>;
+  }
+  
+  if (!definition) {
+    return <div className="text-center text-slate-500 py-4">Failed to load definition</div>;
+  }
+  
+  return (
+    <div className="space-y-4">
+      {/* Metadata Section */}
+      <div className="p-3 bg-slate-700/30 rounded-lg">
+        <h4 className="text-sm font-medium text-slate-300 mb-2">Test Metadata</h4>
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <div>
+            <span className="text-slate-500">Type:</span>
+            <span className={`ml-2 px-2 py-0.5 rounded text-xs ${
+              definition.type === 'MFT' 
+                ? 'bg-blue-500/20 text-blue-400' 
+                : 'bg-purple-500/20 text-purple-400'
+            }`}>
+              {definition.type}
+            </span>
+          </div>
+          <div>
+            <span className="text-slate-500">Method:</span>
+            <span className="ml-2 text-slate-300">{definition.evaluation_method}</span>
+          </div>
+          <div className="col-span-2">
+            <span className="text-slate-500">Profiles:</span>
+            <span className="ml-2">
+              {definition.profiles?.map((p, i) => (
+                <span key={p} className="inline-block px-2 py-0.5 bg-slate-600 text-slate-300 rounded text-xs mr-1">
+                  {p}
+                </span>
+              ))}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      {/* Pass Criteria Table */}
+      {definition.pass_criteria && definition.pass_criteria.length > 0 && (
+        <div className="p-3 bg-slate-700/30 rounded-lg">
+          <h4 className="text-sm font-medium text-slate-300 mb-2">Pass Criteria</h4>
+          <div className="space-y-2">
+            {definition.pass_criteria.map((crit, idx) => (
+              <div key={idx} className="p-2 bg-slate-800 rounded text-sm">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-mono text-xs text-indigo-400">{crit.id}</span>
+                </div>
+                <p className="text-slate-300 text-xs">{crit.description}</p>
+                <p className="text-slate-500 text-xs mt-1 font-mono">{crit.check}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* If Fails Adjust Box */}
+      {definition.if_fails_adjust && definition.if_fails_adjust.length > 0 && (
+        <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+          <h4 className="text-sm font-medium text-yellow-400 mb-2">If Fails, Adjust</h4>
+          <ul className="space-y-1">
+            {definition.if_fails_adjust.map((item, idx) => (
+              <li key={idx} className="text-xs text-yellow-300 flex items-start gap-2">
+                <span className="text-yellow-400">→</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {/* LLM Criteria */}
+      {definition.llm_criteria?.enabled && (
+        <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+          <h4 className="text-sm font-medium text-purple-400 mb-2">LLM Evaluation Criteria</h4>
+          <div className="text-sm">
+            <div className="mb-2">
+              <span className="text-slate-500">Focus Areas:</span>
+              <span className="ml-2">
+                {definition.llm_criteria.focus_areas?.map((area) => (
+                  <span key={area} className="inline-block px-2 py-0.5 bg-purple-500/20 text-purple-300 rounded text-xs mr-1">
+                    {area}
+                  </span>
+                ))}
+              </span>
+            </div>
+            {definition.llm_criteria.prompt_hint && (
+              <div>
+                <span className="text-slate-500">Prompt Hint:</span>
+                <p className="text-slate-300 text-xs mt-1 italic">{definition.llm_criteria.prompt_hint}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      
+      {/* Setup/Scenarios */}
+      {definition.setup && (
+        <div className="p-3 bg-slate-700/30 rounded-lg">
+          <h4 className="text-sm font-medium text-slate-300 mb-2">Test Setup</h4>
+          {definition.setup.note && (
+            <p className="text-xs text-slate-400 mb-2">{definition.setup.note}</p>
           )}
+          
+          {/* Scenarios for DIR tests */}
+          {(definition.setup.scenario_a || definition.setup.scenario_b) && (
+            <div className="grid grid-cols-2 gap-3">
+              {definition.setup.scenario_a && (
+                <div className="p-2 bg-slate-800 rounded">
+                  <h5 className="text-xs font-medium text-blue-400 mb-1">
+                    {definition.setup.scenario_a.name || 'Scenario A'}
+                  </h5>
+                  <p className="text-xs text-slate-400">{definition.setup.scenario_a.description}</p>
+                  {definition.setup.scenario_a.engagements && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      {definition.setup.scenario_a.engagements.length} engagements
+                    </p>
+                  )}
+                </div>
+              )}
+              {definition.setup.scenario_b && (
+                <div className="p-2 bg-slate-800 rounded">
+                  <h5 className="text-xs font-medium text-green-400 mb-1">
+                    {definition.setup.scenario_b.name || 'Scenario B'}
+                  </h5>
+                  <p className="text-xs text-slate-400">{definition.setup.scenario_b.description}</p>
+                  {definition.setup.scenario_b.engagements && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      {definition.setup.scenario_b.engagements.length} engagements
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* Research Note */}
+      {definition.research_note && (
+        <div className="p-2 bg-slate-700/30 rounded text-xs text-slate-400 italic">
+          {definition.research_note}
         </div>
       )}
     </div>
@@ -766,6 +1052,26 @@ function ReportDetail({ report, onBack }) {
                 LLM Judges: {report.context.llm_providers.join(', ')} ({report.context.evaluation_mode || 'multi_llm'})
               </p>
             )}
+          </div>
+        )}
+        
+        {/* Algorithm Config Snapshot */}
+        {report.algorithm_config?.config_snapshot && (
+          <div className="mt-4 pt-4 border-t border-slate-700">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm font-medium text-blue-400">Algorithm Configuration</span>
+              <span className="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded">
+                Snapshot
+              </span>
+            </div>
+            <details className="text-xs">
+              <summary className="cursor-pointer text-slate-400 hover:text-slate-300">
+                View Full Config
+              </summary>
+              <pre className="mt-2 bg-slate-900 p-3 rounded border border-slate-700 overflow-x-auto text-slate-300">
+                {JSON.stringify(report.algorithm_config.config_snapshot, null, 2)}
+              </pre>
+            </details>
           </div>
         )}
       </div>

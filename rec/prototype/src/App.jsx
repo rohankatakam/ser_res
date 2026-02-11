@@ -17,6 +17,7 @@ import ForYouPage from './components/ForYouPage';
 import DevPage from './components/DevPage';
 import EpisodeDetailPage from './components/EpisodeDetailPage';
 import SettingsModal from './components/SettingsModal';
+import ParameterSidebar from './components/ParameterSidebar';
 import { engageEpisode } from './api';
 
 function App() {
@@ -36,6 +37,16 @@ function App() {
   const [openaiKey, setOpenaiKey] = useState(() => localStorage.getItem('serafis_openai_key') || '');
   const [anthropicKey, setAnthropicKey] = useState(() => localStorage.getItem('serafis_anthropic_key') || '');
   const [configLoaded, setConfigLoaded] = useState(false);
+  
+  // Parameter sidebar state
+  const [showParameterSidebar, setShowParameterSidebar] = useState(false);
+  const [configRefreshKey, setConfigRefreshKey] = useState(0);
+  
+  // Handler for when parameters are applied - triggers For You refresh
+  const handleApplyAndRefresh = useCallback(() => {
+    setConfigRefreshKey(prev => prev + 1);
+    setActiveSessionId(null); // Clear session to force new recommendations
+  }, []);
   
   // Persist API keys to localStorage when they change
   const handleGeminiKeyChange = useCallback((key) => {
@@ -319,6 +330,7 @@ function App() {
             onView={handleView}
             onBookmark={handleBookmark}
             onNotInterested={handleNotInterested}
+            configRefreshKey={configRefreshKey}
           />
         )}
         {currentTab === 'dev' && (
@@ -350,6 +362,14 @@ function App() {
           setConfigLoaded(true);
           setShowSettings(false);
         }}
+      />
+      
+      {/* Parameter Tuning Sidebar */}
+      <ParameterSidebar
+        isOpen={showParameterSidebar}
+        onToggle={() => setShowParameterSidebar(prev => !prev)}
+        onApplyAndRefresh={handleApplyAndRefresh}
+        configLoaded={configLoaded}
       />
     </div>
   );

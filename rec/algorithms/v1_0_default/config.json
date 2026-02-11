@@ -1,4 +1,0 @@
-{
-  "_comment": "V1.0 Default Baseline - Empty config to use hardcoded defaults",
-  "_note": "This config intentionally has no overrides. All parameters use DEFAULT_CONFIG values from recommendation_engine.py"
-}

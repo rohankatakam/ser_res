@@ -1,14 +1,16 @@
 /**
- * Developer Page - Debug & Algorithm Insights + Tests
+ * Developer Page - Debug & Algorithm Insights + Tests + Profiles
  * 
- * Two sub-tabs:
+ * Three sub-tabs:
  * 1. Insights - Session state, engagement history, algorithm config
  * 2. Tests - Run and view evaluation test results
+ * 3. Profiles - View evaluation profiles with full data
  */
 
 import { useState, useEffect } from 'react';
 import { fetchStats } from '../api';
 import TestsPage from './TestsPage';
+import ProfilesPage from './ProfilesPage';
 
 export default function DevPage({ 
   session, 
@@ -21,7 +23,7 @@ export default function DevPage({
   geminiKey,
   anthropicKey
 }) {
-  const [subTab, setSubTab] = useState('insights'); // 'insights' or 'tests'
+  const [subTab, setSubTab] = useState('insights'); // 'insights', 'tests', or 'profiles'
   const [apiStats, setApiStats] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -78,11 +80,26 @@ export default function DevPage({
         >
           Tests
         </button>
+        <button
+          onClick={() => setSubTab('profiles')}
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+            subTab === 'profiles'
+              ? 'bg-indigo-600 text-white'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          }`}
+        >
+          Profiles
+        </button>
       </div>
       
       {/* Tests Sub-tab */}
       {subTab === 'tests' && (
         <TestsPage openaiKey={openaiKey} geminiKey={geminiKey} anthropicKey={anthropicKey} />
+      )}
+      
+      {/* Profiles Sub-tab */}
+      {subTab === 'profiles' && (
+        <ProfilesPage />
       )}
       
       {/* Insights Sub-tab */}

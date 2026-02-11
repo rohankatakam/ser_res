@@ -150,6 +150,7 @@ class SessionResponse(BaseModel):
 class LoadConfigRequest(BaseModel):
     algorithm: str
     dataset: str
+    generate_embeddings: bool = True
 
 
 class GenerateEmbeddingsRequest(BaseModel):
@@ -443,6 +444,288 @@ def list_datasets():
     }
 
 
+# ============================================================================
+# Algorithm Config Management (for UI parameter tuning)
+# ============================================================================
+
+@app.get("/api/algorithm/config")
+def get_algorithm_config():
+    """
+    Get current algorithm config and schema for UI parameter tuning.
+    
+    Returns:
+        - algorithm: Current algorithm folder name
+        - config: Current parameter values (runtime state)
+        - schema: Parameter schema for UI rendering (types, ranges, labels)
+    """
+    state = get_state()
+    
+    if not state.current_algorithm:
+        raise HTTPException(
+            status_code=400,
+            detail="No algorithm loaded. Call /api/config/load first."
+        )
+    
+    return {
+        "algorithm": state.current_algorithm.folder_name,
+        "algorithm_name": state.current_algorithm.manifest.name,
+        "algorithm_version": state.current_algorithm.manifest.version,
+        "config": state.current_algorithm.config,
+        "schema": state.current_algorithm.config_schema
+    }
+
+
+def deep_merge(base: dict, updates: dict) -> dict:
+    """Deep merge updates into base dict, returning new dict."""
+    result = base.copy()
+    for key, value in updates.items():
+        if key.startswith("_"):
+            # Skip metadata keys like _comment
+            continue
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+def validate_config_against_schema(config: dict, schema: dict) -> list:
+    """
+    Validate config values against schema constraints.
+    
+    Returns list of validation errors (empty if valid).
+    """
+    errors = []
+    
+    for group in schema.get("groups", []):
+        for param in group.get("params", []):
+            key_path = param["key"]
+            parts = key_path.split(".")
+            
+            # Navigate to value in config
+            value = config
+            for part in parts:
+                if isinstance(value, dict) and part in value:
+                    value = value[part]
+                else:
+                    value = None
+                    break
+            
+            if value is None:
+                continue  # Missing values use defaults, not an error
+            
+            param_type = param.get("type", "float")
+            min_val = param.get("min")
+            max_val = param.get("max")
+            
+            # Type validation
+            if param_type == "int":
+                if not isinstance(value, int) or isinstance(value, bool):
+                    errors.append(f"{key_path}: expected int, got {type(value).__name__}")
+                elif min_val is not None and value < min_val:
+                    errors.append(f"{key_path}: {value} is below minimum {min_val}")
+                elif max_val is not None and value > max_val:
+                    errors.append(f"{key_path}: {value} exceeds maximum {max_val}")
+            
+            elif param_type == "float":
+                if not isinstance(value, (int, float)) or isinstance(value, bool):
+                    errors.append(f"{key_path}: expected float, got {type(value).__name__}")
+                elif min_val is not None and value < min_val:
+                    errors.append(f"{key_path}: {value} is below minimum {min_val}")
+                elif max_val is not None and value > max_val:
+                    errors.append(f"{key_path}: {value} exceeds maximum {max_val}")
+            
+            elif param_type == "boolean":
+                if not isinstance(value, bool):
+                    errors.append(f"{key_path}: expected boolean, got {type(value).__name__}")
+    
+    return errors
+
+
+class ConfigUpdateRequest(BaseModel):
+    """Request body for config update."""
+    config: Dict[str, Any]
+
+
+class ComputeParamsRequest(BaseModel):
+    """Request body for computing derived parameters."""
+    base_params: Dict[str, Any]
+    profile: Optional[Dict[str, Any]] = None
+
+
+@app.post("/api/algorithm/config/update")
+def update_algorithm_config(request: ConfigUpdateRequest):
+    """
+    Update algorithm config at runtime (not persisted to file).
+    
+    Changes are applied to the current algorithm state and affect
+    new recommendation sessions. Existing sessions are cleared.
+    
+    Args:
+        config: Partial config update (will be merged with current config)
+    
+    Returns:
+        - success: Whether update was applied
+        - config: New merged config
+    """
+    state = get_state()
+    
+    if not state.current_algorithm:
+        raise HTTPException(
+            status_code=400,
+            detail="No algorithm loaded. Call /api/config/load first."
+        )
+    
+    # Deep merge updates into current config
+    current_config = state.current_algorithm.config
+    merged_config = deep_merge(current_config, request.config)
+    
+    # Validate against schema
+    errors = validate_config_against_schema(
+        merged_config, 
+        state.current_algorithm.config_schema
+    )
+    
+    if errors:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "message": "Config validation failed",
+                "validation_errors": errors
+            }
+        )
+    
+    # Apply to runtime state
+    state.current_algorithm.config = merged_config
+    
+    # Clear existing sessions (they use old config)
+    state.sessions.clear()
+    
+    return {
+        "success": True,
+        "message": "Config updated. Existing sessions cleared.",
+        "config": merged_config
+    }
+
+
+@app.get("/api/algorithm/config/diff")
+def get_algorithm_config_diff():
+    """
+    Compare current algorithm config with defaults.
+    
+    Returns diff showing which parameters have been changed from their default values.
+    Used by UI to show tuning warnings and parameter modifications.
+    
+    Returns:
+        - has_changes: bool
+        - changed_params: List of dicts with {key, default, current, diff_percent, type}
+        - change_count: int
+        - algorithm: str
+        - algorithm_version: str
+    """
+    state = get_state()
+    
+    if not state.current_algorithm:
+        raise HTTPException(
+            status_code=400,
+            detail="No algorithm loaded. Call /api/config/load first."
+        )
+    
+    current_config = state.current_algorithm.config
+    default_params = state.current_algorithm.manifest.default_parameters
+    
+    changed_params = []
+    
+    def compare_nested(current, defaults, prefix=""):
+        """Recursively compare nested config dictionaries."""
+        for key, default_value in defaults.items():
+            current_value = current.get(key)
+            full_key = f"{prefix}.{key}" if prefix else key
+            
+            if isinstance(default_value, dict) and isinstance(current_value, dict):
+                # Recurse into nested dicts
+                compare_nested(current_value, default_value, full_key)
+            elif current_value != default_value:
+                # Parameter has changed
+                diff_pct = None
+                if isinstance(default_value, (int, float)) and isinstance(current_value, (int, float)):
+                    if default_value != 0:
+                        diff_pct = ((current_value - default_value) / default_value) * 100
+                
+                changed_params.append({
+                    "key": full_key,
+                    "default": default_value,
+                    "current": current_value,
+                    "diff_percent": diff_pct,
+                    "type": type(default_value).__name__
+                })
+    
+    compare_nested(current_config, default_params)
+    
+    return {
+        "has_changes": len(changed_params) > 0,
+        "changed_params": changed_params,
+        "change_count": len(changed_params),
+        "algorithm": state.current_algorithm.folder_name,
+        "algorithm_version": state.current_algorithm.manifest.version
+    }
+
+
+@app.post("/api/algorithm/compute")
+def compute_derived_parameters(request: ComputeParamsRequest):
+    """
+    Compute derived parameters from base parameters in real-time.
+    
+    This endpoint is used by the UI to show computed values as user adjusts
+    base parameters. Computed parameters include normalized weights,
+    quality score ranges, recency half-life, etc.
+    
+    Args:
+        base_params: Base parameter values from user input
+        profile: Optional user profile for computing user vector metrics
+    
+    Returns:
+        - computed: Dictionary of computed parameter values
+        - success: Whether computation succeeded
+        - timestamp: When computation was performed
+    """
+    state = get_state()
+    
+    if not state.current_algorithm:
+        raise HTTPException(
+            status_code=400,
+            detail="No algorithm loaded. Call /api/config/load first."
+        )
+    
+    # Check if algorithm has computed_params module
+    if not state.current_algorithm.compute_module:
+        # Algorithm doesn't have computed params - return empty
+        return {
+            "computed": {},
+            "success": True,
+            "message": "This algorithm version does not have computed parameters",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+    
+    try:
+        # Call the compute_parameters function from the algorithm's module
+        computed = state.current_algorithm.compute_module.compute_parameters(
+            base_params=request.base_params,
+            profile=request.profile
+        )
+        
+        return {
+            "computed": computed,
+            "success": True,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Computation failed: {str(e)}"
+        )
+
+
 @app.get("/api/config/validate")
 def validate_compatibility(
     algorithm_folder: str = Query(..., description="Algorithm folder name"),
@@ -467,9 +750,13 @@ def validate_compatibility(
 
 
 @app.post("/api/config/load")
-def load_configuration(request: LoadConfigRequest):
-    """Load an algorithm and dataset combination."""
+def load_configuration(
+    request: LoadConfigRequest,
+    x_openai_key: Optional[str] = Header(None, alias="X-OpenAI-Key")
+):
+    """Load an algorithm and dataset combination, optionally generating embeddings."""
     state = get_state()
+    config = state.config
     
     # Validate compatibility first
     compat = state.validator.check_compatibility(request.algorithm, request.dataset)
@@ -499,6 +786,8 @@ def load_configuration(request: LoadConfigRequest):
         dataset.folder_name
     )
     
+    embedding_generation_result = None
+    
     if embeddings_cached:
         # Pass strategy file path for hash verification
         strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
@@ -508,6 +797,62 @@ def load_configuration(request: LoadConfigRequest):
             dataset.folder_name,
             strategy_file_path=strategy_file
         ) or {}
+    elif request.generate_embeddings:
+        # Generate embeddings inline
+        api_key = x_openai_key or config.openai_api_key
+        if not api_key:
+            raise HTTPException(
+                status_code=400,
+                detail="OpenAI API key required for embedding generation. Set OPENAI_API_KEY env var or pass X-OpenAI-Key header."
+            )
+        
+        try:
+            # Generate embeddings
+            generator = EmbeddingGenerator(
+                api_key=api_key,
+                model=algorithm.embedding_model,
+                dimensions=algorithm.embedding_dimensions
+            )
+            
+            result = generator.generate_for_episodes(
+                episodes=dataset.episodes,
+                get_embed_text=algorithm.get_embed_text,
+                on_progress=None  # No progress callback for inline generation
+            )
+            
+            if result.success:
+                # Save to cache (Qdrant + JSON backup) with strategy hash
+                strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+                state.save_embeddings(
+                    algorithm.folder_name,
+                    algorithm.strategy_version,
+                    dataset.folder_name,
+                    result.embeddings,
+                    algorithm.embedding_model,
+                    algorithm.embedding_dimensions,
+                    strategy_file_path=strategy_file
+                )
+                embeddings = result.embeddings
+                embeddings_cached = True
+                
+                embedding_generation_result = {
+                    "generated": True,
+                    "count": len(result.embeddings),
+                    "estimated_cost": round(result.estimated_cost, 4),
+                }
+            else:
+                embedding_generation_result = {
+                    "generated": False,
+                    "error": "Partial generation failure",
+                    "count": len(result.embeddings),
+                }
+        except Exception as e:
+            # Log error but continue - embeddings will be empty
+            print(f"Embedding generation failed: {e}")
+            embedding_generation_result = {
+                "generated": False,
+                "error": str(e),
+            }
     
     # Update state
     state.current_algorithm = algorithm
@@ -515,7 +860,7 @@ def load_configuration(request: LoadConfigRequest):
     state.current_embeddings = embeddings
     state.sessions.clear()  # Clear old sessions
     
-    return {
+    response = {
         "status": "loaded",
         "algorithm": {
             "folder_name": algorithm.folder_name,
@@ -534,6 +879,11 @@ def load_configuration(request: LoadConfigRequest):
             "needs_generation": not embeddings_cached,
         }
     }
+    
+    if embedding_generation_result:
+        response["embeddings"]["generation_result"] = embedding_generation_result
+    
+    return response
 
 
 @app.get("/api/config/status")
@@ -1317,6 +1667,12 @@ async def run_all_tests_endpoint(
             "dataset_episode_count": len(state.current_dataset.episodes) if state.current_dataset else 0,
             "llm_providers": llm_providers,
             "evaluation_mode": "multi_llm"
+        },
+        "algorithm_config": {
+            "config_snapshot": state.current_algorithm.config if state.current_algorithm else {},
+            "manifest_defaults": state.current_algorithm.manifest.default_parameters if state.current_algorithm else {},
+            "embedding_strategy_version": state.current_algorithm.manifest.embedding_strategy_version if state.current_algorithm else None,
+            "embedding_model": state.current_algorithm.manifest.embedding_model if state.current_algorithm else None
         },
         "summary": {
             "total_tests": len(results_dicts),

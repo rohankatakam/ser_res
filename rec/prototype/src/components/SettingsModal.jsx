@@ -10,6 +10,7 @@ import {
   loadConfiguration,
   getConfigStatus,
   getEmbeddingStatus,
+  pollEmbeddingStatus,
   getJudgeConfig,
   updateJudgeConfig
 } from '../api';
@@ -33,6 +34,8 @@ export default function SettingsModal({
   const [embeddingStatus, setEmbeddingStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingConfig, setLoadingConfig] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  const [autoGenerateEmbeddings, setAutoGenerateEmbeddings] = useState(true);
   const [error, setError] = useState(null);
   const [configStatus, setConfigStatus] = useState(null);
   const [judgeConfig, setJudgeConfig] = useState(null);
@@ -98,8 +101,16 @@ export default function SettingsModal({
   const handleLoad = async () => {
     if (!compatibility?.compatible) return;
     
+    // Warn if embeddings will not be generated
+    if (!autoGenerateEmbeddings && !embeddingStatus?.cached) {
+      if (!confirm('Embeddings are not cached and auto-generation is disabled. Recommendations will not work without embeddings. Continue anyway?')) {
+        return;
+      }
+    }
+    
     setLoadingConfig(true);
     setError(null);
+    setLoadingMessage('Loading configuration...');
     
     try {
       // Save judge config if modified
@@ -108,10 +119,40 @@ export default function SettingsModal({
         setJudgeConfigModified(false);
       }
       
+      // Check if we need to generate embeddings
+      const needsGeneration = !embeddingStatus?.cached && autoGenerateEmbeddings;
+      
+      if (needsGeneration) {
+        setLoadingMessage('Generating embeddings (this may take 30-60 seconds)...');
+      }
+      
       const result = await loadConfiguration(selectedAlgorithm, selectedDataset, {
         openaiKey,
-        generateEmbeddings: true
+        generateEmbeddings: autoGenerateEmbeddings
       });
+      
+      // If embeddings were generated, poll status to verify completion
+      if (needsGeneration && result.embeddings?.generation_result?.generated) {
+        setLoadingMessage('Verifying embeddings...');
+        
+        try {
+          const finalStatus = await pollEmbeddingStatus(selectedAlgorithm, selectedDataset);
+          
+          if (finalStatus.count === 0) {
+            throw new Error('Embeddings generated but count is 0');
+          }
+          
+          setLoadingMessage('Embeddings ready!');
+        } catch (pollErr) {
+          console.warn('Failed to verify embeddings:', pollErr);
+          // Continue anyway - embeddings may still be available
+        }
+      } else if (needsGeneration && result.embeddings?.generation_result?.error) {
+        setError(`Embedding generation failed: ${result.embeddings.generation_result.error}`);
+        setLoadingConfig(false);
+        setLoadingMessage('');
+        return;
+      }
       
       setConfigStatus({
         loaded: true,
@@ -120,11 +161,24 @@ export default function SettingsModal({
         ...result
       });
       
+      setLoadingMessage('Configuration loaded successfully!');
+      
+      // Refresh embedding status
+      await checkCompatibility();
+      
       if (onConfigLoaded) {
         onConfigLoaded(result);
       }
+      
+      // Close modal after short delay
+      setTimeout(() => {
+        onClose();
+        setLoadingMessage('');
+      }, 1000);
+      
     } catch (err) {
       setError(`Failed to load configuration: ${err.message}`);
+      setLoadingMessage('');
     } finally {
       setLoadingConfig(false);
     }
@@ -319,6 +373,26 @@ export default function SettingsModal({
                   </div>
                 )}
                 
+                {/* Auto-Generate Embeddings Checkbox */}
+                <div className="p-3 bg-slate-800 rounded-lg border border-slate-700">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={autoGenerateEmbeddings}
+                      onChange={(e) => setAutoGenerateEmbeddings(e.target.checked)}
+                      className="w-4 h-4 text-indigo-600 bg-slate-700 border-slate-600 rounded focus:ring-indigo-500"
+                    />
+                    <span className="text-sm text-slate-300">
+                      Auto-generate embeddings if missing
+                    </span>
+                  </label>
+                  {autoGenerateEmbeddings && !embeddingStatus?.cached && (
+                    <p className="text-xs text-yellow-400 mt-2">
+                      ⚠ Embedding generation requires OpenAI API key and may take 30-60 seconds
+                    </p>
+                  )}
+                </div>
+                
                 {/* Embedding Status */}
                 {embeddingStatus && (
                   <div className="p-3 bg-slate-800 rounded-lg border border-slate-700">
@@ -372,7 +446,15 @@ export default function SettingsModal({
                 : 'bg-indigo-600 text-white hover:bg-indigo-500'
             }`}
           >
-            {loadingConfig ? 'Loading...' : 'Load Configuration'}
+            {loadingConfig ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                {loadingMessage || 'Loading...'}
+              </span>
+            ) : 'Load Configuration'}
           </button>
         </div>
       </div>

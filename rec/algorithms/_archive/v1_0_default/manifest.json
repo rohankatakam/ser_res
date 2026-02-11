@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "name": "Default Baseline",
+  "description": "Baseline algorithm using hardcoded default parameters. This represents the algorithm behavior before config loading was properly implemented. Use as a reference baseline for comparisons.",
+  "entry_point": "recommendation_engine",
+  "algorithm_type": "blended_scoring",
+  "default_parameters": {
+    "weight_similarity": 0.55,
+    "weight_quality": 0.30,
+    "weight_recency": 0.15,
+    "bookmark_weight": 2.0,
+    "listen_weight": 1.5,
+    "click_weight": 1.0,
+    "credibility_multiplier": 1.5,
+    "recency_lambda": 0.03,
+    "user_vector_limit": 10,
+    "use_sum_similarities": false
+  },
+  "notes": "This version uses the DEFAULT_CONFIG hardcoded values. The config.json is intentionally empty to ensure defaults are used.",
+  "created_at": "2026-02-08",
+  "author": "System"
+}

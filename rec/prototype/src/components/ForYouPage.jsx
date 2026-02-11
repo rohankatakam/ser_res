@@ -9,7 +9,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { createSession, loadMore as loadMoreApi, fetchStats, getConfigStatus } from '../api';
+import { createSession, loadMore as loadMoreApi, fetchStats, getConfigStatus, getEmbeddingStatus } from '../api';
 
 export default function ForYouPage({ 
   engagements,
@@ -18,7 +18,8 @@ export default function ForYouPage({
   onSessionChange,
   onView, 
   onBookmark, 
-  onNotInterested 
+  onNotInterested,
+  configRefreshKey = 0
 }) {
   const [sessionId, setSessionId] = useState(activeSessionId);
   const [episodes, setEpisodes] = useState([]);
@@ -26,6 +27,8 @@ export default function ForYouPage({
   const [coldStart, setColdStart] = useState(true);
   const [debugInfo, setDebugInfo] = useState(null);
   const [apiStats, setApiStats] = useState(null);
+  const [embeddingStatus, setEmbeddingStatus] = useState(null);
+  const [checkingEmbeddings, setCheckingEmbeddings] = useState(false);
   
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -35,6 +38,9 @@ export default function ForYouPage({
   // Track engagement count to detect changes
   const lastEngagementCount = useRef(0);
   const [engagementsDirty, setEngagementsDirty] = useState(false);
+  
+  // Track config refresh key to detect parameter changes
+  const lastConfigRefreshKey = useRef(configRefreshKey);
   
   // Detect when engagements change from outside this component
   useEffect(() => {
@@ -46,6 +52,50 @@ export default function ForYouPage({
       }
     }
   }, [engagements, loading]);
+  
+  // Detect when config refresh key changes (parameter tuning applied)
+  useEffect(() => {
+    if (configRefreshKey !== lastConfigRefreshKey.current) {
+      lastConfigRefreshKey.current = configRefreshKey;
+      console.log('[ForYouPage] Config refresh triggered, fetching new session');
+      fetchSession(true);
+    }
+  }, [configRefreshKey]);
+  
+  // Check embedding status periodically if embeddings are missing
+  useEffect(() => {
+    const checkEmbeddings = async () => {
+      if (apiStats?.total_embeddings === 0 && !checkingEmbeddings) {
+        setCheckingEmbeddings(true);
+        try {
+          const config = await getConfigStatus();
+          if (config.loaded && config.algorithm_folder && config.dataset_folder) {
+            const status = await getEmbeddingStatus(config.algorithm_folder, config.dataset_folder);
+            setEmbeddingStatus(status);
+            
+            // If embeddings are now available, refresh the page
+            if (status.cached && status.count > 0 && apiStats?.total_embeddings === 0) {
+              console.log('[ForYouPage] Embeddings now available, refreshing session');
+              fetchSession(true);
+            }
+          }
+        } catch (err) {
+          console.warn('Failed to check embedding status:', err);
+        } finally {
+          setCheckingEmbeddings(false);
+        }
+      }
+    };
+    
+    // Check immediately
+    checkEmbeddings();
+    
+    // Set up polling every 3 seconds if embeddings are missing
+    if (apiStats?.total_embeddings === 0) {
+      const interval = setInterval(checkEmbeddings, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [apiStats?.total_embeddings, checkingEmbeddings]);
   
   // Core fetch function - creates a new session
   const fetchSession = useCallback(async (showLoading = true) => {
@@ -221,9 +271,21 @@ export default function ForYouPage({
             After 2+ interactions, we'll personalize your feed using semantic matching.
           </p>
           {apiStats?.total_embeddings === 0 && (
-            <p className="text-sm text-yellow-300 mt-2">
-              Note: No embeddings found. Run <code className="bg-slate-800 px-1 rounded">python generate_embeddings.py</code>
-            </p>
+            <div className="mt-2">
+              {embeddingStatus?.cached === false && !embeddingStatus?.error ? (
+                <p className="text-sm text-blue-300 flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Generating embeddings... This may take 30-60 seconds.
+                </p>
+              ) : (
+                <p className="text-sm text-yellow-300">
+                  Note: No embeddings found. Go to Settings to load a configuration with embeddings.
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}

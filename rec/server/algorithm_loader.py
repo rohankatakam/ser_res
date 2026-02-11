@@ -63,6 +63,7 @@ class LoadedAlgorithm:
     path: Path
     manifest: AlgorithmManifest
     config: Dict[str, Any]
+    config_schema: Dict[str, Any]  # Schema for UI parameter tuning
     
     # Embedding strategy functions
     get_embed_text: Callable[[Dict], str]
@@ -72,6 +73,9 @@ class LoadedAlgorithm:
     
     # Optional: recommendation engine module
     engine_module: Optional[Any] = None
+    
+    # Optional: computed parameters module (for base/computed split)
+    compute_module: Optional[Any] = None
 
 
 class AlgorithmLoader:
@@ -81,9 +85,10 @@ class AlgorithmLoader:
     Expected directory structure:
         algorithms/
         ├── v1_2_blended/
-        │   ├── manifest.json
-        │   ├── embedding_strategy.py
-        │   ├── config.json (optional)
+        │   ├── manifest.json          (required)
+        │   ├── embedding_strategy.py  (required)
+        │   ├── config_schema.json     (required - for UI parameter tuning)
+        │   ├── config.json            (optional - parameter values)
         │   └── recommendation_engine.py (optional)
         └── v2_0_experimental/
             └── ...
@@ -113,6 +118,10 @@ class AlgorithmLoader:
         
         for folder in self.algorithms_dir.iterdir():
             if not folder.is_dir():
+                continue
+            
+            # Skip archive folder
+            if folder.name.startswith("_"):
                 continue
             
             manifest_path = folder / "manifest.json"
@@ -169,12 +178,23 @@ class AlgorithmLoader:
             manifest_data = json.load(f)
         manifest = AlgorithmManifest.from_dict(manifest_data)
         
-        # Load config (optional)
+        # Load config (optional - may be empty for baseline algorithms)
         config = {}
         config_path = folder_path / "config.json"
         if config_path.exists():
             with open(config_path) as f:
                 config = json.load(f)
+        
+        # Load config schema (required for UI parameter tuning)
+        schema_path = folder_path / "config_schema.json"
+        if not schema_path.exists():
+            raise FileNotFoundError(
+                f"config_schema.json not found in {folder_path}. "
+                "All algorithm versions must have a config_schema.json file."
+            )
+        
+        with open(schema_path) as f:
+            config_schema = json.load(f)
         
         # Load embedding strategy module
         strategy_path = folder_path / "embedding_strategy.py"
@@ -204,17 +224,28 @@ class AlgorithmLoader:
                 engine_path
             )
         
+        # Optionally load computed parameters module
+        compute_module = None
+        compute_path = folder_path / "computed_params.py"
+        if compute_path.exists():
+            compute_module = self._load_module(
+                f"algorithm_{folder_name}_computed",
+                compute_path
+            )
+        
         # Create loaded algorithm
         loaded = LoadedAlgorithm(
             folder_name=folder_name,
             path=folder_path,
             manifest=manifest,
             config=config,
+            config_schema=config_schema,
             get_embed_text=get_embed_text,
             strategy_version=strategy_version,
             embedding_model=embedding_model,
             embedding_dimensions=embedding_dimensions,
-            engine_module=engine_module
+            engine_module=engine_module,
+            compute_module=compute_module
         )
         
         # Cache it
