@@ -1,7 +1,8 @@
 """
 Algorithm configuration — Stage A, Stage B, and cold-start parameters.
 
-Loaded from config.json and exposed as RecommendationConfig for the pipeline.
+RecommendationConfig defaults are defined here. The server may pass a dict
+(e.g. from algorithm/config.json if present); from_dict() merges it with these defaults.
 """
 
 from typing import Dict, List

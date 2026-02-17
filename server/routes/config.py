@@ -111,7 +111,7 @@ def load_configuration(
     )
     embedding_generation_result = None
     if embeddings_cached:
-        strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+        strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
         embeddings = state.load_cached_embeddings(
             algorithm.folder_name,
             algorithm.strategy_version,
@@ -137,7 +137,7 @@ def load_configuration(
                 on_progress=None,
             )
             if result.success:
-                strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+                strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
                 state.save_embeddings(
                     algorithm.folder_name,
                     algorithm.strategy_version,

@@ -1378,7 +1378,7 @@ def save_report(
         results: List of test results
         legacy_mode: Whether legacy single-LLM mode was used
         algorithm_version: Algorithm folder name (defaults to ALGORITHM_VERSION env var)
-        algorithm_name: Algorithm display name (defaults to loading from manifest.json)
+        algorithm_name: Algorithm display name (defaults to loading from algorithm_meta.json)
         dataset_version: Dataset folder name (defaults to env var)
         dataset_episode_count: Number of episodes in dataset (defaults to env var)
     """
@@ -1411,14 +1411,14 @@ def save_report(
     algo_version = algorithm_version or os.getenv("ALGORITHM_VERSION", "unknown")
     algo_name = algorithm_name
     
-    # If algorithm_name not provided, try to load from manifest.json
+    # If algorithm_name not provided, try to load from algorithm_meta.json
     if not algo_name:
         try:
-            algo_path = Path(__file__).parent.parent / "algorithm" / "manifest.json"
+            algo_path = Path(__file__).parent.parent / "algorithm" / "algorithm_meta.json"
             if algo_path.exists():
                 with open(algo_path) as f:
-                    manifest = json.load(f)
-                    algo_name = manifest.get("name", algo_version)
+                    meta = json.load(f)
+                    algo_name = meta.get("name", algo_version)
             else:
                 algo_name = algo_version
         except Exception:

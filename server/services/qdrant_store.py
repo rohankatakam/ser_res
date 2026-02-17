@@ -41,15 +41,15 @@ class QdrantCacheMetadata:
     created_at: str
     episode_count: int
     collection_name: str
-    strategy_hash: Optional[str] = None  # SHA256 hash of embedding_strategy.py
+    strategy_hash: Optional[str] = None  # SHA256 hash of embedding/embedding_strategy.py
 
 
 def compute_strategy_hash(strategy_file_path: Path) -> Optional[str]:
     """
-    Compute SHA256 hash of embedding_strategy.py file.
+    Compute SHA256 hash of embedding strategy file.
     
     Args:
-        strategy_file_path: Path to embedding_strategy.py
+        strategy_file_path: Path to embedding/embedding_strategy.py
     
     Returns:
         SHA256 hex digest, or None if file not found
@@ -299,7 +299,7 @@ class QdrantEmbeddingStore:
             algorithm_version: Algorithm version
             strategy_version: Strategy version
             dataset_version: Dataset version
-            current_hash: Current SHA256 hash of embedding_strategy.py
+            current_hash: Current SHA256 hash of embedding/embedding_strategy.py
         
         Returns:
             (matches, stored_hash) - True if hashes match or no stored hash
@@ -336,7 +336,7 @@ class QdrantEmbeddingStore:
             embeddings: Dict mapping episode_id to embedding vector
             embedding_model: Name of the embedding model used
             embedding_dimensions: Dimensionality of embeddings
-            strategy_hash: SHA256 hash of embedding_strategy.py (for change detection)
+            strategy_hash: SHA256 hash of embedding/embedding_strategy.py (for change detection)
         
         Returns:
             Collection name that was created/updated

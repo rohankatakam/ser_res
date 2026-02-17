@@ -114,7 +114,7 @@ def generate_embeddings(
         on_progress=on_progress,
     )
     if result.success:
-        strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+        strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
         state.save_embeddings(
             algorithm.folder_name,
             algorithm.strategy_version,

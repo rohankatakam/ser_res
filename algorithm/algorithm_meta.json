@@ -1,0 +1,13 @@
+{
+  "version": "1.5",
+  "name": "Diversified Cold Start + Enhanced Bookmarks",
+  "description": "V1.5 diversified: bookmark weight 10, cold start category diversity.",
+  "created_at": "2026-02-10",
+  "embedding_strategy_version": "1.0",
+  "embedding_model": "text-embedding-3-small",
+  "embedding_dimensions": 1536,
+  "requires_schema": "1.0",
+  "required_fields": ["id", "title", "scores", "key_insight", "published_at", "categories"],
+  "optional_fields": ["series", "content_id", "entities", "people"],
+  "default_parameters": {}
+}

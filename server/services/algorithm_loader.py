@@ -2,7 +2,7 @@
 Algorithm Loader
 
 Loads the algorithm from the algorithm/ directory.
-The algorithm must have a manifest.json and embedding_strategy.py.
+The algorithm must have algorithm_meta.json and embedding/embedding_strategy.py.
 
 Usage:
     loader = AlgorithmLoader(algorithm_dir)
@@ -26,7 +26,7 @@ from dataclasses import dataclass
 
 @dataclass
 class AlgorithmManifest:
-    """Parsed manifest.json for an algorithm version."""
+    """Parsed algorithm_meta.json for an algorithm version."""
     version: str
     name: str
     description: str
@@ -81,11 +81,10 @@ class AlgorithmLoader:
     
     Expected directory structure:
         algorithm/
-        ├── manifest.json          (required)
-        ├── embedding_strategy.py  (required)
-        ├── config_schema.json     (required)
-        ├── config.json            (optional - parameter values)
-        └── recommendation_engine.py (optional)
+        ├── algorithm_meta.json    (required)
+        ├── __init__.py            (required; engine + re-exports)
+        └── embedding/
+            └── embedding_strategy.py (required)
     """
     
     def __init__(self, algorithms_dir: Path):
@@ -118,7 +117,7 @@ class AlgorithmLoader:
             if folder.name.startswith("_"):
                 continue
             
-            manifest_path = folder / "manifest.json"
+            manifest_path = folder / "algorithm_meta.json"
             if not manifest_path.exists():
                 continue
             
@@ -167,60 +166,56 @@ class AlgorithmLoader:
         if not folder_path.exists():
             raise FileNotFoundError(f"Algorithm directory not found: {folder_path}")
         
-        # Load manifest
-        manifest_path = folder_path / "manifest.json"
+        # Load algorithm metadata
+        manifest_path = folder_path / "algorithm_meta.json"
         if not manifest_path.exists():
-            raise FileNotFoundError(f"manifest.json not found in {folder_path}")
+            raise FileNotFoundError(f"algorithm_meta.json not found in {folder_path}")
         
         with open(manifest_path) as f:
             manifest_data = json.load(f)
         manifest = AlgorithmManifest.from_dict(manifest_data)
         
-        # Load config (optional - may be empty for baseline algorithms)
+        # Config: optional; defaults come from algorithm models if empty
         config = {}
         config_path = folder_path / "config.json"
         if config_path.exists():
             with open(config_path) as f:
                 config = json.load(f)
         
-        # Load config schema (required for UI parameter tuning)
+        # Config schema: optional (no longer used by UI)
+        config_schema = {}
         schema_path = folder_path / "config_schema.json"
-        if not schema_path.exists():
-            raise FileNotFoundError(
-                f"config_schema.json not found in {folder_path}. "
-                "All algorithm versions must have a config_schema.json file."
-            )
-        
-        with open(schema_path) as f:
-            config_schema = json.load(f)
+        if schema_path.exists():
+            with open(schema_path) as f:
+                config_schema = json.load(f)
         
         # Load embedding strategy module
-        strategy_path = folder_path / "embedding_strategy.py"
+        strategy_path = folder_path / "embedding" / "embedding_strategy.py"
         if not strategy_path.exists():
-            raise FileNotFoundError(f"embedding_strategy.py not found in {folder_path}")
-        
+            raise FileNotFoundError(
+                f"embedding/embedding_strategy.py not found in {folder_path}"
+            )
         strategy_module = self._load_module(
             f"algorithm_{folder_name}_strategy",
             strategy_path
         )
-        
-        # Extract required functions and constants
         if not hasattr(strategy_module, "get_embed_text"):
-            raise ValueError(f"embedding_strategy.py must define get_embed_text() function")
-        
+            raise ValueError(
+                "embedding/embedding_strategy.py must define get_embed_text()"
+            )
         get_embed_text = strategy_module.get_embed_text
         strategy_version = getattr(strategy_module, "STRATEGY_VERSION", "1.0")
         embedding_model = getattr(strategy_module, "EMBEDDING_MODEL", manifest.embedding_model)
         embedding_dimensions = getattr(strategy_module, "EMBEDDING_DIMENSIONS", manifest.embedding_dimensions)
-        
-        # Optionally load recommendation engine
-        engine_module = None
-        engine_path = folder_path / "recommendation_engine.py"
-        if engine_path.exists():
-            engine_module = self._load_module(
-                f"algorithm_{folder_name}_engine",
-                engine_path
-            )
+
+        # Load engine from package __init__.py (single entry point)
+        init_path = folder_path / "__init__.py"
+        if not init_path.exists():
+            raise FileNotFoundError(f"__init__.py not found in {folder_path}")
+        engine_module = self._load_module(
+            f"algorithm_{folder_name}_engine",
+            init_path
+        )
         
         # Create loaded algorithm
         loaded = LoadedAlgorithm(

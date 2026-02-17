@@ -106,7 +106,7 @@ class QdrantJsonVectorStore:
                     algorithm_version, strategy_version, dataset_version, current_hash
                 )
                 if not matches and stored_hash:
-                    print("WARNING: embedding_strategy.py has changed; consider regenerating with force=true")
+                    print("WARNING: embedding/embedding_strategy.py has changed; consider regenerating with force=true")
         if self._qdrant_available and self._qdrant:
             emb = self._qdrant.load_embeddings(
                 algorithm_version, strategy_version, dataset_version

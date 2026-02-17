@@ -79,7 +79,7 @@ def create_app() -> FastAPI:
                 algorithm.folder_name, algorithm.strategy_version, dataset_folder
             )
             if embeddings_cached:
-                strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+                strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
                 embeddings = state.load_cached_embeddings(
                     algorithm.folder_name,
                     algorithm.strategy_version,
