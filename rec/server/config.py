@@ -44,7 +44,7 @@ class ServerConfig:
     qdrant_url: Optional[str] = None
     
     # Paths
-    algorithms_dir: Path = Path(__file__).parent.parent / "algorithms"
+    algorithms_dir: Path = Path(__file__).parent.parent / "algorithm"
     datasets_dir: Path = Path(__file__).parent.parent / "datasets"
     cache_dir: Path = Path(__file__).parent.parent / "cache"
     evaluation_dir: Path = Path(__file__).parent.parent / "evaluation"
@@ -60,7 +60,7 @@ class ServerConfig:
             host=os.getenv("HOST", "0.0.0.0"),
             port=int(os.getenv("PORT", "8000")),
             qdrant_url=os.getenv("QDRANT_URL"),
-            algorithms_dir=Path(os.getenv("ALGORITHMS_DIR", base_dir / "algorithms")),
+            algorithms_dir=Path(os.getenv("ALGORITHMS_DIR", base_dir / "algorithm")),
             datasets_dir=Path(os.getenv("DATASETS_DIR", base_dir / "datasets")),
             cache_dir=Path(os.getenv("CACHE_DIR", base_dir / "cache")),
             evaluation_dir=Path(os.getenv("EVALUATION_DIR", base_dir / "evaluation")),

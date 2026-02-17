@@ -6,7 +6,7 @@ This ensures embeddings are regenerated when either the algorithm's embedding st
 or the dataset changes.
 
 Cache key format: {algorithm_version}_s{strategy_version}__{dataset_version}
-Example: v1_2_blended_s1.0__eval_909_feb2026
+Example: v1_5_diversified_s1.0__eval_909_feb2026
 
 Cache files are stored as JSON in the cache/embeddings/ directory.
 """
@@ -39,7 +39,7 @@ class EmbeddingCache:
         cache = EmbeddingCache(cache_dir)
         
         # Check if embeddings exist
-        if cache.has_cache("v1_2_blended", "1.0", "eval_909_feb2026"):
+        if cache.has_cache("v1_5_diversified", "1.0", "eval_909_feb2026"):
             embeddings = cache.load_embeddings(...)
         else:
             # Generate and save
@@ -168,7 +168,7 @@ class EmbeddingCache:
         Save embeddings to cache.
         
         Args:
-            algorithm_version: Version of the algorithm (e.g., "v1_2_blended")
+            algorithm_version: Version of the algorithm (e.g., "v1_5_diversified")
             strategy_version: Version of the embedding strategy (e.g., "1.0")
             dataset_version: Version of the dataset (e.g., "eval_909_feb2026")
             embeddings: Dict mapping episode_id to embedding vector

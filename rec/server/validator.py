@@ -6,7 +6,7 @@ Checks schema versions and required fields.
 
 Usage:
     validator = Validator(algorithm_loader, dataset_loader)
-    result = validator.check_compatibility("v1_2_blended", "eval_909_feb2026")
+    result = validator.check_compatibility("v1_5_diversified", "eval_909_feb2026")
     
     if result.is_compatible:
         print("Ready to use!")
@@ -77,7 +77,7 @@ class Validator:
         Check if an algorithm is compatible with a dataset.
         
         Args:
-            algorithm_folder: Name of algorithm folder (e.g., "v1_2_blended")
+            algorithm_folder: Name of algorithm folder (e.g., "v1_5_diversified")
             dataset_folder: Name of dataset folder (e.g., "eval_909_feb2026")
         
         Returns:

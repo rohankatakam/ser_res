@@ -6,12 +6,13 @@ A versioned evaluation framework for the Serafis "For You" podcast recommendatio
 
 ```
 rec/
-├── algorithms/              # Algorithm versions
-│   └── v1_2_blended/        # V1.2 Blended Scoring
-│       ├── manifest.json    # Version metadata & requirements
-│       ├── embedding_strategy.py  # How to embed episodes
-│       ├── config.json      # Tunable parameters
-│       └── recommendation_engine.py  # Core algorithm
+├── algorithm/               # Current algorithm (v1.5)
+│   ├── manifest.json        # Version metadata & requirements
+│   ├── embedding_strategy.py  # How to embed episodes
+│   ├── config.json          # Tunable parameters
+│   ├── config_schema.json   # Parameter schema for UI
+│   ├── recommendation_engine.py  # Core algorithm
+│   └── computed_params.py   # Computed parameters
 │
 ├── datasets/                # Dataset versions
 │   └── eval_909_feb2026/    # February 2026 evaluation dataset
@@ -20,8 +21,8 @@ rec/
 │       └── series.json      # Series metadata
 │
 ├── cache/                   # Embedding cache
-│   └── embeddings/          # Cached embeddings per algo+dataset combo
-│       └── v1_2_blended_s1.0__eval_909_feb2026.json
+│   └── embeddings/          # Cached embeddings
+│       └── v1_5_diversified_s1_0__eval_909_feb2026.json
 │
 ├── server/                  # FastAPI server
 │   ├── server.py            # Main API server
@@ -39,10 +40,14 @@ rec/
 │   ├── runner.py            # Test runner
 │   └── llm_judge.py         # LLM-as-judge evaluation
 │
-├── prototype/               # React frontend
+├── frontend/                # React frontend
 │   └── src/                 # Frontend source code
 │
-└── mock_api/                # Legacy API (for reference)
+├── api/                     # Legacy API (for reference)
+│
+└── docs/                    # Documentation
+    ├── phase7_evolution/    # Current v1.5 docs
+    └── algorithm_evolution/ # Evolution history
 ```
 
 ## Quick Start
@@ -65,7 +70,7 @@ cd server
 pip install -r requirements.txt
 
 # Frontend dependencies (optional)
-cd ../prototype
+cd ../frontend
 npm install
 ```
 
@@ -89,10 +94,10 @@ The server starts without any algorithm/dataset loaded. Load one via API:
 curl http://localhost:8000/api/config/algorithms
 curl http://localhost:8000/api/config/datasets
 
-# Load a configuration
+# Load a configuration (algorithm name can be empty string for flattened structure)
 curl -X POST http://localhost:8000/api/config/load \
   -H "Content-Type: application/json" \
-  -d '{"algorithm": "v1_2_blended", "dataset": "eval_909_feb2026"}'
+  -d '{"algorithm": "", "dataset": "eval_909_feb2026"}'
 ```
 
 ### 5. Generate Embeddings (First Time)
@@ -103,13 +108,13 @@ If embeddings aren't cached, generate them:
 curl -X POST http://localhost:8000/api/embeddings/generate \
   -H "Content-Type: application/json" \
   -H "X-OpenAI-Key: sk-your-key-here" \
-  -d '{"algorithm": "v1_2_blended", "dataset": "eval_909_feb2026"}'
+  -d '{"algorithm": "", "dataset": "eval_909_feb2026"}'
 ```
 
 ### 6. Start Frontend (Optional)
 
 ```bash
-cd prototype
+cd frontend
 npm run dev
 # Open http://localhost:5173
 ```
@@ -211,7 +216,7 @@ def get_embed_text(episode: dict) -> str:
 Embeddings are cached by algorithm version + embedding strategy version + dataset version:
 
 ```
-cache/embeddings/v1_2_blended_s1.0__eval_909_feb2026.json
+cache/embeddings/v1_5_diversified_s1.0__eval_909_feb2026.json
 ```
 
 This ensures:
@@ -246,11 +251,11 @@ python runner.py --save
 
 ## Legacy API
 
-The original `mock_api/` folder contains the standalone V1.2 API for reference.
+The original `api/` folder contains the standalone V1.2 API for reference.
 It can still be run independently:
 
 ```bash
-cd mock_api
+cd api
 uvicorn server:app --reload --port 8000
 ```
 
@@ -308,13 +313,13 @@ The docker-compose configuration mounts local directories:
 
 | Local Path | Container Path | Mode |
 |------------|----------------|------|
-| `./algorithms` | `/data/algorithms` | Read-only |
+| `./algorithm` | `/data/algorithm` | Read-only |
 | `./datasets` | `/data/datasets` | Read-only |
 | `./cache` | `/data/cache` | Read-write |
 | `./evaluation` | `/data/evaluation` | Read-write |
 
 This allows you to:
-- Add new algorithms/datasets without rebuilding containers
+- Modify the algorithm without rebuilding containers
 - Persist embedding cache across restarts
 - Save test reports locally
 
@@ -341,7 +346,7 @@ OPENAI_API_KEY=sk-xxx GEMINI_API_KEY=AIza-xxx docker-compose up -d
 
 ## Frontend UI Features
 
-The prototype frontend includes:
+The frontend includes:
 
 ### Developer Tab
 - **Insights Sub-tab**: Session state, engagement history, algorithm config, API stats

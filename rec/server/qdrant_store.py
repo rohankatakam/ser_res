@@ -6,7 +6,7 @@ Provides the same interface as EmbeddingCache for backward compatibility,
 with additional vector search capabilities.
 
 Collection naming: {algorithm_version}_s{strategy_version}__{dataset_version}
-Example: v1_2_blended_s1_0__eval_909_feb2026
+Example: v1_5_diversified_s1_0__eval_909_feb2026
 
 Includes hash-based change detection for embedding strategy files.
 """
@@ -73,7 +73,7 @@ class QdrantEmbeddingStore:
         store = QdrantEmbeddingStore(qdrant_url="http://localhost:6333")
         
         # Check if embeddings exist
-        if store.has_cache("v1_2_blended", "1.0", "eval_909_feb2026"):
+        if store.has_cache("v1_5_diversified", "1.0", "eval_909_feb2026"):
             embeddings = store.load_embeddings(...)
         else:
             # Generate and save

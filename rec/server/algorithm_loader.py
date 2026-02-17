@@ -1,17 +1,17 @@
 """
 Algorithm Loader
 
-Dynamically loads algorithm versions from the algorithms/ directory.
-Each algorithm version must have a manifest.json and embedding_strategy.py.
+Loads the algorithm from the algorithm/ directory.
+The algorithm must have a manifest.json and embedding_strategy.py.
 
 Usage:
-    loader = AlgorithmLoader(algorithms_dir)
+    loader = AlgorithmLoader(algorithm_dir)
     
     # List available algorithms
     algorithms = loader.list_algorithms()
     
-    # Load a specific algorithm
-    algo = loader.load_algorithm("v1_2_blended")
+    # Load the algorithm (pass empty string or folder name)
+    algo = loader.load_algorithm("")
     print(algo.manifest)
     text = algo.get_embed_text(episode)
 """
@@ -80,18 +80,16 @@ class LoadedAlgorithm:
 
 class AlgorithmLoader:
     """
-    Loads algorithm versions from the algorithms/ directory.
+    Loads the algorithm from the algorithm/ directory.
     
     Expected directory structure:
-        algorithms/
-        ├── v1_2_blended/
-        │   ├── manifest.json          (required)
-        │   ├── embedding_strategy.py  (required)
-        │   ├── config_schema.json     (required - for UI parameter tuning)
-        │   ├── config.json            (optional - parameter values)
-        │   └── recommendation_engine.py (optional)
-        └── v2_0_experimental/
-            └── ...
+        algorithm/
+        ├── manifest.json          (required)
+        ├── embedding_strategy.py  (required)
+        ├── config_schema.json     (required - for UI parameter tuning)
+        ├── config.json            (optional - parameter values)
+        ├── recommendation_engine.py (optional)
+        └── computed_params.py     (optional)
     """
     
     def __init__(self, algorithms_dir: Path):
@@ -99,7 +97,7 @@ class AlgorithmLoader:
         Initialize the algorithm loader.
         
         Args:
-            algorithms_dir: Path to the algorithms/ directory
+            algorithms_dir: Path to the algorithm/ directory
         """
         self.algorithms_dir = Path(algorithms_dir)
         self._loaded_algorithms: Dict[str, LoadedAlgorithm] = {}
@@ -146,12 +144,12 @@ class AlgorithmLoader:
         
         return algorithms
     
-    def load_algorithm(self, folder_name: str) -> LoadedAlgorithm:
+    def load_algorithm(self, folder_name: str = "") -> LoadedAlgorithm:
         """
-        Load an algorithm version.
+        Load the algorithm. Since the directory is now flattened, folder_name is ignored.
         
         Args:
-            folder_name: Name of the algorithm folder (e.g., "v1_2_blended")
+            folder_name: Ignored (kept for backwards compatibility)
         
         Returns:
             LoadedAlgorithm with manifest, config, and embedding strategy
@@ -160,14 +158,18 @@ class AlgorithmLoader:
             FileNotFoundError: If algorithm folder or required files don't exist
             ValueError: If algorithm files are invalid
         """
-        # Return cached if already loaded
-        if folder_name in self._loaded_algorithms:
-            return self._loaded_algorithms[folder_name]
+        # Since directory is flattened, use a fixed cache key
+        cache_key = "current"
         
-        folder_path = self.algorithms_dir / folder_name
+        # Return cached if already loaded
+        if cache_key in self._loaded_algorithms:
+            return self._loaded_algorithms[cache_key]
+        
+        # The algorithm files are directly in algorithms_dir
+        folder_path = self.algorithms_dir
         
         if not folder_path.exists():
-            raise FileNotFoundError(f"Algorithm folder not found: {folder_path}")
+            raise FileNotFoundError(f"Algorithm directory not found: {folder_path}")
         
         # Load manifest
         manifest_path = folder_path / "manifest.json"
@@ -235,7 +237,7 @@ class AlgorithmLoader:
         
         # Create loaded algorithm
         loaded = LoadedAlgorithm(
-            folder_name=folder_name,
+            folder_name=folder_path.name,  # Use directory name
             path=folder_path,
             manifest=manifest,
             config=config,
@@ -249,7 +251,7 @@ class AlgorithmLoader:
         )
         
         # Cache it
-        self._loaded_algorithms[folder_name] = loaded
+        self._loaded_algorithms[cache_key] = loaded
         
         return loaded
     

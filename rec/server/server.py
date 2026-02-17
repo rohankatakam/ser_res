@@ -371,6 +371,101 @@ app.add_middleware(
 )
 
 
+@app.on_event("startup")
+def auto_load_config():
+    """
+    Auto-load the algorithm and first available dataset on server startup.
+    
+    This eliminates the need for manual configuration through a Settings modal.
+    The algorithm is loaded from the /algorithm directory and the first available
+    dataset is used automatically.
+    """
+    try:
+        state = get_state()
+        config = state.config
+        
+        # Load the algorithm (flat directory structure, no folder_name needed)
+        try:
+            algorithm = state.algorithm_loader.load_algorithm("")
+            state.current_algorithm = algorithm
+            print(f"[startup] Loaded algorithm: {algorithm.manifest.name} v{algorithm.manifest.version}")
+        except Exception as e:
+            print(f"[startup] WARNING: Failed to load algorithm: {e}")
+            return
+        
+        # Load the first available dataset
+        datasets = state.dataset_loader.list_datasets()
+        if not datasets:
+            print("[startup] WARNING: No datasets found")
+            return
+        
+        dataset_folder = datasets[0]["folder_name"]
+        try:
+            dataset = state.dataset_loader.load_dataset(dataset_folder)
+            state.current_dataset = dataset
+            print(f"[startup] Loaded dataset: {dataset.manifest.name} ({len(dataset.episodes)} episodes)")
+        except Exception as e:
+            print(f"[startup] WARNING: Failed to load dataset '{dataset_folder}': {e}")
+            return
+        
+        # Load cached embeddings if available
+        embeddings_cached = state.has_embeddings_cached(
+            algorithm.folder_name,
+            algorithm.strategy_version,
+            dataset_folder
+        )
+        
+        if embeddings_cached:
+            strategy_file = algorithm.path / "embedding_strategy.py" if algorithm.path else None
+            embeddings = state.load_cached_embeddings(
+                algorithm.folder_name,
+                algorithm.strategy_version,
+                dataset_folder,
+                strategy_file_path=strategy_file
+            ) or {}
+            state.current_embeddings = embeddings
+            print(f"[startup] Loaded {len(embeddings)} cached embeddings")
+        else:
+            # Try to generate embeddings if API key is available
+            api_key = config.openai_api_key
+            if api_key:
+                try:
+                    from embedding_generator import EmbeddingGenerator
+                    generator = EmbeddingGenerator(
+                        api_key=api_key,
+                        model=algorithm.embedding_model,
+                        dimensions=algorithm.embedding_dimensions
+                    )
+                    result = generator.generate_for_episodes(
+                        episodes=dataset.episodes,
+                        get_embed_text=algorithm.get_embed_text
+                    )
+                    if result.success:
+                        state.current_embeddings = result.embeddings
+                        state.save_embeddings(
+                            algorithm.folder_name,
+                            algorithm.strategy_version,
+                            dataset_folder,
+                            result.embeddings,
+                            algorithm.embedding_model,
+                            algorithm.embedding_dimensions
+                        )
+                        print(f"[startup] Generated {result.total_generated} embeddings")
+                    else:
+                        print(f"[startup] Embedding generation had errors: {result.errors}")
+                except Exception as e:
+                    print(f"[startup] WARNING: Failed to generate embeddings: {e}")
+            else:
+                print("[startup] No OpenAI API key available, skipping embedding generation")
+        
+        print(f"[startup] Auto-load complete. Status: loaded={state.is_loaded}")
+        
+    except Exception as e:
+        print(f"[startup] ERROR during auto-load: {e}")
+        import traceback
+        traceback.print_exc()
+
+
 # ============================================================================
 # Root & Status
 # ============================================================================
@@ -441,6 +536,39 @@ def list_datasets():
     return {
         "datasets": datasets,
         "current": state.current_dataset.folder_name if state.current_dataset else None
+    }
+
+
+@app.get("/api/config/api-keys/status")
+def get_api_key_status():
+    """
+    Check which API keys are configured in environment.
+    
+    Returns status for OpenAI (required), Gemini (optional), and Anthropic (optional).
+    Only OpenAI is required for embeddings. Gemini and Anthropic are optional for LLM-as-a-judge.
+    """
+    openai_key = os.environ.get("OPENAI_API_KEY", "").strip()
+    gemini_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    
+    openai_configured = bool(openai_key)
+    gemini_configured = bool(gemini_key)
+    anthropic_configured = bool(anthropic_key)
+    
+    missing_keys = []
+    if not openai_configured:
+        missing_keys.append("openai")
+    
+    return {
+        "openai_configured": openai_configured,
+        "gemini_configured": gemini_configured,
+        "anthropic_configured": anthropic_configured,
+        "missing_keys": missing_keys,
+        "notes": {
+            "openai": "Required for embeddings and recommendations",
+            "gemini": "Optional for LLM-as-a-judge evaluation",
+            "anthropic": "Optional for LLM-as-a-judge evaluation"
+        }
     }
 
 
@@ -632,35 +760,68 @@ def get_algorithm_config_diff():
         )
     
     current_config = state.current_algorithm.config
-    default_params = state.current_algorithm.manifest.default_parameters
+    
+    # Load original config.json as the baseline (this is the "default" state)
+    config_path = state.config.algorithms_dir / state.current_algorithm.folder_name / "config.json"
+    try:
+        with open(config_path, 'r') as f:
+            import json
+            original_config = json.load(f)
+    except Exception as e:
+        # Fallback to manifest defaults if config.json can't be read
+        original_config = state.current_algorithm.manifest.default_parameters
     
     changed_params = []
     
-    def compare_nested(current, defaults, prefix=""):
+    def compare_nested(current, original, prefix=""):
         """Recursively compare nested config dictionaries."""
-        for key, default_value in defaults.items():
+        all_keys = set(current.keys()) | set(original.keys())
+        
+        for key in all_keys:
             current_value = current.get(key)
+            original_value = original.get(key)
             full_key = f"{prefix}.{key}" if prefix else key
             
-            if isinstance(default_value, dict) and isinstance(current_value, dict):
-                # Recurse into nested dicts
-                compare_nested(current_value, default_value, full_key)
-            elif current_value != default_value:
-                # Parameter has changed
+            # Skip internal/comment keys
+            if key.startswith("_"):
+                continue
+            
+            if isinstance(original_value, dict) and isinstance(current_value, dict):
+                # Both are dicts - recurse
+                compare_nested(current_value, original_value, full_key)
+            elif isinstance(original_value, dict) and current_value is None:
+                # Original is dict but current is missing - recurse with empty dict
+                compare_nested({}, original_value, full_key)
+            elif current_value is None and original_value is None:
+                # Both missing - no change
+                pass
+            elif current_value is None or original_value is None:
+                # One is missing, other isn't - this is a change
+                # But only if both existed in schemas (not a bug)
+                if current_value is not None or original_value is not None:
+                    changed_params.append({
+                        "key": full_key,
+                        "default": original_value,
+                        "current": current_value,
+                        "diff_percent": None,
+                        "type": type(original_value).__name__ if original_value is not None else type(current_value).__name__
+                    })
+            elif current_value != original_value:
+                # Values differ - this is a real change
                 diff_pct = None
-                if isinstance(default_value, (int, float)) and isinstance(current_value, (int, float)):
-                    if default_value != 0:
-                        diff_pct = ((current_value - default_value) / default_value) * 100
+                if isinstance(original_value, (int, float)) and isinstance(current_value, (int, float)):
+                    if original_value != 0:
+                        diff_pct = ((current_value - original_value) / original_value) * 100
                 
                 changed_params.append({
                     "key": full_key,
-                    "default": default_value,
+                    "default": original_value,
                     "current": current_value,
                     "diff_percent": diff_pct,
-                    "type": type(default_value).__name__
+                    "type": type(original_value).__name__
                 })
     
-    compare_nested(current_config, default_params)
+    compare_nested(current_config, original_config)
     
     return {
         "has_changes": len(changed_params) > 0,

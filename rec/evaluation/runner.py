@@ -1405,7 +1405,7 @@ def save_report(
     # If algorithm_name not provided, try to load from manifest.json
     if not algo_name:
         try:
-            algo_path = Path(__file__).parent.parent / "algorithms" / algo_version / "manifest.json"
+            algo_path = Path(__file__).parent.parent / "algorithm" / "manifest.json"
             if algo_path.exists():
                 with open(algo_path) as f:
                     manifest = json.load(f)

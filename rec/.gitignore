@@ -1,0 +1,30 @@
+# Environment variables (API keys)
+.env
+
+# Cache files (embeddings, etc.)
+cache/
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Docker
+.docker/
+
+# OS files
+.DS_Store
+Thumbs.db
