@@ -21,7 +21,7 @@ from models.scoring import ScoredEpisode
 from models.session import RecommendationSession
 from stages.candidate_pool import get_candidate_pool
 from stages.semantic_scoring import rank_candidates, get_badges
-from stages.queue import create_recommendation_queue
+from stages.orchestrator import create_recommendation_queue
 from embedding.embedding_strategy import (
     get_embed_text,
     STRATEGY_VERSION,

@@ -1,5 +1,6 @@
 """
-Queue orchestration — run Stage A then Stage B to produce the recommendation queue.
+Pipeline orchestrator — runs Stage A (candidate pool) then Stage B (semantic scoring)
+to produce the final recommendation queue.
 """
 
 from typing import Dict, List, Set, Tuple
