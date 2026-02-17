@@ -1,18 +1,8 @@
 # Serafis Evaluation Framework
-# Docker Compose configuration for local development and deployment
+# Docker Compose — reads project root .env (copy from .env.example). Never commit .env.
 #
-# API keys and config: use project root .env (copy from .env.example). Never commit .env.
-# - OPENAI_API_KEY: used for embeddings (required for recommendations; used even with DATA_SOURCE=firebase).
-# - GEMINI_API_KEY / ANTHROPIC_API_KEY: optional, for evaluation LLM judges.
-# - Evaluation: run locally (python evaluation/runner.py) so it reads .env; or call /api/evaluation/* (backend uses keys from .env via env_file).
-#
-# Firebase (optional): set DATA_SOURCE=firebase in .env. To supply credentials in Docker,
-# add a docker-compose.override.yml that mounts your key, e.g.:
-#   services:
-#     backend:
-#       volumes:
-#         - ${FIREBASE_CREDENTIALS_FILE:-./secrets/firebase-credentials.json}:/data/firebase-credentials.json:ro
-# Set FIREBASE_CREDENTIALS_FILE in .env to your host path, or put the key at ./secrets/firebase-credentials.json. Never commit the key file.
+# Required in .env: OPENAI_API_KEY, DATA_SOURCE=firebase, FIREBASE_CREDENTIALS_PATH=<path to service account JSON>.
+# Optional: GEMINI_API_KEY, ANTHROPIC_API_KEY (evaluation). Firebase key file must exist on host.
 
 services:
   # Qdrant Vector Database (embeddings, similarity search)
@@ -38,14 +28,12 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Mount algorithm
       - ./algorithm:/data/algorithm:ro
-      # Mount datasets
       - ./datasets:/data/datasets:ro
-      # Mount cache for embeddings (read-write, fallback for JSON cache)
       - ./cache:/data/cache
-      # Mount evaluation profiles, test cases, and reports
       - ./evaluation:/data/evaluation
+      # Firebase: host path from .env FIREBASE_CREDENTIALS_PATH (must be an existing file)
+      - ${FIREBASE_CREDENTIALS_PATH:-./secrets/firebase-credentials.json}:/data/firebase-credentials.json:ro
     env_file:
       - .env
     environment:
@@ -56,7 +44,6 @@ services:
       - CACHE_DIR=/data/cache
       - EVALUATION_DIR=/data/evaluation
       - QDRANT_URL=http://qdrant:6333
-      # In-container path for Firebase credentials (when mounted via override)
       - FIREBASE_CREDENTIALS_PATH=/data/firebase-credentials.json
     depends_on:
       qdrant:

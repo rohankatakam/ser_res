@@ -13,7 +13,7 @@ This describes how to upload episode/series data to Cloud Firestore and use it a
    export GOOGLE_APPLICATION_CREDENTIALS=/path/to/serviceAccountKey.json
    ```
 
-**Security:** Do not commit the key file. It is already in `.gitignore` (`**/serviceAccountKey.json`, `**/*-firebase-adminsdk-*.json`, `secrets/`). For Docker, put your key in `secrets/firebase-credentials.json` and use the Firebase override (see `docker-compose.yml` comments or copy `docker-compose.override.firebase.example.yml` to `docker-compose.override.yml`).
+**Security:** Do not commit the key file. It is in `.gitignore` (`**/serviceAccountKey.json`, `**/*-firebase-adminsdk-*.json`, `secrets/`). In `.env` set `FIREBASE_CREDENTIALS_PATH` to the key path; Docker Compose mounts it into the backend automatically.
 
 ## 2. Upload episodes and series
 

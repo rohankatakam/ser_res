@@ -73,7 +73,18 @@ class AppState:
 
     def _create_user_store(self, config: ServerConfig) -> Optional[Any]:
         """Create user store from config (JSON or Firestore)."""
+        cred_path = config.firebase_credentials_path
+        cred_path_obj = Path(cred_path) if cred_path else None
+        cred_exists = cred_path_obj and cred_path_obj.exists() if cred_path_obj else False
+        cred_is_file = cred_path_obj and cred_path_obj.is_file() if cred_path_obj else False
+        print(f"[startup] User store: DATA_SOURCE={config.data_source!r}, FIREBASE_CREDENTIALS_PATH={cred_path}, exists={cred_exists}, is_file={cred_is_file}")
         if config.data_source == "firebase" and config.firebase_credentials_path:
+            if not cred_exists:
+                print("[startup] Firestore user store skipped: credentials file not found. Set FIREBASE_CREDENTIALS_PATH in .env to your service account JSON path.")
+                return None
+            if not cred_is_file:
+                print("[startup] Firestore user store skipped: FIREBASE_CREDENTIALS_PATH is a directory, not a file. Point it to your existing key file in .env.")
+                return None
             try:
                 return FirestoreUserStore(
                     project_id=config.firebase_project_id,

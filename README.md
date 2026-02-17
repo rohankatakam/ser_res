@@ -2,10 +2,12 @@
 
 ## Docker
 
+Data source is Firestore; config comes from `.env` (compose mounts your Firebase key from `FIREBASE_CREDENTIALS_PATH`).
+
 ```bash
 # 1. Env (project root; .env is gitignored)
 cp .env.example .env
-# Edit .env: OPENAI_API_KEY (required), GEMINI_API_KEY / ANTHROPIC_API_KEY (optional)
+# Edit .env: OPENAI_API_KEY, DATA_SOURCE=firebase, FIREBASE_CREDENTIALS_PATH=<path to service account JSON>
 
 # 2. Build and run
 docker compose up --build
@@ -17,24 +19,11 @@ docker compose up --build
 ```bash
 docker compose up -d              # background
 docker compose logs -f             # logs
-docker compose down -v            # stop and remove volumes (clean slate)
-docker compose up -d --build      # rebuild and run
+docker compose down -v             # stop and remove volumes (clean slate)
+docker compose up -d --build       # rebuild and run
 ```
 
-### Using Firebase (optional)
-
-To use Firestore for episodes/series and user persistence:
-
-1. In `.env`, set `DATA_SOURCE=firebase` and point Docker at your service account key:
-   - `FIREBASE_CREDENTIALS_FILE=./path/to/your-firebase-key.json`  
-   (Use your downloaded key filename; no need to rename it.)
-2. Copy the Firebase override so the key is mounted into the backend container:
-   ```bash
-   cp docker-compose.override.firebase.example.yml docker-compose.override.yml
-   ```
-3. Restart: `docker compose down -v && docker compose up -d --build`
-
-See `server/docs/FIRESTORE.md` for uploading data to Firestore and creating the key.
+See `server/docs/FIRESTORE.md` for creating a Firebase key and uploading episode/series data.
 
 ## Directory skeleton
 

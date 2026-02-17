@@ -42,13 +42,13 @@ class ServerConfig:
     cache_dir: Path = Path(__file__).parent.parent / "cache"
     evaluation_dir: Path = Path(__file__).parent.parent / "evaluation"
 
-    # Data source: "json" | "firebase" | None (use dataset from config/load)
+    # Data source: "firebase" (primary) | "json" (deprecated, for local/dev only)
     data_source: Optional[str] = None
-    # When data_source=json: paths to episodes, series, and users JSON files
+    # Deprecated: JSON file paths (use Firestore in production)
     episodes_json_path: Optional[Path] = None
     series_json_path: Optional[Path] = None
     users_json_path: Optional[Path] = None
-    # When data_source=firebase: path to service account JSON and optional project id
+    # Firebase: path to service account JSON and optional project id
     firebase_credentials_path: Optional[Path] = None
     firebase_project_id: Optional[str] = None
 
