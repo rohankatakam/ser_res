@@ -2,21 +2,22 @@
 Session model — a recommendation session with its queue and state.
 """
 
-from dataclasses import dataclass
 from typing import List, Set
 
-from .scoring import ScoredEpisode
+from pydantic import BaseModel, Field
+
 from .config import RecommendationConfig
+from .scoring import ScoredEpisode
 
 
-@dataclass
-class RecommendationSession:
+class RecommendationSession(BaseModel):
     """A recommendation session with pre-computed ranked queue."""
+
     session_id: str
     queue: List[ScoredEpisode]
-    shown_indices: Set[int]
-    engaged_ids: Set[str]
-    excluded_ids: Set[str]
+    shown_indices: Set[int] = Field(default_factory=set)
+    engaged_ids: Set[str] = Field(default_factory=set)
+    excluded_ids: Set[str] = Field(default_factory=set)
     created_at: str
     cold_start: bool
     user_vector_episodes: int

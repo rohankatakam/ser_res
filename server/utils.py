@@ -97,14 +97,21 @@ def get_badges(ep: Dict) -> List[str]:
 def to_episode_card(
     ep: Dict, scored: Any = None, queue_position: int = None
 ) -> EpisodeCard:
-    """Convert raw episode dict to EpisodeCard."""
+    """Convert raw episode dict (or Pydantic Episode from algorithm) to EpisodeCard."""
+    if hasattr(ep, "model_dump"):
+        ep = ep.model_dump()
+    series_data = ep.get("series") or {}
+    scores_data = ep.get("scores") or {}
     return EpisodeCard(
         id=ep["id"],
         content_id=ep.get("content_id", ep["id"]),
-        title=ep["title"],
-        series=SeriesInfo(**ep["series"]),
-        published_at=ep["published_at"],
-        scores=EpisodeScores(**ep["scores"]),
+        title=ep.get("title", ""),
+        series=SeriesInfo(
+            id=series_data.get("id", ""),
+            name=series_data.get("name", ""),
+        ),
+        published_at=ep.get("published_at", ""),
+        scores=EpisodeScores(**scores_data),
         badges=get_badges(ep),
         key_insight=ep.get("key_insight"),
         categories=ep.get("categories", {"major": [], "subcategories": []}),

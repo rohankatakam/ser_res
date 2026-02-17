@@ -2,9 +2,8 @@
 Serafis Recommendation Algorithm — V1.2 Blended Scoring
 
 Single entry point for the algorithm package:
-- models/: RecommendationConfig, ScoredEpisode, RecommendationSession
-- utils/: scores, similarity, episode helpers
-- stages/: candidate_pool (Stage A), semantic_scoring (Stage B), queue
+- models/: RecommendationConfig, ScoredEpisode, RecommendationSession, Episode
+- stages/: candidate_pool (Stage A), semantic_scoring (Stage B), orchestrator
 - embedding/: get_embed_text, version and model constants
 """
 

@@ -7,11 +7,10 @@ RecommendationConfig defaults are defined here. The server may pass a dict
 
 from typing import Dict, List
 
-from dataclasses import dataclass
+from pydantic import BaseModel, Field, model_validator
 
 
-@dataclass
-class RecommendationConfig:
+class RecommendationConfig(BaseModel):
     """Configuration for the recommendation algorithm."""
 
     # Stage A: Candidate Pool Pre-Selection
@@ -36,7 +35,9 @@ class RecommendationConfig:
     recency_lambda: float = 0.03
 
     # Engagement type weights
-    engagement_weights: Dict[str, float] = None
+    engagement_weights: Dict[str, float] = Field(
+        default_factory=lambda: {"bookmark": 2.0, "listen": 1.5, "click": 1.0}
+    )
     use_weighted_engagements: bool = True
 
     # Sum-of-similarities mode (alternative to mean-pooling)
@@ -45,22 +46,18 @@ class RecommendationConfig:
     # Cold start category diversity
     cold_start_category_diversity_enabled: bool = False
     cold_start_category_min_per_category: int = 1
-    cold_start_categories: List[str] = None
+    cold_start_categories: List[str] = Field(default_factory=list)
 
     # Cold start scoring weights
     cold_start_weight_quality: float = 0.60
     cold_start_weight_recency: float = 0.40
 
-    def __post_init__(self):
-        if self.engagement_weights is None:
-            self.engagement_weights = {
-                "bookmark": 2.0,
-                "listen": 1.5,
-                "click": 1.0,
-            }
+    @model_validator(mode="after")
+    def weights_sum_to_one(self):
         total = self.weight_similarity + self.weight_quality + self.weight_recency
         if abs(total - 1.0) > 0.01:
             raise ValueError(f"Scoring weights must sum to 1.0, got {total}")
+        return self
 
     @classmethod
     def from_dict(cls, config_dict: Dict) -> "RecommendationConfig":
@@ -93,7 +90,7 @@ class RecommendationConfig:
             "cold_start_categories",
         }
         filtered = {k: v for k, v in flat.items() if k in known_fields}
-        return cls(**filtered)
+        return cls.model_validate(filtered)
 
 
 DEFAULT_CONFIG = RecommendationConfig()

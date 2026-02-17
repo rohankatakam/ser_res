@@ -10,16 +10,25 @@ from typing import Dict, List, Optional, Set
 import numpy as np
 
 from models.config import RecommendationConfig, DEFAULT_CONFIG
-from models.scoring import ScoredEpisode
-from utils.scores import days_since, quality_score, recency_score
-from utils.similarity import cosine_similarity
-from utils.episode import get_episode_primary_category
+from models.episode import Episode
+from models.scoring import ScoredEpisode, days_since, quality_score, recency_score
+
+
+def cosine_similarity(v1: List[float], v2: List[float]) -> float:
+    """Compute cosine similarity between two vectors."""
+    if not v1 or not v2:
+        return 0.0
+    v1_arr = np.array(v1)
+    v2_arr = np.array(v2)
+    dot_product = np.dot(v1_arr, v2_arr)
+    norm_product = np.linalg.norm(v1_arr) * np.linalg.norm(v2_arr)
+    return float(dot_product / norm_product) if norm_product > 0 else 0.0
 
 
 def get_user_vector_mean(
     engagements: List[Dict],
     embeddings: Dict[str, List[float]],
-    episode_by_content_id: Dict[str, Dict],
+    episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig = DEFAULT_CONFIG,
 ) -> Optional[List[float]]:
     """Compute user activity vector using mean-pooling of engagement embeddings."""
@@ -36,7 +45,7 @@ def get_user_vector_mean(
         ep_id = eng.get("episode_id")
         embedding = embeddings.get(ep_id)
         if not embedding and ep_id in episode_by_content_id:
-            real_id = episode_by_content_id[ep_id]["id"]
+            real_id = episode_by_content_id[ep_id].id
             embedding = embeddings.get(real_id)
         if embedding:
             if config.use_weighted_engagements:
@@ -54,16 +63,16 @@ def get_user_vector_mean(
 
 
 def compute_similarity_sum(
-    candidate: Dict,
+    candidate: Episode,
     engagements: List[Dict],
     embeddings: Dict[str, List[float]],
-    episode_by_content_id: Dict[str, Dict],
+    episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig = DEFAULT_CONFIG,
 ) -> float:
     """Similarity as sum (or weighted avg) of similarities to each engagement."""
     if not engagements:
         return 0.0
-    candidate_embedding = embeddings.get(candidate["id"])
+    candidate_embedding = embeddings.get(candidate.id)
     if not candidate_embedding:
         return 0.0
     sorted_eng = sorted(
@@ -77,7 +86,7 @@ def compute_similarity_sum(
         ep_id = eng.get("episode_id")
         eng_embedding = embeddings.get(ep_id)
         if not eng_embedding and ep_id in episode_by_content_id:
-            real_id = episode_by_content_id[ep_id]["id"]
+            real_id = episode_by_content_id[ep_id].id
             eng_embedding = embeddings.get(real_id)
         if eng_embedding:
             sim = cosine_similarity(candidate_embedding, eng_embedding)
@@ -104,7 +113,7 @@ def apply_cold_start_category_diversity(
     by_category: Dict[str, List[ScoredEpisode]] = {c: [] for c in target_categories}
     uncategorized: List[ScoredEpisode] = []
     for ep_scored in scored:
-        cat = get_episode_primary_category(ep_scored.episode)
+        cat = ep_scored.episode.get_primary_category()
         if cat and cat in by_category:
             by_category[cat].append(ep_scored)
         else:
@@ -115,9 +124,9 @@ def apply_cold_start_category_diversity(
         for cat in target_categories:
             if by_category[cat]:
                 ep = by_category[cat].pop(0)
-                if ep.episode["id"] not in selected_ids:
+                if ep.episode.id not in selected_ids:
                     selected.append(ep)
-                    selected_ids.add(ep.episode["id"])
+                    selected_ids.add(ep.episode.id)
                     if len(selected) >= top_n:
                         break
         if len(selected) >= top_n:
@@ -128,21 +137,21 @@ def apply_cold_start_category_diversity(
     remaining.extend(uncategorized)
     remaining.sort(key=lambda x: x.final_score, reverse=True)
     for ep in remaining:
-        if ep.episode["id"] not in selected_ids:
+        if ep.episode.id not in selected_ids:
             selected.append(ep)
-            selected_ids.add(ep.episode["id"])
+            selected_ids.add(ep.episode.id)
             if len(selected) >= top_n:
                 break
     selected.sort(key=lambda x: x.final_score, reverse=True)
-    rest = [ep for ep in scored if ep.episode["id"] not in selected_ids]
+    rest = [ep for ep in scored if ep.episode.id not in selected_ids]
     return selected + rest
 
 
 def rank_candidates(
     engagements: List[Dict],
-    candidates: List[Dict],
+    candidates: List[Episode],
     embeddings: Dict[str, List[float]],
-    episode_by_content_id: Dict[str, Dict],
+    episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig = DEFAULT_CONFIG,
 ) -> List[ScoredEpisode]:
     """
@@ -160,8 +169,8 @@ def rank_candidates(
 
     scored = []
     for ep in candidates:
-        ep_id = ep["id"]
-        scores = ep.get("scores", {})
+        ep_id = ep.id
+        scores = ep.get_scores()
 
         if cold_start:
             sim_score = 0.5
@@ -182,7 +191,7 @@ def rank_candidates(
             config.credibility_multiplier,
             config.max_quality_score,
         )
-        age = days_since(ep.get("published_at", ""))
+        age = days_since(ep.published_at or "")
         rec_score = recency_score(age, config.recency_lambda)
 
         if cold_start:
@@ -212,10 +221,10 @@ def rank_candidates(
     return scored
 
 
-def get_badges(ep: Dict) -> List[str]:
+def get_badges(ep: Episode) -> List[str]:
     """Score-based badges for an episode (max 2)."""
     badges = []
-    scores = ep.get("scores", {})
+    scores = ep.get_scores()
     if (scores.get("insight") or 0) >= 3:
         badges.append("high_insight")
     if (scores.get("credibility") or 0) >= 3:

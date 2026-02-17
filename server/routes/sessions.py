@@ -141,7 +141,7 @@ def load_more(session_id: str, request: LoadMoreRequest = None):
     for i, scored_ep in enumerate(queue):
         if i in shown:
             continue
-        ep = scored_ep.episode
+        ep = scored_ep.episode.model_dump() if hasattr(scored_ep.episode, "model_dump") else scored_ep.episode
         if ep["id"] in engaged or ep.get("content_id") in engaged:
             continue
         next_page.append((scored_ep, i + 1))
