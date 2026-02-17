@@ -185,3 +185,11 @@ After each step, run the test in the table. If anything breaks, fix before movin
 - **api/** → used by nothing in the current stack; safe to remove or archive after updating docs.
 
 If you want, the next step can be implementing Phase 0 (root .env.example + README updates) and Phase 2’s `GET /api/series` so the frontend works against the current backend without legacy code.
+
+---
+
+## Algorithm + Server Refactor (off-path)
+
+A separate refactor plan for **algorithm/** and **server/** (redundant code, dead code, ambiguous patterns, config path and list fixes) is in **`docs/REFACTOR_PLAN_ALGORITHM_SERVER.md`**.
+
+A **cloud architecture and migration plan** (Pinecone + Firebase/Firestore, live recommendation API, user bookmarks/views, mobile + web) is in **`docs/CLOUD_ARCHITECTURE_MIGRATION.md`**. The current **frontend** is treated as a test harness for the engine and evaluation; production mobile and web call the same backend. It covers: single source for `get_badges`, shared cache key logic, fixing config path for flat algorithm layout, making `list_algorithms()` return one entry for the current algorithm, optional use or removal of `validate_episode_for_embedding`, debug weights from config, and doc/version cleanup.

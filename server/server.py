@@ -40,6 +40,9 @@ try:
     from .embedding_generator import EmbeddingGenerator, EmbeddingProgress, check_openai_available
     from .validator import Validator, CompatibilityResult
     from .qdrant_store import QdrantEmbeddingStore, check_qdrant_available, compute_strategy_hash
+    from .episode_provider import DatasetEpisodeProvider
+    from .vector_store import QdrantJsonVectorStore
+    from .engagement_store import RequestOnlyEngagementStore
 except ImportError:
     # When running standalone (uvicorn server:app)
     from config import get_config, ServerConfig
@@ -49,6 +52,9 @@ except ImportError:
     from embedding_generator import EmbeddingGenerator, EmbeddingProgress, check_openai_available
     from validator import Validator, CompatibilityResult
     from qdrant_store import QdrantEmbeddingStore, check_qdrant_available, compute_strategy_hash
+    from episode_provider import DatasetEpisodeProvider
+    from vector_store import QdrantJsonVectorStore
+    from engagement_store import RequestOnlyEngagementStore
 
 # Import runner library for test execution
 import sys
@@ -189,6 +195,14 @@ class AppState:
         self.qdrant_available = False
         self._init_qdrant(config.qdrant_url)
         
+        # Abstractions (swap implementations for cloud: Pinecone, Firestore)
+        self.vector_store = QdrantJsonVectorStore(
+            self.embedding_cache,
+            self.qdrant_store if self.qdrant_available else None,
+        )
+        self.engagement_store = RequestOnlyEngagementStore()
+        self.current_episode_provider: Optional[DatasetEpisodeProvider] = None
+        
         # Currently loaded
         self.current_algorithm: Optional[LoadedAlgorithm] = None
         self.current_dataset: Optional[LoadedDataset] = None
@@ -223,13 +237,8 @@ class AppState:
         strategy_version: str,
         dataset_folder: str
     ) -> bool:
-        """Check if embeddings are cached (Qdrant or JSON)."""
-        # Try Qdrant first
-        if self.qdrant_available and self.qdrant_store:
-            if self.qdrant_store.has_cache(algorithm_folder, strategy_version, dataset_folder):
-                return True
-        # Fall back to JSON cache
-        return self.embedding_cache.has_cache(algorithm_folder, strategy_version, dataset_folder)
+        """Check if embeddings are cached (delegates to vector_store)."""
+        return self.vector_store.has_cache(algorithm_folder, strategy_version, dataset_folder)
     
     def load_cached_embeddings(
         self,
@@ -238,45 +247,14 @@ class AppState:
         dataset_folder: str,
         strategy_file_path: Optional[Path] = None
     ) -> Optional[Dict[str, List[float]]]:
-        """Load embeddings from cache (Qdrant or JSON) with hash verification."""
-        # Try Qdrant first
-        if self.qdrant_available and self.qdrant_store:
-            # Verify strategy hash if we have the strategy file
-            if strategy_file_path:
-                current_hash = compute_strategy_hash(strategy_file_path)
-                if current_hash:
-                    matches, stored_hash = self.qdrant_store.verify_strategy_hash(
-                        algorithm_folder, strategy_version, dataset_folder, current_hash
-                    )
-                    if not matches and stored_hash:
-                        print(f"WARNING: embedding_strategy.py has changed!")
-                        print(f"  Stored hash: {stored_hash}")
-                        print(f"  Current hash: {current_hash}")
-                        print(f"  Consider regenerating embeddings with force=true")
-            
-            embeddings = self.qdrant_store.load_embeddings(
-                algorithm_folder, strategy_version, dataset_folder
-            )
-            if embeddings is not None:
-                print(f"Loaded {len(embeddings)} embeddings from Qdrant")
-                return embeddings
-        
-        # Fall back to JSON cache
-        embeddings = self.embedding_cache.load_embeddings(
-            algorithm_folder, strategy_version, dataset_folder
+        """Load embeddings from vector_store (Qdrant + JSON today; Pinecone when swapped)."""
+        emb = self.vector_store.load_embeddings(
+            algorithm_folder, strategy_version, dataset_folder,
+            strategy_file_path=strategy_file_path,
         )
-        if embeddings:
-            print(f"Loaded {len(embeddings)} embeddings from JSON cache")
-            # Migrate to Qdrant if available
-            if self.qdrant_available and self.qdrant_store:
-                try:
-                    self._migrate_to_qdrant(
-                        algorithm_folder, strategy_version, dataset_folder, embeddings,
-                        strategy_file_path
-                    )
-                except Exception as e:
-                    print(f"Migration to Qdrant failed: {e}")
-        return embeddings
+        if emb:
+            print(f"Loaded {len(emb)} embeddings from vector store")
+        return emb
     
     def save_embeddings(
         self,
@@ -288,56 +266,12 @@ class AppState:
         embedding_dimensions: int,
         strategy_file_path: Optional[Path] = None
     ):
-        """Save embeddings to cache (Qdrant primary, JSON backup)."""
-        # Compute strategy hash if we have the file path
-        strategy_hash = None
-        if strategy_file_path:
-            strategy_hash = compute_strategy_hash(strategy_file_path)
-        
-        # Save to Qdrant if available
-        if self.qdrant_available and self.qdrant_store:
-            try:
-                self.qdrant_store.save_embeddings(
-                    algorithm_folder, strategy_version, dataset_folder,
-                    embeddings, embedding_model, embedding_dimensions,
-                    strategy_hash=strategy_hash
-                )
-            except Exception as e:
-                print(f"Qdrant save failed: {e}, saving to JSON cache only")
-        
-        # Always save to JSON cache as backup
-        self.embedding_cache.save_embeddings(
+        """Save embeddings via vector_store (Qdrant + JSON today; Pinecone when swapped)."""
+        self.vector_store.save_embeddings(
             algorithm_folder, strategy_version, dataset_folder,
-            embeddings, embedding_model, embedding_dimensions
+            embeddings, embedding_model, embedding_dimensions,
+            strategy_file_path=strategy_file_path,
         )
-    
-    def _migrate_to_qdrant(
-        self,
-        algorithm_folder: str,
-        strategy_version: str,
-        dataset_folder: str,
-        embeddings: Dict[str, List[float]],
-        strategy_file_path: Optional[Path] = None
-    ):
-        """Migrate JSON cache embeddings to Qdrant."""
-        if not embeddings:
-            return
-        
-        # Infer dimensions from first embedding
-        first_embedding = next(iter(embeddings.values()))
-        dimensions = len(first_embedding)
-        
-        # Compute strategy hash if we have the file path
-        strategy_hash = None
-        if strategy_file_path:
-            strategy_hash = compute_strategy_hash(strategy_file_path)
-        
-        self.qdrant_store.save_embeddings(
-            algorithm_folder, strategy_version, dataset_folder,
-            embeddings, "migrated", dimensions,
-            strategy_hash=strategy_hash
-        )
-        print(f"Migrated {len(embeddings)} embeddings to Qdrant")
 
 
 # Initialize state
@@ -403,6 +337,7 @@ def auto_load_config():
         try:
             dataset = state.dataset_loader.load_dataset(dataset_folder)
             state.current_dataset = dataset
+            state.current_episode_provider = DatasetEpisodeProvider(dataset)
             print(f"[startup] Loaded dataset: {dataset.manifest.name} ({len(dataset.episodes)} episodes)")
         except Exception as e:
             print(f"[startup] WARNING: Failed to load dataset '{dataset_folder}': {e}")
@@ -1018,6 +953,7 @@ def load_configuration(
     # Update state
     state.current_algorithm = algorithm
     state.current_dataset = dataset
+    state.current_episode_provider = DatasetEpisodeProvider(dataset)
     state.current_embeddings = embeddings
     state.sessions.clear()  # Clear old sessions
     
@@ -1323,15 +1259,20 @@ def create_session(request: CreateSessionRequest):
             detail="Algorithm does not have a recommendation engine"
         )
     
-    # Prepare data
-    engagements = [e.model_dump() for e in request.engagements]
+    # Engagements: from store (request-only today; Firestore when swapped)
+    request_engagements = [e.model_dump() for e in request.engagements]
+    engagements = state.engagement_store.get_engagements_for_session(None, request_engagements)
     excluded_ids = set(request.excluded_ids)
-    
-    # Auto-exclude engaged episodes from recommendations
-    # Users should not see episodes they've already interacted with in new sessions
-    # Note: Within a session, engaged items remain visible until refresh
     for eng in request.engagements:
         excluded_ids.add(eng.episode_id)
+    
+    # Episodes: from provider (dataset today; Firestore when swapped)
+    if state.current_episode_provider:
+        episodes = state.current_episode_provider.get_episodes(limit=None)
+        episode_by_content_id = state.current_episode_provider.get_episode_by_content_id_map()
+    else:
+        episodes = state.current_dataset.episodes
+        episode_by_content_id = state.current_dataset.episode_by_content_id
     
     # Load algorithm-specific config
     algo_config = None
@@ -1342,9 +1283,9 @@ def create_session(request: CreateSessionRequest):
     queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
         engagements=engagements,
         excluded_ids=excluded_ids,
-        episodes=state.current_dataset.episodes,
+        episodes=episodes,
         embeddings=state.current_embeddings,
-        episode_by_content_id=state.current_dataset.episode_by_content_id,
+        episode_by_content_id=episode_by_content_id,
         config=algo_config,
     )
     
@@ -1477,7 +1418,7 @@ def load_more(session_id: str, request: LoadMoreRequest = None):
 
 @app.post("/api/sessions/{session_id}/engage")
 def engage_episode(session_id: str, request: EngageRequest):
-    """Record an engagement."""
+    """Record an engagement (in-session and via engagement_store for persistence when using Firestore)."""
     state = get_state()
     session = state.sessions.get(session_id)
     
@@ -1486,6 +1427,13 @@ def engage_episode(session_id: str, request: EngageRequest):
     
     session["engaged_ids"].add(request.episode_id)
     session["excluded_ids"].add(request.episode_id)
+    
+    state.engagement_store.record_engagement(
+        None,
+        request.episode_id,
+        request.type,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+    )
     
     return {
         "status": "ok",
