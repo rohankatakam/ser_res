@@ -1,5 +1,5 @@
 # Serafis Evaluation Server
-# Python FastAPI backend for recommendation testing
+# Build from repo root: docker build -f server/Dockerfile .
 
 FROM python:3.11-slim
 
@@ -11,11 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY requirements.txt .
+COPY server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy server code
-COPY *.py ./
+# Copy server package (server/ as a directory so server is a proper package)
+COPY server/ server/
 
 # Env vars are provided at runtime via docker-compose env_file (project root .env)
 
@@ -36,5 +36,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 EXPOSE 8000
 
-# Run server
-CMD ["python", "-m", "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run server (server package; app from server.app)
+CMD ["python", "-m", "uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "8000"]

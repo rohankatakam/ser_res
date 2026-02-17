@@ -8,13 +8,8 @@ Pinecone (cloud). Swap via config for local testing vs production.
 from pathlib import Path
 from typing import Dict, List, Optional, Protocol
 
-try:
-    from .embedding_cache import EmbeddingCache
-    from .qdrant_store import QdrantEmbeddingStore, compute_strategy_hash
-except ImportError:
-    # Docker: files are copied flat into /app, so no package; use absolute imports
-    from embedding_cache import EmbeddingCache
-    from qdrant_store import QdrantEmbeddingStore, compute_strategy_hash
+from .embedding_cache import EmbeddingCache
+from .qdrant_store import QdrantEmbeddingStore, compute_strategy_hash
 
 
 class VectorStore(Protocol):

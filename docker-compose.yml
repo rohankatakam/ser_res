@@ -16,11 +16,11 @@ services:
     networks:
       - serafis-network
 
-  # Backend API Server
+  # Backend API Server (build from repo root so server/ is a package)
   backend:
     build:
-      context: ./server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: server/Dockerfile
     container_name: serafis-backend
     ports:
       - "8000:8000"

@@ -18,13 +18,8 @@ from dataclasses import dataclass
 from typing import List, Optional
 from pathlib import Path
 
-# Use try/except for Docker compatibility
-try:
-    from .algorithm_loader import AlgorithmLoader, LoadedAlgorithm
-    from .dataset_loader import DatasetLoader, LoadedDataset
-except ImportError:
-    from algorithm_loader import AlgorithmLoader, LoadedAlgorithm
-    from dataset_loader import DatasetLoader, LoadedDataset
+from .algorithm_loader import AlgorithmLoader, LoadedAlgorithm
+from .dataset_loader import DatasetLoader, LoadedDataset
 
 
 @dataclass

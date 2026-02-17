@@ -278,3 +278,26 @@ In `AppState.__init__` (or a small factory), choose implementations from env, e.
 - `ENGAGEMENT_STORE=request` (default) or `firestore`
 
 Then test locally with defaults; deploy with cloud env vars to use Pinecone and Firestore without changing API or algorithm code.
+
+---
+
+## 7. Mock Episodes API (Firestore-like testing)
+
+A **mock episodes API** serves the same dataset as files (`datasets/eval_909_feb2026`) over HTTP so you can test the Firestore-like path without Firestore.
+
+**Run the mock API:**
+```bash
+# From repo root (default: datasets/eval_909_feb2026)
+python -m server.mock_episodes_api
+# Or: uvicorn server.mock_episodes_api:app --reload --port 8001
+```
+Optional: `DATASET_PATH=/path/to/folder` (folder with `episodes.json` and optional `series.json`). Default port 8001.
+
+**Endpoints (aligned with EpisodeProvider):**
+- `GET /episodes?limit=&offset=&since=&until=&episode_ids=` — list episodes (paginated/filtered)
+- `GET /episodes/{id}` — one episode by id or content_id
+- `GET /series` — list series
+- `GET /episode-by-content-id-map` — content_id → episode map for engagement resolution
+- `GET /health` — status
+
+**Use from the main server:** `HttpEpisodeProvider(base_url="http://localhost:8001")` implements `EpisodeProvider` by calling these endpoints. Wire it when you want to test the HTTP/Firestore path (e.g. set `current_episode_provider = HttpEpisodeProvider(os.environ["EPISODES_API_URL"])` when `EPISODE_SOURCE=http`).
