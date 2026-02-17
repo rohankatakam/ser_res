@@ -1,15 +1,11 @@
 """
 Serafis Recommendation Algorithm — V1.2 Blended Scoring
 
-This algorithm implements a 2-stage recommendation pipeline:
-- Stage A: Quality and freshness pre-filtering
-- Stage B: Blended scoring (semantic similarity + quality + recency)
-
-Key features:
-- Quality score integrated into final ranking (not just gating)
-- Credibility weighted 1.5x higher than insight
-- Recency boost with exponential decay
-- Engagement-type weighting (bookmarks 2x, listens 1.5x)
+Modular pipeline:
+- models/: RecommendationConfig, ScoredEpisode, RecommendationSession
+- utils/: scores, similarity, episode helpers
+- stages/: candidate_pool (Stage A), semantic_scoring (Stage B), queue
+- embedding_strategy: get_embed_text, version and model constants
 """
 
 from .recommendation_engine import (
@@ -22,7 +18,6 @@ from .recommendation_engine import (
     RecommendationSession,
     get_badges,
 )
-
 from .embedding_strategy import (
     get_embed_text,
     STRATEGY_VERSION,

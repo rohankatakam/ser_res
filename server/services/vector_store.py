@@ -32,7 +32,20 @@ class VectorStore(Protocol):
         *,
         strategy_file_path: Optional[Path] = None,
     ) -> Optional[Dict[str, List[float]]]:
-        """Load embeddings; return None if not cached. Optional hash verification when strategy_file_path is set."""
+        """Load all embeddings for this namespace. Optional hash verification when strategy_file_path is set."""
+        ...
+
+    def get_embeddings(
+        self,
+        episode_ids: List[str],
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+    ) -> Dict[str, List[float]]:
+        """
+        Fetch embeddings only for the given episode ids (e.g. for session create).
+        Cloud (Pinecone) should implement this with fetch-by-id; local may load full and filter.
+        """
         ...
 
     def save_embeddings(
@@ -112,6 +125,22 @@ class QdrantJsonVectorStore:
             except Exception as e:
                 print(f"Migration to Qdrant failed: {e}")
         return emb
+
+    def get_embeddings(
+        self,
+        episode_ids: List[str],
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+    ) -> Dict[str, List[float]]:
+        """Fetch embeddings for given ids only. Loads full cache then filters (Pinecone impl would fetch by id)."""
+        id_set = set(episode_ids)
+        if not id_set:
+            return {}
+        full = self.load_embeddings(algorithm_version, strategy_version, dataset_version)
+        if not full:
+            return {}
+        return {eid: vec for eid, vec in full.items() if eid in id_set}
 
     def save_embeddings(
         self,

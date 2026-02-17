@@ -73,9 +73,6 @@ class LoadedAlgorithm:
     
     # Optional: recommendation engine module
     engine_module: Optional[Any] = None
-    
-    # Optional: computed parameters module (for base/computed split)
-    compute_module: Optional[Any] = None
 
 
 class AlgorithmLoader:
@@ -86,10 +83,9 @@ class AlgorithmLoader:
         algorithm/
         ├── manifest.json          (required)
         ├── embedding_strategy.py  (required)
-        ├── config_schema.json     (required - for UI parameter tuning)
+        ├── config_schema.json     (required)
         ├── config.json            (optional - parameter values)
-        ├── recommendation_engine.py (optional)
-        └── computed_params.py     (optional)
+        └── recommendation_engine.py (optional)
     """
     
     def __init__(self, algorithms_dir: Path):
@@ -226,15 +222,6 @@ class AlgorithmLoader:
                 engine_path
             )
         
-        # Optionally load computed parameters module
-        compute_module = None
-        compute_path = folder_path / "computed_params.py"
-        if compute_path.exists():
-            compute_module = self._load_module(
-                f"algorithm_{folder_name}_computed",
-                compute_path
-            )
-        
         # Create loaded algorithm
         loaded = LoadedAlgorithm(
             folder_name=folder_path.name,  # Use directory name
@@ -247,7 +234,6 @@ class AlgorithmLoader:
             embedding_model=embedding_model,
             embedding_dimensions=embedding_dimensions,
             engine_module=engine_module,
-            compute_module=compute_module
         )
         
         # Cache it

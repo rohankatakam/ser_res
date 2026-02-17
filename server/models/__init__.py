@@ -1,7 +1,7 @@
 """Pydantic request/response models for the API."""
 
 from .common import Engagement, EpisodeCard, EpisodeScores, SeriesInfo
-from .config import ComputeParamsRequest, ConfigUpdateRequest, LoadConfigRequest
+from .config import LoadConfigRequest
 from .embeddings import GenerateEmbeddingsRequest
 from .evaluation import RunAllTestsRequest, RunTestRequest
 from .sessions import (
@@ -18,8 +18,6 @@ __all__ = [
     "EpisodeScores",
     "SeriesInfo",
     "LoadConfigRequest",
-    "ConfigUpdateRequest",
-    "ComputeParamsRequest",
     "GenerateEmbeddingsRequest",
     "RunTestRequest",
     "RunAllTestsRequest",
