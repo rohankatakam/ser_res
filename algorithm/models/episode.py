@@ -1,7 +1,7 @@
 """
 Episode model — typed representation of an episode for the recommendation pipeline.
 
-Used by candidate_pool, semantic_scoring, and embedding stages instead of raw dicts.
+Used by candidate_pool, ranking (Stage B), and embedding stages instead of raw dicts.
 Built from dataset/API dicts via Episode.model_validate(d).
 """
 

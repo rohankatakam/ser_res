@@ -3,7 +3,7 @@ Scoring model — ScoredEpisode and score/time helpers used by the pipeline.
 
 Contains:
 - ScoredEpisode: an episode with its recommendation scores
-- days_since, recency_score, quality_score: used by candidate_pool and semantic_scoring
+- days_since, recency_score, quality_score: used by candidate_pool and ranking stage
 """
 
 import math

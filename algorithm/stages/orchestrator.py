@@ -1,5 +1,5 @@
 """
-Pipeline orchestrator — runs Stage A (candidate pool) then Stage B (semantic scoring)
+Pipeline orchestrator — runs Stage A (candidate pool) then Stage B (ranking)
 to produce the final recommendation queue.
 
 The main entry point is create_recommendation_queue, which runs retrieval then ranking
@@ -9,14 +9,15 @@ and returns the queue plus session metadata (cold_start, user_vector_episodes).
 from typing import Dict, List, Optional, Set, Tuple
 
 from models.config import RecommendationConfig, resolve_config
+from models.engagement import Engagement, ensure_engagements
 from models.episode import Episode, ensure_episode_by_content_id, ensure_list
 from models.scoring import ScoredEpisode
 from stages.candidate_pool import get_candidate_pool
-from stages.semantic_scoring import rank_candidates
+from stages.ranking import rank_candidates
 
 
 def _session_metadata(
-    engagements: List[Dict],
+    engagements: List[Engagement],
     config: RecommendationConfig,
 ) -> Tuple[bool, int]:
     """
@@ -43,13 +44,13 @@ def _retrieve_candidates(
 
 
 def _rank_candidates(
-    engagements: List[Dict],
+    engagements: List[Engagement],
     candidates: List[Episode],
     embeddings: Dict[str, List[float]],
     episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig,
 ) -> List[ScoredEpisode]:
-    """Stage B: Rank candidates by semantic similarity and blended scoring."""
+    """Stage B: Rank candidates by similarity and blended scoring."""
     return rank_candidates(
         engagements, candidates, embeddings, episode_by_content_id, config
     )
@@ -74,19 +75,20 @@ def create_recommendation_queue(
     # Resolve config (use defaults when None)
     config = resolve_config(config)
 
-    # Normalize inputs to Episode models (server passes dicts)
+    # Normalize inputs to models (server passes dicts)
     episodes_typed = ensure_list(episodes)
     episode_by_content_id_typed = ensure_episode_by_content_id(episode_by_content_id)
+    engagements_typed = ensure_engagements(engagements)
 
     # Stage A: Retrieve candidates (quality + freshness filter)
     candidates = _retrieve_candidates(excluded_ids, episodes_typed, config)
 
     # Session metadata for cold start and user-vector count
-    cold_start, user_vector_episodes = _session_metadata(engagements, config)
+    cold_start, user_vector_episodes = _session_metadata(engagements_typed, config)
 
-    # Stage B: Rank candidates (semantic similarity + blended scoring)
+    # Stage B: Rank candidates (similarity + blended scoring)
     queue = _rank_candidates(
-        engagements, candidates, embeddings, episode_by_content_id_typed, config
+        engagements_typed, candidates, embeddings, episode_by_content_id_typed, config
     )
 
     return queue, cold_start, user_vector_episodes

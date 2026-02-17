@@ -1,7 +1,7 @@
-"""Pipeline stages: candidate pool (Stage A), semantic scoring (Stage B), orchestrator."""
+"""Pipeline stages: candidate pool (Stage A), ranking (Stage B), orchestrator."""
 
 from .candidate_pool import get_candidate_pool
-from .semantic_scoring import rank_candidates, get_badges
+from .ranking import rank_candidates, get_badges
 from .orchestrator import create_recommendation_queue
 
 __all__ = [
