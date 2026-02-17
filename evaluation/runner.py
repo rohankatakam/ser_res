@@ -33,6 +33,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+# Load project root .env so API keys and API_URL are available when running from CLI
+try:
+    from dotenv import load_dotenv
+    _root_env = Path(__file__).resolve().parent.parent / ".env"
+    if _root_env.exists():
+        load_dotenv(_root_env)
+except ImportError:
+    pass
+
 import requests
 
 # Import judges package for multi-LLM evaluation

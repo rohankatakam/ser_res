@@ -22,9 +22,11 @@ This framework provides:
 
 ### 1. Start the API Server
 
+From the project root:
+
 ```bash
-cd ../mock_api
-uvicorn server:app --reload --port 8000
+python -m uvicorn server.server:app --reload --port 8000
+# Or: docker-compose up -d backend
 ```
 
 ### 2. Run All Tests

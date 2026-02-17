@@ -259,7 +259,7 @@ function App() {
                   OpenAI API Key Required
                 </p>
                 <p className="text-red-200/80 text-sm">
-                  Add your OpenAI API key to <code className="bg-red-900/30 px-1.5 py-0.5 rounded text-red-200">/Users/rohankatakam/Documents/serafis/rec/.env</code>, then rebuild and restart:
+                  Add your OpenAI API key to the <code className="bg-red-900/30 px-1.5 py-0.5 rounded text-red-200">.env</code> file in the project root, then rebuild and restart:
                 </p>
                 <pre className="mt-2 bg-slate-800/50 p-2 rounded text-xs text-slate-300 font-mono overflow-x-auto">
                   docker-compose down && docker-compose up --build -d

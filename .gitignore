@@ -1,5 +1,6 @@
-# Environment variables (API keys)
+# Environment variables (API keys — do not commit)
 .env
+/.env
 
 # Personal documentation (not for version control)
 academic_literature.md

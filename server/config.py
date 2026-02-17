@@ -10,20 +10,13 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional
 
-# Try to load dotenv
+# Try to load dotenv from project root (single .env for backend, evaluation, Docker)
 try:
     from dotenv import load_dotenv
-    
-    # Load .env from server directory
-    env_path = Path(__file__).parent / ".env"
-    if env_path.exists():
-        load_dotenv(env_path)
-    
-    # Also try parent directory
-    parent_env = Path(__file__).parent.parent / ".env"
-    if parent_env.exists():
-        load_dotenv(parent_env)
-        
+
+    root_env = Path(__file__).resolve().parent.parent / ".env"
+    if root_env.exists():
+        load_dotenv(root_env)
 except ImportError:
     pass  # dotenv not installed
 

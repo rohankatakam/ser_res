@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy server code
 COPY *.py ./
-COPY .env.example .env.example
+
+# Env vars are provided at runtime via docker-compose env_file (project root .env)
 
 # Create directories for mounted volumes
 RUN mkdir -p /data/algorithms /data/datasets /data/cache /data/evaluation

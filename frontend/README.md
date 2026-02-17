@@ -6,9 +6,11 @@ A mobile-first React frontend demonstrating the Serafis recommendation engine.
 
 ### 1. Start the API Server
 
+From the project root:
+
 ```bash
-cd ../mock_api
-python3 server.py
+python -m uvicorn server.server:app --reload --port 8000
+# Or: docker-compose up -d backend
 ```
 
 API runs at: http://localhost:8000
@@ -57,7 +59,7 @@ Switch between mock user profiles to see personalized recommendations:
 
 - **React** with Vite
 - **Tailwind CSS** for styling
-- **FastAPI** backend (mock_api)
+- **FastAPI** backend (`server/`, or via docker-compose)
 
 ## Mobile Testing
 

@@ -160,10 +160,10 @@ export default function SetupModal({ isOpen, onClose, initialStatus }) {
                                 <li className="flex gap-2">
                                     <span className="font-bold">1.</span>
                                     <span>
-                                        Edit your <code className="bg-slate-900/50 px-1.5 py-0.5 rounded text-amber-300">.env</code> file:
+                                        Edit the <code className="bg-slate-900/50 px-1.5 py-0.5 rounded text-amber-300">.env</code> file in the project root:
                                         <br />
                                         <code className="block mt-1 bg-slate-900/50 px-2 py-1 rounded text-xs text-amber-300 font-mono">
-                                            /Users/rohankatakam/Documents/serafis/rec/.env
+                                            &lt;project_root&gt;/.env
                                         </code>
                                     </span>
                                 </li>
