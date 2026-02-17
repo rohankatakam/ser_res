@@ -1,6 +1,11 @@
 # Environment variables (API keys)
 .env
 
+# Personal documentation (not for version control)
+academic_literature.md
+ui_examination.md
+serafis_investor_memo.md
+
 # Cache files (embeddings, etc.)
 cache/
 
