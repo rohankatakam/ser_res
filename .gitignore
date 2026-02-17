@@ -2,6 +2,11 @@
 .env
 /.env
 
+# Firebase / Firestore service account keys (do not commit)
+**/serviceAccountKey.json
+**/*-firebase-adminsdk-*.json
+secrets/
+
 # Personal documentation (not for version control)
 academic_literature.md
 ui_examination.md

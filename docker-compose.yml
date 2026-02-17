@@ -1,5 +1,18 @@
 # Serafis Evaluation Framework
 # Docker Compose configuration for local development and deployment
+#
+# API keys and config: use project root .env (copy from .env.example). Never commit .env.
+# - OPENAI_API_KEY: used for embeddings (required for recommendations; used even with DATA_SOURCE=firebase).
+# - GEMINI_API_KEY / ANTHROPIC_API_KEY: optional, for evaluation LLM judges.
+# - Evaluation: run locally (python evaluation/runner.py) so it reads .env; or call /api/evaluation/* (backend uses keys from .env via env_file).
+#
+# Firebase (optional): set DATA_SOURCE=firebase in .env. To supply credentials in Docker,
+# add a docker-compose.override.yml that mounts your key, e.g.:
+#   services:
+#     backend:
+#       volumes:
+#         - ${FIREBASE_CREDENTIALS_FILE:-./secrets/firebase-credentials.json}:/data/firebase-credentials.json:ro
+# Set FIREBASE_CREDENTIALS_FILE in .env to your host path, or put the key at ./secrets/firebase-credentials.json. Never commit the key file.
 
 services:
   # Qdrant Vector Database (embeddings, similarity search)
@@ -42,8 +55,9 @@ services:
       - DATASETS_DIR=/data/datasets
       - CACHE_DIR=/data/cache
       - EVALUATION_DIR=/data/evaluation
-      # Qdrant connection
       - QDRANT_URL=http://qdrant:6333
+      # In-container path for Firebase credentials (when mounted via override)
+      - FIREBASE_CREDENTIALS_PATH=/data/firebase-credentials.json
     depends_on:
       qdrant:
         condition: service_started

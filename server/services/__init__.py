@@ -11,8 +11,15 @@ from .qdrant_store import (
     compute_strategy_hash,
 )
 from .vector_store import QdrantJsonVectorStore, VectorStore
-from .episode_provider import DatasetEpisodeProvider, EpisodeProvider
+from .episode_provider import (
+    DatasetEpisodeProvider,
+    EpisodeProvider,
+    FirestoreEpisodeProvider,
+    HttpEpisodeProvider,
+    JsonEpisodeProvider,
+)
 from .engagement_store import EngagementStore, RequestOnlyEngagementStore
+from .user_store import FirestoreUserStore, JsonUserStore, UserStore
 
 __all__ = [
     "AlgorithmLoader",
@@ -32,6 +39,12 @@ __all__ = [
     "VectorStore",
     "DatasetEpisodeProvider",
     "EpisodeProvider",
+    "FirestoreEpisodeProvider",
+    "FirestoreUserStore",
+    "HttpEpisodeProvider",
+    "JsonEpisodeProvider",
+    "JsonUserStore",
+    "UserStore",
     "EngagementStore",
     "RequestOnlyEngagementStore",
 ]

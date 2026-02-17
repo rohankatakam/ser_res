@@ -15,11 +15,21 @@ from fastapi.middleware.cors import CORSMiddleware
 try:
     from .config import get_config
     from .state import get_state
-    from .services import DatasetEpisodeProvider, EmbeddingGenerator
+    from .services import (
+        DatasetEpisodeProvider,
+        EmbeddingGenerator,
+        FirestoreEpisodeProvider,
+        JsonEpisodeProvider,
+    )
 except ImportError:
     from config import get_config
     from state import get_state
-    from services import DatasetEpisodeProvider, EmbeddingGenerator
+    from services import (
+        DatasetEpisodeProvider,
+        EmbeddingGenerator,
+        FirestoreEpisodeProvider,
+        JsonEpisodeProvider,
+    )
 
 # Evaluation dir on path before routes.evaluation (runner) is loaded
 evaluation_dir = os.getenv("EVALUATION_DIR")
@@ -70,7 +80,21 @@ def create_app() -> FastAPI:
             try:
                 dataset = state.dataset_loader.load_dataset(dataset_folder)
                 state.current_dataset = dataset
-                state.current_episode_provider = DatasetEpisodeProvider(dataset)
+                config = state.config
+                if config.data_source == "firebase" and config.firebase_credentials_path:
+                    state.current_episode_provider = FirestoreEpisodeProvider(
+                        project_id=config.firebase_project_id,
+                        credentials_path=config.firebase_credentials_path,
+                    )
+                    print("[startup] Episode provider: Firestore")
+                elif config.data_source == "json" and config.episodes_json_path and config.series_json_path:
+                    state.current_episode_provider = JsonEpisodeProvider(
+                        config.episodes_json_path,
+                        config.series_json_path,
+                    )
+                    print(f"[startup] Episode provider: JSON ({config.episodes_json_path})")
+                else:
+                    state.current_episode_provider = DatasetEpisodeProvider(dataset)
                 print(f"[startup] Loaded dataset: {dataset.manifest.name} ({len(dataset.episodes)} episodes)")
             except Exception as e:
                 print(f"[startup] WARNING: Failed to load dataset '{dataset_folder}': {e}")

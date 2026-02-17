@@ -465,6 +465,50 @@ export async function getReport(reportId) {
   return response.json();
 }
 
+// ============================================================================
+// User (simple login / create by name — no password)
+// ============================================================================
+
+/**
+ * Login: enter with user id (username). Returns user or throws if user does not exist.
+ * @param {string} userId - Username (one word, no spaces)
+ * @returns {Promise<{ user_id, display_name }>}
+ */
+export async function userEnterByLogin(userId) {
+  const response = await fetch(`${API_BASE}/api/user/enter`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId })
+  });
+  if (response.status === 404) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'User does not exist');
+  }
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Login failed');
+  }
+  return response.json();
+}
+
+/**
+ * Create user (or log in if name already exists). Username: one word, no spaces or special characters.
+ * @param {string} displayName - Display name for the new user
+ * @returns {Promise<{ user_id, display_name, created }>} created === true if new user was created
+ */
+export async function userEnterByCreate(displayName) {
+  const response = await fetch(`${API_BASE}/api/user/enter`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ display_name: displayName })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Create user failed');
+  }
+  return response.json();
+}
+
 /**
  * Format an engagement for API.
  * 

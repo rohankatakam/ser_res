@@ -1,7 +1,7 @@
 """Application state: loaders, stores, and current algorithm/dataset."""
 
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 try:
     from .config import get_config, ServerConfig
@@ -10,6 +10,8 @@ try:
         DatasetLoader,
         DatasetEpisodeProvider,
         EmbeddingCache,
+        FirestoreUserStore,
+        JsonUserStore,
         LoadedAlgorithm,
         LoadedDataset,
         QdrantEmbeddingStore,
@@ -24,6 +26,8 @@ except ImportError:
         DatasetLoader,
         DatasetEpisodeProvider,
         EmbeddingCache,
+        FirestoreUserStore,
+        JsonUserStore,
         LoadedAlgorithm,
         LoadedDataset,
         QdrantEmbeddingStore,
@@ -56,7 +60,8 @@ class AppState:
             self.qdrant_store if self.qdrant_available else None,
         )
         self.engagement_store = RequestOnlyEngagementStore()
-        self.current_episode_provider: Optional[DatasetEpisodeProvider] = None
+        self.current_episode_provider: Optional[Any] = None
+        self.user_store: Optional[Any] = self._create_user_store(config)
 
         # Currently loaded
         self.current_algorithm: Optional[LoadedAlgorithm] = None
@@ -65,6 +70,24 @@ class AppState:
 
         # Session storage
         self.sessions: Dict[str, Dict] = {}
+
+    def _create_user_store(self, config: ServerConfig) -> Optional[Any]:
+        """Create user store from config (JSON or Firestore)."""
+        if config.data_source == "firebase" and config.firebase_credentials_path:
+            try:
+                return FirestoreUserStore(
+                    project_id=config.firebase_project_id,
+                    credentials_path=config.firebase_credentials_path,
+                )
+            except Exception as e:
+                print(f"Firestore user store init failed: {e}, user persistence disabled")
+                return None
+        path = config.users_json_path or (config.cache_dir.parent / "data" / "users.json")
+        try:
+            return JsonUserStore(path)
+        except Exception as e:
+            print(f"JSON user store init failed: {e}, user persistence disabled")
+            return None
 
     def _init_qdrant(self, qdrant_url: Optional[str]):
         """Initialize Qdrant connection with graceful fallback."""

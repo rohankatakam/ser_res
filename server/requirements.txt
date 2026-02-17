@@ -21,6 +21,9 @@ numpy>=1.24.0
 # HTTP client (for test runner)
 requests>=2.31.0
 
+# Firestore (Firebase)
+firebase-admin>=6.4.0
+
 # Environment variables
 python-dotenv>=1.0.0
 

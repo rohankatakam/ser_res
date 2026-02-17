@@ -7,11 +7,21 @@ from fastapi import APIRouter, HTTPException, Header, Query
 
 try:
     from ..state import get_state
-    from ..services import DatasetEpisodeProvider, EmbeddingGenerator
+    from ..services import (
+        DatasetEpisodeProvider,
+        EmbeddingGenerator,
+        FirestoreEpisodeProvider,
+        JsonEpisodeProvider,
+    )
     from ..models import LoadConfigRequest
 except ImportError:
     from state import get_state
-    from services import DatasetEpisodeProvider, EmbeddingGenerator
+    from services import (
+        DatasetEpisodeProvider,
+        EmbeddingGenerator,
+        FirestoreEpisodeProvider,
+        JsonEpisodeProvider,
+    )
     from models import LoadConfigRequest
 
 router = APIRouter()
@@ -165,7 +175,19 @@ def load_configuration(
             embedding_generation_result = {"generated": False, "error": str(e)}
     state.current_algorithm = algorithm
     state.current_dataset = dataset
-    state.current_episode_provider = DatasetEpisodeProvider(dataset)
+    config = state.config
+    if config.data_source == "firebase" and config.firebase_credentials_path:
+        state.current_episode_provider = FirestoreEpisodeProvider(
+            project_id=config.firebase_project_id,
+            credentials_path=config.firebase_credentials_path,
+        )
+    elif config.data_source == "json" and config.episodes_json_path and config.series_json_path:
+        state.current_episode_provider = JsonEpisodeProvider(
+            config.episodes_json_path,
+            config.series_json_path,
+        )
+    else:
+        state.current_episode_provider = DatasetEpisodeProvider(dataset)
     state.current_embeddings = embeddings
     state.sessions.clear()
     response = {

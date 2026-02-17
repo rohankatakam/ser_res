@@ -9,6 +9,7 @@ from .sessions import router as sessions_router
 from .episodes import router as episodes_router
 from .evaluation import router as evaluation_router
 from .stats import router as stats_router
+from .users import router as users_router
 
 
 def register_routes(app: FastAPI) -> None:
@@ -18,5 +19,6 @@ def register_routes(app: FastAPI) -> None:
     app.include_router(embeddings_router, prefix="/api/embeddings", tags=["embeddings"])
     app.include_router(sessions_router, prefix="/api/sessions", tags=["sessions"])
     app.include_router(episodes_router, prefix="/api/episodes", tags=["episodes"])
+    app.include_router(users_router, prefix="/api/user", tags=["user"])
     app.include_router(evaluation_router, prefix="/api/evaluation", tags=["evaluation"])
     app.include_router(stats_router, prefix="/api", tags=["stats"])

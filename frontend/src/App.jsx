@@ -16,9 +16,22 @@ import BrowsePage from './components/BrowsePage';
 import ForYouPage from './components/ForYouPage';
 import DevPage from './components/DevPage';
 import EpisodeDetailPage from './components/EpisodeDetailPage';
+import LoginScreen from './components/LoginScreen';
 import { engageEpisode, getApiKeyStatus } from './api';
 
+const USER_STORAGE_KEY = 'serafis_user';
+
 function App() {
+  // Current user (from login / create). Persisted in localStorage.
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const raw = localStorage.getItem(USER_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+
   // Current tab: 'browse', 'foryou', 'dev'
   const [currentTab, setCurrentTab] = useState('foryou');
 
@@ -212,9 +225,39 @@ function App() {
     });
   }, []);
 
+  const handleUserSuccess = useCallback((user) => {
+    setCurrentUser(user);
+    try {
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+    } catch (e) {
+      console.warn('Could not persist user to localStorage', e);
+    }
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem(USER_STORAGE_KEY);
+    } catch (e) {}
+    setActiveSessionId(null);
+    setSession({
+      engagements: [],
+      notInterestedEpisodes: [],
+      categoryInterests: {},
+      seriesInterests: {},
+    });
+  }, []);
+
   const handleSessionChange = useCallback((sessionId) => {
     setActiveSessionId(sessionId);
   }, []);
+
+  // Login gate: show LoginScreen until user enters or creates account
+  if (!currentUser) {
+    return (
+      <LoginScreen onSuccess={handleUserSuccess} />
+    );
+  }
 
   const handleBackFromDetail = useCallback(() => {
     setShowDetail(false);
@@ -297,6 +340,15 @@ function App() {
               </TabButton>
             </div>
             <div className="flex items-center gap-2">
+              <span className="text-slate-400 text-sm">
+                {currentUser.display_name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600"
+              >
+                Logout
+              </button>
               <button
                 onClick={handleReset}
                 className="px-3 py-1.5 text-sm bg-red-600/20 text-red-400 rounded hover:bg-red-600/30"

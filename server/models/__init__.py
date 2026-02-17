@@ -11,6 +11,7 @@ from .sessions import (
     SessionDebugInfo,
     SessionResponse,
 )
+from .users import UserEnterRequest, UserResponse
 
 __all__ = [
     "Engagement",
@@ -26,4 +27,6 @@ __all__ = [
     "EngageRequest",
     "SessionDebugInfo",
     "SessionResponse",
+    "UserEnterRequest",
+    "UserResponse",
 ]

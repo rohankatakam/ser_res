@@ -24,39 +24,65 @@ except ImportError:
 @dataclass
 class ServerConfig:
     """Server configuration."""
-    
+
     # API Keys
     openai_api_key: Optional[str] = None
     gemini_api_key: Optional[str] = None
-    
+
     # Server settings
     host: str = "0.0.0.0"
     port: int = 8000
-    
+
     # Database connections
     qdrant_url: Optional[str] = None
-    
+
     # Paths
     algorithms_dir: Path = Path(__file__).parent.parent / "algorithm"
     datasets_dir: Path = Path(__file__).parent.parent / "datasets"
     cache_dir: Path = Path(__file__).parent.parent / "cache"
     evaluation_dir: Path = Path(__file__).parent.parent / "evaluation"
-    
+
+    # Data source: "json" | "firebase" | None (use dataset from config/load)
+    data_source: Optional[str] = None
+    # When data_source=json: paths to episodes, series, and users JSON files
+    episodes_json_path: Optional[Path] = None
+    series_json_path: Optional[Path] = None
+    users_json_path: Optional[Path] = None
+    # When data_source=firebase: path to service account JSON and optional project id
+    firebase_credentials_path: Optional[Path] = None
+    firebase_project_id: Optional[str] = None
+
     @classmethod
     def from_env(cls) -> "ServerConfig":
         """Load configuration from environment variables."""
         base_dir = Path(__file__).parent.parent
-        
+        data_source = os.getenv("DATA_SOURCE", "").strip().lower() or None
+        if data_source and data_source not in ("json", "firebase"):
+            data_source = None
+
+        def _path_env(key: str, default: Optional[Path] = None) -> Optional[Path]:
+            v = os.getenv(key)
+            if not v:
+                return default
+            p = Path(v)
+            return p if p.is_absolute() else (base_dir / p).resolve()
+
         return cls(
             openai_api_key=os.getenv("OPENAI_API_KEY"),
             gemini_api_key=os.getenv("GEMINI_API_KEY"),
             host=os.getenv("HOST", "0.0.0.0"),
             port=int(os.getenv("PORT", "8000")),
             qdrant_url=os.getenv("QDRANT_URL"),
-            algorithms_dir=Path(os.getenv("ALGORITHMS_DIR", base_dir / "algorithm")),
-            datasets_dir=Path(os.getenv("DATASETS_DIR", base_dir / "datasets")),
-            cache_dir=Path(os.getenv("CACHE_DIR", base_dir / "cache")),
-            evaluation_dir=Path(os.getenv("EVALUATION_DIR", base_dir / "evaluation")),
+            algorithms_dir=Path(os.getenv("ALGORITHMS_DIR", str(base_dir / "algorithm"))),
+            datasets_dir=Path(os.getenv("DATASETS_DIR", str(base_dir / "datasets"))),
+            cache_dir=Path(os.getenv("CACHE_DIR", str(base_dir / "cache"))),
+            evaluation_dir=Path(os.getenv("EVALUATION_DIR", str(base_dir / "evaluation"))),
+            data_source=data_source,
+            episodes_json_path=_path_env("EPISODES_JSON_PATH"),
+            series_json_path=_path_env("SERIES_JSON_PATH"),
+            users_json_path=_path_env("USERS_JSON_PATH", base_dir / "data" / "users.json"),
+            firebase_credentials_path=_path_env("FIREBASE_CREDENTIALS_PATH") or _path_env("GOOGLE_APPLICATION_CREDENTIALS"),
+            firebase_project_id=os.getenv("FIREBASE_PROJECT_ID") or None,
         )
     
     def validate(self) -> tuple[bool, list[str]]:
