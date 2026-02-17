@@ -2,7 +2,7 @@
 Serafis Recommendation Algorithm — V1.2 Blended Scoring
 
 Single entry point for the algorithm package:
-- models/: RecommendationConfig, ScoredEpisode, RecommendationSession, Episode
+- models/: RecommendationConfig, ScoredEpisode, Episode
 - stages/: candidate_pool (Stage A), semantic_scoring (Stage B), orchestrator
 - embedding/: get_embed_text, version and model constants
 """
@@ -17,7 +17,6 @@ if str(_algo_dir) not in sys.path:
 
 from models.config import RecommendationConfig, DEFAULT_CONFIG
 from models.scoring import ScoredEpisode
-from models.session import RecommendationSession
 from stages.candidate_pool import get_candidate_pool
 from stages.semantic_scoring import rank_candidates, get_badges
 from stages.orchestrator import create_recommendation_queue
@@ -35,7 +34,6 @@ __all__ = [
     "rank_candidates",
     "create_recommendation_queue",
     "ScoredEpisode",
-    "RecommendationSession",
     "get_badges",
     "get_embed_text",
     "STRATEGY_VERSION",

@@ -1,14 +1,15 @@
 """Data models for the recommendation algorithm."""
 
-from .config import RecommendationConfig, DEFAULT_CONFIG
-from .episode import Episode
+from .config import DEFAULT_CONFIG, RecommendationConfig, resolve_config
+from .episode import Episode, ensure_episode_by_content_id, ensure_list
 from .scoring import ScoredEpisode
-from .session import RecommendationSession
 
 __all__ = [
-    "RecommendationConfig",
     "DEFAULT_CONFIG",
     "Episode",
+    "RecommendationConfig",
     "ScoredEpisode",
-    "RecommendationSession",
+    "ensure_episode_by_content_id",
+    "ensure_list",
+    "resolve_config",
 ]

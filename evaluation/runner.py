@@ -202,10 +202,9 @@ def call_engine_directly(
     for eng in engagements:
         all_excluded.add(eng.get("episode_id", ""))
     
-    # Convert dict config to RecommendationConfig object if needed
+    # Use pre-parsed config when available; convert dict to RecommendationConfig only when needed
     config = engine_context.algo_config
-    if config is not None and isinstance(config, dict):
-        # Call the engine's RecommendationConfig.from_dict() method
+    if config is not None and isinstance(config, dict) and hasattr(engine_context.engine_module, "RecommendationConfig"):
         config = engine_context.engine_module.RecommendationConfig.from_dict(config)
     
     # Call engine

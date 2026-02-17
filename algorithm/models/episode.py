@@ -5,7 +5,7 @@ Used by candidate_pool, semantic_scoring, and embedding stages instead of raw di
 Built from dataset/API dicts via Episode.model_validate(d).
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict
 
@@ -47,3 +47,21 @@ class Episode(BaseModel):
         categories = self.categories if self.categories is not None else {}
         major: List[str] = categories.get("major", []) if isinstance(categories, dict) else []
         return major[0] if major else None
+
+
+def ensure_list(episodes: List[Union[Dict[str, Any], "Episode"]]) -> List["Episode"]:
+    """Convert list of dicts or Episodes to list of Episode models for use in the pipeline."""
+    return [
+        Episode.model_validate(e) if isinstance(e, dict) else e
+        for e in episodes
+    ]
+
+
+def ensure_episode_by_content_id(
+    episode_by_content_id: Dict[str, Union[Dict[str, Any], "Episode"]],
+) -> Dict[str, "Episode"]:
+    """Convert episode_by_content_id values to Episode models."""
+    return {
+        k: Episode.model_validate(v) if isinstance(v, dict) else v
+        for k, v in episode_by_content_id.items()
+    }

@@ -55,9 +55,7 @@ def create_session(request: CreateSessionRequest):
     else:
         episodes = state.current_dataset.episodes
         episode_by_content_id = state.current_dataset.episode_by_content_id
-    algo_config = None
-    if state.current_algorithm.config and hasattr(engine, "RecommendationConfig"):
-        algo_config = engine.RecommendationConfig.from_dict(state.current_algorithm.config)
+    algo_config = getattr(state.current_algorithm, "parsed_config", None)
     queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
         engagements=engagements,
         excluded_ids=excluded_ids,

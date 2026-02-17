@@ -73,13 +73,9 @@ def _freshness_expansion_config(
     if len(candidates) >= config.candidate_pool_size // 2:
         return None
     if config.freshness_window_days < 60:
-        return RecommendationConfig(
-            **(config.model_dump() | {"freshness_window_days": 60})
-        )
+        return config.model_copy(update={"freshness_window_days": 60})
     if config.freshness_window_days < 90:
-        return RecommendationConfig(
-            **(config.model_dump() | {"freshness_window_days": 90})
-        )
+        return config.model_copy(update={"freshness_window_days": 90})
     return None
 
 

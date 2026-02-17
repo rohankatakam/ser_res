@@ -5,7 +5,7 @@ RecommendationConfig defaults are defined here. The server may pass a dict
 (e.g. from algorithm/config.json if present); from_dict() merges it with these defaults.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -80,17 +80,14 @@ class RecommendationConfig(BaseModel):
                 flat["cold_start_category_diversity_enabled"] = cd.get("enabled", False)
                 flat["cold_start_category_min_per_category"] = cd.get("min_per_category", 1)
                 flat["cold_start_categories"] = cd.get("categories", [])
-        known_fields = {
-            "credibility_floor", "combined_floor", "freshness_window_days",
-            "candidate_pool_size", "user_vector_limit", "weight_similarity",
-            "weight_quality", "weight_recency", "credibility_multiplier",
-            "max_quality_score", "recency_lambda", "engagement_weights",
-            "use_weighted_engagements", "use_sum_similarities",
-            "cold_start_category_diversity_enabled", "cold_start_category_min_per_category",
-            "cold_start_categories",
-        }
-        filtered = {k: v for k, v in flat.items() if k in known_fields}
+        allowed = set(cls.model_fields)
+        filtered = {k: v for k, v in flat.items() if k in allowed}
         return cls.model_validate(filtered)
 
 
 DEFAULT_CONFIG = RecommendationConfig()
+
+
+def resolve_config(config: Optional["RecommendationConfig"]) -> "RecommendationConfig":
+    """Return config or DEFAULT_CONFIG when none is provided."""
+    return config if config is not None else DEFAULT_CONFIG

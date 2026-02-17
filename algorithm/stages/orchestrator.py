@@ -8,34 +8,11 @@ and returns the queue plus session metadata (cold_start, user_vector_episodes).
 
 from typing import Dict, List, Optional, Set, Tuple
 
-from models.config import RecommendationConfig, DEFAULT_CONFIG
-from models.episode import Episode
+from models.config import RecommendationConfig, resolve_config
+from models.episode import Episode, ensure_episode_by_content_id, ensure_list
 from models.scoring import ScoredEpisode
 from stages.candidate_pool import get_candidate_pool
 from stages.semantic_scoring import rank_candidates
-
-
-def _ensure_episodes(episodes: List[Dict]) -> List[Episode]:
-    """Convert dicts to Episode models for use in the pipeline."""
-    return [
-        Episode.model_validate(e) if isinstance(e, dict) else e
-        for e in episodes
-    ]
-
-
-def _ensure_episode_by_content_id(
-    episode_by_content_id: Dict[str, Dict],
-) -> Dict[str, Episode]:
-    """Convert episode_by_content_id values to Episode models."""
-    return {
-        k: Episode.model_validate(v) if isinstance(v, dict) else v
-        for k, v in episode_by_content_id.items()
-    }
-
-
-def _resolve_config(config: Optional[RecommendationConfig]) -> RecommendationConfig:
-    """Use default config when none is provided."""
-    return config if config is not None else DEFAULT_CONFIG
 
 
 def _session_metadata(
@@ -84,7 +61,7 @@ def create_recommendation_queue(
     episodes: List[Dict],
     embeddings: Dict[str, List[float]],
     episode_by_content_id: Dict[str, Dict],
-    config: RecommendationConfig = None,
+    config: Optional[RecommendationConfig] = None,
 ) -> Tuple[List[ScoredEpisode], bool, int]:
     """
     Create a ranked recommendation queue (Stage A → Stage B).
@@ -95,11 +72,11 @@ def create_recommendation_queue(
         user_vector_episodes: Number of engagements used for user vector
     """
     # Resolve config (use defaults when None)
-    config = _resolve_config(config)
+    config = resolve_config(config)
 
     # Normalize inputs to Episode models (server passes dicts)
-    episodes_typed = _ensure_episodes(episodes)
-    episode_by_content_id_typed = _ensure_episode_by_content_id(episode_by_content_id)
+    episodes_typed = ensure_list(episodes)
+    episode_by_content_id_typed = ensure_episode_by_content_id(episode_by_content_id)
 
     # Stage A: Retrieve candidates (quality + freshness filter)
     candidates = _retrieve_candidates(excluded_ids, episodes_typed, config)

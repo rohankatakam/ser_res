@@ -151,12 +151,13 @@ async def run_single_test(
     if x_anthropic_key:
         os.environ["ANTHROPIC_API_KEY"] = x_anthropic_key
     profiles = load_all_profiles()
+    algo_config = getattr(state.current_algorithm, "parsed_config", None) or state.current_algorithm.config
     engine_context = EngineContext(
         engine_module=state.current_algorithm.engine_module,
         episodes=state.current_dataset.episodes,
         embeddings=state.current_embeddings,
         episode_by_content_id=state.current_dataset.episode_by_content_id,
-        algo_config=state.current_algorithm.config,
+        algo_config=algo_config,
     )
     result = await run_test_async(
         test_id=request.test_id,
@@ -190,12 +191,13 @@ async def run_all_tests_endpoint(
     if x_anthropic_key:
         os.environ["ANTHROPIC_API_KEY"] = x_anthropic_key
     profiles = load_all_profiles()
+    algo_config = getattr(state.current_algorithm, "parsed_config", None) or state.current_algorithm.config
     engine_context = EngineContext(
         engine_module=state.current_algorithm.engine_module,
         episodes=state.current_dataset.episodes,
         embeddings=state.current_embeddings,
         episode_by_content_id=state.current_dataset.episode_by_content_id,
-        algo_config=state.current_algorithm.config,
+        algo_config=algo_config,
     )
     results = await run_all_tests_async(
         verbose=False,

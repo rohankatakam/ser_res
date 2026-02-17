@@ -73,6 +73,9 @@ class LoadedAlgorithm:
     
     # Optional: recommendation engine module
     engine_module: Optional[Any] = None
+    
+    # Parsed algorithm config (RecommendationConfig) when engine has one; avoids per-request from_dict
+    parsed_config: Optional[Any] = None
 
 
 class AlgorithmLoader:
@@ -217,6 +220,11 @@ class AlgorithmLoader:
             init_path
         )
         
+        # Parse config once for engine use (avoids from_dict on every session create)
+        parsed_config = None
+        if engine_module and hasattr(engine_module, "RecommendationConfig") and config:
+            parsed_config = engine_module.RecommendationConfig.from_dict(config)
+        
         # Create loaded algorithm
         loaded = LoadedAlgorithm(
             folder_name=folder_path.name,  # Use directory name
@@ -229,6 +237,7 @@ class AlgorithmLoader:
             embedding_model=embedding_model,
             embedding_dimensions=embedding_dimensions,
             engine_module=engine_module,
+            parsed_config=parsed_config,
         )
         
         # Cache it
