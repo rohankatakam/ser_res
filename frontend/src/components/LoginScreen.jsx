@@ -1,12 +1,24 @@
 /**
  * Simple login / create user screen (no password).
  * Username: one word, no spaces or special characters.
+ * Create mode: optional category interests for cold-start recommendations.
  */
 
-import { useState } from 'react';
-import { userEnterByLogin, userEnterByCreate } from '../api';
+import { useState, useEffect } from 'react';
+import { userEnterByLogin, userEnterByCreate, getCategories } from '../api';
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]+$/;
+
+// Fallback if API not available
+const DEFAULT_CATEGORIES = [
+  'Technology & AI',
+  'Startups, Growth and Founder Journeys',
+  'Macro, Investing & Market Trends',
+  'Crypto & Web3',
+  'Regulation & Policy',
+  'Venture & Private Markets',
+  'Culture, Society & Wellbeing',
+];
 
 function validateUsername(value) {
   const trimmed = (value || '').trim();
@@ -20,9 +32,21 @@ function validateUsername(value) {
 export default function LoginScreen({ onSuccess }) {
   const [mode, setMode] = useState('login'); // 'login' | 'create'
   const [username, setUsername] = useState('');
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    getCategories().then((res) => res.categories && setCategories(res.categories)).catch(() => {});
+  }, []);
+
+  const toggleCategory = (cat) => {
+    setSelectedCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +64,7 @@ export default function LoginScreen({ onSuccess }) {
         const user = await userEnterByLogin(trimmed.toLowerCase());
         onSuccess(user);
       } else {
-        const result = await userEnterByCreate(trimmed);
+        const result = await userEnterByCreate(trimmed, selectedCategories);
         if (result.created) {
           setMessage('Account created. Logging you in...');
         } else {
@@ -64,7 +88,7 @@ export default function LoginScreen({ onSuccess }) {
         <div className="flex gap-2 mb-4">
           <button
             type="button"
-            onClick={() => { setMode('login'); setError(''); setMessage(''); }}
+            onClick={() => { setMode('login'); setError(''); setMessage(''); setSelectedCategories([]); }}
             className={`flex-1 py-2 px-3 text-sm font-medium rounded-lg ${mode === 'login' ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-white'}`}
           >
             Login
@@ -91,6 +115,29 @@ export default function LoginScreen({ onSuccess }) {
             autoComplete="username"
             disabled={loading}
           />
+          {mode === 'create' && (
+            <div className="mt-4">
+              <label className="block text-slate-300 text-sm mb-2">
+                Pick topics you care about (optional — improves first recommendations)
+              </label>
+              <div className="max-h-40 overflow-y-auto rounded-lg bg-slate-700 border border-slate-600 p-2 space-y-1.5">
+                {categories.map((cat) => (
+                  <label
+                    key={cat}
+                    className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat)}
+                      onChange={() => toggleCategory(cat)}
+                      className="rounded border-slate-500 bg-slate-600 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="text-sm">{cat}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
           {error && (
             <p className="mt-2 text-sm text-red-400" role="alert">
               {error}

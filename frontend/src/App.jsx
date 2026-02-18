@@ -18,6 +18,7 @@ import DevPage from './components/DevPage';
 import EpisodeDetailPage from './components/EpisodeDetailPage';
 import LoginScreen from './components/LoginScreen';
 import { deleteEngagement, engageEpisode, getApiKeyStatus, getEngagements, recordEngagement, resetEngagements } from './api';
+import InterestsModal from './components/InterestsModal';
 
 const USER_STORAGE_KEY = 'serafis_user';
 
@@ -41,6 +42,9 @@ function App() {
 
   // Active recommendation session
   const [activeSessionId, setActiveSessionId] = useState(null);
+
+  // Interests modal
+  const [showInterestsModal, setShowInterestsModal] = useState(false);
 
   // API key status
   const [apiKeyStatus, setApiKeyStatus] = useState(null);
@@ -413,6 +417,12 @@ function App() {
                 {currentUser.display_name}
               </span>
               <button
+                onClick={() => setShowInterestsModal(true)}
+                className="px-3 py-1.5 text-sm text-indigo-400 hover:text-indigo-300"
+              >
+                Interests
+              </button>
+              <button
                 onClick={handleLogout}
                 className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600"
               >
@@ -448,6 +458,12 @@ function App() {
             onView={handleView}
             onBookmark={handleBookmark}
             onNotInterested={handleNotInterested}
+          />
+        )}
+        {showInterestsModal && (
+          <InterestsModal
+            userId={currentUser?.user_id ?? currentUser?.id}
+            onClose={() => setShowInterestsModal(false)}
           />
         )}
         {currentTab === 'dev' && (

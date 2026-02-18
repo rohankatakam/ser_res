@@ -2,18 +2,24 @@
 
 import re
 from datetime import datetime, timezone
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
 try:
     from ..state import get_state
-    from ..models import UserEnterRequest, UserResponse, EngageRequest
+    from ..models import UserEnterRequest, UserResponse, EngageRequest, UpdateCategoryInterestsRequest
+    from ..services import EmbeddingGenerator
 except ImportError:
     from state import get_state
-    from models import UserEnterRequest, UserResponse, EngageRequest
+    from models import UserEnterRequest, UserResponse, EngageRequest, UpdateCategoryInterestsRequest
+    from services import EmbeddingGenerator
 
 router = APIRouter()
+
+# Embedding model for category interests (must match episode embeddings)
+_EMBEDDING_MODEL = "text-embedding-3-small"
+_EMBEDDING_DIMENSIONS = 1536
 
 # Username: one string, no spaces, alphanumeric and underscore only
 USERNAME_PATTERN = re.compile(r"^[a-zA-Z0-9_]+$")
@@ -68,7 +74,26 @@ def user_enter(request: UserEnterRequest):
                 display_name=existing.get("display_name", existing.get("name", "")),
                 created=False,
             )
-        user = store.create(name)
+        category_interests: Optional[List[str]] = None
+        category_vector: Optional[List[float]] = None
+        if request.category_interests:
+            ci = [c.strip() for c in request.category_interests if c and c.strip()]
+            if ci:
+                category_interests = ci
+                api_key = getattr(get_state().config, "openai_api_key", None) or ""
+                if api_key.strip():
+                    algo = get_state().current_algorithm
+                    model = algo.embedding_model if algo else _EMBEDDING_MODEL
+                    dims = algo.embedding_dimensions if algo else _EMBEDDING_DIMENSIONS
+                    try:
+                        gen = EmbeddingGenerator(api_key=api_key.strip(), model=model, dimensions=dims)
+                        text = ", ".join(category_interests)
+                        vectors = gen.generate_batch([text])
+                        if vectors:
+                            category_vector = vectors[0]
+                    except Exception as e:
+                        print(f"[user] Category embedding failed: {e}, storing interests only")
+        user = store.create(name, category_interests=category_interests, category_vector=category_vector)
         return UserResponse(
             user_id=user.get("user_id", user.get("id", "")),
             display_name=user.get("display_name", user.get("name", "")),
@@ -136,3 +161,72 @@ def delete_user_engagement(
     if not deleted:
         raise HTTPException(status_code=404, detail="Engagement not found or cannot be deleted")
     return {"status": "ok", "message": "Engagement deleted"}
+
+
+# ---------------------------------------------------------------------------
+# User profile (get user, update category interests)
+# Must be after literal paths like /engagements so {user_id} does not match them.
+# ---------------------------------------------------------------------------
+
+
+@router.get("/{user_id}", response_model=UserResponse)
+def get_user(user_id: str):
+    """Get user by id. Returns user_id, display_name, category_interests.
+    If user doc is missing but the id is valid, creates a minimal user (heals stale/migrated sessions)."""
+    state = get_state()
+    store = getattr(state, "user_store", None)
+    if not store:
+        raise HTTPException(status_code=503, detail="User store not configured")
+    uid = _normalize_username(user_id)
+    if not uid:
+        raise HTTPException(status_code=400, detail="Invalid user id")
+    user = store.get_by_id(uid)
+    if not user:
+        # Heal: user may have session/engagements but no doc (migration, edge case).
+        # Create minimal user so Interests and other profile flows work.
+        try:
+            user = store.create(uid)
+        except Exception:
+            raise HTTPException(status_code=404, detail="User not found")
+    return UserResponse(
+        user_id=user.get("user_id", user.get("id", "")),
+        display_name=user.get("display_name", user.get("name", "")),
+        category_interests=user.get("category_interests"),
+    )
+
+
+@router.patch("/{user_id}/category-interests", response_model=UserResponse)
+def update_category_interests(user_id: str, request: UpdateCategoryInterestsRequest):
+    """Update category interests for a user. Re-embeds and stores category_vector."""
+    state = get_state()
+    store = getattr(state, "user_store", None)
+    if not store:
+        raise HTTPException(status_code=503, detail="User store not configured")
+    uid = _normalize_username(user_id)
+    user = store.get_by_id(uid)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    ci = [c.strip() for c in request.category_interests if c and c.strip()]
+    category_vector: Optional[List[float]] = None
+    api_key = getattr(state.config, "openai_api_key", None) or ""
+    if api_key.strip():
+        algo = state.current_algorithm
+        model = algo.embedding_model if algo else _EMBEDDING_MODEL
+        dims = algo.embedding_dimensions if algo else _EMBEDDING_DIMENSIONS
+        try:
+            gen = EmbeddingGenerator(api_key=api_key.strip(), model=model, dimensions=dims)
+            text = ", ".join(ci) if ci else ""
+            if text:
+                vectors = gen.generate_batch([text])
+                if vectors:
+                    category_vector = vectors[0]
+        except Exception as e:
+            print(f"[user] Category embedding failed: {e}")
+    updated = store.update_category_interests(uid, ci, category_vector)
+    if not updated:
+        raise HTTPException(status_code=404, detail="User not found")
+    return UserResponse(
+        user_id=updated.get("user_id", updated.get("id", "")),
+        display_name=updated.get("display_name", updated.get("name", "")),
+        category_interests=updated.get("category_interests"),
+    )

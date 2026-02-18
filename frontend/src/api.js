@@ -501,15 +501,69 @@ export async function userEnterByLogin(userId) {
 }
 
 /**
+ * Get canonical list of category interests for onboarding.
+ * @returns {Promise<{ categories: string[] }>}
+ */
+export async function getCategories() {
+  const response = await fetch(`${API_BASE}/api/config/categories`);
+  if (!response.ok) throw new Error('Failed to fetch categories');
+  return response.json();
+}
+
+/**
+ * Get user by id. Returns user_id, display_name, category_interests.
+ * @param {string} userId - User ID
+ * @returns {Promise<{ user_id, display_name, category_interests? }>}
+ */
+export async function getUser(userId) {
+  if (!userId) throw new Error('userId is required');
+  const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}`);
+  if (response.status === 404) throw new Error('User not found');
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to get user');
+  }
+  return response.json();
+}
+
+/**
+ * Update category interests for a user. Recomputes category_vector and saves to Firestore.
+ * @param {string} userId - User ID
+ * @param {string[]} categoryInterests - Array of category labels
+ * @returns {Promise<{ user_id, display_name, category_interests }>}
+ */
+export async function updateCategoryInterests(userId, categoryInterests) {
+  if (!userId) throw new Error('userId is required');
+  const response = await fetch(
+    `${API_BASE}/api/user/${encodeURIComponent(userId)}/category-interests`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category_interests: categoryInterests || [] })
+    }
+  );
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to update category interests');
+  }
+  return response.json();
+}
+
+/**
  * Create user (or log in if name already exists). Username: one word, no spaces or special characters.
  * @param {string} displayName - Display name for the new user
+ * @param {string[]} [categoryInterests] - Optional list of category interests for cold-start
  * @returns {Promise<{ user_id, display_name, created }>} created === true if new user was created
  */
-export async function userEnterByCreate(displayName) {
+export async function userEnterByCreate(displayName, categoryInterests = []) {
+  const body = { display_name: displayName };
+  if (categoryInterests && categoryInterests.length > 0) {
+    body.category_interests = categoryInterests;
+  }
   const response = await fetch(`${API_BASE}/api/user/enter`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ display_name: displayName })
+    body: JSON.stringify(body)
   });
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));

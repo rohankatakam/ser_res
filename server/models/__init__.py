@@ -11,7 +11,7 @@ from .sessions import (
     SessionDebugInfo,
     SessionResponse,
 )
-from .users import UserEnterRequest, UserResponse
+from .users import UpdateCategoryInterestsRequest, UserEnterRequest, UserResponse
 
 __all__ = [
     "Engagement",
@@ -29,4 +29,5 @@ __all__ = [
     "SessionResponse",
     "UserEnterRequest",
     "UserResponse",
+    "UpdateCategoryInterestsRequest",
 ]

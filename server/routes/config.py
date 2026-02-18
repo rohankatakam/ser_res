@@ -26,6 +26,23 @@ except ImportError:
 
 router = APIRouter()
 
+# Canonical list of category interests for cold-start (used by backend and frontend)
+CATEGORIES = [
+    "Technology & AI",
+    "Startups, Growth and Founder Journeys",
+    "Macro, Investing & Market Trends",
+    "Crypto & Web3",
+    "Regulation & Policy",
+    "Venture & Private Markets",
+    "Culture, Society & Wellbeing",
+]
+
+
+@router.get("/categories")
+def get_categories():
+    """Return the canonical list of category interests for user onboarding."""
+    return {"categories": CATEGORIES}
+
 
 @router.get("/algorithms")
 def list_algorithms():
