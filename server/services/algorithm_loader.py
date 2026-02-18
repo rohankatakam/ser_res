@@ -221,9 +221,10 @@ class AlgorithmLoader:
         )
         
         # Parse config once for engine use (avoids from_dict on every session create)
+        # Use from_dict even when config is empty so we get RecommendationConfig with defaults
         parsed_config = None
-        if engine_module and hasattr(engine_module, "RecommendationConfig") and config:
-            parsed_config = engine_module.RecommendationConfig.from_dict(config)
+        if engine_module and hasattr(engine_module, "RecommendationConfig"):
+            parsed_config = engine_module.RecommendationConfig.from_dict(config or {})
         
         # Create loaded algorithm
         loaded = LoadedAlgorithm(

@@ -56,6 +56,12 @@ class RecommendationConfig(BaseModel):
     cold_start_weight_quality: float = 0.60
     cold_start_weight_recency: float = 0.40
 
+    # Series diversity (in-processing selection loop)
+    series_diversity_enabled: bool = True
+    max_episodes_per_series: int = 2
+    series_penalty_alpha: float = 0.7
+    no_adjacent_same_series: bool = True
+
     @model_validator(mode="after")
     def weights_sum_to_one(self):
         total = self.weight_similarity + self.weight_quality + self.weight_recency
@@ -88,6 +94,12 @@ class RecommendationConfig(BaseModel):
                 flat["cold_start_category_diversity_enabled"] = cd.get("enabled", False)
                 flat["cold_start_category_min_per_category"] = cd.get("min_per_category", 1)
                 flat["cold_start_categories"] = cd.get("categories", [])
+        if "series_diversity" in config_dict:
+            sd = config_dict["series_diversity"]
+            flat["series_diversity_enabled"] = sd.get("enabled", True)
+            flat["max_episodes_per_series"] = sd.get("max_per_series", 2)
+            flat["series_penalty_alpha"] = sd.get("penalty_alpha", 0.7)
+            flat["no_adjacent_same_series"] = sd.get("no_adjacent_same_series", True)
         allowed = set(cls.model_fields)
         filtered = {k: v for k, v in flat.items() if k in allowed}
         return cls.model_validate(filtered)

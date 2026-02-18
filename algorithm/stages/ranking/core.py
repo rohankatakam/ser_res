@@ -14,6 +14,7 @@ from models.scoring import ScoredEpisode
 
 from .blended_scoring import build_scored_episode
 from .cold_start import apply_cold_start_category_diversity
+from .series_diversity import select_top_k_with_series_penalty
 from .similarity import cosine_similarity, compute_similarity_sum
 from .user_vector import get_user_vector_mean
 
@@ -73,4 +74,30 @@ def rank_candidates(
     if cold_start and config.cold_start_category_diversity_enabled:
         scored = apply_cold_start_category_diversity(scored, config, top_n=10)
 
+    # 5) Series diversity: in-processing selection loop (max N per series, no adjacent same series)
+    if config.series_diversity_enabled:
+        scored = select_top_k_with_series_penalty(
+            scored,
+            k=len(scored),
+            alpha=config.series_penalty_alpha,
+            max_per_series=config.max_episodes_per_series,
+            no_adjacent_same_series=config.no_adjacent_same_series,
+        )
+        # Debug: log top 10 series for verification (remove after validation)
+        _log_series_diversity_debug(scored[:10])
+
     return scored
+
+
+def _log_series_diversity_debug(top_scored):
+    """Log top 10 series ids/names for debugging series diversity."""
+    try:
+        items = []
+        for s in top_scored:
+            ser = s.episode.series
+            sid = ser.get("id") if ser else None
+            sname = ser.get("name", "?") if ser else "?"
+            items.append(f"{sname}({sid})")
+        print(f"[series_diversity] top10 series: {items}", flush=True)
+    except Exception:
+        pass
