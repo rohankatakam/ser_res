@@ -60,6 +60,15 @@ def create_session(request: CreateSessionRequest):
     request_engagements = [e.model_dump() for e in request.engagements]
     user_id = getattr(request, "user_id", None)
     engagements = state.engagement_store.get_engagements_for_ranking(user_id, request_engagements)
+
+    # Load user's category_vector for cold start and category-anchor blend
+    category_anchor_vector = None
+    if user_id and user_id.strip():
+        store = getattr(state, "user_store", None)
+        if store:
+            user = store.get_by_id(user_id.strip().lower())
+            if user:
+                category_anchor_vector = user.get("category_vector")
     excluded_ids = set(request.excluded_ids or [])
     for eng in engagements:
         if eng.get("episode_id"):
@@ -98,6 +107,7 @@ def create_session(request: CreateSessionRequest):
         embeddings=embeddings,
         episode_by_content_id=episode_by_content_id,
         config=algo_config,
+        category_anchor_vector=category_anchor_vector,
     )
     session_id = str(uuid.uuid4())[:8]
     session = {

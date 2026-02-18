@@ -49,10 +49,16 @@ def _rank_candidates(
     embeddings: Dict[str, List[float]],
     episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig,
+    category_anchor_vector: Optional[List[float]] = None,
 ) -> List[ScoredEpisode]:
     """Stage B: Rank candidates by similarity and blended scoring."""
     return rank_candidates(
-        engagements, candidates, embeddings, episode_by_content_id, config
+        engagements,
+        candidates,
+        embeddings,
+        episode_by_content_id,
+        config,
+        category_anchor_vector=category_anchor_vector,
     )
 
 
@@ -63,6 +69,7 @@ def create_recommendation_queue(
     embeddings: Dict[str, List[float]],
     episode_by_content_id: Dict[str, Dict],
     config: Optional[RecommendationConfig] = None,
+    category_anchor_vector: Optional[List[float]] = None,
 ) -> Tuple[List[ScoredEpisode], bool, int]:
     """
     Create a ranked recommendation queue (Stage A → Stage B).
@@ -88,7 +95,12 @@ def create_recommendation_queue(
 
     # Stage B: Rank candidates (similarity + blended scoring)
     queue = _rank_candidates(
-        engagements_typed, candidates, embeddings, episode_by_content_id_typed, config
+        engagements_typed,
+        candidates,
+        embeddings,
+        episode_by_content_id_typed,
+        config,
+        category_anchor_vector=category_anchor_vector,
     )
 
     return queue, cold_start, user_vector_episodes

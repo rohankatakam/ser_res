@@ -5,7 +5,7 @@ Blends similarity, quality, and recency; applies optional cold-start category di
 Submodules used: user_vector, similarity, blended_scoring, cold_start.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from models.config import RecommendationConfig, DEFAULT_CONFIG
 from models.engagement import Engagement
@@ -24,6 +24,7 @@ def rank_candidates(
     embeddings: Dict[str, List[float]],
     episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig = DEFAULT_CONFIG,
+    category_anchor_vector: Optional[List[float]] = None,
 ) -> List[ScoredEpisode]:
     """
     Rank candidates with blended scoring: w1*similarity + w2*quality + w3*recency.
@@ -37,7 +38,11 @@ def rank_candidates(
     user_vector = None
     if not config.use_sum_similarities:
         user_vector = get_user_vector_mean(
-            engagements, embeddings, episode_by_content_id, config
+            engagements,
+            embeddings,
+            episode_by_content_id,
+            config,
+            category_anchor_vector=category_anchor_vector,
         )
     cold_start = user_vector is None and not config.use_sum_similarities
     if config.use_sum_similarities:
