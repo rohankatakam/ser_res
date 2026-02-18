@@ -15,6 +15,7 @@ export default function ForYouPage({
   engagements,
   excludedIds,
   activeSessionId,
+  userId = null,
   onSessionChange,
   onView,
   onBookmark,
@@ -49,39 +50,45 @@ export default function ForYouPage({
     }
   }, [engagements, loading]);
 
-  // Check embedding status periodically if embeddings are missing
-  useEffect(() => {
-    const checkEmbeddings = async () => {
-      if (apiStats?.total_embeddings === 0 && !checkingEmbeddings) {
-        setCheckingEmbeddings(true);
-        try {
-          const config = await getConfigStatus();
-          if (config.loaded && config.algorithm_folder && config.dataset_folder) {
-            const status = await getEmbeddingStatus(config.algorithm_folder, config.dataset_folder);
-            setEmbeddingStatus(status);
+  // Check embedding status a few times if embeddings appear missing (no infinite polling)
+  const pollCountRef = useRef(0);
+  const MAX_EMBEDDING_POLLS = 5;
+  const POLL_INTERVAL_MS = 10000;
 
-            // If embeddings are now available, refresh the page
-            if (status.cached && status.count > 0 && apiStats?.total_embeddings === 0) {
-              console.log('[ForYouPage] Embeddings now available, refreshing session');
-              fetchSession(true);
-            }
+  useEffect(() => {
+    if (apiStats?.total_embeddings !== 0) return;
+
+    const checkEmbeddings = async () => {
+      if (pollCountRef.current >= MAX_EMBEDDING_POLLS || checkingEmbeddings) return;
+      setCheckingEmbeddings(true);
+      try {
+        const config = await getConfigStatus();
+        if (config.loaded && config.algorithm_folder && config.dataset_folder) {
+          const status = await getEmbeddingStatus(config.algorithm_folder, config.dataset_folder);
+          setEmbeddingStatus(status);
+          if (status.cached && status.count > 0) {
+            console.log('[ForYouPage] Embeddings now available, refreshing session');
+            fetchSession(true);
+            return;
           }
-        } catch (err) {
-          console.warn('Failed to check embedding status:', err);
-        } finally {
-          setCheckingEmbeddings(false);
         }
+      } catch (err) {
+        console.warn('Failed to check embedding status:', err);
+      } finally {
+        setCheckingEmbeddings(false);
+        pollCountRef.current += 1;
       }
     };
 
-    // Check immediately
     checkEmbeddings();
-
-    // Set up polling every 3 seconds if embeddings are missing
-    if (apiStats?.total_embeddings === 0) {
-      const interval = setInterval(checkEmbeddings, 3000);
-      return () => clearInterval(interval);
-    }
+    const intervalId = setInterval(() => {
+      if (pollCountRef.current >= MAX_EMBEDDING_POLLS) {
+        clearInterval(intervalId);
+        return;
+      }
+      checkEmbeddings();
+    }, POLL_INTERVAL_MS);
+    return () => clearInterval(intervalId);
   }, [apiStats?.total_embeddings, checkingEmbeddings]);
 
   // Core fetch function - creates a new session
@@ -100,14 +107,23 @@ export default function ForYouPage({
       });
 
       const [sessionResult, stats] = await Promise.all([
-        createSession(engagementsArray, excludedArray),
+        createSession(engagementsArray, excludedArray, userId ?? undefined),
         fetchStats().catch(() => null)
       ]);
 
       console.log('[ForYouPage] Session created:', {
         sessionId: sessionResult.session_id,
         userVectorEpisodes: sessionResult.debug?.user_vector_episodes,
-        coldStart: sessionResult.cold_start
+        coldStart: sessionResult.cold_start,
+        embeddings_available: sessionResult.debug?.embeddings_available,
+        candidates_count: sessionResult.debug?.candidates_count
+      });
+      console.log('[ForYouPage] Stats from backend (Pinecone/Firestore):', {
+        total_embeddings: stats?.total_embeddings,
+        algorithm: stats?.algorithm,
+        dataset: stats?.dataset,
+        total_episodes: stats?.total_episodes,
+        loaded: stats?.loaded
       });
 
       setSessionId(sessionResult.session_id);
@@ -138,7 +154,7 @@ export default function ForYouPage({
       setLoading(false);
       setRefreshing(false);
     }
-  }, [engagements, excludedIds, onSessionChange]);
+  }, [engagements, excludedIds, userId, onSessionChange]);
 
   // Initialize on mount - check if config is loaded first
   useEffect(() => {
@@ -146,7 +162,20 @@ export default function ForYouPage({
       try {
         // Check if configuration is loaded before trying to create session
         const configStatus = await getConfigStatus();
+        console.log('[ForYouPage] Config status (backend loaded state):', {
+          loaded: configStatus.loaded,
+          algorithm_folder: configStatus.algorithm_folder,
+          dataset_folder: configStatus.dataset_folder,
+          embeddings_count: configStatus.embeddings_count,
+          embeddings_cached: configStatus.embeddings_cached
+        });
         if (configStatus.loaded) {
+          const stats = await fetchStats().catch(() => null);
+          console.log('[ForYouPage] Initial stats (Pinecone vector count):', {
+            total_embeddings: stats?.total_embeddings,
+            algorithm: stats?.algorithm,
+            dataset: stats?.dataset
+          });
           fetchSession(true);
         } else {
           setError('No configuration loaded. The backend may still be starting up — try refreshing.');

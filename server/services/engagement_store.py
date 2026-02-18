@@ -12,14 +12,16 @@ from typing import List, Optional, Protocol
 class EngagementStore(Protocol):
     """Protocol for user engagement read/write. Implement for request-only or Firestore."""
 
-    def get_engagements_for_session(
+    def get_engagements_for_ranking(
         self,
         user_id: Optional[str],
         request_engagements: List[dict],
     ) -> List[dict]:
         """
-        Return engagements to use for this session.
-        May merge request body with stored engagements (e.g. Firestore) when user_id is set.
+        Return engagements to use for ranking this request.
+        When user_id is set, returns all (or recent) engagements for that user from the store
+        (e.g. Firestore users/{user_id}/engagements) as source of truth. When user_id is None,
+        returns request_engagements only.
         """
         ...
 
@@ -33,6 +35,10 @@ class EngagementStore(Protocol):
         """Persist one engagement (e.g. bookmark, view). No-op for request-only store."""
         ...
 
+    def delete_all_engagements(self, user_id: Optional[str]) -> None:
+        """Delete all engagements for the user (e.g. for Reset). No-op for request-only store."""
+        ...
+
 
 class RequestOnlyEngagementStore:
     """
@@ -40,7 +46,7 @@ class RequestOnlyEngagementStore:
     Used for local testing, evaluation, and the test harness.
     """
 
-    def get_engagements_for_session(
+    def get_engagements_for_ranking(
         self,
         user_id: Optional[str],
         request_engagements: List[dict],
@@ -54,4 +60,7 @@ class RequestOnlyEngagementStore:
         engagement_type: str,
         timestamp: Optional[str] = None,
     ) -> None:
+        pass
+
+    def delete_all_engagements(self, user_id: Optional[str]) -> None:
         pass

@@ -10,7 +10,8 @@ from .qdrant_store import (
     check_qdrant_available,
     compute_strategy_hash,
 )
-from .vector_store import QdrantJsonVectorStore, VectorStore
+from .pinecone_store import PineconeEmbeddingStore
+from .vector_store import PineconeVectorStore, VectorStore
 from .episode_provider import (
     DatasetEpisodeProvider,
     EpisodeProvider,
@@ -19,6 +20,7 @@ from .episode_provider import (
     JsonEpisodeProvider,
 )
 from .engagement_store import EngagementStore, RequestOnlyEngagementStore
+from .firestore_engagement_store import FirestoreEngagementStore
 from .user_store import FirestoreUserStore, JsonUserStore, UserStore
 
 __all__ = [
@@ -33,9 +35,10 @@ __all__ = [
     "Validator",
     "CompatibilityResult",
     "QdrantEmbeddingStore",
+    "PineconeEmbeddingStore",
     "check_qdrant_available",
     "compute_strategy_hash",
-    "QdrantJsonVectorStore",
+    "PineconeVectorStore",
     "VectorStore",
     "DatasetEpisodeProvider",
     "EpisodeProvider",
@@ -46,5 +49,6 @@ __all__ = [
     "JsonUserStore",
     "UserStore",
     "EngagementStore",
+    "FirestoreEngagementStore",
     "RequestOnlyEngagementStore",
 ]

@@ -1,24 +1,10 @@
 # Serafis Evaluation Framework
 # Docker Compose — reads project root .env (copy from .env.example). Never commit .env.
 #
-# Required in .env: OPENAI_API_KEY, DATA_SOURCE=firebase, FIREBASE_CREDENTIALS_PATH=<path to service account JSON>.
+# Required in .env: OPENAI_API_KEY, PINECONE_API_KEY, DATA_SOURCE=firebase, FIREBASE_CREDENTIALS_PATH=<path to service account JSON>.
 # Optional: GEMINI_API_KEY, ANTHROPIC_API_KEY (evaluation). Firebase key file must exist on host.
 
 services:
-  # Qdrant Vector Database (embeddings, similarity search)
-  qdrant:
-    image: qdrant/qdrant:latest
-    container_name: serafis-qdrant
-    volumes:
-      - qdrant-data:/qdrant/storage
-    environment:
-      - QDRANT__SERVICE__GRPC_PORT=6334
-    # Note: Qdrant minimal image has no curl/wget for health checks
-    # Qdrant starts in <2s and backend handles connection retries
-    restart: unless-stopped
-    networks:
-      - serafis-network
-
   # Backend API Server (build from repo root so server/ is a package)
   backend:
     build:
@@ -43,11 +29,7 @@ services:
       - DATASETS_DIR=/data/datasets
       - CACHE_DIR=/data/cache
       - EVALUATION_DIR=/data/evaluation
-      - QDRANT_URL=http://qdrant:6333
       - FIREBASE_CREDENTIALS_PATH=/data/firebase-credentials.json
-    depends_on:
-      qdrant:
-        condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
@@ -82,7 +64,3 @@ services:
 networks:
   serafis-network:
     driver: bridge
-
-# Named volumes for persistence
-volumes:
-  qdrant-data:

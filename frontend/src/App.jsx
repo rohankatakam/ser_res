@@ -17,7 +17,7 @@ import ForYouPage from './components/ForYouPage';
 import DevPage from './components/DevPage';
 import EpisodeDetailPage from './components/EpisodeDetailPage';
 import LoginScreen from './components/LoginScreen';
-import { engageEpisode, getApiKeyStatus } from './api';
+import { engageEpisode, getApiKeyStatus, getEngagements, resetEngagements } from './api';
 
 const USER_STORAGE_KEY = 'serafis_user';
 
@@ -131,12 +131,35 @@ function App() {
     checkApiKeys();
   }, []);
 
+  // Load engagements from backend when user is set (Firestore sync)
+  useEffect(() => {
+    if (!currentUser?.user_id) return;
+    let cancelled = false;
+    console.log('[App] Fetching engagements from backend (Firestore) for user:', currentUser.user_id);
+    getEngagements(currentUser.user_id)
+      .then(({ engagements }) => {
+        console.log('[App] Engagements from backend (Firestore):', { count: engagements?.length ?? 0, userId: currentUser.user_id });
+        if (cancelled || !engagements?.length) return;
+        setSession(prev => ({
+          ...prev,
+          engagements: engagements.map(e => ({
+            episode_id: e.episode_id,
+            type: e.type || 'click',
+            timestamp: e.timestamp || '',
+            episode: { id: e.episode_id, content_id: e.episode_id }
+          }))
+        }));
+      })
+      .catch(err => console.warn('[App] Failed to load engagements (Firestore):', err));
+    return () => { cancelled = true; };
+  }, [currentUser?.user_id]);
+
   // Handle episode CLICK
   const handleView = useCallback((episode) => {
     const now = new Date().toISOString();
 
     if (activeSessionId && episode.id) {
-      engageEpisode(activeSessionId, episode.id, 'click').catch(err => {
+      engageEpisode(activeSessionId, episode.id, 'click', currentUser?.user_id ?? currentUser?.id ?? null).catch(err => {
         console.warn('Failed to record engagement in session:', err);
       });
     }
@@ -175,14 +198,14 @@ function App() {
 
     setSelectedEpisode(episode);
     setShowDetail(true);
-  }, [activeSessionId]);
+  }, [activeSessionId, currentUser?.user_id]);
 
   // Handle BOOKMARK
   const handleBookmark = useCallback((episode) => {
     const now = new Date().toISOString();
 
     if (activeSessionId && episode.id) {
-      engageEpisode(activeSessionId, episode.id, 'bookmark').catch(console.warn);
+      engageEpisode(activeSessionId, episode.id, 'bookmark', currentUser?.user_id ?? currentUser?.id ?? null).catch(console.warn);
     }
 
     setSession(prev => {
@@ -206,7 +229,7 @@ function App() {
         categoryInterests: newCategories,
       };
     });
-  }, [activeSessionId]);
+  }, [activeSessionId, currentUser?.user_id]);
 
   // Handle NOT INTERESTED
   const handleNotInterested = useCallback((episode) => {
@@ -264,7 +287,14 @@ function App() {
     setSelectedEpisode(null);
   }, []);
 
-  const handleReset = useCallback(() => {
+  const handleReset = useCallback(async () => {
+    if (currentUser?.user_id) {
+      try {
+        await resetEngagements(currentUser.user_id);
+      } catch (err) {
+        console.warn('Reset API failed:', err);
+      }
+    }
     setSession({
       engagements: [],
       notInterestedEpisodes: [],
@@ -274,7 +304,7 @@ function App() {
     setActiveSessionId(null);
     setShowDetail(false);
     setSelectedEpisode(null);
-  }, []);
+  }, [currentUser?.user_id]);
 
   // Show detail page overlay
   if (showDetail && selectedEpisode) {
@@ -374,6 +404,7 @@ function App() {
             engagements={engagementsForApi}
             excludedIds={excludedIds}
             activeSessionId={activeSessionId}
+            userId={currentUser?.user_id ?? null}
             onSessionChange={handleSessionChange}
             onView={handleView}
             onBookmark={handleBookmark}

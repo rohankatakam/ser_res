@@ -5,7 +5,7 @@ This module defines HOW text is extracted from episodes for embedding.
 Changes to this module require regenerating embeddings (bump STRATEGY_VERSION).
 
 The embedding text formula:
-    "{title}. {key_insight[:500]}"
+    "{title}. {key_insight}"  (full key_insight, no truncation)
 
 This is used for BOTH:
 - Episode embeddings (pre-computed, cached)
@@ -14,7 +14,7 @@ This is used for BOTH:
 
 # Metadata for cache validation
 # IMPORTANT: Bump this version when the embedding logic changes!
-STRATEGY_VERSION = "1.0"
+STRATEGY_VERSION = "1.1"
 
 # OpenAI embedding configuration
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -25,10 +25,10 @@ def get_embed_text(episode: dict) -> str:
     """
     Generate text for embedding from an episode.
 
-    Formula: "{title}. {key_insight[:500]}"
+    Formula: "{title}. {key_insight}" (full key_insight, no truncation).
 
     This MUST be the same formula used for:
-    - Pre-computing episode embeddings
+    - Pre-computing episode embeddings (e.g. for Pinecone)
     - Computing user activity vectors at request time
 
     Changes to this function require:
@@ -43,10 +43,6 @@ def get_embed_text(episode: dict) -> str:
     """
     title = episode.get("title", "")
     key_insight = episode.get("key_insight") or ""
-
-    # Truncate key_insight to first 500 chars to reduce noise
-    if len(key_insight) > 500:
-        key_insight = key_insight[:500]
 
     embed_text = f"{title}. {key_insight}".strip()
 

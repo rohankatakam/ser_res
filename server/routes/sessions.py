@@ -29,6 +29,19 @@ except ImportError:
 router = APIRouter()
 
 
+def _episode_dicts(episodes) -> list:
+    """Normalize episodes to list of dicts for engine and get_candidate_pool_ids."""
+    out = []
+    for ep in episodes or []:
+        if hasattr(ep, "model_dump"):
+            out.append(ep.model_dump())
+        elif isinstance(ep, dict):
+            out.append(ep)
+        else:
+            out.append(dict(ep))
+    return out
+
+
 @router.post("/create", response_model=SessionResponse)
 def create_session(request: CreateSessionRequest):
     """Create a new recommendation session."""
@@ -45,22 +58,44 @@ def create_session(request: CreateSessionRequest):
             detail="Algorithm does not have a recommendation engine",
         )
     request_engagements = [e.model_dump() for e in request.engagements]
-    engagements = state.engagement_store.get_engagements_for_session(None, request_engagements)
-    excluded_ids = set(request.excluded_ids)
-    for eng in request.engagements:
-        excluded_ids.add(eng.episode_id)
+    user_id = getattr(request, "user_id", None)
+    engagements = state.engagement_store.get_engagements_for_ranking(user_id, request_engagements)
+    excluded_ids = set(request.excluded_ids or [])
+    for eng in engagements:
+        if eng.get("episode_id"):
+            excluded_ids.add(eng["episode_id"])
     if state.current_episode_provider:
         episodes = state.current_episode_provider.get_episodes(limit=None)
         episode_by_content_id = state.current_episode_provider.get_episode_by_content_id_map()
     else:
         episodes = state.current_dataset.episodes
         episode_by_content_id = state.current_dataset.episode_by_content_id
+    episode_list = _episode_dicts(episodes)
     algo_config = getattr(state.current_algorithm, "parsed_config", None)
+
+    # Embeddings: use in-memory when loaded, else fetch by id (Pinecone path)
+    embeddings = state.current_embeddings
+    if not embeddings and hasattr(engine, "get_candidate_pool_ids"):
+        engagement_ids = [e.get("episode_id") for e in engagements if e.get("episode_id")]
+        candidate_ids = engine.get_candidate_pool_ids(excluded_ids, episode_list, algo_config)
+        needed_ids = list(set(engagement_ids) | set(candidate_ids))
+        if needed_ids:
+            algo_folder = state.current_algorithm.folder_name
+            strategy_ver = state.current_algorithm.strategy_version
+            dataset_folder = state.current_dataset.folder_name
+            embeddings = state.vector_store.get_embeddings(
+                needed_ids, algo_folder, strategy_ver, dataset_folder
+            )
+            print(
+                f"[sessions] Pinecone get_embeddings namespace algo={algo_folder!r} strategy={strategy_ver!r} "
+                f"dataset={dataset_folder!r} requested={len(needed_ids)} returned={len(embeddings)}"
+            )
+
     queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
         engagements=engagements,
         excluded_ids=excluded_ids,
-        episodes=episodes,
-        embeddings=state.current_embeddings,
+        episodes=episode_list,
+        embeddings=embeddings,
         episode_by_content_id=episode_by_content_id,
         config=algo_config,
     )
@@ -86,7 +121,7 @@ def create_session(request: CreateSessionRequest):
     debug = SessionDebugInfo(
         candidates_count=total_in_queue,
         user_vector_episodes=user_vector_episodes,
-        embeddings_available=len(state.current_embeddings) > 0,
+        embeddings_available=len(embeddings) > 0,
         top_similarity_scores=[round(s.similarity_score, 3) for s, _ in first_page[:5]],
         top_quality_scores=[round(s.quality_score, 3) for s, _ in first_page[:5]],
         top_final_scores=[round(s.final_score, 3) for s, _ in first_page[:5]],
@@ -169,8 +204,9 @@ def engage_episode(session_id: str, request: EngageRequest):
         raise HTTPException(status_code=404, detail="Session not found")
     session["engaged_ids"].add(request.episode_id)
     session["excluded_ids"].add(request.episode_id)
+    user_id = request.user_id
     state.engagement_store.record_engagement(
-        None,
+        user_id,
         request.episode_id,
         request.type,
         timestamp=datetime.now(timezone.utc).isoformat(),

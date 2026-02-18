@@ -1,5 +1,6 @@
 """Application state: loaders, stores, and current algorithm/dataset."""
 
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -9,13 +10,13 @@ try:
         AlgorithmLoader,
         DatasetLoader,
         DatasetEpisodeProvider,
-        EmbeddingCache,
+        FirestoreEngagementStore,
         FirestoreUserStore,
         JsonUserStore,
         LoadedAlgorithm,
         LoadedDataset,
-        QdrantEmbeddingStore,
-        QdrantJsonVectorStore,
+        PineconeEmbeddingStore,
+        PineconeVectorStore,
         RequestOnlyEngagementStore,
         Validator,
     )
@@ -25,13 +26,13 @@ except ImportError:
         AlgorithmLoader,
         DatasetLoader,
         DatasetEpisodeProvider,
-        EmbeddingCache,
+        FirestoreEngagementStore,
         FirestoreUserStore,
         JsonUserStore,
         LoadedAlgorithm,
         LoadedDataset,
-        QdrantEmbeddingStore,
-        QdrantJsonVectorStore,
+        PineconeEmbeddingStore,
+        PineconeVectorStore,
         RequestOnlyEngagementStore,
         Validator,
     )
@@ -46,20 +47,22 @@ class AppState:
         # Loaders
         self.algorithm_loader = AlgorithmLoader(config.algorithms_dir)
         self.dataset_loader = DatasetLoader(config.datasets_dir)
-        self.embedding_cache = EmbeddingCache(config.cache_dir / "embeddings")
         self.validator = Validator(self.algorithm_loader, self.dataset_loader)
 
-        # Qdrant store (primary storage, with fallback to JSON cache)
-        self.qdrant_store: Optional[QdrantEmbeddingStore] = None
-        self.qdrant_available = False
-        self._init_qdrant(config.qdrant_url)
+        # Vector store: Pinecone only (required for embeddings).
+        pinecone_key = (os.environ.get("PINECONE_API_KEY") or "").strip()
+        if not pinecone_key:
+            raise ValueError(
+                "PINECONE_API_KEY is required. Set it in .env for embeddings (Pinecone)."
+            )
+        pinecone_store = PineconeEmbeddingStore(api_key=pinecone_key)
+        self.vector_store = PineconeVectorStore(pinecone_store)
+        print("[startup] Vector store: Pinecone")
 
-        # Abstractions (swap implementations for cloud: Pinecone, Firestore)
-        self.vector_store = QdrantJsonVectorStore(
-            self.embedding_cache,
-            self.qdrant_store if self.qdrant_available else None,
-        )
-        self.engagement_store = RequestOnlyEngagementStore()
+        # Engagement store: Firestore when data_source=firebase and creds set, else request-only
+        self.engagement_store = self._create_engagement_store(config)
+        _es = type(self.engagement_store).__name__
+        print(f"[startup] Engagement store: {_es}")
         self.current_episode_provider: Optional[Any] = None
         self.user_store: Optional[Any] = self._create_user_store(config)
 
@@ -70,6 +73,24 @@ class AppState:
 
         # Session storage
         self.sessions: Dict[str, Dict] = {}
+
+    def _create_engagement_store(self, config: ServerConfig) -> Any:
+        """Create engagement store (Firestore when firebase configured, else request-only)."""
+        if config.data_source == "firebase" and config.firebase_credentials_path:
+            cred_path = Path(config.firebase_credentials_path)
+            if not cred_path.exists() or not cred_path.is_file():
+                print(
+                    f"[startup] Firestore engagement store skipped: credentials path not found or not a file: {cred_path}"
+                )
+            else:
+                try:
+                    return FirestoreEngagementStore(
+                        project_id=config.firebase_project_id,
+                        credentials_path=config.firebase_credentials_path,
+                    )
+                except Exception as e:
+                    print(f"[startup] Firestore engagement store init failed: {e}, using request-only")
+        return RequestOnlyEngagementStore()
 
     def _create_user_store(self, config: ServerConfig) -> Optional[Any]:
         """Create user store from config (JSON or Firestore)."""
@@ -100,22 +121,6 @@ class AppState:
             print(f"JSON user store init failed: {e}, user persistence disabled")
             return None
 
-    def _init_qdrant(self, qdrant_url: Optional[str]):
-        """Initialize Qdrant connection with graceful fallback."""
-        if qdrant_url:
-            try:
-                self.qdrant_store = QdrantEmbeddingStore(qdrant_url=qdrant_url)
-                self.qdrant_available = self.qdrant_store.is_available
-                if self.qdrant_available:
-                    print(f"Qdrant connected at {qdrant_url}")
-                else:
-                    print(f"Qdrant not responding at {qdrant_url}, using JSON cache fallback")
-            except Exception as e:
-                print(f"Qdrant connection failed: {e}, using JSON cache fallback")
-                self.qdrant_available = False
-        else:
-            print("No QDRANT_URL configured, using JSON cache only")
-
     @property
     def is_loaded(self) -> bool:
         return self.current_algorithm is not None and self.current_dataset is not None
@@ -138,7 +143,7 @@ class AppState:
         dataset_folder: str,
         strategy_file_path: Optional[Path] = None,
     ) -> Optional[Dict[str, List[float]]]:
-        """Load embeddings from vector_store (Qdrant + JSON today; Pinecone when swapped)."""
+        """Load embeddings from vector_store (Pinecone; returns None so callers use get_embeddings by id)."""
         emb = self.vector_store.load_embeddings(
             algorithm_folder,
             strategy_version,
@@ -159,7 +164,7 @@ class AppState:
         embedding_dimensions: int,
         strategy_file_path: Optional[Path] = None,
     ):
-        """Save embeddings via vector_store (Qdrant + JSON today; Pinecone when swapped)."""
+        """Save embeddings via vector_store (Pinecone only)."""
         self.vector_store.save_embeddings(
             algorithm_folder,
             strategy_version,

@@ -28,8 +28,7 @@ algorithm/
 └── stages/                  # Pipeline stages
     ├── __init__.py
     ├── candidate_pool.py    # Stage A: get_candidate_pool()
-    ├── semantic_scoring.py  # Stage B: get_user_vector_mean(), compute_similarity_sum(),
-    │                        #         rank_candidates(), apply_cold_start_category_diversity(), get_badges()
+    ├── ranking/              # Stage B: core (rank_candidates), get_badges; submodules: user_vector, similarity, blended_scoring, cold_start, badges
     └── queue.py             # create_recommendation_queue() — runs Stage A then Stage B
 ```
 
@@ -42,7 +41,7 @@ algorithm/
 | **models/** | Config and data classes only. No business logic. |
 | **utils/** | Pure functions: scores, similarity, episode metadata. Used by both stages. |
 | **stages/candidate_pool** | Stage A: quality/freshness gates, sort by quality, cap pool size. |
-| **stages/semantic_scoring** | Stage B: user vector, similarity (mean-pool or sum-of-sim), quality/recency blend, cold start, category diversity, badges. |
+| **stages/ranking** | Stage B: user vector, similarity (mean-pool or sum-of-sim), quality/recency blend, cold start, category diversity, badges. |
 | **stages/queue** | Orchestration: call Stage A, then Stage B, return queue + cold_start + user_vector_episodes. |
 | **recommendation_engine.py** | Ensures algorithm dir is on `sys.path`, then re-exports from models and stages so existing imports (server, evaluation) keep working. |
 

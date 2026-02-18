@@ -1,8 +1,9 @@
-"""User enter: resolve or create by display name (no password)."""
+"""User enter: resolve or create by display name (no password). User engagements (Firestore)."""
 
 import re
+from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 try:
     from ..state import get_state
@@ -73,3 +74,27 @@ def user_enter(request: UserEnterRequest):
             created=True,
         )
     raise HTTPException(status_code=400, detail="Provide display_name or user_id")
+
+
+# ---------------------------------------------------------------------------
+# User engagements (Firestore users/{user_id}/engagements)
+# ---------------------------------------------------------------------------
+
+
+@router.get("/engagements")
+def get_user_engagements(user_id: Optional[str] = Query(None, description="User ID (required for Firestore)")):
+    """Get engagements for a user. When Firestore is configured, returns stored engagements; otherwise empty."""
+    state = get_state()
+    if not user_id or not user_id.strip():
+        return {"engagements": []}
+    engagements = state.engagement_store.get_engagements_for_ranking(user_id.strip(), [])
+    return {"engagements": engagements}
+
+
+@router.post("/engagements/reset")
+def reset_user_engagements(user_id: Optional[str] = Query(None, description="User ID to clear engagements for")):
+    """Clear all engagements for the user (e.g. Reset feed). No-op when engagement store is request-only."""
+    state = get_state()
+    if user_id and user_id.strip():
+        state.engagement_store.delete_all_engagements(user_id.strip())
+    return {"status": "ok", "message": "Engagements reset"}

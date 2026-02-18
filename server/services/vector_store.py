@@ -1,19 +1,17 @@
 """
 Vector Store abstraction.
 
-Backing store for episode embeddings. Implementations: Qdrant+JSON (local),
-Pinecone (cloud). Swap via config for local testing vs production.
+Only Pinecone is supported for embeddings. PINECONE_API_KEY is required at startup.
 """
 
 from pathlib import Path
 from typing import Dict, List, Optional, Protocol
 
-from .embedding_cache import EmbeddingCache
-from .qdrant_store import QdrantEmbeddingStore, compute_strategy_hash
+from .pinecone_store import PineconeEmbeddingStore
 
 
 class VectorStore(Protocol):
-    """Protocol for embedding storage. Implement for Qdrant+JSON (local) or Pinecone (cloud)."""
+    """Protocol for embedding storage. Only Pinecone is supported."""
 
     def has_cache(
         self,
@@ -63,22 +61,17 @@ class VectorStore(Protocol):
         ...
 
 
-class QdrantJsonVectorStore:
+class PineconeVectorStore:
     """
-    Vector store that uses Qdrant when available and JSON cache as fallback/backup.
-    Used for local testing and evaluation. Replace with PineconeVectorStore for production.
+    Vector store adapter that wraps PineconeEmbeddingStore and implements VectorStore.
+    Used when PINECONE_API_KEY is set. load_embeddings returns None (no full in-memory load);
+    get_embeddings fetches by id from Pinecone.
     """
 
-    def __init__(
-        self,
-        embedding_cache: "EmbeddingCache",
-        qdrant_store: Optional["QdrantEmbeddingStore"] = None,
-    ):
-        if embedding_cache is None:
-            raise ValueError("embedding_cache is required")
-        self._cache = embedding_cache
-        self._qdrant = qdrant_store
-        self._qdrant_available = bool(qdrant_store and getattr(qdrant_store, "is_available", False))
+    def __init__(self, pinecone_store: PineconeEmbeddingStore):
+        if pinecone_store is None:
+            raise ValueError("pinecone_store is required")
+        self._store = pinecone_store
 
     def has_cache(
         self,
@@ -86,10 +79,22 @@ class QdrantJsonVectorStore:
         strategy_version: str,
         dataset_version: str,
     ) -> bool:
-        if self._qdrant_available and self._qdrant:
-            if self._qdrant.has_cache(algorithm_version, strategy_version, dataset_version):
-                return True
-        return self._cache.has_cache(algorithm_version, strategy_version, dataset_version)
+        return self._store.has_cache(
+            algorithm_version, strategy_version, dataset_version
+        )
+
+    def get_vector_count(
+        self,
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+    ) -> int:
+        """Return the number of vectors in Pinecone for this namespace (for stats)."""
+        return getattr(
+            self._store,
+            "get_vector_count",
+            lambda *a, **k: 0,
+        )(algorithm_version, strategy_version, dataset_version)
 
     def load_embeddings(
         self,
@@ -99,32 +104,8 @@ class QdrantJsonVectorStore:
         *,
         strategy_file_path: Optional[Path] = None,
     ) -> Optional[Dict[str, List[float]]]:
-        if self._qdrant_available and self._qdrant and strategy_file_path and compute_strategy_hash:
-            current_hash = compute_strategy_hash(strategy_file_path)
-            if current_hash:
-                matches, stored_hash = self._qdrant.verify_strategy_hash(
-                    algorithm_version, strategy_version, dataset_version, current_hash
-                )
-                if not matches and stored_hash:
-                    print("WARNING: embedding/embedding_strategy.py has changed; consider regenerating with force=true")
-        if self._qdrant_available and self._qdrant:
-            emb = self._qdrant.load_embeddings(
-                algorithm_version, strategy_version, dataset_version
-            )
-            if emb is not None:
-                return emb
-        emb = self._cache.load_embeddings(
-            algorithm_version, strategy_version, dataset_version
-        )
-        if emb and self._qdrant_available and self._qdrant:
-            try:
-                self._migrate_to_qdrant(
-                    algorithm_version, strategy_version, dataset_version,
-                    emb, strategy_file_path
-                )
-            except Exception as e:
-                print(f"Migration to Qdrant failed: {e}")
-        return emb
+        """Pinecone does not load all vectors into memory; return None so callers use get_embeddings(ids)."""
+        return None
 
     def get_embeddings(
         self,
@@ -133,14 +114,9 @@ class QdrantJsonVectorStore:
         strategy_version: str,
         dataset_version: str,
     ) -> Dict[str, List[float]]:
-        """Fetch embeddings for given ids only. Loads full cache then filters (Pinecone impl would fetch by id)."""
-        id_set = set(episode_ids)
-        if not id_set:
-            return {}
-        full = self.load_embeddings(algorithm_version, strategy_version, dataset_version)
-        if not full:
-            return {}
-        return {eid: vec for eid, vec in full.items() if eid in id_set}
+        return self._store.get_embeddings(
+            episode_ids, algorithm_version, strategy_version, dataset_version
+        )
 
     def save_embeddings(
         self,
@@ -153,39 +129,11 @@ class QdrantJsonVectorStore:
         *,
         strategy_file_path: Optional[Path] = None,
     ) -> None:
-        strategy_hash = None
-        if strategy_file_path and compute_strategy_hash:
-            strategy_hash = compute_strategy_hash(strategy_file_path)
-        if self._qdrant_available and self._qdrant:
-            try:
-                self._qdrant.save_embeddings(
-                    algorithm_version, strategy_version, dataset_version,
-                    embeddings, embedding_model, embedding_dimensions,
-                    strategy_hash=strategy_hash,
-                )
-            except Exception as e:
-                print(f"Qdrant save failed: {e}, saving to JSON only")
-        self._cache.save_embeddings(
-            algorithm_version, strategy_version, dataset_version,
-            embeddings, embedding_model, embedding_dimensions,
-        )
-
-    def _migrate_to_qdrant(
-        self,
-        algorithm_version: str,
-        strategy_version: str,
-        dataset_version: str,
-        embeddings: Dict[str, List[float]],
-        strategy_file_path: Optional[Path] = None,
-    ) -> None:
-        if not embeddings or not self._qdrant:
-            return
-        dimensions = len(next(iter(embeddings.values())))
-        strategy_hash = None
-        if strategy_file_path and compute_strategy_hash:
-            strategy_hash = compute_strategy_hash(strategy_file_path)
-        self._qdrant.save_embeddings(
-            algorithm_version, strategy_version, dataset_version,
-            embeddings, "migrated", dimensions,
-            strategy_hash=strategy_hash,
+        self._store.save_embeddings(
+            algorithm_version,
+            strategy_version,
+            dataset_version,
+            embeddings,
+            embedding_model,
+            embedding_dimensions,
         )

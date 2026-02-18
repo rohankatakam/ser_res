@@ -40,8 +40,9 @@ See `server/docs/FIRESTORE.md` for creating a Firebase key and uploading episode
 │   ├── models/                   # RecommendationConfig, ScoredEpisode, RecommendationSession
 │   │   ├── config.py, scoring.py, session.py
 │   │   └── __init__.py
-│   ├── stages/                   # Pipeline: candidate_pool → semantic_scoring; orchestrator runs both
-│   │   ├── candidate_pool.py, semantic_scoring.py, orchestrator.py
+│   ├── stages/                   # Pipeline: candidate_pool → ranking (Stage B); orchestrator runs both
+│   │   ├── candidate_pool.py, orchestrator.py
+│   │   ├── ranking/              # Stage B: core (orchestration), user_vector, similarity, blended_scoring, cold_start, badges
 │   │   └── __init__.py
 │   └── utils/                    # scores, similarity, episode helpers
 │       ├── scores.py, similarity.py, episode.py

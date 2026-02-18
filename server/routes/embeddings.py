@@ -33,35 +33,15 @@ def embeddings_status():
         state.current_algorithm.strategy_version,
         state.current_dataset.folder_name,
     )
-    metadata = None
-    if cached:
-        if state.qdrant_available and state.qdrant_store:
-            metadata = state.qdrant_store.load_metadata(
-                state.current_algorithm.folder_name,
-                state.current_algorithm.strategy_version,
-                state.current_dataset.folder_name,
-            )
-        if not metadata:
-            metadata = state.embedding_cache.load_metadata(
-                state.current_algorithm.folder_name,
-                state.current_algorithm.strategy_version,
-                state.current_dataset.folder_name,
-            )
+    storage = "pinecone" if type(state.vector_store).__name__ == "PineconeVectorStore" else "none"
     return {
         "loaded": True,
         "cached": cached,
         "count": len(state.current_embeddings),
         "needs_generation": len(state.current_embeddings) < len(state.current_dataset.episodes),
-        "storage": "qdrant" if state.qdrant_available else "json",
-        "metadata": {
-            "created_at": metadata.created_at if metadata else None,
-            "episode_count": metadata.episode_count if metadata else 0,
-            "embedding_model": metadata.embedding_model if metadata else None,
-        }
-        if metadata
-        else None,
+        "storage": storage,
+        "metadata": None,
         "openai_available": check_openai_available()[0],
-        "qdrant_available": state.qdrant_available,
     }
 
 
@@ -97,7 +77,7 @@ def generate_embeddings(
                 "status": "already_cached",
                 "count": len(existing or {}),
                 "message": "Embeddings already cached. Use force=true to regenerate.",
-                "storage": "qdrant" if state.qdrant_available else "json",
+                "storage": "pinecone",
             }
     generator = EmbeddingGenerator(
         api_key=api_key,
@@ -131,6 +111,7 @@ def generate_embeddings(
             and state.current_dataset.folder_name == dataset.folder_name
         ):
             state.current_embeddings = result.embeddings
+    storage = "pinecone" if type(state.vector_store).__name__ == "PineconeVectorStore" else "none"
     return {
         "status": "success" if result.success else "partial",
         "generated": result.total_generated,
@@ -138,5 +119,5 @@ def generate_embeddings(
         "total": len(result.embeddings),
         "estimated_cost": round(result.estimated_cost, 4),
         "errors": result.errors,
-        "storage": "qdrant" if state.qdrant_available else "json",
+        "storage": storage,
     }

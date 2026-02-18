@@ -122,12 +122,14 @@ def load_configuration(
     embedding_generation_result = None
     if embeddings_cached:
         strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
-        embeddings = state.load_cached_embeddings(
+        loaded = state.load_cached_embeddings(
             algorithm.folder_name,
             algorithm.strategy_version,
             dataset.folder_name,
             strategy_file_path=strategy_file,
-        ) or {}
+        )
+        # Pinecone vector store returns None from load_embeddings (no full in-memory load)
+        embeddings = loaded if loaded else {}
     elif request.generate_embeddings:
         api_key = x_openai_key or config.openai_api_key
         if not api_key:
@@ -220,6 +222,11 @@ def get_config_status():
     state = get_state()
     if not state.is_loaded:
         return {"loaded": False, "algorithm_folder": None, "dataset_folder": None}
+    embeddings_cached = state.has_embeddings_cached(
+        state.current_algorithm.folder_name,
+        state.current_algorithm.strategy_version,
+        state.current_dataset.folder_name,
+    )
     return {
         "loaded": True,
         "algorithm_folder": state.current_algorithm.folder_name,
@@ -227,6 +234,7 @@ def get_config_status():
         "algorithm_name": state.current_algorithm.manifest.name,
         "dataset_name": state.current_dataset.manifest.name,
         "embeddings_count": len(state.current_embeddings),
+        "embeddings_cached": embeddings_cached,
     }
 
 
@@ -236,6 +244,12 @@ def get_current_config():
     state = get_state()
     if not state.is_loaded:
         return {"loaded": False, "algorithm": None, "dataset": None, "embeddings": None}
+    embeddings_cached = state.has_embeddings_cached(
+        state.current_algorithm.folder_name,
+        state.current_algorithm.strategy_version,
+        state.current_dataset.folder_name,
+    )
+    episode_count = len(state.current_dataset.episodes) if state.current_dataset.episodes else 0
     return {
         "loaded": True,
         "algorithm": {
@@ -248,12 +262,11 @@ def get_current_config():
             "folder_name": state.current_dataset.folder_name,
             "version": state.current_dataset.manifest.version,
             "name": state.current_dataset.manifest.name,
-            "episode_count": len(state.current_dataset.episodes),
+            "episode_count": episode_count,
         },
         "embeddings": {
             "count": len(state.current_embeddings),
-            "coverage": len(state.current_embeddings) / len(state.current_dataset.episodes)
-            if state.current_dataset.episodes
-            else 0,
+            "cached": embeddings_cached,
+            "coverage": len(state.current_embeddings) / episode_count if episode_count else 0,
         },
     }

@@ -24,16 +24,17 @@ const API_BASE = import.meta.env.PROD ? '' : 'http://localhost:8000';
  * 
  * @param {Array} engagements - User's engagement history [{episode_id, type, timestamp}]
  * @param {Array} excludedIds - Episode IDs to exclude
+ * @param {string} [userId] - Optional user ID (for Firestore engagement store)
  * @returns {Promise<Object>} Session response with episodes, session_id, queue info
  */
-export async function createSession(engagements = [], excludedIds = []) {
+export async function createSession(engagements = [], excludedIds = [], userId = null) {
+  const body = { engagements, excluded_ids: excludedIds };
+  if (userId != null && userId !== '') body.user_id = String(userId);
+
   const response = await fetch(`${API_BASE}/api/sessions/create`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      engagements,
-      excluded_ids: excludedIds
-    })
+    body: JSON.stringify(body)
   });
 
   if (!response.ok) {
@@ -84,17 +85,21 @@ export async function loadMore(sessionId, limit = 10) {
  * @param {string} sessionId - Session ID
  * @param {string} episodeId - Episode ID
  * @param {string} type - Engagement type ('click', 'bookmark')
+ * @param {string} [userId] - Optional user ID (for Firestore persistence)
  * @returns {Promise<Object>} Engagement confirmation
  */
-export async function engageEpisode(sessionId, episodeId, type = 'click') {
+export async function engageEpisode(sessionId, episodeId, type = 'click', userId = null) {
+  const body = {
+    episode_id: episodeId,
+    type,
+    timestamp: new Date().toISOString()
+  };
+  if (userId != null && userId !== '') body.user_id = String(userId);
+
   const response = await fetch(`${API_BASE}/api/sessions/${sessionId}/engage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      episode_id: episodeId,
-      type,
-      timestamp: new Date().toISOString()
-    })
+    body: JSON.stringify(body)
   });
 
   if (!response.ok) throw new Error('Failed to record engagement');
@@ -510,16 +515,32 @@ export async function userEnterByCreate(displayName) {
 }
 
 /**
- * Format an engagement for API.
- * 
- * @param {Object} episode - Episode object
- * @param {string} type - Engagement type ('click', 'bookmark', 'listen')
- * @returns {Object} Formatted engagement
+ * Get engagements for a user from the backend (Firestore when configured).
+ *
+ * @param {string} userId - User ID
+ * @returns {Promise<{ engagements: Array }>}
  */
-export function createEngagement(episode, type = 'click') {
-  return {
-    episode_id: episode.id || episode.content_id,
-    type,
-    timestamp: new Date().toISOString()
-  };
+export async function getEngagements(userId) {
+  if (!userId) return { engagements: [] };
+  const params = new URLSearchParams({ user_id: userId });
+  const response = await fetch(`${API_BASE}/api/user/engagements?${params}`);
+  if (!response.ok) throw new Error('Failed to get engagements');
+  return response.json();
+}
+
+/**
+ * Reset (delete) all engagements for a user. Use after "Reset" in the app.
+ *
+ * @param {string} userId - User ID
+ * @returns {Promise<Object>}
+ */
+export async function resetEngagements(userId) {
+  if (!userId) return { status: 'ok' };
+  const params = new URLSearchParams({ user_id: userId });
+  const response = await fetch(`${API_BASE}/api/user/engagements/reset?${params}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  });
+  if (!response.ok) throw new Error('Failed to reset engagements');
+  return response.json();
 }

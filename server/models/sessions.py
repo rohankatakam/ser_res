@@ -1,6 +1,6 @@
 """Session-related Pydantic models."""
 
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -10,6 +10,7 @@ from .common import EpisodeCard, Engagement
 class CreateSessionRequest(BaseModel):
     engagements: List[Engagement] = []
     excluded_ids: List[str] = []
+    user_id: Optional[str] = None
 
 
 class LoadMoreRequest(BaseModel):
@@ -19,6 +20,7 @@ class LoadMoreRequest(BaseModel):
 class EngageRequest(BaseModel):
     episode_id: str
     type: str = "click"
+    user_id: Optional[str] = None
 
 
 class SessionDebugInfo(BaseModel):
