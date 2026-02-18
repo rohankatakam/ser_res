@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { fetchStats } from '../api';
+import { deleteEngagement, fetchStats } from '../api';
 import TestsPage from './TestsPage';
 import ProfilesPage from './ProfilesPage';
 
@@ -18,7 +18,9 @@ export default function DevPage({
   activeSessionId,
   viewedEpisodes,
   bookmarkedEpisodes,
-  onReset
+  onReset,
+  userId,
+  onRefetchEngagements,
 }) {
   const [subTab, setSubTab] = useState('insights'); // 'insights', 'tests', or 'profiles'
   const [apiStats, setApiStats] = useState(null);
@@ -215,22 +217,38 @@ export default function DevPage({
               <div className="space-y-2 max-h-96 overflow-y-auto">
                 {[...engagements].reverse().map((eng, idx) => (
                   <div
-                    key={`${eng.episode?.id}-${idx}`}
-                    className="bg-slate-800 rounded-lg p-3 border border-slate-700"
+                    key={eng.id ?? `${eng.episode?.id}-${idx}`}
+                    className="bg-slate-800 rounded-lg p-3 border border-slate-700 flex items-start justify-between gap-2"
                   >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs px-2 py-0.5 rounded ${eng.type === 'bookmark'
-                          ? 'bg-purple-500/20 text-purple-400'
-                          : 'bg-blue-500/20 text-blue-400'
-                        }`}>
-                        {eng.type}
-                      </span>
-                      <span className="text-xs text-slate-500">
-                        {new Date(eng.timestamp).toLocaleString()}
-                      </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`text-xs px-2 py-0.5 rounded shrink-0 ${eng.type === 'bookmark'
+                            ? 'bg-purple-500/20 text-purple-400'
+                            : 'bg-blue-500/20 text-blue-400'
+                          }`}>
+                          {eng.type}
+                        </span>
+                        <span className="text-xs text-slate-500 shrink-0">
+                          {new Date(eng.timestamp).toLocaleString()}
+                        </span>
+                      </div>
+                      <p className="text-sm text-white line-clamp-1">{eng.episode?.title || '—'}</p>
+                      <p className="text-xs text-slate-500">{eng.episode?.series?.name || '—'}</p>
                     </div>
-                    <p className="text-sm text-white line-clamp-1">{eng.episode?.title}</p>
-                    <p className="text-xs text-slate-500">{eng.episode?.series?.name}</p>
+                    {eng.id && userId && onRefetchEngagements && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          deleteEngagement(userId, eng.id)
+                            .then(() => onRefetchEngagements())
+                            .catch(err => console.warn('Delete engagement failed:', err));
+                        }}
+                        className="shrink-0 px-2 py-1 text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded"
+                        title="Remove from history"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>

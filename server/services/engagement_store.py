@@ -31,8 +31,14 @@ class EngagementStore(Protocol):
         episode_id: str,
         engagement_type: str,
         timestamp: Optional[str] = None,
+        episode_title: Optional[str] = None,
+        series_name: Optional[str] = None,
     ) -> None:
         """Persist one engagement (e.g. bookmark, view). No-op for request-only store."""
+        ...
+
+    def delete_engagement(self, user_id: Optional[str], engagement_id: str) -> bool:
+        """Delete one engagement by Firestore document id. Return True if deleted. No-op for request-only store."""
         ...
 
     def delete_all_engagements(self, user_id: Optional[str]) -> None:
@@ -59,8 +65,13 @@ class RequestOnlyEngagementStore:
         episode_id: str,
         engagement_type: str,
         timestamp: Optional[str] = None,
+        episode_title: Optional[str] = None,
+        series_name: Optional[str] = None,
     ) -> None:
         pass
+
+    def delete_engagement(self, user_id: Optional[str], engagement_id: str) -> bool:
+        return False
 
     def delete_all_engagements(self, user_id: Optional[str]) -> None:
         pass

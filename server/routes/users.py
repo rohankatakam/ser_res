@@ -1,16 +1,17 @@
 """User enter: resolve or create by display name (no password). User engagements (Firestore)."""
 
 import re
+from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
 try:
     from ..state import get_state
-    from ..models import UserEnterRequest, UserResponse
+    from ..models import UserEnterRequest, UserResponse, EngageRequest
 except ImportError:
     from state import get_state
-    from models import UserEnterRequest, UserResponse
+    from models import UserEnterRequest, UserResponse, EngageRequest
 
 router = APIRouter()
 
@@ -81,6 +82,28 @@ def user_enter(request: UserEnterRequest):
 # ---------------------------------------------------------------------------
 
 
+@router.post("/engagements")
+def record_user_engagement(request: EngageRequest):
+    """
+    Record one engagement (click/bookmark) for a user. Does not require a session.
+    Use this so engagements are persisted when user clicks from Browse or before a session exists.
+    Requires user_id in the body when Firestore is configured.
+    """
+    state = get_state()
+    user_id = request.user_id
+    if not user_id or not user_id.strip():
+        raise HTTPException(status_code=400, detail="user_id is required to record an engagement")
+    state.engagement_store.record_engagement(
+        user_id.strip(),
+        request.episode_id,
+        request.type,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+        episode_title=request.episode_title,
+        series_name=request.series_name,
+    )
+    return {"status": "ok", "episode_id": request.episode_id, "type": request.type}
+
+
 @router.get("/engagements")
 def get_user_engagements(user_id: Optional[str] = Query(None, description="User ID (required for Firestore)")):
     """Get engagements for a user. When Firestore is configured, returns stored engagements; otherwise empty."""
@@ -98,3 +121,18 @@ def reset_user_engagements(user_id: Optional[str] = Query(None, description="Use
     if user_id and user_id.strip():
         state.engagement_store.delete_all_engagements(user_id.strip())
     return {"status": "ok", "message": "Engagements reset"}
+
+
+@router.delete("/engagements/{engagement_id}")
+def delete_user_engagement(
+    engagement_id: str,
+    user_id: Optional[str] = Query(None, description="User ID (required for Firestore)"),
+):
+    """Delete one engagement by Firestore document id. Returns 404 if not found or store does not support delete."""
+    state = get_state()
+    if not user_id or not user_id.strip():
+        raise HTTPException(status_code=400, detail="user_id is required")
+    deleted = state.engagement_store.delete_engagement(user_id.strip(), engagement_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Engagement not found or cannot be deleted")
+    return {"status": "ok", "message": "Engagement deleted"}

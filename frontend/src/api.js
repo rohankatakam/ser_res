@@ -86,15 +86,19 @@ export async function loadMore(sessionId, limit = 10) {
  * @param {string} episodeId - Episode ID
  * @param {string} type - Engagement type ('click', 'bookmark')
  * @param {string} [userId] - Optional user ID (for Firestore persistence)
+ * @param {string} [episodeTitle] - Optional episode title (stored in Firestore for display)
+ * @param {string} [seriesName] - Optional series name (stored in Firestore for display)
  * @returns {Promise<Object>} Engagement confirmation
  */
-export async function engageEpisode(sessionId, episodeId, type = 'click', userId = null) {
+export async function engageEpisode(sessionId, episodeId, type = 'click', userId = null, episodeTitle = null, seriesName = null) {
   const body = {
     episode_id: episodeId,
     type,
     timestamp: new Date().toISOString()
   };
   if (userId != null && userId !== '') body.user_id = String(userId);
+  if (episodeTitle != null && episodeTitle !== '') body.episode_title = String(episodeTitle);
+  if (seriesName != null && seriesName !== '') body.series_name = String(seriesName);
 
   const response = await fetch(`${API_BASE}/api/sessions/${sessionId}/engage`, {
     method: 'POST',
@@ -515,6 +519,40 @@ export async function userEnterByCreate(displayName) {
 }
 
 /**
+ * Record one engagement for a user (Firestore). Does not require a session.
+ * Call this whenever the user clicks or bookmarks so it persists from any tab (Browse, For You, etc.).
+ *
+ * @param {string} userId - User ID (required)
+ * @param {string} episodeId - Episode ID
+ * @param {string} type - 'click' or 'bookmark'
+ * @param {string} [episodeTitle] - Episode title for display
+ * @param {string} [seriesName] - Series name for display
+ * @returns {Promise<Object>}
+ */
+export async function recordEngagement(userId, episodeId, type = 'click', episodeTitle = null, seriesName = null) {
+  if (!userId) throw new Error('userId is required to record engagement');
+  const body = {
+    user_id: userId,
+    episode_id: episodeId,
+    type,
+    timestamp: new Date().toISOString()
+  };
+  if (episodeTitle != null && episodeTitle !== '') body.episode_title = String(episodeTitle);
+  if (seriesName != null && seriesName !== '') body.series_name = String(seriesName);
+
+  const response = await fetch(`${API_BASE}/api/user/engagements`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to record engagement');
+  }
+  return response.json();
+}
+
+/**
  * Get engagements for a user from the backend (Firestore when configured).
  *
  * @param {string} userId - User ID
@@ -542,5 +580,25 @@ export async function resetEngagements(userId) {
     headers: { 'Content-Type': 'application/json' }
   });
   if (!response.ok) throw new Error('Failed to reset engagements');
+  return response.json();
+}
+
+/**
+ * Delete one engagement by Firestore document id. Updates Firestore in real time.
+ *
+ * @param {string} userId - User ID
+ * @param {string} engagementId - Firestore engagement document id
+ * @returns {Promise<Object>}
+ */
+export async function deleteEngagement(userId, engagementId) {
+  if (!userId || !engagementId) throw new Error('userId and engagementId required');
+  const params = new URLSearchParams({ user_id: userId });
+  const response = await fetch(`${API_BASE}/api/user/engagements/${encodeURIComponent(engagementId)}?${params}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to delete engagement');
+  }
   return response.json();
 }

@@ -65,9 +65,12 @@ class FirestoreEngagementStore:
         for doc in docs:
             d = doc.to_dict()
             out.append({
+                "id": doc.id,
                 "episode_id": d.get("episode_id", ""),
                 "type": d.get("type", "click"),
                 "timestamp": d.get("timestamp", ""),
+                "episode_title": d.get("episode_title", ""),
+                "series_name": d.get("series_name", ""),
             })
         return out
 
@@ -77,6 +80,8 @@ class FirestoreEngagementStore:
         episode_id: str,
         engagement_type: str,
         timestamp: Optional[str] = None,
+        episode_title: Optional[str] = None,
+        series_name: Optional[str] = None,
     ) -> None:
         """Persist one engagement to users/{user_id}/engagements. No-op if user_id is None."""
         if user_id is None or not user_id.strip():
@@ -85,15 +90,32 @@ class FirestoreEngagementStore:
         uid = user_id.strip()
         ref = self._engagements_ref(uid)
         ts = timestamp or datetime.datetime.utcnow().isoformat() + "Z"
+        data = {
+            "episode_id": episode_id,
+            "type": engagement_type or "click",
+            "timestamp": ts,
+        }
+        if episode_title is not None:
+            data["episode_title"] = episode_title
+        if series_name is not None:
+            data["series_name"] = series_name
         try:
-            ref.add({
-                "episode_id": episode_id,
-                "type": engagement_type or "click",
-                "timestamp": ts,
-            })
+            ref.add(data)
         except Exception as e:
             print(f"[FirestoreEngagementStore] record_engagement failed for user={uid!r}: {e}")
             raise
+
+    def delete_engagement(self, user_id: Optional[str], engagement_id: str) -> bool:
+        """Delete one engagement document by id. Returns True if deleted."""
+        if not user_id or not user_id.strip() or not engagement_id or not engagement_id.strip():
+            return False
+        ref = self._engagements_ref(user_id.strip())
+        doc_ref = ref.document(engagement_id.strip())
+        doc = doc_ref.get()
+        if not doc.exists:
+            return False
+        doc_ref.delete()
+        return True
 
     def delete_all_engagements(self, user_id: Optional[str]) -> None:
         """Delete all documents in users/{user_id}/engagements (batch delete in chunks)."""

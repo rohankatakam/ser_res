@@ -9,6 +9,8 @@
  * - Excluded episodes
  */
 
+import { deleteEngagement } from '../api';
+
 function formatTime(timestamp) {
   if (!timestamp) return '';
   const date = new Date(timestamp);
@@ -21,7 +23,7 @@ function formatDate(timestamp) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-export default function SessionPanel({ session, inferred, activeSessionId, onReset }) {
+export default function SessionPanel({ session, inferred, activeSessionId, onReset, userId, onRefetchEngagements }) {
   const engagements = session?.engagements || [];
   const notInterested = session?.notInterestedEpisodes || [];
   const categoryInterests = session?.categoryInterests || {};
@@ -118,28 +120,44 @@ export default function SessionPanel({ session, inferred, activeSessionId, onRes
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {[...engagements].reverse().map((eng, idx) => (
                 <div 
-                  key={`${eng.episode?.id}-${eng.timestamp}-${idx}`}
-                  className="bg-slate-900 rounded p-2 text-xs"
+                  key={eng.id ?? `${eng.episode?.id}-${eng.timestamp}-${idx}`}
+                  className="bg-slate-900 rounded p-2 text-xs flex items-start justify-between gap-1"
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={eng.type === 'bookmark' ? 'text-purple-400' : 'text-blue-400'}>
-                      {eng.type === 'bookmark' ? '🔖' : '👆'}
-                    </span>
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] ${
-                      eng.type === 'bookmark' 
-                        ? 'bg-purple-500/20 text-purple-400' 
-                        : 'bg-blue-500/20 text-blue-400'
-                    }`}>
-                      {eng.type} {eng.type === 'bookmark' ? '(2x)' : '(1x)'}
-                    </span>
-                    <span className="text-slate-500 ml-auto">{formatTime(eng.timestamp)}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={eng.type === 'bookmark' ? 'text-purple-400' : 'text-blue-400'}>
+                        {eng.type === 'bookmark' ? '🔖' : '👆'}
+                      </span>
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] shrink-0 ${
+                        eng.type === 'bookmark' 
+                          ? 'bg-purple-500/20 text-purple-400' 
+                          : 'bg-blue-500/20 text-blue-400'
+                      }`}>
+                        {eng.type} {eng.type === 'bookmark' ? '(2x)' : '(1x)'}
+                      </span>
+                      <span className="text-slate-500 ml-auto shrink-0">{formatTime(eng.timestamp)}</span>
+                    </div>
+                    <p className="text-slate-300 line-clamp-1">
+                      {eng.episode?.title || 'Unknown episode'}
+                    </p>
+                    <p className="text-slate-500 text-[10px]">
+                      {eng.episode?.series?.name || '—'}
+                    </p>
                   </div>
-                  <p className="text-slate-300 line-clamp-1">
-                    {eng.episode?.title || 'Unknown episode'}
-                  </p>
-                  <p className="text-slate-500 text-[10px]">
-                    {eng.episode?.series?.name}
-                  </p>
+                  {eng.id && userId && onRefetchEngagements && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        deleteEngagement(userId, eng.id)
+                          .then(() => onRefetchEngagements())
+                          .catch(console.warn);
+                      }}
+                      className="shrink-0 text-[10px] text-red-400 hover:text-red-300"
+                      title="Remove"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

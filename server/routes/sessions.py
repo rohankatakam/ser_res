@@ -210,6 +210,8 @@ def engage_episode(session_id: str, request: EngageRequest):
         request.episode_id,
         request.type,
         timestamp=datetime.now(timezone.utc).isoformat(),
+        episode_title=request.episode_title,
+        series_name=request.series_name,
     )
     return {
         "status": "ok",

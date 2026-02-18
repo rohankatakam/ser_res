@@ -21,6 +21,8 @@ class EngageRequest(BaseModel):
     episode_id: str
     type: str = "click"
     user_id: Optional[str] = None
+    episode_title: Optional[str] = None
+    series_name: Optional[str] = None
 
 
 class SessionDebugInfo(BaseModel):
