@@ -1,0 +1,32 @@
+{
+  "test_id": "08_series_diversity",
+  "name": "Series Diversity (Max 2 Per Series, No Adjacent Same)",
+  "type": "MFT",
+  "evaluation_method": "deterministic",
+  "description": "Top 10 recommendations must satisfy: at most 2 episodes from any one series; no two consecutive episodes from the same series. Validates the in-processing selection loop.",
+  "profiles": ["01_cold_start"],
+  "setup": {
+    "engagements": [],
+    "excluded_ids": []
+  },
+  "pass_criteria": [
+    {
+      "id": "max_per_series",
+      "description": "No series appears more than 2 times in top 10",
+      "check": "for each series_id, count(episodes[0:10] where series.id == series_id) <= 2"
+    },
+    {
+      "id": "no_adjacent_same_series",
+      "description": "No two consecutive episodes in top 10 are from the same series",
+      "check": "for every i in 0..8, episodes[i].series.id != episodes[i+1].series.id"
+    },
+    {
+      "id": "still_returns_results",
+      "description": "System returns 10 valid recommendations",
+      "check": "len(response.episodes) == 10"
+    }
+  ],
+  "validation_method": "Run API with cold start profile, extract series ids from top 10, verify count per series <= 2 and no adjacent duplicates",
+  "if_fails_adjust": ["series_diversity_enabled", "max_episodes_per_series", "series_penalty_alpha", "no_adjacent_same_series"],
+  "created_at": "2026-02-18T00:00:00Z"
+}

@@ -29,6 +29,7 @@ import asyncio
 import json
 import os
 import sys
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -98,6 +99,8 @@ CRITERION_WEIGHTS = {
     "ranking_reflects_recency": 1.5,
     "different_results": 1.0,
     "crypto_dominance_in_b": 1.5,
+    "max_per_series": 1.5,
+    "no_adjacent_same_series": 1.5,
     # LLM criteria
     "llm_relevance": 1.0,
     "llm_diversity": 1.0,
@@ -217,10 +220,15 @@ def call_engine_directly(
         config=config,
     )
     
-    # Convert to API response format
+    # Convert to API response format (episode must be dict for item assignment)
     episodes = []
     for i, scored_ep in enumerate(queue[:10]):
-        ep = scored_ep.episode.copy()
+        if hasattr(scored_ep.episode, "model_dump"):
+            ep = scored_ep.episode.model_dump()
+        elif hasattr(scored_ep.episode, "dict"):
+            ep = scored_ep.episode.dict()
+        else:
+            ep = dict(scored_ep.episode) if isinstance(scored_ep.episode, dict) else {}
         ep["similarity_score"] = scored_ep.similarity_score
         ep["quality_score"] = scored_ep.quality_score
         ep["recency_score"] = scored_ep.recency_score
@@ -764,6 +772,61 @@ def validate_bookmark_weighting(bookmark_response: Dict, click_response: Dict, t
     return result
 
 
+def validate_series_diversity(response: Dict, test_case: Dict) -> TestResult:
+    """Test 08: Series Diversity (max 2 per series, no adjacent same series)"""
+    result = TestResult("08_series_diversity", test_case["name"])
+    result.api_response = response
+
+    episodes = response.get("episodes", [])[:10]
+
+    # Criterion 1: Still returns 10 results
+    episode_count = len(episodes)
+    result.add_criterion(
+        "still_returns_results",
+        "System returns 10 valid recommendations",
+        episode_count == 10,
+        f"episode_count={episode_count}"
+    )
+
+    if len(episodes) < 10:
+        return result
+
+    # Extract series ids (episode.series.id)
+    def _series_id(ep: Dict) -> str:
+        ser = ep.get("series")
+        if ser and isinstance(ser, dict):
+            return ser.get("id") or ""
+        return ""
+
+    series_ids = [_series_id(ep) for ep in episodes]
+
+    # Criterion 2: Max 2 per series
+    counts = Counter(sid for sid in series_ids if sid)
+    max_count = max(counts.values()) if counts else 0
+    max_per_series_ok = max_count <= 2
+    result.add_criterion(
+        "max_per_series",
+        "No series appears more than 2 times in top 10",
+        max_per_series_ok,
+        f"max_per_series={max_count}, counts={dict(counts)}"
+    )
+
+    # Criterion 3: No adjacent same series
+    adjacent_violations = []
+    for i in range(len(series_ids) - 1):
+        if series_ids[i] and series_ids[i] == series_ids[i + 1]:
+            adjacent_violations.append((i + 1, i + 2, series_ids[i]))
+    no_adjacent_ok = len(adjacent_violations) == 0
+    result.add_criterion(
+        "no_adjacent_same_series",
+        "No two consecutive episodes in top 10 are from the same series",
+        no_adjacent_ok,
+        f"violations={adjacent_violations}" if adjacent_violations else "none"
+    )
+
+    return result
+
+
 # ============================================================================
 # LLM Evaluation (Multi-LLM Judge)
 # ============================================================================
@@ -1245,6 +1308,12 @@ async def run_test_async(
                     result.add_llm_results(llm_results)
                 if llm_evaluation:
                     result.set_llm_evaluation(llm_evaluation)
+        
+        elif test_id == "08_series_diversity":
+            profile = profiles.get("01_cold_start", {"engagements": [], "excluded_ids": []})
+            response = get_recommendations(profile)
+            result = validate_series_diversity(response, test_case)
+            result.test_type = test_case.get("type", "MFT")
         
         else:
             result = TestResult(test_id, f"Unknown test: {test_id}")

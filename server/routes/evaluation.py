@@ -25,6 +25,54 @@ from runner import (
 router = APIRouter()
 
 
+def _build_engine_context(state) -> EngineContext:
+    """
+    Build EngineContext for evaluation, using Firestore + Pinecone when configured
+    (same data sources as session creation).
+    """
+    engine = state.current_algorithm.engine_module
+    algo_config = getattr(state.current_algorithm, "parsed_config", None) or state.current_algorithm.config
+
+    # Episodes: Firestore when provider exists, else dataset
+    if state.current_episode_provider:
+        episodes = state.current_episode_provider.get_episodes(limit=None)
+        episode_by_content_id = state.current_episode_provider.get_episode_by_content_id_map()
+    else:
+        episodes = state.current_dataset.episodes
+        episode_by_content_id = state.current_dataset.episode_by_content_id
+
+    # Embeddings: use in-memory when available, else fetch from Pinecone in batches
+    # (fetching all 900+ ids at once can hit 414 Request-URI Too Large)
+    embeddings = state.current_embeddings
+    if not embeddings and state.vector_store:
+        all_ids = [eid for ep in episodes for eid in (ep.get("id"), ep.get("content_id")) if eid]
+        all_ids = list(dict.fromkeys(all_ids))
+        if all_ids:
+            batch_size = 100
+            merged: dict = {}
+            for i in range(0, len(all_ids), batch_size):
+                chunk = all_ids[i : i + batch_size]
+                batch = state.vector_store.get_embeddings(
+                    chunk,
+                    state.current_algorithm.folder_name,
+                    state.current_algorithm.strategy_version,
+                    state.current_dataset.folder_name,
+                )
+                if batch:
+                    merged.update(batch)
+            embeddings = merged
+    if not embeddings:
+        embeddings = {}
+
+    return EngineContext(
+        engine_module=engine,
+        episodes=episodes,
+        embeddings=embeddings,
+        episode_by_content_id=episode_by_content_id,
+        algo_config=algo_config,
+    )
+
+
 @router.get("/profiles")
 def list_profiles():
     """List available evaluation profiles."""
@@ -151,14 +199,7 @@ async def run_single_test(
     if x_anthropic_key:
         os.environ["ANTHROPIC_API_KEY"] = x_anthropic_key
     profiles = load_all_profiles()
-    algo_config = getattr(state.current_algorithm, "parsed_config", None) or state.current_algorithm.config
-    engine_context = EngineContext(
-        engine_module=state.current_algorithm.engine_module,
-        episodes=state.current_dataset.episodes,
-        embeddings=state.current_embeddings,
-        episode_by_content_id=state.current_dataset.episode_by_content_id,
-        algo_config=algo_config,
-    )
+    engine_context = _build_engine_context(state)
     result = await run_test_async(
         test_id=request.test_id,
         profiles=profiles,
@@ -191,14 +232,7 @@ async def run_all_tests_endpoint(
     if x_anthropic_key:
         os.environ["ANTHROPIC_API_KEY"] = x_anthropic_key
     profiles = load_all_profiles()
-    algo_config = getattr(state.current_algorithm, "parsed_config", None) or state.current_algorithm.config
-    engine_context = EngineContext(
-        engine_module=state.current_algorithm.engine_module,
-        episodes=state.current_dataset.episodes,
-        embeddings=state.current_embeddings,
-        episode_by_content_id=state.current_dataset.episode_by_content_id,
-        algo_config=algo_config,
-    )
+    engine_context = _build_engine_context(state)
     results = await run_all_tests_async(
         verbose=False,
         skip_llm=False,
