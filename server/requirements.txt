@@ -14,7 +14,8 @@ litellm>=1.30.0
 
 # Vector database
 qdrant-client>=1.7.0
-pinecone>=5.0.0
+# Pinecone: asyncio extra required (no sync fallback)
+pinecone[asyncio]>=5.0.0
 
 # Data processing
 numpy>=1.24.0

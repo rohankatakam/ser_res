@@ -59,6 +59,14 @@ class RequestOnlyEngagementStore:
     ) -> List[dict]:
         return list(request_engagements)
 
+    async def get_engagements_for_ranking_async(
+        self,
+        user_id: Optional[str],
+        request_engagements: List[dict],
+    ) -> List[dict]:
+        """Async path: no I/O, return request engagements only."""
+        return list(request_engagements)
+
     def record_engagement(
         self,
         user_id: Optional[str],

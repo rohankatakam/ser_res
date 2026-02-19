@@ -2,17 +2,41 @@
 User store: resolve or create users by display name (no password).
 Persistence to JSON file or Firestore depending on DATA_SOURCE.
 When using Firestore, document ID = normalized username (lowercase, no spaces).
+Supports async get_by_id for parallel session create when using Firestore.
 """
 
 import json
 import uuid
 from pathlib import Path
-from typing import Dict, List, Optional, Protocol, Union
+from typing import Any, Dict, List, Optional, Protocol, Union
+
+# Optional async Firestore (used when available)
+try:
+    from google.cloud.firestore import AsyncClient
+    from google.oauth2 import service_account
+    _HAS_ASYNC_FIRESTORE = True
+except ImportError:
+    _HAS_ASYNC_FIRESTORE = False
+    AsyncClient = None
+    service_account = None
 
 
 def _normalize_name(name: str) -> str:
     """Normalize for use as user_id / doc id: strip and lowercase."""
     return name.strip().lower()
+
+
+def _project_id_from_credentials_file(credentials_path: Union[Path, str]) -> Optional[str]:
+    """Read project_id from a Google service account JSON file if present."""
+    try:
+        path = Path(credentials_path)
+        if not path.is_file():
+            return None
+        with open(path) as f:
+            data = json.load(f)
+        return data.get("project_id") or data.get("projectId")
+    except Exception:
+        return None
 
 
 class UserStore(Protocol):
@@ -101,6 +125,10 @@ class JsonUserStore:
         uid = self._by_display_name.get(key)
         return self._users.get(uid) if uid else None
 
+    async def get_by_id_async(self, user_id: str) -> Optional[Dict]:
+        """Async path: in-memory, same as get_by_id."""
+        return self.get_by_id(user_id)
+
     def get_by_display_name(self, display_name: str) -> Optional[Dict]:
         key = display_name.strip().lower()
         if not key:
@@ -184,11 +212,32 @@ class FirestoreUserStore:
                 firebase_admin.initialize_app(options={"projectId": project_id} if project_id else None)
         self._db = firestore.client()
         self._coll = self._db.collection("users")
+        self._project_id = project_id
+        self._credentials_path = str(Path(credentials_path).resolve()) if credentials_path else None
+        self._async_db: Any
+        if not _HAS_ASYNC_FIRESTORE:
+            raise ImportError(
+                "FirestoreUserStore requires google.cloud.firestore.AsyncClient"
+            )
+        if not credentials_path:
+            raise ValueError("FirestoreUserStore requires credentials_path for async Firestore")
+        creds = service_account.Credentials.from_service_account_file(self._credentials_path)
+        proj = project_id or _project_id_from_credentials_file(self._credentials_path)
+        self._async_db = AsyncClient(project=proj, credentials=creds)
 
     def _doc_to_user(self, doc) -> Dict:
         d = doc.to_dict()
         d["user_id"] = doc.id
         return d
+
+    async def get_by_id_async(self, user_id: str) -> Optional[Dict]:
+        """Async-only: fetch user via Firestore AsyncClient."""
+        norm = _normalize_name(user_id)
+        doc_ref = self._async_db.collection("users").document(norm)
+        doc = await doc_ref.get()
+        if doc.exists:
+            return self._doc_to_user(doc)
+        return None
 
     def get_by_id(self, user_id: str) -> Optional[Dict]:
         norm = _normalize_name(user_id)

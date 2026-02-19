@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements first for better caching (includes pinecone[asyncio])
 COPY server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

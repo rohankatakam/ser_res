@@ -118,6 +118,18 @@ class PineconeVectorStore:
             episode_ids, algorithm_version, strategy_version, dataset_version
         )
 
+    async def get_embeddings_async(
+        self,
+        episode_ids: List[str],
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+    ) -> Dict[str, List[float]]:
+        """Async fetch. Requires store to implement get_embeddings_async (Pinecone with asyncio)."""
+        return await self._store.get_embeddings_async(
+            episode_ids, algorithm_version, strategy_version, dataset_version
+        )
+
     def save_embeddings(
         self,
         algorithm_version: str,

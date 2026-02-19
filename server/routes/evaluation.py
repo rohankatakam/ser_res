@@ -33,10 +33,10 @@ def _build_engine_context(state) -> EngineContext:
     engine = state.current_algorithm.engine_module
     algo_config = getattr(state.current_algorithm, "parsed_config", None) or state.current_algorithm.config
 
-    # Episodes: Firestore when provider exists, else dataset
+    # Episodes: Firestore when provider exists, else dataset (build map from episodes to avoid second scan)
     if state.current_episode_provider:
         episodes = state.current_episode_provider.get_episodes(limit=None)
-        episode_by_content_id = state.current_episode_provider.get_episode_by_content_id_map()
+        episode_by_content_id = {ep["content_id"]: ep for ep in episodes if isinstance(ep, dict) and ep.get("content_id")}
     else:
         episodes = state.current_dataset.episodes
         episode_by_content_id = state.current_dataset.episode_by_content_id

@@ -1,9 +1,9 @@
 """
 Pinecone embedding store for episode vectors.
 
-Stores and fetches embeddings by episode id (same id as Firestore) for
-lookup when building recommendation sessions. Uses namespaces per
-algorithm_version + strategy_version + dataset_version.
+Requires pinecone[asyncio] (pip install 'pinecone[asyncio]'). Sync methods are kept
+for scripts (e.g. populate_pinecone); session create uses async only.
+Uses namespaces per algorithm_version + strategy_version + dataset_version.
 """
 
 import os
@@ -17,6 +17,10 @@ except ImportError:
     HAS_PINECONE = False
     Pinecone = None
     ServerlessSpec = None
+
+PINECONE_ASYNC_REQUIRED_MSG = (
+    "Pinecone asyncio support is required. Install with: pip install 'pinecone[asyncio]'"
+)
 
 # Default dimension for OpenAI text-embedding-3-small
 DEFAULT_DIMENSION = 1536
@@ -67,6 +71,30 @@ class PineconeEmbeddingStore:
         self._region = region
         self._client: Optional[Pinecone] = None
         self._index = None
+        self._index_host: Optional[str] = None
+
+    def _get_index_host(self) -> str:
+        """Resolve index host for async fetch (cached). Required for get_embeddings_async."""
+        if self._index_host is not None:
+            return self._index_host
+        print(f"[Pinecone] resolving index host for {self._index_name!r}...", flush=True)
+        try:
+            desc = self.client.describe_index(self._index_name)
+            host = getattr(desc, "host", None) or (
+                desc.get("host") if isinstance(desc, dict) else None
+            )
+            if not host:
+                raise ValueError(
+                    f"Pinecone index {self._index_name!r} has no host; check index exists and API key."
+                )
+            self._index_host = host
+            print(f"[Pinecone] index host resolved: {host!r}", flush=True)
+            return self._index_host
+        except Exception as e:
+            print(f"[Pinecone] _get_index_host failed: {e}", flush=True)
+            raise RuntimeError(
+                f"Could not resolve Pinecone index host for {self._index_name!r}: {e}"
+            ) from e
 
     @property
     def client(self) -> Pinecone:
@@ -165,6 +193,41 @@ class PineconeEmbeddingStore:
         except Exception as e:
             print(f"[Pinecone] get_embeddings failed: {e}")
             return {}
+
+    async def get_embeddings_async(
+        self,
+        episode_ids: List[str],
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+    ) -> Dict[str, List[float]]:
+        """Async fetch via IndexAsyncio (SDK: sync Pinecone + pc.IndexAsyncio(host) per call). Requires pinecone[asyncio]."""
+        if not episode_ids:
+            return {}
+        print(f"[Pinecone] get_embeddings_async started ids={len(episode_ids)}", flush=True)
+        host = self._get_index_host()
+        ns = self._ns(algorithm_version, strategy_version, dataset_version)
+        pc = self.client
+        try:
+            print(f"[Pinecone] get_embeddings_async fetching namespace={ns!r}...", flush=True)
+            async with pc.IndexAsyncio(host=host) as idx:
+                fetched = await idx.fetch(ids=episode_ids, namespace=ns)
+            print(f"[Pinecone] get_embeddings_async fetch done", flush=True)
+        except Exception as e:
+            print(f"[Pinecone] get_embeddings_async failed: {type(e).__name__}: {e}", flush=True)
+            err_msg = str(e).lower()
+            if "asyncio" in err_msg or "additional dependencies" in err_msg:
+                raise ImportError(PINECONE_ASYNC_REQUIRED_MSG) from e
+            raise
+        out: Dict[str, List[float]] = {}
+        if fetched.vectors:
+            for eid, record in fetched.vectors.items():
+                if record:
+                    vals = getattr(record, "values", None)
+                    if vals is not None:
+                        out[eid] = list(vals)
+        print(f"[Pinecone] get_embeddings_async namespace={ns!r} requested={len(episode_ids)} returned={len(out)}")
+        return out
 
     def save_embeddings(
         self,

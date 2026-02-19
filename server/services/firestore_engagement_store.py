@@ -3,13 +3,40 @@ Firestore engagement store: per-user engagements in users/{user_id}/engagements.
 
 Used when DATA_SOURCE=firebase. Reuses the same Firebase app as FirestoreUserStore
 and FirestoreEpisodeProvider (same credentials_path and project_id).
+Supports async via google.cloud.firestore.AsyncClient for parallel session create.
 """
 
-from typing import List, Optional, Union
+import json
 from pathlib import Path
+from typing import Any, List, Optional, Union
+
+
+def _project_id_from_credentials_file(credentials_path: Union[Path, str]) -> Optional[str]:
+    """Read project_id from a Google service account JSON file if present."""
+    try:
+        path = Path(credentials_path)
+        if not path.is_file():
+            return None
+        with open(path) as f:
+            data = json.load(f)
+        return data.get("project_id") or data.get("projectId")
+    except Exception:
+        return None
 
 # Limit for get_engagements_for_ranking (most recent N)
 ENGAGEMENTS_READ_LIMIT = 500
+
+# Optional async client (used when available for parallel fetches)
+try:
+    from google.cloud.firestore import AsyncClient
+    from google.cloud.firestore_v1.query import Query as FirestoreQuery
+    from google.oauth2 import service_account
+    _HAS_ASYNC_FIRESTORE = True
+except ImportError:
+    _HAS_ASYNC_FIRESTORE = False
+    AsyncClient = None
+    FirestoreQuery = None
+    service_account = None
 
 
 class FirestoreEngagementStore:
@@ -38,11 +65,46 @@ class FirestoreEngagementStore:
             else:
                 firebase_admin.initialize_app(options={"projectId": project_id} if project_id else None)
         self._db = firestore.client()
+        self._project_id = project_id
+        self._credentials_path = str(Path(credentials_path).resolve()) if credentials_path else None
+        self._async_db: Any
+        if not _HAS_ASYNC_FIRESTORE:
+            raise ImportError(
+                "FirestoreEngagementStore requires google.cloud.firestore.AsyncClient"
+            )
+        if not credentials_path:
+            raise ValueError("FirestoreEngagementStore requires credentials_path for async Firestore")
+        creds = service_account.Credentials.from_service_account_file(self._credentials_path)
+        proj = project_id or _project_id_from_credentials_file(self._credentials_path)
+        self._async_db = AsyncClient(project=proj, credentials=creds)
 
     def _engagements_ref(self, user_id: str):
         """Reference to users/{user_id}/engagements subcollection."""
         from firebase_admin import firestore
         return self._db.collection("users").document(user_id).collection("engagements")
+
+    async def get_engagements_for_ranking_async(
+        self,
+        user_id: Optional[str],
+        request_engagements: List[dict],
+    ) -> List[dict]:
+        """Async-only: Firestore read via AsyncClient."""
+        if user_id is None or not user_id.strip():
+            return list(request_engagements)
+        ref = self._async_db.collection("users").document(user_id.strip()).collection("engagements")
+        query = ref.order_by("timestamp", direction=FirestoreQuery.DESCENDING).limit(ENGAGEMENTS_READ_LIMIT)
+        out = []
+        async for doc in query.stream():
+            d = doc.to_dict()
+            out.append({
+                "id": doc.id,
+                "episode_id": d.get("episode_id", ""),
+                "type": d.get("type", "click"),
+                "timestamp": d.get("timestamp", ""),
+                "episode_title": d.get("episode_title", ""),
+                "series_name": d.get("series_name", ""),
+            })
+        return out
 
     def get_engagements_for_ranking(
         self,

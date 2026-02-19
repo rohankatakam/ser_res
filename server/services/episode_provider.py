@@ -85,6 +85,17 @@ class DatasetEpisodeProvider:
     def get_episode_by_content_id_map(self) -> Dict[str, Dict]:
         return self._dataset.episode_by_content_id
 
+    async def get_episodes_async(
+        self,
+        limit: Optional[int] = None,
+        offset: int = 0,
+        since: Optional[str] = None,
+        until: Optional[str] = None,
+        episode_ids: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        """Async path: in-memory, same as get_episodes."""
+        return self.get_episodes(limit=limit, offset=offset, since=since, until=until, episode_ids=episode_ids)
+
 
 class JsonEpisodeProvider:
     """
@@ -130,6 +141,17 @@ class JsonEpisodeProvider:
         if limit is not None:
             episodes = episodes[:limit]
         return episodes
+
+    async def get_episodes_async(
+        self,
+        limit: Optional[int] = None,
+        offset: int = 0,
+        since: Optional[str] = None,
+        until: Optional[str] = None,
+        episode_ids: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        """Async path: in-memory, same as get_episodes."""
+        return self.get_episodes(limit=limit, offset=offset, since=since, until=until, episode_ids=episode_ids)
 
     def get_episode(self, episode_id: str) -> Optional[Dict]:
         if episode_id in self._episode_by_id:
@@ -180,6 +202,25 @@ class HttpEpisodeProvider:
         data = r.json()
         return data.get("episodes", [])
 
+    async def get_episodes_async(
+        self,
+        limit: Optional[int] = None,
+        offset: int = 0,
+        since: Optional[str] = None,
+        until: Optional[str] = None,
+        episode_ids: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        """Async path: run sync HTTP in thread to avoid blocking."""
+        import asyncio
+        return await asyncio.to_thread(
+            self.get_episodes,
+            limit=limit,
+            offset=offset,
+            since=since,
+            until=until,
+            episode_ids=episode_ids,
+        )
+
     def get_episode(self, episode_id: str) -> Optional[Dict]:
         r = requests.get(
             f"{self._base}/episodes/{requests.utils.quote(episode_id)}",
@@ -215,6 +256,34 @@ class HttpEpisodeProvider:
         return self._content_id_map_cache
 
 
+# Optional async Firestore for parallel session create (uses gRPC; same package as sync client)
+try:
+    from google.cloud.firestore import AsyncClient as FirestoreAsyncClient
+    from google.cloud.firestore_v1.query import Query as FirestoreQuery
+    from google.oauth2 import service_account as sa_module
+    _HAS_ASYNC_FIRESTORE = True
+    _ASYNC_IMPORT_ERROR = None
+except ImportError as e:
+    _HAS_ASYNC_FIRESTORE = False
+    FirestoreAsyncClient = None
+    FirestoreQuery = None
+    sa_module = None
+    _ASYNC_IMPORT_ERROR = e
+
+
+def _project_id_from_credentials_file(credentials_path: Union[Path, str]) -> Optional[str]:
+    """Read project_id from a Google service account JSON file if present."""
+    try:
+        path = Path(credentials_path)
+        if not path.is_file():
+            return None
+        with open(path) as f:
+            data = json.load(f)
+        return data.get("project_id") or data.get("projectId")
+    except Exception:
+        return None
+
+
 class FirestoreEpisodeProvider:
     """
     Episode provider backed by Cloud Firestore.
@@ -237,6 +306,7 @@ class FirestoreEpisodeProvider:
                 "firebase-admin is required for FirestoreEpisodeProvider. pip install firebase-admin"
             )
         self._project_id = project_id
+        self._credentials_path = str(Path(credentials_path).resolve()) if credentials_path else None
         if not firebase_admin._apps:
             if credentials_path:
                 cred = credentials.Certificate(str(Path(credentials_path).resolve()))
@@ -248,6 +318,21 @@ class FirestoreEpisodeProvider:
         self._episodes_coll = self._db.collection("episodes")
         self._series_coll = self._db.collection("series")
         self._content_id_map_cache: Optional[Dict[str, Dict]] = None
+        self._async_db: Any
+        if not _HAS_ASYNC_FIRESTORE:
+            err = _ASYNC_IMPORT_ERROR
+            raise ImportError(
+                f"FirestoreEpisodeProvider requires google.cloud.firestore.AsyncClient: {type(err).__name__}: {err}"
+            ) from err
+        if not credentials_path:
+            raise ValueError("FirestoreEpisodeProvider requires credentials_path for async Firestore")
+        creds = sa_module.Credentials.from_service_account_file(self._credentials_path)
+        proj = project_id or _project_id_from_credentials_file(self._credentials_path)
+        self._async_db = FirestoreAsyncClient(project=proj, credentials=creds)
+        print(
+            f"[FirestoreEpisodeProvider] Async client initialized (project={proj or 'inferred'})",
+            flush=True,
+        )
 
     def _doc_to_dict(self, doc: Any) -> Dict:
         d = doc.to_dict()
@@ -288,6 +373,46 @@ class FirestoreEpisodeProvider:
         fetch_limit = min(fetch_limit, 2000)
         docs = query.limit(fetch_limit).stream()
         out = [self._doc_to_dict(d) for d in docs]
+        if offset:
+            out = out[offset:]
+        if limit is not None:
+            out = out[:limit]
+        return out
+
+    async def get_episodes_async(
+        self,
+        limit: Optional[int] = None,
+        offset: int = 0,
+        since: Optional[str] = None,
+        until: Optional[str] = None,
+        episode_ids: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        """Async-only: fetch episodes via Firestore AsyncClient."""
+        if episode_ids is not None:
+            out = []
+            for eid in episode_ids:
+                doc_ref = self._async_db.collection("episodes").document(eid)
+                doc = await doc_ref.get()
+                if doc.exists:
+                    out.append(self._doc_to_dict(doc))
+            if offset:
+                out = out[offset:]
+            if limit is not None:
+                out = out[:limit]
+            return out
+        coll = self._async_db.collection("episodes")
+        query = coll
+        if since:
+            query = query.where("published_at", ">=", since)
+        if until:
+            query = query.where("published_at", "<=", until)
+        query = query.order_by("published_at", direction=FirestoreQuery.DESCENDING)
+        fetch_limit = min((limit or 2000) + offset, 2000)
+        query = query.limit(fetch_limit)
+        out = []
+        async for doc in query.stream():
+            out.append(self._doc_to_dict(doc))
+        print(f"[FirestoreEpisodeProvider] get_episodes_async: streamed {len(out)} docs", flush=True)
         if offset:
             out = out[offset:]
         if limit is not None:
