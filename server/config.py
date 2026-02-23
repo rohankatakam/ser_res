@@ -33,32 +33,32 @@ class ServerConfig:
     host: str = "0.0.0.0"
     port: int = 8000
 
-    # Database connections
-    qdrant_url: Optional[str] = None
-
     # Paths
     algorithms_dir: Path = Path(__file__).parent.parent / "algorithm"
-    datasets_dir: Path = Path(__file__).parent.parent / "datasets"
+    fixtures_dir: Path = Path(__file__).parent.parent / "evaluation" / "fixtures"
     cache_dir: Path = Path(__file__).parent.parent / "cache"
     evaluation_dir: Path = Path(__file__).parent.parent / "evaluation"
 
-    # Data source: "firebase" (primary) | "json" (deprecated, for local/dev only)
-    data_source: Optional[str] = None
-    # Deprecated: JSON file paths (use Firestore in production)
-    episodes_json_path: Optional[Path] = None
-    series_json_path: Optional[Path] = None
-    users_json_path: Optional[Path] = None
-    # Firebase: path to service account JSON and optional project id
+    # Firebase (required for Firestore: episodes, series, users, engagements)
     firebase_credentials_path: Optional[Path] = None
     firebase_project_id: Optional[str] = None
 
+    # Firestore collections (aligned with metaspark: podcast_episodes, podcast_series)
+    episodes_collection: str = "podcast_episodes"
+    series_collection: str = "podcast_series"
+
+    # Pinecone: separate index for rec_for_you (not shared with RAG indexes)
+    pinecone_rec_for_you_index: str = "rec-for-you"
+
     @classmethod
     def from_env(cls) -> "ServerConfig":
-        """Load configuration from environment variables."""
+        """Load configuration from environment variables.
+
+        Env vars: OPENAI_API_KEY, GEMINI_API_KEY, HOST, PORT,
+        ALGORITHMS_DIR, FIXTURES_DIR, CACHE_DIR, EVALUATION_DIR,
+        FIREBASE_CREDENTIALS_PATH or GOOGLE_APPLICATION_CREDENTIALS, FIREBASE_PROJECT_ID.
+        """
         base_dir = Path(__file__).parent.parent
-        data_source = os.getenv("DATA_SOURCE", "").strip().lower() or None
-        if data_source and data_source not in ("json", "firebase"):
-            data_source = None
 
         def _path_env(key: str, default: Optional[Path] = None) -> Optional[Path]:
             v = os.getenv(key)
@@ -72,17 +72,15 @@ class ServerConfig:
             gemini_api_key=os.getenv("GEMINI_API_KEY"),
             host=os.getenv("HOST", "0.0.0.0"),
             port=int(os.getenv("PORT", "8000")),
-            qdrant_url=os.getenv("QDRANT_URL"),
             algorithms_dir=Path(os.getenv("ALGORITHMS_DIR", str(base_dir / "algorithm"))),
-            datasets_dir=Path(os.getenv("DATASETS_DIR", str(base_dir / "datasets"))),
+            fixtures_dir=Path(os.getenv("FIXTURES_DIR", str(base_dir / "evaluation" / "fixtures"))),
             cache_dir=Path(os.getenv("CACHE_DIR", str(base_dir / "cache"))),
             evaluation_dir=Path(os.getenv("EVALUATION_DIR", str(base_dir / "evaluation"))),
-            data_source=data_source,
-            episodes_json_path=_path_env("EPISODES_JSON_PATH"),
-            series_json_path=_path_env("SERIES_JSON_PATH"),
-            users_json_path=_path_env("USERS_JSON_PATH", base_dir / "data" / "users.json"),
             firebase_credentials_path=_path_env("FIREBASE_CREDENTIALS_PATH") or _path_env("GOOGLE_APPLICATION_CREDENTIALS"),
             firebase_project_id=os.getenv("FIREBASE_PROJECT_ID") or None,
+            episodes_collection=os.getenv("FIRESTORE_EPISODES_COLLECTION", "podcast_episodes"),
+            series_collection=os.getenv("FIRESTORE_SERIES_COLLECTION", "podcast_series"),
+            pinecone_rec_for_you_index=os.getenv("PINECONE_REC_FOR_YOU_INDEX", "rec-for-you"),
         )
     
     def validate(self) -> tuple[bool, list[str]]:
@@ -97,8 +95,8 @@ class ServerConfig:
         if not self.algorithms_dir.exists():
             errors.append(f"Algorithms directory not found: {self.algorithms_dir}")
         
-        if not self.datasets_dir.exists():
-            errors.append(f"Datasets directory not found: {self.datasets_dir}")
+        if not self.fixtures_dir.exists():
+            errors.append(f"Fixtures directory not found: {self.fixtures_dir}")
         
         # Cache dir will be created if needed
         # Evaluation dir is optional

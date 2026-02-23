@@ -1,5 +1,7 @@
 # Serafis Cleanup Plan
 
+**Status:** Phase 0 done (root `.env.example` exists). Phase 1 done (api/ removed). Phase 2 partial (server has `routes/`, `services/`, `models/`; legacy items noted). Phases 3–4 as-is.
+
 This document outlines a safe order to clean up the **api**, **frontend**, **server**, and **evaluation** modules, with testing after each change. It is based on the investor memo (narrative intelligence for investors from alternative content) and the current docker-compose architecture.
 
 ---

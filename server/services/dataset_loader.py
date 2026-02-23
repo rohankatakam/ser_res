@@ -1,7 +1,7 @@
 """
 Dataset Loader
 
-Dynamically loads datasets from the datasets/ directory.
+Dynamically loads datasets from the fixtures directory (evaluation/fixtures).
 Each dataset must have a manifest.json and episodes.json.
 
 Usage:
@@ -77,10 +77,10 @@ class LoadedDataset:
 
 class DatasetLoader:
     """
-    Loads datasets from the datasets/ directory.
+    Loads datasets from the fixtures directory.
     
     Expected directory structure:
-        datasets/
+        evaluation/fixtures/
         ├── eval_909_feb2026/
         │   ├── manifest.json
         │   ├── episodes.json
@@ -94,7 +94,7 @@ class DatasetLoader:
         Initialize the dataset loader.
         
         Args:
-            datasets_dir: Path to the datasets/ directory
+            datasets_dir: Path to the fixtures directory (e.g. evaluation/fixtures)
         """
         self.datasets_dir = Path(datasets_dir)
         self._loaded_datasets: Dict[str, LoadedDataset] = {}

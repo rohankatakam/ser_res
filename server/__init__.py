@@ -10,7 +10,6 @@ from .services import (
     AlgorithmLoader,
     CompatibilityResult,
     DatasetLoader,
-    EmbeddingCache,
     EmbeddingGenerator,
     Validator,
 )
@@ -20,7 +19,6 @@ __all__ = [
     "ServerConfig",
     "get_config",
     "reload_config",
-    "EmbeddingCache",
     "EmbeddingGenerator",
     "AlgorithmLoader",
     "DatasetLoader",

@@ -6,7 +6,7 @@ Cleans up episodes.json to have a consistent, honest schema.
 Removes misleading fields and standardizes the format.
 
 Usage:
-    python cleanup_episodes.py --input ../mock_api/data/episodes.json --output ../mock_api/data/episodes_clean.json
+    python cleanup_episodes.py --input fixtures/eval_909_feb2026/episodes.json --output fixtures/eval_909_feb2026/episodes_clean.json
 """
 
 import json

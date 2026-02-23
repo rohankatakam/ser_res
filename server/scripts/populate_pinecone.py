@@ -106,15 +106,24 @@ def main() -> int:
 
     # Load episodes
     if args.source == "firestore":
-        provider = FirestoreEpisodeProvider(credentials_path=args.credentials)
+        try:
+            from server.config import get_config
+            cfg = get_config()
+            provider = FirestoreEpisodeProvider(
+                credentials_path=args.credentials,
+                episodes_collection=cfg.episodes_collection,
+                series_collection=cfg.series_collection,
+            )
+        except Exception:
+            provider = FirestoreEpisodeProvider(credentials_path=args.credentials)
         episodes = provider.get_episodes(limit=args.limit or 2000)
         dataset_version = "firestore"
     else:
-        datasets_dir = _REPO_ROOT / "datasets"
-        if not datasets_dir.exists():
-            print(f"Datasets dir not found: {datasets_dir}", file=sys.stderr)
+        fixtures_dir = _REPO_ROOT / "evaluation" / "fixtures"
+        if not fixtures_dir.exists():
+            print(f"Fixtures dir not found: {fixtures_dir}", file=sys.stderr)
             return 1
-        ds_loader = DatasetLoader(datasets_dir)
+        ds_loader = DatasetLoader(fixtures_dir)
         dataset = ds_loader.load_dataset(args.dataset)
         provider = DatasetEpisodeProvider(dataset)
         episodes = provider.get_episodes(limit=args.limit)
@@ -160,9 +169,11 @@ def main() -> int:
         print("No embeddings to save.", file=sys.stderr)
         return 0
 
-    # Upsert to Pinecone (vector id = episode id). Use folder_name so namespace matches the server.
+    # Upsert to rec_for_you index (separate from RAG indexes). Use folder_name so namespace matches the server.
+    index_name = os.environ.get("PINECONE_REC_FOR_YOU_INDEX", "rec-for-you")
     store = PineconeEmbeddingStore(
         api_key=args.pinecone_key,
+        index_name=index_name,
         dimension=algo.embedding_dimensions,
     )
     algorithm_version = getattr(algo, "folder_name", None) or algo.manifest.version

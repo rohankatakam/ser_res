@@ -12,8 +12,7 @@ google-generativeai>=0.3.0
 # Multi-LLM evaluation (required for judges package)
 litellm>=1.30.0
 
-# Vector database
-qdrant-client>=1.7.0
+# Vector database (Pinecone for production; Qdrant deprecated/removed)
 # Pinecone: asyncio extra required (no sync fallback)
 pinecone[asyncio]>=5.0.0
 

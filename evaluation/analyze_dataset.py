@@ -12,8 +12,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 # Paths
-DATA_DIR = Path(__file__).parent.parent / "mock_api" / "data"
-EPISODES_PATH = DATA_DIR / "episodes.json"
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
+EPISODES_PATH = FIXTURES_DIR / "eval_909_feb2026" / "episodes.json"
 
 # Targets from DATASET_SPEC.md
 CATEGORY_TARGETS = {

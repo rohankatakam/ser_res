@@ -26,7 +26,7 @@ python -m server.scripts.upload_to_firestore
 
 Optional arguments:
 
-- `--dataset-path PATH` — Path to the dataset directory (default: `datasets/eval_909_feb2026`).
+- `--dataset-path PATH` — Path to the dataset directory (default: `evaluation/fixtures/eval_909_feb2026`).
 - `--skip-users` — Do not create the `users` collection placeholder.
 
 This creates three collections:

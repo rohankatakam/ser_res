@@ -1,5 +1,7 @@
 # Refactor Plan: Algorithm + Server
 
+**Note:** Qdrant references in this document are outdated. Pinecone is the primary embedding store for production; Qdrant is deprecated.
+
 This document plans refactoring of `algorithm/` and `server/` to remove redundancy, dead code, and ambiguous or poorly written code. It extends the cleanup work from `CLEANUP_PLAN.md`.
 
 ---

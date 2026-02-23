@@ -1,7 +1,7 @@
 # Serafis Evaluation Framework
 # Docker Compose — reads project root .env (copy from .env.example). Never commit .env.
 #
-# Required in .env: OPENAI_API_KEY, PINECONE_API_KEY, DATA_SOURCE=firebase, FIREBASE_CREDENTIALS_PATH=<path to service account JSON>.
+# Required in .env: OPENAI_API_KEY, PINECONE_API_KEY, FIREBASE_CREDENTIALS_PATH=<path to service account JSON>.
 # Optional: GEMINI_API_KEY, ANTHROPIC_API_KEY (evaluation). Firebase key file must exist on host.
 
 services:
@@ -15,7 +15,6 @@ services:
       - "8000:8000"
     volumes:
       - ./algorithm:/data/algorithm:ro
-      - ./datasets:/data/datasets:ro
       - ./cache:/data/cache
       - ./evaluation:/data/evaluation
       # Firebase: host path from .env FIREBASE_CREDENTIALS_PATH (must be an existing file)
@@ -26,10 +25,11 @@ services:
       - HOST=0.0.0.0
       - PORT=8000
       - ALGORITHMS_DIR=/data/algorithm
-      - DATASETS_DIR=/data/datasets
+      - FIXTURES_DIR=/data/evaluation/fixtures
       - CACHE_DIR=/data/cache
       - EVALUATION_DIR=/data/evaluation
       - FIREBASE_CREDENTIALS_PATH=/data/firebase-credentials.json
+      - PINECONE_REC_FOR_YOU_INDEX=${PINECONE_REC_FOR_YOU_INDEX:-rec-for-you}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s

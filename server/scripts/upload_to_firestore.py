@@ -18,7 +18,7 @@ Usage:
     export GOOGLE_APPLICATION_CREDENTIALS=/path/to/serviceAccountKey.json
     python -m server.scripts.upload_to_firestore
   Custom dataset path:
-    python -m server.scripts.upload_to_firestore --credentials path/to/serviceAccountKey.json --dataset-path datasets/eval_909_feb2026
+    python -m server.scripts.upload_to_firestore --credentials path/to/serviceAccountKey.json --dataset-path evaluation/fixtures/eval_909_feb2026
 """
 
 import argparse
@@ -109,7 +109,7 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=str,
-        default=os.environ.get("DATASET_PATH", str(_REPO_ROOT / "datasets" / "eval_909_feb2026")),
+        default=os.environ.get("DATASET_PATH", str(_REPO_ROOT / "evaluation" / "fixtures" / "eval_909_feb2026")),
         help="Path to dataset directory containing episodes.json and series.json",
     )
     parser.add_argument(

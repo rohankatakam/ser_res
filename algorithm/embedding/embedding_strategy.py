@@ -41,7 +41,8 @@ def get_embed_text(episode: dict) -> str:
     Returns:
         Text string to be embedded
     """
-    title = episode.get("title", "")
+    # Support both rec_engine (title) and metaspark (episode_title) field names
+    title = episode.get("title") or episode.get("episode_title", "")
     key_insight = episode.get("key_insight") or ""
 
     embed_text = f"{title}. {key_insight}".strip()
@@ -63,7 +64,7 @@ def validate_episode_for_embedding(episode: dict) -> tuple[bool, str]:
     if not episode.get("id"):
         return False, "Missing 'id' field"
 
-    if not episode.get("title"):
-        return False, "Missing 'title' field"
+    if not (episode.get("title") or episode.get("episode_title")):
+        return False, "Missing 'title' or 'episode_title' field"
 
     return True, ""

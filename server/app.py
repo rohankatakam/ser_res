@@ -19,7 +19,6 @@ try:
         DatasetEpisodeProvider,
         EmbeddingGenerator,
         FirestoreEpisodeProvider,
-        JsonEpisodeProvider,
     )
 except ImportError:
     from config import get_config
@@ -28,7 +27,6 @@ except ImportError:
         DatasetEpisodeProvider,
         EmbeddingGenerator,
         FirestoreEpisodeProvider,
-        JsonEpisodeProvider,
     )
 
 # Evaluation dir on path before routes.evaluation (runner) is loaded
@@ -81,20 +79,18 @@ def create_app() -> FastAPI:
                 dataset = state.dataset_loader.load_dataset(dataset_folder)
                 state.current_dataset = dataset
                 config = state.config
-                if config.data_source == "firebase" and config.firebase_credentials_path:
+                cred_path = config.firebase_credentials_path
+                if cred_path and Path(cred_path).exists() and Path(cred_path).is_file():
                     state.current_episode_provider = FirestoreEpisodeProvider(
                         project_id=config.firebase_project_id,
                         credentials_path=config.firebase_credentials_path,
+                        episodes_collection=config.episodes_collection,
+                        series_collection=config.series_collection,
                     )
                     print("[startup] Episode provider: Firestore")
-                elif config.data_source == "json" and config.episodes_json_path and config.series_json_path:
-                    state.current_episode_provider = JsonEpisodeProvider(
-                        config.episodes_json_path,
-                        config.series_json_path,
-                    )
-                    print(f"[startup] Episode provider: JSON ({config.episodes_json_path})")
                 else:
                     state.current_episode_provider = DatasetEpisodeProvider(dataset)
+                    print("[startup] Episode provider: Fixtures (no Firestore creds)")
                 print(f"[startup] Loaded dataset: {dataset.manifest.name} ({len(dataset.episodes)} episodes)")
             except Exception as e:
                 print(f"[startup] WARNING: Failed to load dataset '{dataset_folder}': {e}")
@@ -153,7 +149,7 @@ def create_app() -> FastAPI:
         state = get_state()
         print("Serafis Evaluation Framework API starting...")
         print(f"Algorithms: {state.config.algorithms_dir}")
-        print(f"Datasets: {state.config.datasets_dir}")
+        print(f"Fixtures: {state.config.fixtures_dir}")
         print(f"Cache: {state.config.cache_dir}")
 
     return app

@@ -12,7 +12,6 @@ try:
         DatasetEpisodeProvider,
         FirestoreEngagementStore,
         FirestoreUserStore,
-        JsonUserStore,
         LoadedAlgorithm,
         LoadedDataset,
         PineconeEmbeddingStore,
@@ -28,7 +27,6 @@ except ImportError:
         DatasetEpisodeProvider,
         FirestoreEngagementStore,
         FirestoreUserStore,
-        JsonUserStore,
         LoadedAlgorithm,
         LoadedDataset,
         PineconeEmbeddingStore,
@@ -46,20 +44,23 @@ class AppState:
 
         # Loaders
         self.algorithm_loader = AlgorithmLoader(config.algorithms_dir)
-        self.dataset_loader = DatasetLoader(config.datasets_dir)
+        self.dataset_loader = DatasetLoader(config.fixtures_dir)
         self.validator = Validator(self.algorithm_loader, self.dataset_loader)
 
-        # Vector store: Pinecone only (required for embeddings).
+        # Vector store: Pinecone only (separate index for rec_for_you, not shared with RAG).
         pinecone_key = (os.environ.get("PINECONE_API_KEY") or "").strip()
         if not pinecone_key:
             raise ValueError(
                 "PINECONE_API_KEY is required. Set it in .env for embeddings (Pinecone)."
             )
-        pinecone_store = PineconeEmbeddingStore(api_key=pinecone_key)
+        index_name = getattr(
+            config, "pinecone_rec_for_you_index", None
+        ) or os.environ.get("PINECONE_REC_FOR_YOU_INDEX", "rec-for-you")
+        pinecone_store = PineconeEmbeddingStore(api_key=pinecone_key, index_name=index_name)
         self.vector_store = PineconeVectorStore(pinecone_store)
         print("[startup] Vector store: Pinecone")
 
-        # Engagement store: Firestore when data_source=firebase and creds set, else request-only
+        # Engagement store: Firestore when creds set, else request-only
         self.engagement_store = self._create_engagement_store(config)
         _es = type(self.engagement_store).__name__
         print(f"[startup] Engagement store: {_es}")
@@ -75,8 +76,8 @@ class AppState:
         self.sessions: Dict[str, Dict] = {}
 
     def _create_engagement_store(self, config: ServerConfig) -> Any:
-        """Create engagement store (Firestore when firebase configured, else request-only)."""
-        if config.data_source == "firebase" and config.firebase_credentials_path:
+        """Create engagement store (Firestore when creds set, else request-only)."""
+        if config.firebase_credentials_path:
             cred_path = Path(config.firebase_credentials_path)
             if not cred_path.exists() or not cred_path.is_file():
                 print(
@@ -98,8 +99,8 @@ class AppState:
         cred_path_obj = Path(cred_path) if cred_path else None
         cred_exists = cred_path_obj and cred_path_obj.exists() if cred_path_obj else False
         cred_is_file = cred_path_obj and cred_path_obj.is_file() if cred_path_obj else False
-        print(f"[startup] User store: DATA_SOURCE={config.data_source!r}, FIREBASE_CREDENTIALS_PATH={cred_path}, exists={cred_exists}, is_file={cred_is_file}")
-        if config.data_source == "firebase" and config.firebase_credentials_path:
+        print(f"[startup] User store: FIREBASE_CREDENTIALS_PATH={cred_path}, exists={cred_exists}, is_file={cred_is_file}")
+        if config.firebase_credentials_path:
             if not cred_exists:
                 print("[startup] Firestore user store skipped: credentials file not found. Set FIREBASE_CREDENTIALS_PATH in .env to your service account JSON path.")
                 return None
@@ -114,12 +115,7 @@ class AppState:
             except Exception as e:
                 print(f"Firestore user store init failed: {e}, user persistence disabled")
                 return None
-        path = config.users_json_path or (config.cache_dir.parent / "data" / "users.json")
-        try:
-            return JsonUserStore(path)
-        except Exception as e:
-            print(f"JSON user store init failed: {e}, user persistence disabled")
-            return None
+        return None
 
     @property
     def is_loaded(self) -> bool:

@@ -9,8 +9,6 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Protocol, Union
 
-import requests
-
 from .dataset_loader import LoadedDataset
 
 
@@ -165,97 +163,6 @@ class JsonEpisodeProvider:
         return self._episode_by_content_id
 
 
-class HttpEpisodeProvider:
-    """
-    Episode provider that calls a Firestore-like HTTP API (e.g. mock_episodes_api).
-    Use for testing the same contract as production without Firestore.
-    """
-
-    def __init__(self, base_url: str, timeout: float = 30.0):
-        self._base = base_url.rstrip("/")
-        self._timeout = timeout
-        self._content_id_map_cache: Optional[Dict[str, Dict]] = None
-
-    def get_episodes(
-        self,
-        limit: Optional[int] = None,
-        offset: int = 0,
-        since: Optional[str] = None,
-        until: Optional[str] = None,
-        episode_ids: Optional[List[str]] = None,
-    ) -> List[Dict]:
-        params = {"offset": offset}
-        if limit is not None:
-            params["limit"] = limit
-        if since:
-            params["since"] = since
-        if until:
-            params["until"] = until
-        if episode_ids:
-            params["episode_ids"] = ",".join(episode_ids)
-        r = requests.get(
-            f"{self._base}/episodes",
-            params=params,
-            timeout=self._timeout,
-        )
-        r.raise_for_status()
-        data = r.json()
-        return data.get("episodes", [])
-
-    async def get_episodes_async(
-        self,
-        limit: Optional[int] = None,
-        offset: int = 0,
-        since: Optional[str] = None,
-        until: Optional[str] = None,
-        episode_ids: Optional[List[str]] = None,
-    ) -> List[Dict]:
-        """Async path: run sync HTTP in thread to avoid blocking."""
-        import asyncio
-        return await asyncio.to_thread(
-            self.get_episodes,
-            limit=limit,
-            offset=offset,
-            since=since,
-            until=until,
-            episode_ids=episode_ids,
-        )
-
-    def get_episode(self, episode_id: str) -> Optional[Dict]:
-        r = requests.get(
-            f"{self._base}/episodes/{requests.utils.quote(episode_id)}",
-            timeout=self._timeout,
-        )
-        if r.status_code == 404:
-            return None
-        r.raise_for_status()
-        return r.json()
-
-    def get_series(self) -> List[Dict]:
-        r = requests.get(f"{self._base}/series", timeout=self._timeout)
-        r.raise_for_status()
-        data = r.json()
-        return data.get("series", [])
-
-    def get_episode_by_content_id_map(self) -> Dict[str, Dict]:
-        if self._content_id_map_cache is not None:
-            return self._content_id_map_cache
-        # Prefer dedicated endpoint if available
-        r = requests.get(
-            f"{self._base}/episode-by-content-id-map",
-            timeout=self._timeout,
-        )
-        if r.status_code == 200:
-            self._content_id_map_cache = r.json()
-            return self._content_id_map_cache
-        # Fallback: fetch all episodes and build map
-        episodes = self.get_episodes(limit=99999)
-        self._content_id_map_cache = {
-            e["content_id"]: e for e in episodes if e.get("content_id")
-        }
-        return self._content_id_map_cache
-
-
 # Optional async Firestore for parallel session create (uses gRPC; same package as sync client)
 try:
     from google.cloud.firestore import AsyncClient as FirestoreAsyncClient
@@ -288,15 +195,18 @@ class FirestoreEpisodeProvider:
     """
     Episode provider backed by Cloud Firestore.
 
-    Uses collections: episodes (doc id = episode id), series (doc id = series id).
-    For get_episodes with since/until or order_by, create a composite index in the
-    Firebase Console: episodes collection, field published_at (Descending).
+    Uses collections from config (default: podcast_episodes, podcast_series for metaspark).
+    Date field: publish_date for podcast_episodes, published_at for legacy episodes.
+    Applies schema adapter to convert metaspark docs to rec_engine format.
     """
 
     def __init__(
         self,
         project_id: Optional[str] = None,
         credentials_path: Optional[Union[Path, str]] = None,
+        *,
+        episodes_collection: str = "podcast_episodes",
+        series_collection: str = "podcast_series",
     ):
         try:
             import firebase_admin
@@ -315,8 +225,9 @@ class FirestoreEpisodeProvider:
             else:
                 firebase_admin.initialize_app(options={"projectId": project_id} if project_id else None)
         self._db = firestore.client()
-        self._episodes_coll = self._db.collection("episodes")
-        self._series_coll = self._db.collection("series")
+        self._episodes_coll = self._db.collection(episodes_collection)
+        self._series_coll = self._db.collection(series_collection)
+        self._date_field = "publish_date" if episodes_collection == "podcast_episodes" else "published_at"
         self._content_id_map_cache: Optional[Dict[str, Dict]] = None
         self._async_db: Any
         if not _HAS_ASYNC_FIRESTORE:
@@ -334,9 +245,16 @@ class FirestoreEpisodeProvider:
             flush=True,
         )
 
-    def _doc_to_dict(self, doc: Any) -> Dict:
+    def _doc_to_dict(self, doc: Any, adapt: bool = True) -> Dict:
         d = doc.to_dict()
         d["id"] = doc.id
+        if adapt:
+            try:
+                from ..schema import to_rec_engine_episode
+                return to_rec_engine_episode(d)
+            except ImportError:
+                from server.schema import to_rec_engine_episode
+                return to_rec_engine_episode(d)
         return d
 
     def get_episodes(
@@ -362,13 +280,12 @@ class FirestoreEpisodeProvider:
             return out
 
         query = self._episodes_coll
+        df = self._date_field
         if since:
-            query = query.where("published_at", ">=", since)
+            query = query.where(df, ">=", since)
         if until:
-            query = query.where("published_at", "<=", until)
-        query = query.order_by(
-            "published_at", direction=firestore.Query.DESCENDING
-        )
+            query = query.where(df, "<=", until)
+        query = query.order_by(df, direction=firestore.Query.DESCENDING)
         fetch_limit = (limit or 2000) + offset
         fetch_limit = min(fetch_limit, 2000)
         docs = query.limit(fetch_limit).stream()
@@ -391,7 +308,7 @@ class FirestoreEpisodeProvider:
         if episode_ids is not None:
             out = []
             for eid in episode_ids:
-                doc_ref = self._async_db.collection("episodes").document(eid)
+                doc_ref = self._async_db.collection(self._episodes_coll.id).document(eid)
                 doc = await doc_ref.get()
                 if doc.exists:
                     out.append(self._doc_to_dict(doc))
@@ -400,13 +317,14 @@ class FirestoreEpisodeProvider:
             if limit is not None:
                 out = out[:limit]
             return out
-        coll = self._async_db.collection("episodes")
+        coll = self._async_db.collection(self._episodes_coll.id)
         query = coll
+        df = self._date_field
         if since:
-            query = query.where("published_at", ">=", since)
+            query = query.where(df, ">=", since)
         if until:
-            query = query.where("published_at", "<=", until)
-        query = query.order_by("published_at", direction=FirestoreQuery.DESCENDING)
+            query = query.where(df, "<=", until)
+        query = query.order_by(df, direction=FirestoreQuery.DESCENDING)
         fetch_limit = min((limit or 2000) + offset, 2000)
         query = query.limit(fetch_limit)
         out = []
@@ -430,7 +348,7 @@ class FirestoreEpisodeProvider:
 
     def get_series(self) -> List[Dict]:
         docs = self._series_coll.stream()
-        return [self._doc_to_dict(d) for d in docs]
+        return [self._doc_to_dict(d, adapt=False) for d in docs]
 
     def get_episode_by_content_id_map(self) -> Dict[str, Dict]:
         if self._content_id_map_cache is not None:

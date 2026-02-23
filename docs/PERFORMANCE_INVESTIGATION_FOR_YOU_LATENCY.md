@@ -292,13 +292,54 @@ Add latency tests to the evaluation harness:
 
 | Term | Meaning | In Serafis |
 |------|---------|------------|
-| **In-memory** | Data held in the server process’s RAM (not disk, not remote DB) | `state.current_dataset.episodes` loaded from file at startup; `state.current_embeddings` when cached |
-| **Caching** | Storing data for reuse; can be in-memory, on disk, or in a cache service | In-memory caching: dataset, embeddings; Firestore/Pinecone are authoritative remote stores |
+| **In-memory** | Data held in the server process’s RAM (not disk, not remote DB) | `state.current_dataset.episodes` loaded from file at startup; `state.current_embeddings` only when populated (e.g. after local generation; **not** when using Pinecone-only “cache”) |
+| **Caching** | Storing data for reuse; can be in-memory, on disk, or in a cache service | **Episode embeddings are one shared set per (algorithm × dataset)** — all users on an instance share the same vectors. Firestore/Pinecone are authoritative remote stores. |
 | **Server-side** | Logic and storage on the backend | All of this is server-side; the React/React Native frontend only calls the API |
 
-**Summary:** In-memory is a kind of server-side cache. When we “use in-memory dataset for episodes,” we avoid re-reading from Firestore and instead use the catalog already loaded into the server’s RAM. This reduces Firestore reads and latency.
+**Summary:** In-memory is a kind of server-side cache. When we “use in-memory dataset for episodes,” we avoid re-reading from Firestore and instead use the catalog already loaded into the server’s RAM. **Embedding “cache” is not per-user:** it is one episode embedding set per catalog; RAM does not grow with the number of users.
 
 ---
+
+## 11a. Scale: 100k Users and Embedding RAM
+
+**Will 100k users work?** Yes, **if** we do not try to store a full copy of all embeddings in RAM per user (we don't — we never store per-user embeddings). The only thing that could be in RAM is **one shared episode embedding set per (algorithm × dataset)**.
+
+### What scales with users vs what doesn't
+
+| What | Scales with 100k users? | Notes |
+|------|--------------------------|--------|
+| **Episode embeddings in RAM** | No | One set per catalog, shared by all users. 100k users still use the same episode vectors. |
+| **Per-user embeddings** | Not stored | We do not store 100k user-specific embedding sets in RAM. |
+| **Request volume** | Yes | Handle by **horizontal scaling**: more Cloud Run instances. Each instance serves many users. |
+| **Pinecone fetch-by-id** | Yes | Each request fetches ~160 IDs. Pinecone is built for high QPS; scale by adding instances. |
+
+### RAM size for "full catalog in RAM" (per instance)
+
+If we **did** load the full episode catalog into `state.current_embeddings` on one instance:
+
+- **Vector size:** `embedding_dimensions × 4` bytes (float32). Default 1536 → **~6 KB per episode**.
+- **10k episodes:** ~60 MB per instance.
+- **100k episodes:** ~600 MB per instance (only for embeddings; add dataset/episodes list overhead).
+
+So: **we can store the full catalog in RAM only when the catalog is small enough and we have a way to load it.** With the **current Pinecone-only vector store**, `load_embeddings()` returns `None` (Pinecone does not support "download all vectors" into the app). So after startup we do **not** fill `state.current_embeddings` from "cache"; we **fetch by ID from Pinecone** on each session create (~160 IDs per request). That design is already suitable for 100k users: many instances, each doing small Pinecone fetches.
+
+### Revised caching options for 100k users
+
+| Option | Use case | Pros | Cons |
+|--------|----------|------|------|
+| **A. Pinecone fetch-by-id (current)** | Default for production | No per-instance embedding RAM; Pinecone handles QPS; horizontal scaling works | ~100–500 ms latency per request for embedding fetch |
+| **B. Per-instance LRU cache** | Reduce Pinecone calls for hot content | Cache last N requested vectors (e.g. 5k–20k) per instance; no full-catalog load | Some RAM per instance; cache invalidation when catalog changes |
+| **C. Full in-memory per instance** | Small catalog (e.g. <15k episodes), single algo/dataset | Fastest reads; no Pinecone call per request | Needs a load path (e.g. disk cache in image or batch fetch at startup); ~60–100 MB per instance for 10k episodes; **not** recommended for 100k episodes (~600 MB) or many instances |
+| **D. Shared cache (e.g. Redis/Memorystore)** | Very large catalog or many instances | One copy of hot/full embeddings; all instances read from cache; avoids N× catalog in RAM | Extra service; populate/invalidate logic; network hop to cache |
+
+**Recommendation for 100k users:**
+
+- **Do not** store per-user embeddings in RAM; we don't, and that's correct.
+- **Do** rely on **horizontal scaling** (more Cloud Run instances) for request volume.
+- **Keep** Pinecone as source of truth; keep **fetch-by-id per request** (Option A) unless latency demands improvement.
+- **Optional:** Add a **per-instance LRU cache** (Option B) for recently requested episode IDs to cut Pinecone calls and latency for hot content, without holding the full catalog in RAM.
+- **Avoid** full in-memory load of 100k-episode catalogs on every instance (Option C at that scale); if you need a "warm" full set, consider a **shared cache** (Option D) or a single "preloader" that fills a Redis-style cache.
+
 
 ## 12. Cloud Run Deployment — Maximized Efficiency
 

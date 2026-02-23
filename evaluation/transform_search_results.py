@@ -5,13 +5,11 @@ Transform Search Results to Episodes Format (Simplified)
 Takes raw search result JSON files from Serafis API and transforms them into
 the simplified episodes.json format needed for the recommendation engine.
 
-Based on DATA_MAPPING.md - uses only fields actually available from bulk searches.
-
 Usage:
     python transform_search_results.py --input-dir ./data/raw --output ./data/episodes_combined.json
     
     # With existing data:
-    python transform_search_results.py --input-dir ./data/raw --output ./data/episodes_combined.json --existing ../mock_api/data/episodes.json
+    python transform_search_results.py --input-dir ./data/raw --output ./data/episodes_combined.json --existing fixtures/eval_909_feb2026/episodes.json
 """
 
 import json

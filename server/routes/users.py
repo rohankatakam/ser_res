@@ -52,7 +52,7 @@ def user_enter(request: UserEnterRequest):
     if not store:
         raise HTTPException(
             status_code=503,
-            detail="User store not configured. Set DATA_SOURCE=firebase and FIREBASE_CREDENTIALS_PATH in .env to your service account JSON path.",
+            detail="User store not configured. Set FIREBASE_CREDENTIALS_PATH in .env to your service account JSON path.",
         )
     if request.user_id:
         user_id = _normalize_username(request.user_id)

@@ -11,7 +11,6 @@ try:
         DatasetEpisodeProvider,
         EmbeddingGenerator,
         FirestoreEpisodeProvider,
-        JsonEpisodeProvider,
     )
     from ..models import LoadConfigRequest
 except ImportError:
@@ -20,7 +19,6 @@ except ImportError:
         DatasetEpisodeProvider,
         EmbeddingGenerator,
         FirestoreEpisodeProvider,
-        JsonEpisodeProvider,
     )
     from models import LoadConfigRequest
 
@@ -195,15 +193,14 @@ def load_configuration(
     state.current_algorithm = algorithm
     state.current_dataset = dataset
     config = state.config
-    if config.data_source == "firebase" and config.firebase_credentials_path:
+    from pathlib import Path
+    cred_path = config.firebase_credentials_path
+    if cred_path and Path(cred_path).exists() and Path(cred_path).is_file():
         state.current_episode_provider = FirestoreEpisodeProvider(
             project_id=config.firebase_project_id,
             credentials_path=config.firebase_credentials_path,
-        )
-    elif config.data_source == "json" and config.episodes_json_path and config.series_json_path:
-        state.current_episode_provider = JsonEpisodeProvider(
-            config.episodes_json_path,
-            config.series_json_path,
+            episodes_collection=config.episodes_collection,
+            series_collection=config.series_collection,
         )
     else:
         state.current_episode_provider = DatasetEpisodeProvider(dataset)

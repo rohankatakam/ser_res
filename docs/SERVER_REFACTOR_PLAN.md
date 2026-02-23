@@ -1,5 +1,7 @@
 # Server Refactor Plan — Split into Submodules
 
+**Status: Implemented.** The server now has `routes/`, `services/`, `models/`, `app.py`, and `state.py`. This document describes the original plan; the current layout matches the target.
+
 The `server/` package is currently a flat set of 13 files with **server.py** at ~1950 lines holding the FastAPI app, AppState, all routes, Pydantic models, and helpers. This plan splits it into clear submodules so each area has a single responsibility and the layout stays maintainable as you add cloud (Pinecone, Firestore) and more endpoints.
 
 ---

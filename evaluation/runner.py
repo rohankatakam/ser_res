@@ -1496,14 +1496,14 @@ def save_report(
     dataset_ver = dataset_version or os.getenv("DATASET_VERSION", "eval_909_feb2026")
     episode_count = dataset_episode_count
     
-    # If episode_count not provided, try to load from dataset
+    # If episode_count not provided, try to load from fixtures
     if episode_count is None:
         try:
-            dataset_path = Path(__file__).parent.parent / "datasets" / dataset_ver / "data.json"
-            if dataset_path.exists():
-                with open(dataset_path) as f:
-                    data = json.load(f)
-                    episode_count = len(data.get("episodes", []))
+            episodes_path = Path(__file__).parent / "fixtures" / dataset_ver / "episodes.json"
+            if episodes_path.exists():
+                with open(episodes_path) as f:
+                    episodes = json.load(f)
+                    episode_count = len(episodes) if isinstance(episodes, list) else len(episodes.get("episodes", []))
             else:
                 episode_count = 909  # Fallback
         except Exception:
