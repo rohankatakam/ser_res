@@ -5,7 +5,7 @@ Only Pinecone is supported for embeddings. PINECONE_API_KEY is required at start
 """
 
 from pathlib import Path
-from typing import Dict, List, Optional, Protocol
+from typing import Dict, List, Optional, Protocol, Tuple
 
 from .pinecone_store import PineconeEmbeddingStore
 
@@ -128,6 +128,20 @@ class PineconeVectorStore:
         """Async fetch. Requires store to implement get_embeddings_async (Pinecone with asyncio)."""
         return await self._store.get_embeddings_async(
             episode_ids, algorithm_version, strategy_version, dataset_version
+        )
+
+    async def query_async(
+        self,
+        vector: List[float],
+        top_k: int,
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+        filter: Optional[dict] = None,
+    ) -> List[Tuple[str, float]]:
+        """Query approximate NN. Returns [(episode_id, score), ...]. Requires Pinecone store."""
+        return await self._store.query_async(
+            vector, top_k, algorithm_version, strategy_version, dataset_version, filter
         )
 
     def save_embeddings(

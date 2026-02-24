@@ -26,6 +26,7 @@ def rank_candidates(
     episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig = DEFAULT_CONFIG,
     category_anchor_vector: Optional[List[float]] = None,
+    similarity_by_id: Optional[Dict[str, float]] = None,
 ) -> List[ScoredEpisode]:
     """
     Rank candidates with blended scoring: w1*similarity + w2*quality + w3*recency.
@@ -53,14 +54,20 @@ def rank_candidates(
     scored: List[ScoredEpisode] = []
     for ep in candidates:
         ep_id = ep.id
-        if cold_start:
+        content_id = ep.content_id or ""
+        # Prefer Pinecone query scores when provided (query path)
+        if similarity_by_id is not None:
+            sim_score = similarity_by_id.get(ep_id) or similarity_by_id.get(content_id)
+            if sim_score is None:
+                sim_score = 0.5
+        elif cold_start:
             sim_score = 0.5  # Cold start: no user vector; use neutral similarity
         elif config.use_sum_similarities:
             sim_score = compute_similarity_sum(
                 ep, engagements, embeddings, episode_by_content_id, config
             )
         else:
-            ep_embedding = embeddings.get(ep_id)
+            ep_embedding = embeddings.get(ep_id) or embeddings.get(content_id)
             if ep_embedding and user_vector:
                 sim_score = cosine_similarity(user_vector, ep_embedding)
             else:

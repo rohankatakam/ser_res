@@ -19,6 +19,9 @@ class RecommendationConfig(BaseModel):
     freshness_window_days: int = 90
     candidate_pool_size: int = 150
 
+    # Pinecone query (when using query path instead of fetch)
+    pinecone_query_top_k: int = 250
+
     # Stage B: Semantic Matching
     user_vector_limit: int = 10
 

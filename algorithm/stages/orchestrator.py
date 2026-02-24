@@ -12,8 +12,31 @@ from models.config import RecommendationConfig, resolve_config
 from models.engagement import Engagement, ensure_engagements
 from models.episode import Episode, ensure_episode_by_content_id, ensure_list
 from models.scoring import ScoredEpisode
-from stages.candidate_pool import get_candidate_pool
+from stages.candidate_pool import get_candidate_pool, _filter_eligible_candidates
 from stages.ranking import rank_candidates
+
+
+def _candidates_from_query_results(
+    query_results: List[Tuple[str, float]],
+    episode_by_content_id: Dict[str, Episode],
+    excluded_ids: Set[str],
+    config: RecommendationConfig,
+) -> Tuple[List[Episode], Dict[str, float]]:
+    """
+    Derive candidates and similarity map from Pinecone query results.
+    Applies quality, freshness, exclusion filters; returns (candidates, similarity_by_id).
+    """
+    similarity_by_id = {vid: score for vid, score in query_results}
+    candidates = []
+    for vid, _ in query_results:
+        ep = episode_by_content_id.get(vid)
+        if not ep:
+            continue
+        ep_typed = Episode.model_validate(ep) if isinstance(ep, dict) else ep
+        filtered = _filter_eligible_candidates([ep_typed], excluded_ids, config)
+        if filtered:
+            candidates.append(filtered[0])
+    return candidates[: config.candidate_pool_size], similarity_by_id
 
 
 def _session_metadata(
@@ -50,6 +73,7 @@ def _rank_candidates(
     episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig,
     category_anchor_vector: Optional[List[float]] = None,
+    similarity_by_id: Optional[Dict[str, float]] = None,
 ) -> List[ScoredEpisode]:
     """Stage B: Rank candidates by similarity and blended scoring."""
     return rank_candidates(
@@ -59,6 +83,7 @@ def _rank_candidates(
         episode_by_content_id,
         config,
         category_anchor_vector=category_anchor_vector,
+        similarity_by_id=similarity_by_id,
     )
 
 
@@ -70,9 +95,13 @@ def create_recommendation_queue(
     episode_by_content_id: Dict[str, Dict],
     config: Optional[RecommendationConfig] = None,
     category_anchor_vector: Optional[List[float]] = None,
+    query_results: Optional[List[Tuple[str, float]]] = None,
 ) -> Tuple[List[ScoredEpisode], bool, int]:
     """
     Create a ranked recommendation queue (Stage A → Stage B).
+
+    When query_results is provided (from Pinecone query), candidates are derived from
+    query results and similarity comes from Pinecone scores (no candidate embedding fetch).
 
     Returns:
         queue: List of ScoredEpisode sorted by final_score
@@ -83,12 +112,18 @@ def create_recommendation_queue(
     config = resolve_config(config)
 
     # Normalize inputs to models (server passes dicts)
-    episodes_typed = ensure_list(episodes)
     episode_by_content_id_typed = ensure_episode_by_content_id(episode_by_content_id)
     engagements_typed = ensure_engagements(engagements)
 
-    # Stage A: Retrieve candidates (quality + freshness filter)
-    candidates = _retrieve_candidates(excluded_ids, episodes_typed, config)
+    # Stage A: Retrieve candidates
+    if query_results:
+        candidates, similarity_by_id = _candidates_from_query_results(
+            query_results, episode_by_content_id_typed, excluded_ids, config
+        )
+    else:
+        episodes_typed = ensure_list(episodes)
+        candidates = _retrieve_candidates(excluded_ids, episodes_typed, config)
+        similarity_by_id = None
 
     # Session metadata for cold start and user-vector count
     cold_start, user_vector_episodes = _session_metadata(engagements_typed, config)
@@ -101,6 +136,7 @@ def create_recommendation_queue(
         episode_by_content_id_typed,
         config,
         category_anchor_vector=category_anchor_vector,
+        similarity_by_id=similarity_by_id,
     )
 
     return queue, cold_start, user_vector_episodes

@@ -8,7 +8,7 @@ Uses namespaces per algorithm_version + strategy_version + dataset_version.
 
 import os
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 try:
     from pinecone import Pinecone, ServerlessSpec
@@ -228,6 +228,53 @@ class PineconeEmbeddingStore:
                         out[eid] = list(vals)
         print(f"[Pinecone] get_embeddings_async namespace={ns!r} requested={len(episode_ids)} returned={len(out)}")
         return out
+
+    async def query_async(
+        self,
+        vector: List[float],
+        top_k: int,
+        algorithm_version: str,
+        strategy_version: str,
+        dataset_version: str,
+        filter: Optional[dict] = None,
+    ) -> List[Tuple[str, float]]:
+        """
+        Query approximate NN by vector. Returns [(episode_id, score), ...].
+        Uses include_values=False, include_metadata=False for latency.
+        """
+        if not vector:
+            return []
+        host = self._get_index_host()
+        ns = self._ns(algorithm_version, strategy_version, dataset_version)
+        pc = self.client
+        try:
+            print(f"[Pinecone] query_async started top_k={top_k} namespace={ns!r}", flush=True)
+            async with pc.IndexAsyncio(host=host) as idx:
+                result = await idx.query(
+                    vector=vector,
+                    top_k=top_k,
+                    namespace=ns,
+                    filter=filter,
+                    include_values=False,
+                    include_metadata=False,
+                )
+            matches = result.matches if hasattr(result, "matches") and result.matches else []
+            out = []
+            for m in matches:
+                mid = getattr(m, "id", None) or (m.get("id") if isinstance(m, dict) else None)
+                mscore = getattr(m, "score", None)
+                if mscore is None and isinstance(m, dict):
+                    mscore = m.get("score")
+                if mid and mscore is not None:
+                    out.append((str(mid), float(mscore)))
+            print(f"[Pinecone] query_async done namespace={ns!r} returned={len(out)}")
+            return out
+        except Exception as e:
+            print(f"[Pinecone] query_async failed: {type(e).__name__}: {e}", flush=True)
+            err_msg = str(e).lower()
+            if "asyncio" in err_msg or "additional dependencies" in err_msg:
+                raise ImportError(PINECONE_ASYNC_REQUIRED_MSG) from e
+            raise
 
     def save_embeddings(
         self,

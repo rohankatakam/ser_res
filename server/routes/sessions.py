@@ -44,8 +44,18 @@ def _episode_dicts(episodes) -> list:
 
 
 def _episode_by_content_id_from_list(episode_list: list) -> dict:
-    """Build content_id -> episode dict from episode list. Avoids second Firestore scan."""
-    return {ep["content_id"]: ep for ep in episode_list if isinstance(ep, dict) and ep.get("content_id")}
+    """Build content_id -> episode dict from episode list. Includes id for query result lookup."""
+    out = {}
+    for ep in episode_list:
+        if not isinstance(ep, dict):
+            continue
+        cid = ep.get("content_id")
+        if cid:
+            out[cid] = ep
+        eid = ep.get("id")
+        if eid and eid != cid:
+            out[eid] = ep
+    return out
 
 
 def _log_sessions(msg: str) -> None:
@@ -133,36 +143,77 @@ async def create_session(request: CreateSessionRequest):
             episode_by_content_id = state.current_dataset.episode_by_content_id
         algo_config = getattr(state.current_algorithm, "parsed_config", None)
 
-        # Embeddings: use in-memory when loaded, else fetch by id (Pinecone async)
+        # Embeddings: use in-memory when loaded, else fetch (query path or fetch path)
         embeddings = state.current_embeddings
-        if not embeddings and hasattr(engine, "get_candidate_pool_ids"):
+        query_results = None
+        if not embeddings and hasattr(state, "vector_store") and state.vector_store:
             engagement_ids = [e.get("episode_id") for e in engagements if e.get("episode_id")]
-            candidate_ids = engine.get_candidate_pool_ids(excluded_ids, episode_list, algo_config)
-            needed_ids = list(set(engagement_ids) | set(candidate_ids))
-            _log_sessions(f"fetching embeddings: needed_ids={len(needed_ids)}")
-            if needed_ids:
-                algo_folder = state.current_algorithm.folder_name
-                strategy_ver = state.current_algorithm.strategy_version
-                dataset_folder = state.current_dataset.folder_name
-                embeddings = await state.vector_store.get_embeddings_async(
-                    needed_ids, algo_folder, strategy_ver, dataset_folder
+            use_sum_sim = getattr(algo_config, "use_sum_similarities", False) if algo_config else False
+
+            # Query path: when we have user_vector and not use_sum_similarities
+            if not use_sum_sim:
+                # Fetch engagement embeddings only to compute user_vector
+                eng_embeddings = {}
+                if engagement_ids:
+                    algo_folder = state.current_algorithm.folder_name
+                    strategy_ver = state.current_algorithm.strategy_version
+                    dataset_folder = state.current_dataset.folder_name
+                    eng_embeddings = await state.vector_store.get_embeddings_async(
+                        engagement_ids, algo_folder, strategy_ver, dataset_folder
+                    )
+                ep_by_id = engine.ensure_episode_by_content_id(episode_by_content_id)
+                engs_typed = engine.ensure_engagements(engagements)
+                user_vector = engine.get_user_vector_mean(
+                    engs_typed,
+                    eng_embeddings,
+                    ep_by_id,
+                    algo_config,
+                    category_anchor_vector=category_anchor_vector,
                 )
-                _log_sessions(f"embeddings received: {len(embeddings)}")
-                print(
-                    f"[sessions] Pinecone get_embeddings namespace algo={algo_folder!r} strategy={strategy_ver!r} "
-                    f"dataset={dataset_folder!r} requested={len(needed_ids)} returned={len(embeddings)}",
-                    flush=True,
-                )
+                if user_vector and hasattr(state.vector_store, "query_async"):
+                    # Pinecone requires native Python floats; user_vector may contain numpy.float64
+                    vector_list = [float(x) for x in user_vector]
+                    top_k = getattr(algo_config, "pinecone_query_top_k", 250) if algo_config else 250
+                    _log_sessions(f"Pinecone query path: top_k={top_k}")
+                    query_results = await state.vector_store.query_async(
+                        vector=vector_list,
+                        top_k=top_k,
+                        algorithm_version=state.current_algorithm.folder_name,
+                        strategy_version=state.current_algorithm.strategy_version,
+                        dataset_version=state.current_dataset.folder_name,
+                    )
+                    embeddings = eng_embeddings
+                    _log_sessions(f"query_async returned {len(query_results or [])} matches")
+
+            # Fetch path: when query path not used
+            if query_results is None:
+                candidate_ids = engine.get_candidate_pool_ids(excluded_ids, episode_list, algo_config)
+                needed_ids = list(set(engagement_ids) | set(candidate_ids))
+                _log_sessions(f"fetch path: needed_ids={len(needed_ids)}")
+                if needed_ids:
+                    algo_folder = state.current_algorithm.folder_name
+                    strategy_ver = state.current_algorithm.strategy_version
+                    dataset_folder = state.current_dataset.folder_name
+                    embeddings = await state.vector_store.get_embeddings_async(
+                        needed_ids, algo_folder, strategy_ver, dataset_folder
+                    )
+                    _log_sessions(f"embeddings received: {len(embeddings)}")
+                    print(
+                        f"[sessions] Pinecone get_embeddings namespace algo={algo_folder!r} strategy={strategy_ver!r} "
+                        f"dataset={dataset_folder!r} requested={len(needed_ids)} returned={len(embeddings)}",
+                        flush=True,
+                    )
 
         _log_sessions("calling create_recommendation_queue")
         queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
             engagements=engagements,
             excluded_ids=excluded_ids,
             episodes=episode_list,
-            embeddings=embeddings,
+            embeddings=embeddings or {},
             episode_by_content_id=episode_by_content_id,
             config=algo_config,
             category_anchor_vector=category_anchor_vector,
+            query_results=query_results,
         )
         _log_sessions(f"queue built: len={len(queue)}, cold_start={cold_start}")
         session_id = str(uuid.uuid4())[:8]
