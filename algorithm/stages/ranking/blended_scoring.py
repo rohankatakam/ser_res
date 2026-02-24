@@ -1,8 +1,7 @@
 """
-Per-candidate blended scoring: quality, recency, and optional similarity.
+Per-candidate blended scoring: similarity, quality, and recency.
 
-Builds a ScoredEpisode for one candidate given its similarity score and config;
-handles cold-start vs normal weight blend.
+Builds a ScoredEpisode for one candidate using the unified formula for all cases.
 """
 
 from models.config import RecommendationConfig
@@ -14,13 +13,11 @@ def build_scored_episode(
     episode: Episode,
     sim_score: float,
     config: RecommendationConfig,
-    cold_start: bool,
 ) -> ScoredEpisode:
     """
-    Compute quality and recency scores for one episode and blend with similarity.
+    Compute final score: weight_similarity * sim + weight_quality * quality + weight_recency * recency.
 
-    Cold start: final = cold_start_weight_quality * quality + cold_start_weight_recency * recency.
-    Otherwise: final = weight_similarity * sim + weight_quality * quality + weight_recency * recency.
+    Same formula for all four user-state cases. When no user vector, sim_score=0.5 (neutral).
     """
     scores = episode.get_scores()
     qual_score = quality_score(
@@ -32,17 +29,11 @@ def build_scored_episode(
     age = days_since(episode.published_at or "")
     rec_score = recency_score(age, config.recency_lambda)
 
-    if cold_start:
-        final = (
-            config.cold_start_weight_quality * qual_score
-            + config.cold_start_weight_recency * rec_score
-        )
-    else:
-        final = (
-            config.weight_similarity * sim_score
-            + config.weight_quality * qual_score
-            + config.weight_recency * rec_score
-        )
+    final = (
+        config.weight_similarity * sim_score
+        + config.weight_quality * qual_score
+        + config.weight_recency * rec_score
+    )
     return ScoredEpisode(
         episode=episode,
         similarity_score=sim_score,

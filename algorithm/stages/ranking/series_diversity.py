@@ -15,22 +15,19 @@ def select_top_k_with_series_penalty(
     k: int = 10,
     alpha: float = 0.7,
     max_per_series: int = 2,
-    no_adjacent_same_series: bool = True,
 ) -> List[ScoredEpisode]:
     """
     Select top-K from scored candidates with series diversity constraints.
 
     Uses an in-processing selection loop: for each slot, picks the best remaining
     candidate by effective_score = final_score * (alpha ** series_count[series_id]).
-    If no_adjacent_same_series and the candidate's series equals the last selected
-    series, effective_score is zeroed.
+    Disallows consecutive same-series picks.
 
     Args:
         scored_list: Candidates sorted by final_score (desc). Not mutated.
         k: Number to select.
         alpha: Penalty factor per additional episode from same series (0 < alpha <= 1).
         max_per_series: Hard cap; candidates from series already at this count are skipped.
-        no_adjacent_same_series: If True, disallow consecutive same-series picks.
 
     Returns:
         Ordered list of up to k ScoredEpisodes.
@@ -53,8 +50,8 @@ def select_top_k_with_series_penalty(
             if current_count >= max_per_series:
                 continue
 
-            # No adjacent same series: skip if matches last
-            if no_adjacent_same_series and last_selected_series_id is not None:
+            # No adjacent same series: skip if matches last selected
+            if last_selected_series_id is not None:
                 if series_id == last_selected_series_id:
                     continue
 

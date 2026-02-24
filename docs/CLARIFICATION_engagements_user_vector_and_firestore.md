@@ -16,7 +16,7 @@ This doc answers:
 
 - Takes a **list of engagements** (each has `episode_id`, `type`, `timestamp`).
 - Uses [engagement_embeddings.py](algorithm/stages/ranking/engagement_embeddings.py) to get **recent** engagement–embedding pairs: sorts by `timestamp` (newest first), takes up to `user_vector_limit` (default 10), and resolves each `episode_id` to an embedding.
-- Computes a single vector by **mean-pooling** (or weighted mean if `use_weighted_engagements` is true) over those embeddings.
+- Computes a single vector by **weighted mean** over those embeddings (bookmark and click weights; bookmark > click).
 - Returns that vector or `None` if there are no valid pairs.
 
 **Important:** The algorithm does **not** store the user vector anywhere. It is computed **on demand** every time we call `create_recommendation_queue` → `rank_candidates` → `get_user_vector_mean`. There is no “recalculation” step inside the algorithm; the only input is the engagements list passed in.

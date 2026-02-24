@@ -71,7 +71,7 @@ docker compose up -d --build       # rebuild and run
 │   │   └── __init__.py
 │   ├── stages/                   # Pipeline: candidate_pool → ranking (Stage B); orchestrator runs both
 │   │   ├── candidate_pool.py, orchestrator.py
-│   │   ├── ranking/              # Stage B: core, user_vector, similarity, blended_scoring, cold_start, badges
+│   │   ├── ranking/              # Stage B: core, user_vector, blended_scoring, series_diversity, badges
 │   │   └── __init__.py
 │   └── utils/                    # scores, similarity, episode helpers
 │       ├── scores.py, similarity.py, episode.py

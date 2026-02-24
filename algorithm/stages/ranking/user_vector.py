@@ -1,8 +1,11 @@
 """
-User vector computation (mean-pool of engagement embeddings).
+User vector computation — single source of truth for the four user-state cases.
 
-Builds a single vector representing the user from their recent engagements,
-optionally weighted by engagement type.
+Four cases (determined by engagements + category_anchor_vector):
+  1. No engagements, no categories selected → None (quality + recency only)
+  2. Engagements, no categories             → weighted mean of engagement embeddings
+  3. No engagements, categories selected   → category_anchor (category interests drive)
+  4. Engagements, categories selected      → blend(engagement, category_anchor)
 """
 
 import logging
@@ -18,33 +21,29 @@ from .engagement_embeddings import get_recent_engagement_embeddings
 logger = logging.getLogger(__name__)
 
 
+def _engagement_weight(eng_type: str, config: RecommendationConfig) -> float:
+    """Map engagement type to weight. Bookmark and click only; others default 1.0."""
+    if eng_type == "bookmark":
+        return config.engagement_weight_bookmark
+    if eng_type == "click":
+        return config.engagement_weight_click
+    return 1.0
+
+
 def _mean_pool_engagement_vectors(
     pairs: List[Tuple[Engagement, List[float]]],
     config: RecommendationConfig,
 ) -> List[float]:
-    """
-    Compute weighted mean of engagement embeddings.
-
-    Optionally weighted by engagement type (bookmark > listen > click per
-    config.engagement_weights); produces a single vector for Pinecone query.
-    """
+    """Compute weighted mean of engagement embeddings (bookmark > click)."""
     if not pairs:
         return []
     vectors = []
     weights = []
     for eng, embedding in pairs:
-        if config.use_weighted_engagements:
-            w = config.engagement_weights.get(eng.type, 1.0)
-            vectors.append(np.array(embedding) * w)
-            weights.append(w)
-        else:
-            vectors.append(np.array(embedding))
-            weights.append(1.0)
-    return (
-        list(sum(vectors) / sum(weights))
-        if config.use_weighted_engagements
-        else list(np.mean(vectors, axis=0))
-    )
+        w = _engagement_weight(eng.type, config)
+        vectors.append(np.array(embedding) * w)
+        weights.append(w)
+    return list(sum(vectors) / sum(weights))
 
 
 def get_user_vector_mean(
@@ -54,42 +53,31 @@ def get_user_vector_mean(
     category_anchor_vector: Optional[List[float]] = None,
 ) -> Optional[List[float]]:
     """
-    Compute user activity vector: mean-pool of engagement embeddings, optionally
-    blended with category anchor (query hydration).
-
-    Category anchor is always used when provided (user set categories in onboarding).
-    When None/empty (user didn't set categories): no blend, alpha=0.
-
-    - No engagements + category_anchor: return category_anchor (cold start).
-    - Engagements + category_anchor: blend (1-α)*engagement + α*category_anchor.
-    - Engagements only / no category_anchor: return engagement mean.
-    - No engagements, no category_anchor: return None.
+    Compute user vector for Pinecone query. Four cases flow naturally below.
     """
-    # --- 1. Get recent engagement embeddings ---
-    pairs = get_recent_engagement_embeddings(engagements, embeddings, config)
-    # --- 2. Compute mean-pool engagement vector ---
-    pooled = _mean_pool_engagement_vectors(pairs, config)
-    engagement_vector: Optional[List[float]] = list(pooled) if pooled else None
-
-    # --- 3. Category anchor: always used when provided ---
-    # If user set categories in onboarding, category_anchor_vector is present; else None/empty → alpha=0.
-    has_anchor = (
+    has_categories = (
         category_anchor_vector is not None and len(category_anchor_vector) > 0
     )
 
-    # --- 4. Handle no-engagement cases (cold start) ---
-    if not engagement_vector:
-        if has_anchor:
-            return category_anchor_vector
+    # Get engagement-derived vector (Cases 2 & 4)
+    pairs = get_recent_engagement_embeddings(engagements, embeddings, config)
+    pooled = _mean_pool_engagement_vectors(pairs, config)
+    engagement_vector: Optional[List[float]] = list(pooled) if pooled else None
+
+    # --- Case 1: No engagements, no categories → None ---
+    if not engagement_vector and not has_categories:
         logger.info("[sim_fallback] USER_VECTOR_NONE_NO_ANCHOR no engagements, no category_anchor")
         return None
 
-    # --- 5. No anchor (user didn't set categories): return plain engagement vector ---
-    if not has_anchor:
+    # --- Case 3: No engagements, categories selected → category_anchor ---
+    if not engagement_vector and has_categories:
+        return category_anchor_vector
+
+    # --- Case 2: Engagements, no categories → engagement vector only ---
+    if not has_categories:
         return engagement_vector
 
-    # --- 6. Blend engagement vector with category anchor ---
-    # (1 - α) * engagement + α * category_anchor; α from config (default 0.15). L2-normalize.
+    # --- Case 4: Engagements + categories → blend (1-α)*engagement + α*category ---
     alpha = max(0.0, min(1.0, config.category_anchor_weight))
     eng_arr = np.array(engagement_vector)
     anc_arr = np.array(category_anchor_vector)
