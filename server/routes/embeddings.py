@@ -6,10 +6,12 @@ from fastapi import APIRouter, HTTPException, Header
 
 try:
     from ..state import get_state
+    from ..utils import build_metadata_by_id
     from ..services import EmbeddingGenerator, check_openai_available
     from ..models import GenerateEmbeddingsRequest
 except ImportError:
     from state import get_state
+    from utils import build_metadata_by_id
     from services import EmbeddingGenerator, check_openai_available
     from models import GenerateEmbeddingsRequest
 
@@ -95,6 +97,7 @@ def generate_embeddings(
     )
     if result.success:
         strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
+        metadata_by_id = build_metadata_by_id(dataset.episodes, set(result.embeddings))
         state.save_embeddings(
             algorithm.folder_name,
             algorithm.strategy_version,
@@ -103,6 +106,7 @@ def generate_embeddings(
             algorithm.embedding_model,
             algorithm.embedding_dimensions,
             strategy_file_path=strategy_file,
+            metadata_by_id=metadata_by_id,
         )
         if (
             state.current_algorithm

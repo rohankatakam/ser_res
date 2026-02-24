@@ -56,8 +56,9 @@ class VectorStore(Protocol):
         embedding_dimensions: int,
         *,
         strategy_file_path: Optional[Path] = None,
+        metadata_by_id: Optional[Dict[str, Dict]] = None,
     ) -> None:
-        """Persist embeddings."""
+        """Persist embeddings. Optionally include metadata per episode for Pinecone filtering."""
         ...
 
 
@@ -154,6 +155,7 @@ class PineconeVectorStore:
         embedding_dimensions: int,
         *,
         strategy_file_path: Optional[Path] = None,
+        metadata_by_id: Optional[Dict[str, Dict]] = None,
     ) -> None:
         self._store.save_embeddings(
             algorithm_version,
@@ -162,4 +164,5 @@ class PineconeVectorStore:
             embeddings,
             embedding_model,
             embedding_dimensions,
+            metadata_by_id=metadata_by_id,
         )

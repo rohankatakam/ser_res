@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 try:
     from .config import get_config
     from .state import get_state
+    from .utils import build_metadata_by_id
     from .services import (
         DatasetEpisodeProvider,
         EmbeddingGenerator,
@@ -23,6 +24,7 @@ try:
 except ImportError:
     from config import get_config
     from state import get_state
+    from utils import build_metadata_by_id
     from services import (
         DatasetEpisodeProvider,
         EmbeddingGenerator,
@@ -123,6 +125,7 @@ def create_app() -> FastAPI:
                         )
                         if result.success:
                             state.current_embeddings = result.embeddings
+                            metadata_by_id = build_metadata_by_id(dataset.episodes, set(result.embeddings))
                             state.save_embeddings(
                                 algorithm.folder_name,
                                 algorithm.strategy_version,
@@ -130,6 +133,7 @@ def create_app() -> FastAPI:
                                 result.embeddings,
                                 algorithm.embedding_model,
                                 algorithm.embedding_dimensions,
+                                metadata_by_id=metadata_by_id,
                             )
                             print(f"[startup] Generated {result.total_generated} embeddings")
                         else:

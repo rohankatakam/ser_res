@@ -25,7 +25,7 @@ from models.engagement import ensure_engagements
 from models.episode import ensure_list, ensure_episode_by_content_id
 from models.scoring import ScoredEpisode
 from stages.candidate_pool import get_candidate_pool
-from stages.ranking import rank_candidates, get_badges
+from stages.ranking import rank_candidates
 from stages.ranking.user_vector import get_user_vector_mean
 from stages.orchestrator import create_recommendation_queue
 from embedding.embedding_strategy import (
@@ -63,7 +63,6 @@ __all__ = [
     "ensure_episode_by_content_id",
     "ensure_engagements",
     "ScoredEpisode",
-    "get_badges",
     "get_embed_text",
     "STRATEGY_VERSION",
     "EMBEDDING_MODEL",

@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 try:
     from ..state import get_state
     from ..utils import to_episode_card, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
+    from ..pinecone_filter import build_pinecone_filter
     from ..models import (
         CreateSessionRequest,
         EngageRequest,
@@ -22,6 +23,7 @@ try:
 except ImportError:
     from state import get_state
     from utils import to_episode_card, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
+    from pinecone_filter import build_pinecone_filter
     from models import (
         CreateSessionRequest,
         EngageRequest,
@@ -179,14 +181,16 @@ async def create_session(request: CreateSessionRequest):
             if user_vector and hasattr(state.vector_store, "query_async"):
                 # Pinecone requires native Python floats; user_vector may contain numpy.float64
                 vector_list = [float(x) for x in user_vector]
-                top_k = getattr(algo_config, "pinecone_query_top_k", 250) if algo_config else 250
-                _log_sessions(f"Pinecone query path: top_k={top_k}")
+                top_k = algo_config.candidate_pool_size if algo_config else 150
+                pfilter = build_pinecone_filter(algo_config, excluded_ids)
+                _log_sessions(f"Pinecone query path: top_k={top_k}, filter={pfilter is not None}")
                 query_results = await state.vector_store.query_async(
                     vector=vector_list,
                     top_k=top_k,
                     algorithm_version=state.current_algorithm.folder_name,
                     strategy_version=state.current_algorithm.strategy_version,
                     dataset_version=state.current_dataset.folder_name,
+                    filter=pfilter,
                 )
                 embeddings = eng_embeddings
                 _log_sessions(f"query_async returned {len(query_results or [])} matches")
@@ -211,7 +215,7 @@ async def create_session(request: CreateSessionRequest):
                     )
 
         _log_sessions("calling create_recommendation_queue")
-        queue, cold_start, user_vector_episodes = engine.create_recommendation_queue(
+        queue, user_vector_episodes = engine.create_recommendation_queue(
             engagements=engagements,
             excluded_ids=excluded_ids,
             episodes=episode_list,
@@ -221,7 +225,7 @@ async def create_session(request: CreateSessionRequest):
             category_anchor_vector=category_anchor_vector,
             query_results=query_results,
         )
-        _log_sessions(f"queue built: len={len(queue)}, cold_start={cold_start}")
+        _log_sessions(f"queue built: len={len(queue)}")
         session_id = str(uuid.uuid4())[:8]
         session = {
             "session_id": session_id,
@@ -229,7 +233,6 @@ async def create_session(request: CreateSessionRequest):
             "shown_indices": set(),
             "engaged_ids": set(),
             "created_at": datetime.now(timezone.utc).isoformat(),
-            "cold_start": cold_start,
             "user_vector_episodes": user_vector_episodes,
             "excluded_ids": excluded_ids.copy(),
         }
@@ -257,7 +260,6 @@ async def create_session(request: CreateSessionRequest):
             total_in_queue=total_in_queue,
             shown_count=shown_count,
             remaining_count=total_in_queue - shown_count,
-            cold_start=cold_start,
             algorithm=f"v{state.current_algorithm.manifest.version}",
             debug=debug,
         )
@@ -282,7 +284,6 @@ def get_session_info(session_id: str):
         "total_in_queue": total,
         "shown_count": shown,
         "remaining_count": total - shown,
-        "cold_start": session["cold_start"],
         "created_at": session["created_at"],
         "engaged_count": len(session["engaged_ids"]),
     }
@@ -319,7 +320,6 @@ def load_more(session_id: str, request: LoadMoreRequest = None):
         total_in_queue=total_in_queue,
         shown_count=shown_count,
         remaining_count=total_in_queue - shown_count,
-        cold_start=session["cold_start"],
         algorithm=f"v{state.current_algorithm.manifest.version}" if state.current_algorithm else "unknown",
     )
 

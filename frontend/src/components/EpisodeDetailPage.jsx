@@ -10,8 +10,6 @@
  * - POV status (contrarian/consensus)
  */
 
-import Badge from './Badge';
-
 function formatDate(dateString) {
   if (!dateString) return '';
   const date = new Date(dateString);

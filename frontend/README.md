@@ -39,7 +39,6 @@ App runs at: http://localhost:5173
 
 ### Episode Cards
 
-- **Quality Badges**: High Insight, High Credibility, Data-Rich, Contrarian
 - **Key Insight Preview**: 1-sentence preview from episode analysis
 - **Category Tags**: Major category classification
 - **Actions**: Save (bookmark) and "Not for me" (negative feedback)
@@ -90,7 +89,6 @@ frontend/
 │   ├── api.js                    # API client
 │   ├── App.jsx                   # Main app with user selector
 │   ├── components/
-│   │   ├── Badge.jsx             # Quality badges
 │   │   ├── DiscoverPage.jsx      # Main discover page
 │   │   ├── EpisodeCard.jsx       # Episode card component
 │   │   └── RecommendationSection.jsx  # Horizontal scroll section

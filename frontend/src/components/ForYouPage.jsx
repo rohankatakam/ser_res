@@ -24,8 +24,8 @@ export default function ForYouPage({
   const [sessionId, setSessionId] = useState(activeSessionId);
   const [episodes, setEpisodes] = useState([]);
   const [queueInfo, setQueueInfo] = useState({ total: 0, shown: 0, remaining: 0 });
-  const [coldStart, setColdStart] = useState(true);
   const [debugInfo, setDebugInfo] = useState(null);
+  const coldStart = (engagements?.length || 0) === 0;
   const [apiStats, setApiStats] = useState(null);
   const [embeddingStatus, setEmbeddingStatus] = useState(null);
   const [checkingEmbeddings, setCheckingEmbeddings] = useState(false);
@@ -114,7 +114,6 @@ export default function ForYouPage({
       console.log('[ForYouPage] Session created:', {
         sessionId: sessionResult.session_id,
         userVectorEpisodes: sessionResult.debug?.user_vector_episodes,
-        coldStart: sessionResult.cold_start,
         embeddings_available: sessionResult.debug?.embeddings_available,
         candidates_count: sessionResult.debug?.candidates_count
       });
@@ -133,7 +132,6 @@ export default function ForYouPage({
         shown: sessionResult.shown_count,
         remaining: sessionResult.remaining_count
       });
-      setColdStart(sessionResult.cold_start);
       setDebugInfo(sessionResult.debug);
       setApiStats(stats);
       setEngagementsDirty(false);
@@ -374,7 +372,7 @@ export default function ForYouPage({
 }
 
 function RecommendationCard({ episode, onView, onBookmark, onNotInterested }) {
-  const { title, series, published_at, scores, key_insight, similarity_score, queue_position, categories, badges } = episode;
+  const { title, series, published_at, scores, key_insight, similarity_score, queue_position, categories } = episode;
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -397,11 +395,6 @@ function RecommendationCard({ episode, onView, onBookmark, onNotInterested }) {
           {similarity_score !== null && similarity_score !== undefined && (
             <span className="text-xs px-2 py-1 bg-indigo-500/20 text-indigo-400 rounded font-medium">
               {(similarity_score * 100).toFixed(0)}% match
-            </span>
-          )}
-          {badges?.includes('high_insight') && (
-            <span className="text-xs px-2 py-1 bg-purple-500/20 text-purple-400 rounded">
-              High Insight
             </span>
           )}
           <span className="text-xs text-slate-500 ml-auto">{formatDate(published_at)}</span>

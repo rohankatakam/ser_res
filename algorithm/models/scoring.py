@@ -30,15 +30,18 @@ def recency_score(days_old: int, lambda_val: float = 0.03) -> float:
     return math.exp(-lambda_val * days_old)
 
 
+# Divisor for normalizing quality to [0, 1]. Matches expected max of credibility*multiplier + insight.
+QUALITY_MAX_SCORE: float = 10.0
+
+
 def quality_score(
     credibility: int,
     insight: int,
     credibility_multiplier: float = 1.5,
-    max_score: float = 10.0,
 ) -> float:
     """Normalized quality score (0–1) with credibility weighted higher."""
     raw_score = credibility * credibility_multiplier + insight
-    return raw_score / max_score
+    return raw_score / QUALITY_MAX_SCORE
 
 
 class ScoredEpisode(BaseModel):

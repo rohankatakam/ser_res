@@ -285,17 +285,22 @@ class PineconeEmbeddingStore:
         embedding_model: str,
         embedding_dimensions: int,
         strategy_hash: Optional[str] = None,
+        metadata_by_id: Optional[Dict[str, Dict]] = None,
     ) -> None:
-        """Upsert embeddings with episode id as vector id for later lookup."""
+        """Upsert embeddings with episode id as vector id for later lookup.
+        Optionally include metadata per episode for Pinecone metadata filtering:
+        credibility, insight, combined, published_at (unix), episode_id.
+        """
         if not embeddings:
             return
         ns = self._ns(algorithm_version, strategy_version, dataset_version)
+        meta = metadata_by_id or {}
         vectors = []
         for episode_id, values in embeddings.items():
-            vectors.append({
-                "id": episode_id,
-                "values": values,
-            })
+            vec = {"id": episode_id, "values": values}
+            if episode_id in meta and meta[episode_id]:
+                vec["metadata"] = meta[episode_id]
+            vectors.append(vec)
         batch_size = 100
         for i in range(0, len(vectors), batch_size):
             batch = vectors[i : i + batch_size]

@@ -80,13 +80,11 @@ STANDARD_LLM_CRITERIA = ["relevance", "diversity", "quality", "hypothesis_alignm
 # Default weights for each criterion type
 CRITERION_WEIGHTS = {
     # Deterministic criteria
-    "cold_start_flag": 1.0,
     "avg_credibility": 1.5,
     "min_credibility": 1.0,
     "top_quality_score": 1.5,
     "episode_difference": 1.5,
     "similarity_increase": 1.0,
-    "cold_start_flag_off": 1.0,
     "credibility_floor": 2.0,
     "combined_floor": 2.0,
     "known_bad_excluded": 1.5,
@@ -211,7 +209,7 @@ def call_engine_directly(
         config = engine_context.engine_module.RecommendationConfig.from_dict(config)
     
     # Call engine
-    queue, cold_start, user_vector_episodes = engine_context.engine_module.create_recommendation_queue(
+    queue, user_vector_episodes = engine_context.engine_module.create_recommendation_queue(
         engagements=engagements,
         excluded_ids=all_excluded,
         episodes=engine_context.episodes,
@@ -238,7 +236,6 @@ def call_engine_directly(
     
     return {
         "episodes": episodes,
-        "cold_start": cold_start,
         "user_vector_episodes": user_vector_episodes,
         "total_in_queue": len(queue)
     }
@@ -482,16 +479,7 @@ def validate_cold_start_quality(response: Dict, test_case: Dict) -> TestResult:
     
     episodes = response.get("episodes", [])
     
-    # Criterion 1: cold_start flag
-    cold_start = response.get("cold_start", False)
-    result.add_criterion(
-        "cold_start_flag",
-        "API response includes cold_start: true",
-        cold_start == True,
-        f"cold_start={cold_start}"
-    )
-    
-    # Criterion 2: Average credibility >= 3.0
+    # Criterion 1: Average credibility >= 3.0
     if episodes:
         credibilities = [ep["scores"]["credibility"] for ep in episodes[:10]]
         avg_cred = sum(credibilities) / len(credibilities)
@@ -502,7 +490,7 @@ def validate_cold_start_quality(response: Dict, test_case: Dict) -> TestResult:
             f"avg_credibility={avg_cred:.2f}"
         )
     
-    # Criterion 3: No episode with credibility < 2
+    # Criterion 2: No episode with credibility < 2
     min_cred = min(ep["scores"]["credibility"] for ep in episodes[:10]) if episodes else 0
     result.add_criterion(
         "min_credibility",
@@ -511,7 +499,7 @@ def validate_cold_start_quality(response: Dict, test_case: Dict) -> TestResult:
         f"min_credibility={min_cred}"
     )
     
-    # Criterion 4: Top 3 quality scores >= 0.7
+    # Criterion 3: Top 3 quality scores >= 0.7
     if episodes:
         top_3_quality = [ep.get("quality_score", 0) for ep in episodes[:3]]
         all_high_quality = all(q >= 0.7 for q in top_3_quality)
@@ -554,15 +542,6 @@ def validate_personalization_differs(cold_response: Dict, vc_response: Dict, tes
         "VC Partner has higher avg similarity_score than cold start",
         avg_vc_sim > avg_cold_sim,
         f"cold_avg={avg_cold_sim:.3f}, vc_avg={avg_vc_sim:.3f}, delta={delta_sim:.3f}"
-    )
-    
-    # Criterion 3: VC cold_start flag is false
-    vc_cold_start = vc_response.get("cold_start", True)
-    result.add_criterion(
-        "cold_start_flag_off",
-        "VC Partner cold_start flag is false",
-        vc_cold_start == False,
-        f"vc_cold_start={vc_cold_start}"
     )
     
     return result

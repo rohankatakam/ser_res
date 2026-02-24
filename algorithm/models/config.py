@@ -13,40 +13,85 @@ from pydantic import BaseModel, model_validator
 class RecommendationConfig(BaseModel):
     """Configuration for the recommendation algorithm."""
 
+    # -------------------------------------------------------------------------
     # Stage A: Candidate Pool Pre-Selection
+    # -------------------------------------------------------------------------
+
+    # Min credibility score (0-5 scale). Episodes below this are excluded.
     credibility_floor: int = 2
+
+    # Min combined score: credibility + insight. Ensures substantive content.
+    # E.g. 5 means (credibility + insight) >= 5.
     combined_floor: int = 5
+
+    # Only episodes published within this many days are eligible. Older episodes excluded.
+    # Retry logic may expand to 60 or 90 days if too few candidates pass filters.
     freshness_window_days: int = 90
+
+    # Max number of candidates returned from Stage A. Used in both fetch and query paths.
+    # For Pinecone query path: top_k = candidate_pool_size (with metadata filter).
     candidate_pool_size: int = 150
 
-    # Pinecone query (when using query path instead of fetch)
-    pinecone_query_top_k: int = 250
+    # -------------------------------------------------------------------------
+    # Stage B: Semantic Matching / User Vector
+    # -------------------------------------------------------------------------
 
-    # Stage B: Semantic Matching
+    # Max number of recent engagements (by timestamp) used to build the user vector.
+    # Engagements beyond this are ignored for personalization.
     user_vector_limit: int = 10
 
-    # Scoring weights (must sum to 1.0)
+    # -------------------------------------------------------------------------
+    # Blended Scoring Weights (must sum to 1.0)
+    # final_score = weight_similarity * sim + weight_quality * quality + weight_recency * recency
+    # -------------------------------------------------------------------------
+
+    # Weight for similarity to user vector. Higher = more personalized.
     weight_similarity: float = 0.55
+    # Weight for content quality. Higher = more emphasis on credibility/insight.
     weight_quality: float = 0.30
+    # Weight for recency. Higher = fresher content favored.
     weight_recency: float = 0.15
 
-    # Quality scoring
-    credibility_multiplier: float = 1.5
-    max_quality_score: float = 10.0
+    # -------------------------------------------------------------------------
+    # Quality Score (used for filtering, sorting, and blended score)
+    # raw = credibility * credibility_multiplier + insight; normalized in scoring.py
+    # -------------------------------------------------------------------------
 
-    # Recency scoring
+    # Multiplier for credibility in quality formula. Higher = credibility weighs more vs insight.
+    credibility_multiplier: float = 1.5
+
+    # -------------------------------------------------------------------------
+    # Recency Score
+    # recency = exp(-recency_lambda * days_old). ~0.03 gives ~23 day half-life.
+    # -------------------------------------------------------------------------
+
     recency_lambda: float = 0.03
 
-    # Engagement type weights (bookmark and click only)
+    # -------------------------------------------------------------------------
+    # Engagement Weights (for building user vector from engagement embeddings)
+    # -------------------------------------------------------------------------
+
+    # Weight for bookmark engagements vs click. Bookmark = stronger signal of preference.
     engagement_weight_bookmark: float = 2.0
+    # Weight for click engagements when computing mean embedding.
     engagement_weight_click: float = 1.0
 
-    # Category anchor (blend when user set categories during onboarding)
-    # (1-α)*engagement + α*category; α from category_anchor_weight
+    # -------------------------------------------------------------------------
+    # Category Anchor (when user has onboarding categories + engagements)
+    # user_vector = (1 - α) * engagement_vector + α * category_anchor
+    # -------------------------------------------------------------------------
+
+    # Blend factor α. Higher = category preferences influence user vector more.
     category_anchor_weight: float = 0.15
 
-    # Series diversity (in-processing selection loop)
+    # -------------------------------------------------------------------------
+    # Series Diversity (in-processing selection loop)
+    # effective_score = final_score * (series_penalty_alpha ** series_count)
+    # -------------------------------------------------------------------------
+
+    # Hard cap: no more than this many episodes from the same series in the queue.
     max_episodes_per_series: int = 2
+    # Penalty per additional episode from same series. 0.7 = 30% penalty per extra.
     series_penalty_alpha: float = 0.7
 
     @model_validator(mode="after")

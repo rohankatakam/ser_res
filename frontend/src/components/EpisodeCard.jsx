@@ -2,26 +2,15 @@
  * Episode Card - Click to VIEW (marks as seen, excludes from future recs)
  */
 
-import Badge from './Badge';
-
 function formatDate(dateString) {
   if (!dateString) return '';
   return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 export default function EpisodeCard({ episode, onView, onBookmark, onNotInterested }) {
-  const { title, series, published_at, scores, categories, key_insight, badges: apiBadges } = episode;
+  const { title, series, published_at, scores, categories, key_insight } = episode;
   
   const primaryCategory = categories?.major?.[0];
-  
-  // Use badges from API if available, otherwise compute locally
-  const badges = apiBadges || (() => {
-    const b = [];
-    if (scores?.insight >= 3) b.push('high_insight');
-    if (scores?.credibility >= 3) b.push('high_credibility');
-    if (scores?.information >= 3) b.push('data_rich');
-    return b;
-  })();
   
   return (
     <div className="flex-shrink-0 w-72 bg-slate-800 rounded-xl border border-slate-700 overflow-hidden hover:border-slate-500 transition-colors">
@@ -50,13 +39,6 @@ export default function EpisodeCard({ episode, onView, onBookmark, onNotInterest
             <span className="text-purple-400">💎 {scores.insight || 0}</span>
             <span className="text-yellow-400">⭐ {scores.credibility || 0}</span>
             <span className="text-blue-400">📊 {scores.information || 0}</span>
-          </div>
-        )}
-        
-        {/* Badges */}
-        {badges.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-2">
-            {badges.slice(0, 2).map(b => <Badge key={b} type={b} />)}
           </div>
         )}
         

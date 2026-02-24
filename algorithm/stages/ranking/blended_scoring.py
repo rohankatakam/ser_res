@@ -24,7 +24,6 @@ def build_scored_episode(
         scores.get("credibility") or 0,
         scores.get("insight") or 0,
         config.credibility_multiplier,
-        config.max_quality_score,
     )
     age = days_since(episode.published_at or "")
     rec_score = recency_score(age, config.recency_lambda)

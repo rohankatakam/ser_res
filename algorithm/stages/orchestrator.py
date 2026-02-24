@@ -3,7 +3,7 @@ Pipeline orchestrator — runs Stage A (candidate pool) then Stage B (ranking)
 to produce the final recommendation queue.
 
 The main entry point is create_recommendation_queue, which runs retrieval then ranking
-and returns the queue plus session metadata (cold_start, user_vector_episodes).
+and returns the queue plus user_vector_episodes.
 """
 
 from typing import Dict, List, Optional, Set, Tuple
@@ -42,19 +42,9 @@ def _candidates_from_query_results(
 def _session_metadata(
     engagements: List[Engagement],
     config: RecommendationConfig,
-) -> Tuple[bool, int]:
-    """
-    Compute session-level flags and counts.
-
-    Returns:
-        cold_start: True if the user has no engagements yet.
-        user_vector_episodes: Number of engagements used for the user vector (capped by config).
-    """
-    cold_start = not engagements
-    user_vector_episodes = (
-        min(len(engagements), config.user_vector_limit) if engagements else 0
-    )
-    return cold_start, user_vector_episodes
+) -> int:
+    """Return number of engagements used for the user vector (capped by config)."""
+    return min(len(engagements), config.user_vector_limit) if engagements else 0
 
 
 def _retrieve_candidates(
@@ -94,7 +84,7 @@ def create_recommendation_queue(
     config: Optional[RecommendationConfig] = None,
     category_anchor_vector: Optional[List[float]] = None,
     query_results: Optional[List[Tuple[str, float]]] = None,
-) -> Tuple[List[ScoredEpisode], bool, int]:
+) -> Tuple[List[ScoredEpisode], int]:
     """
     Create a ranked recommendation queue (Stage A → Stage B).
 
@@ -103,7 +93,6 @@ def create_recommendation_queue(
 
     Returns:
         queue: List of ScoredEpisode sorted by final_score
-        cold_start: True if no engagements
         user_vector_episodes: Number of engagements used for user vector
     """
     # Resolve config (use defaults when None)
@@ -123,8 +112,7 @@ def create_recommendation_queue(
         candidates = _retrieve_candidates(excluded_ids, episodes_typed, config)
         similarity_by_id = None
 
-    # Session metadata for cold start and user-vector count
-    cold_start, user_vector_episodes = _session_metadata(engagements_typed, config)
+    user_vector_episodes = _session_metadata(engagements_typed, config)
 
     # Stage B: Rank candidates (similarity + blended scoring)
     queue = _rank_candidates(
@@ -136,4 +124,4 @@ def create_recommendation_queue(
         similarity_by_id=similarity_by_id,
     )
 
-    return queue, cold_start, user_vector_episodes
+    return queue, user_vector_episodes

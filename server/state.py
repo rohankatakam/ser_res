@@ -159,8 +159,9 @@ class AppState:
         embedding_model: str,
         embedding_dimensions: int,
         strategy_file_path: Optional[Path] = None,
+        metadata_by_id: Optional[Dict[str, Dict]] = None,
     ):
-        """Save embeddings via vector_store (Pinecone only)."""
+        """Save embeddings via vector_store (Pinecone only). Optionally include metadata for filtering."""
         self.vector_store.save_embeddings(
             algorithm_folder,
             strategy_version,
@@ -169,6 +170,7 @@ class AppState:
             embedding_model,
             embedding_dimensions,
             strategy_file_path=strategy_file_path,
+            metadata_by_id=metadata_by_id,
         )
 
 

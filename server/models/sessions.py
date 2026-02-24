@@ -41,6 +41,5 @@ class SessionResponse(BaseModel):
     total_in_queue: int
     shown_count: int
     remaining_count: int
-    cold_start: bool
     algorithm: str
     debug: SessionDebugInfo | None = None

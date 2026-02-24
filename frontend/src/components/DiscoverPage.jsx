@@ -40,8 +40,8 @@ export default function DiscoverPage({
   const [sessionId, setSessionId] = useState(activeSessionId);
   const [forYouEpisodes, setForYouEpisodes] = useState([]);
   const [queueInfo, setQueueInfo] = useState({ total: 0, shown: 0, remaining: 0 });
-  const [coldStart, setColdStart] = useState(true);
   const [debugInfo, setDebugInfo] = useState(null);
+  const coldStart = (engagements?.length || 0) === 0;
 
   const [apiStats, setApiStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -93,7 +93,6 @@ export default function DiscoverPage({
           shown: result.shown_count,
           remaining: result.remaining_count
         });
-        setColdStart(result.cold_start);
         setDebugInfo(result.debug);
 
         // Notify parent of session change
@@ -144,7 +143,6 @@ export default function DiscoverPage({
         shown: result.shown_count,
         remaining: result.remaining_count
       });
-      setColdStart(result.cold_start);
       setDebugInfo(result.debug);
 
       // Notify parent of session change
@@ -439,20 +437,12 @@ export default function DiscoverPage({
 
 // Episode card with similarity score and queue position
 function EpisodeCardWithScore({ episode, onView, onBookmark, onNotInterested }) {
-  const { title, series, published_at, scores, key_insight, similarity_score, queue_position, badges: apiBadges } = episode;
+  const { title, series, published_at, scores, key_insight, similarity_score, queue_position } = episode;
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
-
-  // Use badges from API if available, otherwise compute locally
-  const badges = apiBadges || (() => {
-    const b = [];
-    if (scores?.insight >= 3) b.push('high_insight');
-    if (scores?.credibility >= 3) b.push('high_credibility');
-    return b;
-  })();
 
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden hover:border-indigo-500/50 transition-colors">
@@ -492,14 +482,8 @@ function EpisodeCardWithScore({ episode, onView, onBookmark, onNotInterested }) 
           </div>
         </div>
 
-        {/* Badges and date */}
+        {/* Date */}
         <div className="flex items-center gap-2 mb-2 text-xs">
-          {badges.includes('contrarian') && (
-            <span className="px-1.5 py-0.5 bg-orange-500/20 text-orange-400 rounded">Contrarian</span>
-          )}
-          {badges.includes('high_insight') && (
-            <span className="px-1.5 py-0.5 bg-purple-500/20 text-purple-400 rounded">High Insight</span>
-          )}
           <span className="text-slate-500 ml-auto">{formatDate(published_at)}</span>
         </div>
 
@@ -537,7 +521,7 @@ function EpisodeCardWithScore({ episode, onView, onBookmark, onNotInterested }) 
 
 // Browse grid card (compact)
 function BrowseEpisodeCard({ episode, onView, onBookmark }) {
-  const { title, series, scores, published_at, badges } = episode;
+  const { title, series, scores, published_at } = episode;
 
   const formatDate = (dateString) => {
     if (!dateString) return '';

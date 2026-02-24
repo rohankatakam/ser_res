@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Header, Query
 
 try:
     from ..state import get_state
+    from ..utils import build_metadata_by_id
     from ..services import (
         DatasetEpisodeProvider,
         EmbeddingGenerator,
@@ -15,6 +16,7 @@ try:
     from ..models import LoadConfigRequest
 except ImportError:
     from state import get_state
+    from utils import build_metadata_by_id
     from services import (
         DatasetEpisodeProvider,
         EmbeddingGenerator,
@@ -165,6 +167,7 @@ def load_configuration(
             )
             if result.success:
                 strategy_file = algorithm.path / "embedding" / "embedding_strategy.py" if algorithm.path else None
+                metadata_by_id = build_metadata_by_id(dataset.episodes, set(result.embeddings))
                 state.save_embeddings(
                     algorithm.folder_name,
                     algorithm.strategy_version,
@@ -173,6 +176,7 @@ def load_configuration(
                     algorithm.embedding_model,
                     algorithm.embedding_dimensions,
                     strategy_file_path=strategy_file,
+                    metadata_by_id=metadata_by_id,
                 )
                 embeddings = result.embeddings
                 embeddings_cached = True

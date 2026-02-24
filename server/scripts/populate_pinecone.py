@@ -38,6 +38,7 @@ from server.services.dataset_loader import DatasetLoader
 from server.services.embedding_generator import EmbeddingGenerator
 from server.services.episode_provider import DatasetEpisodeProvider, FirestoreEpisodeProvider
 from server.services.pinecone_store import PineconeEmbeddingStore
+from server.utils import build_metadata_by_id
 
 
 def _normalize_episode_id(ep: dict) -> dict:
@@ -169,6 +170,9 @@ def main() -> int:
         print("No embeddings to save.", file=sys.stderr)
         return 0
 
+    # Build metadata for Pinecone filtering (credibility, insight, combined, published_at, episode_id)
+    metadata_by_id = build_metadata_by_id(episodes, set(result.embeddings))
+
     # Upsert to rec_for_you index (separate from RAG indexes). Use folder_name so namespace matches the server.
     index_name = os.environ.get("PINECONE_REC_FOR_YOU_INDEX", "rec-for-you")
     store = PineconeEmbeddingStore(
@@ -184,6 +188,7 @@ def main() -> int:
         embeddings=result.embeddings,
         embedding_model=algo.embedding_model,
         embedding_dimensions=algo.embedding_dimensions,
+        metadata_by_id=metadata_by_id,
     )
     print("Done.")
     return 0
