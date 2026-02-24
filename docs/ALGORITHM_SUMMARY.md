@@ -42,7 +42,7 @@ Per-candidate score: `final = w_sim × similarity + w_quality × quality + w_rec
 | **Personalized** | `0.55 × sim + 0.30 × quality + 0.15 × recency` |
 | **Cold start** | `0.60 × quality + 0.40 × recency` (no similarity) |
 
-- **Similarity:** Cosine similarity of candidate embedding vs user vector (or sum-of-similarities to engagement embeddings if `use_sum_similarities`).
+- **Similarity:** Cosine similarity of candidate embedding vs user vector (mean-pool of engagement embeddings).
 - **Quality:** Normalized from credibility and insight; capped at `max_quality_score`.
 - **Recency:** `exp(-recency_lambda × days_old)`; default `recency_lambda` = 0.03.
 

@@ -1,10 +1,13 @@
 """Session and recommendation endpoints."""
 
 import asyncio
+import logging
 import uuid
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException
+
+logger = logging.getLogger(__name__)
 
 try:
     from ..state import get_state
@@ -148,42 +151,45 @@ async def create_session(request: CreateSessionRequest):
         query_results = None
         if not embeddings and hasattr(state, "vector_store") and state.vector_store:
             engagement_ids = [e.get("episode_id") for e in engagements if e.get("episode_id")]
-            use_sum_sim = getattr(algo_config, "use_sum_similarities", False) if algo_config else False
 
-            # Query path: when we have user_vector and not use_sum_similarities
-            if not use_sum_sim:
-                # Fetch engagement embeddings only to compute user_vector
-                eng_embeddings = {}
-                if engagement_ids:
-                    algo_folder = state.current_algorithm.folder_name
-                    strategy_ver = state.current_algorithm.strategy_version
-                    dataset_folder = state.current_dataset.folder_name
-                    eng_embeddings = await state.vector_store.get_embeddings_async(
-                        engagement_ids, algo_folder, strategy_ver, dataset_folder
-                    )
-                ep_by_id = engine.ensure_episode_by_content_id(episode_by_content_id)
-                engs_typed = engine.ensure_engagements(engagements)
-                user_vector = engine.get_user_vector_mean(
-                    engs_typed,
-                    eng_embeddings,
-                    ep_by_id,
-                    algo_config,
-                    category_anchor_vector=category_anchor_vector,
+            # Query path: fetch engagement embeddings to compute user_vector, then Pinecone query
+            eng_embeddings = {}
+            if engagement_ids:
+                algo_folder = state.current_algorithm.folder_name
+                strategy_ver = state.current_algorithm.strategy_version
+                dataset_folder = state.current_dataset.folder_name
+                eng_embeddings = await state.vector_store.get_embeddings_async(
+                    engagement_ids, algo_folder, strategy_ver, dataset_folder
                 )
-                if user_vector and hasattr(state.vector_store, "query_async"):
-                    # Pinecone requires native Python floats; user_vector may contain numpy.float64
-                    vector_list = [float(x) for x in user_vector]
-                    top_k = getattr(algo_config, "pinecone_query_top_k", 250) if algo_config else 250
-                    _log_sessions(f"Pinecone query path: top_k={top_k}")
-                    query_results = await state.vector_store.query_async(
-                        vector=vector_list,
-                        top_k=top_k,
-                        algorithm_version=state.current_algorithm.folder_name,
-                        strategy_version=state.current_algorithm.strategy_version,
-                        dataset_version=state.current_dataset.folder_name,
-                    )
-                    embeddings = eng_embeddings
-                    _log_sessions(f"query_async returned {len(query_results or [])} matches")
+            engs_typed = engine.ensure_engagements(engagements)
+            user_vector = engine.get_user_vector_mean(
+                engs_typed,
+                eng_embeddings,
+                algo_config,
+                category_anchor_vector=category_anchor_vector,
+            )
+            if user_vector is None:
+                logger.info(
+                    "[sim_fallback] SESSION_USER_VECTOR_NONE_FETCH_PATH user_vector=None, using fetch path instead of Pinecone query"
+                )
+            elif user_vector and not hasattr(state.vector_store, "query_async"):
+                logger.info(
+                    "[sim_fallback] SESSION_NO_QUERY_ASYNC vector_store has no query_async, using fetch path"
+                )
+            if user_vector and hasattr(state.vector_store, "query_async"):
+                # Pinecone requires native Python floats; user_vector may contain numpy.float64
+                vector_list = [float(x) for x in user_vector]
+                top_k = getattr(algo_config, "pinecone_query_top_k", 250) if algo_config else 250
+                _log_sessions(f"Pinecone query path: top_k={top_k}")
+                query_results = await state.vector_store.query_async(
+                    vector=vector_list,
+                    top_k=top_k,
+                    algorithm_version=state.current_algorithm.folder_name,
+                    strategy_version=state.current_algorithm.strategy_version,
+                    dataset_version=state.current_dataset.folder_name,
+                )
+                embeddings = eng_embeddings
+                _log_sessions(f"query_async returned {len(query_results or [])} matches")
 
             # Fetch path: when query path not used
             if query_results is None:

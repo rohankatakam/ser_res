@@ -43,11 +43,8 @@ class RecommendationConfig(BaseModel):
     )
     use_weighted_engagements: bool = True
 
-    # Sum-of-similarities mode (alternative to mean-pooling)
-    use_sum_similarities: bool = False
-
-    # Category anchor (query hydration for cold start + post–cold-start blend)
-    category_anchor_enabled: bool = True
+    # Category anchor (query hydration for cold start + blend when user set categories)
+    # When category_anchor_vector is provided: blend at α. When None/empty (no onboarding categories): no blend.
     category_anchor_weight: float = 0.15  # α in blend: (1-α)*engagement + α*category
 
     # Cold start category diversity
@@ -84,8 +81,8 @@ class RecommendationConfig(BaseModel):
             flat["engagement_weights"] = config_dict["engagement_weights"]
         if "category_anchor" in config_dict:
             ca = config_dict["category_anchor"]
-            flat["category_anchor_enabled"] = ca.get("enabled", True)
-            flat["category_anchor_weight"] = ca.get("weight", 0.15)
+            if "weight" in ca:
+                flat["category_anchor_weight"] = ca["weight"]
         if "cold_start" in config_dict:
             cs = config_dict["cold_start"]
             if "weight_quality" in cs:

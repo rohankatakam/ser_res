@@ -1,13 +1,16 @@
 """
-Main ranking orchestration: user vector or sum-of-similarities, then blended scoring.
+Main ranking orchestration: mean-pool user vector, then blended scoring.
 
 Blends similarity, quality, and recency; applies optional cold-start category diversity.
-Submodules used: user_vector, similarity, blended_scoring, cold_start.
+Submodules used: user_vector, blended_scoring, cold_start.
 """
 
+import logging
 from typing import Dict, List, Optional
 
 from models.config import RecommendationConfig, DEFAULT_CONFIG
+
+logger = logging.getLogger(__name__)
 from models.engagement import Engagement
 from models.episode import Episode
 from models.scoring import ScoredEpisode
@@ -15,7 +18,6 @@ from models.scoring import ScoredEpisode
 from .blended_scoring import build_scored_episode
 from .cold_start import apply_cold_start_category_diversity
 from .series_diversity import select_top_k_with_series_penalty
-from .similarity import cosine_similarity, compute_similarity_sum
 from .user_vector import get_user_vector_mean
 
 
@@ -23,7 +25,6 @@ def rank_candidates(
     engagements: List[Engagement],
     candidates: List[Episode],
     embeddings: Dict[str, List[float]],
-    episode_by_content_id: Dict[str, Episode],
     config: RecommendationConfig = DEFAULT_CONFIG,
     category_anchor_vector: Optional[List[float]] = None,
     similarity_by_id: Optional[Dict[str, float]] = None,
@@ -31,24 +32,18 @@ def rank_candidates(
     """
     Rank candidates with blended scoring: w1*similarity + w2*quality + w3*recency.
 
-    Cold start (no engagements, or no user vector when not using sum_similarities):
-    uses only quality + recency; optional category diversity applied to top 10.
-    Similarity: either mean-pool user vector vs candidate embedding, or
-    sum-of-similarities to each engagement embedding, per config.
+    Cold start (no engagements, or no user vector): uses only quality + recency;
+    optional category diversity applied to top 10. Otherwise, similarity is
+    mean-pool user vector vs candidate embedding (from Pinecone query when available).
     """
-    # 1) Decide user representation and cold-start
-    user_vector = None
-    if not config.use_sum_similarities:
-        user_vector = get_user_vector_mean(
-            engagements,
-            embeddings,
-            episode_by_content_id,
-            config,
-            category_anchor_vector=category_anchor_vector,
-        )
-    cold_start = user_vector is None and not config.use_sum_similarities
-    if config.use_sum_similarities:
-        cold_start = not engagements
+    # 1) Compute user vector and detect cold start
+    user_vector = get_user_vector_mean(
+        engagements,
+        embeddings,
+        config,
+        category_anchor_vector=category_anchor_vector,
+    )
+    cold_start = user_vector is None
 
     # 2) For each candidate: similarity, then blended score → ScoredEpisode
     scored: List[ScoredEpisode] = []
@@ -59,19 +54,22 @@ def rank_candidates(
         if similarity_by_id is not None:
             sim_score = similarity_by_id.get(ep_id) or similarity_by_id.get(content_id)
             if sim_score is None:
+                logger.warning(
+                    "[sim_fallback] SIMILARITY_MISSING_IN_QUERY_RESULTS ep_id=%s content_id=%s",
+                    ep_id, content_id,
+                )
                 sim_score = 0.5
         elif cold_start:
             sim_score = 0.5  # Cold start: no user vector; use neutral similarity
-        elif config.use_sum_similarities:
-            sim_score = compute_similarity_sum(
-                ep, engagements, embeddings, episode_by_content_id, config
-            )
         else:
+            # Fetch path: no Pinecone query results; use neutral score (all similarity from Pinecone)
             ep_embedding = embeddings.get(ep_id) or embeddings.get(content_id)
-            if ep_embedding and user_vector:
-                sim_score = cosine_similarity(user_vector, ep_embedding)
-            else:
-                sim_score = 0.5  # Missing embedding or user vector; neutral
+            if not (ep_embedding and user_vector):
+                logger.warning(
+                    "[sim_fallback] SIMILARITY_FETCH_PATH_NO_PINECONE ep_id=%s content_id=%s has_ep_emb=%s has_user_vec=%s",
+                    ep_id, content_id, ep_embedding is not None, user_vector is not None,
+                )
+            sim_score = 0.5  # Fetch path: no Pinecone scores; use neutral
         scored.append(build_scored_episode(ep, sim_score, config, cold_start))
 
     # 3) Sort by final_score
